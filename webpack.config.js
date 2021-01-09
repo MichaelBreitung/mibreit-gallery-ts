@@ -16,13 +16,22 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css?$/,
+        use: ['style-loader',  {
+          loader: 'css-loader',
+          options: {            
+            modules: {
+              localIdentName: '[local]'
+            }
+          }
+        }],
+        exclude: /node_modules/,        
+      }
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js'],
-  },
-  externals: {
-    jquery: "jQuery",
+    extensions: ['.ts'],
   },
   optimization: {
     minimize: false

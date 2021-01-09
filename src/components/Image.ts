@@ -1,5 +1,6 @@
 import { IMAGE_DATA_SRC_ATTRIBUTE, IMAGE_SRC_ATTRIBUTE, IMAGE_TITLE_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from "../constants";
 import DomTools from "../tools/domTools";
+import IImageLoader from "../interfaces/ImageLoader"
 
 export enum EImageState {
   INACTIVE,
@@ -7,7 +8,7 @@ export enum EImageState {
   LOADED,
 }
 
-export default class Image {
+export default class Image implements IImageLoader {
   private imageHandle: HTMLElement;
   private state: EImageState = EImageState.INACTIVE;
   private title: string;
@@ -60,7 +61,13 @@ export default class Image {
   }
 
   getTitle(): string {
-    return this.imageHandle.getAttribute(IMAGE_TITLE_ATTRIBUTE);
+    return this.title;
+  }
+
+  getUrl() {
+    return this.imageHandle.hasAttribute("data-src")
+      ? this.imageHandle.getAttribute("data-src")
+      : this.imageHandle.getAttribute("src");
   }
 
   getWidth(): number {

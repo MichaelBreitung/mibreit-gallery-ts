@@ -1,3 +1,8 @@
+function documentReady(callback: () => void)
+{
+  document.addEventListener("DOMContentLoaded", callback);
+}
+
 function createElement(tagName: string): HTMLElement {
   return document.createElement(tagName);
 }
@@ -19,9 +24,16 @@ function disableDragging(element: HTMLElement) {
   });
 }
 
+function getElements(selector: string) : NodeListOf<HTMLElement>
+{
+  return document.querySelectorAll(selector);
+}
+
 export default {
   createElement,
   wrapElement,
   disableContextMenu,
-  disableDragging
+  disableDragging,
+  getElements,
+  documentReady
 }
