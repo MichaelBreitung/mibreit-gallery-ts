@@ -79,8 +79,8 @@ export default class Image implements IImageLoader {
   }
 
   private limitMaxSizeTo(maxWidth: number, maxHeight: number): void {
-    this.imageHandle.style.maxWidth = `${maxWidth}px`;
-    this.imageHandle.style.maxHeight = `${maxHeight}px`;
+    DomTools.applyCssStyle(this.imageHandle, "max-width", `${maxWidth}px`);
+    DomTools.applyCssStyle(this.imageHandle, "max-height", `${maxHeight}px`);
   }
 
   private removeTitle(imageHandle: HTMLElement) {

@@ -1,5 +1,4 @@
 import DomTools from "../tools/domTools";
-import Image from "./Image";
 import styles from "./ImageStage.module.css";
 
 export enum EImageScaleMode {
@@ -13,19 +12,44 @@ export enum EImageScaleMode {
  * The ImageStage is responsible for proper scaling and centering
  * of images on the stage
  */
-export default class ImageStage {
-  private image: Image;
-  private scaleMode: EImageScaleMode;
+export default abstract class ImageStage {
+  protected imageHandle: HTMLElement;
+  protected imageWidth: number;
+  protected imageHeight: number;
+  protected parentWidth: number;
+  protected parentHeight: number;  
 
-  constructor(image: Image, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {
-    this.image = image;
-    this.scaleMode = scaleMode;
-    this.createStage();
+  constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number) {
+    this.imageHandle = imageHandle;
+    this.imageWidth = imageWidth;
+    this.imageHeight = imageHeight;    
+    const stage = this.createStage();
+    const parent: HTMLElement = DomTools.getParentElement(stage);
+    ({ width: this.parentWidth, height: this.parentHeight } = DomTools.getElementDimension(parent));
   }
 
-  private createStage() {
+  applyScaleMode() : void
+  {
+    this.applyScaleModeImpl();
+    this.centerImage();
+  }
+
+  protected abstract applyScaleModeImpl() : void;
+
+  private createStage(): HTMLElement {
     const wrapper = DomTools.createElement("div");
-    wrapper.setAttribute("class", styles.mibreit_ImageStage);
-    DomTools.wrapElement(this.image.getElement(), wrapper);
+    DomTools.applyCssClass(wrapper, styles.mibreit_ImageStage);    
+    DomTools.wrapElement(this.imageHandle, wrapper);
+    return wrapper;
+  }
+
+  private centerImage() {
+    const { width, height } = DomTools.getElementDimension(this.imageHandle);
+
+    console.log("width ", width, "height ", height);
+    const x: number = (width + this.parentWidth) / 2 - width;
+    const y: number = (height + this.parentHeight) / 2 - height;
+    DomTools.applyCssStyle(this.imageHandle, "margin-left", `${x}px`);
+    DomTools.applyCssStyle(this.imageHandle, "margin-top", `${y}px`);
   }
 }
