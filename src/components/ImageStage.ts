@@ -7,8 +7,9 @@ import IImageStage from '../interfaces/IImageStage';
  * of images on the stage
  */
 export default abstract class ImageStage implements IImageStage {
+  private zoomAnimation: boolean = false;
+  private imageStage: HTMLElement;
   protected imageHandle: HTMLElement;
-  protected imageStage: HTMLElement;
   protected imageWidth: number;
   protected imageHeight: number;
   protected parentWidth: number;
@@ -18,9 +19,14 @@ export default abstract class ImageStage implements IImageStage {
     this.imageHandle = imageHandle;
     this.imageWidth = imageWidth;
     this.imageHeight = imageHeight;
+
     this.imageStage = this.createStage();
     const parent: HTMLElement = DomTools.getParentElement(this.imageStage);
     ({ width: this.parentWidth, height: this.parentHeight } = DomTools.getElementDimension(parent));
+  }
+
+  setZoomAnimation(activate: boolean): void {
+    this.zoomAnimation = activate;
   }
 
   applyScaleMode(): void {
@@ -28,10 +34,10 @@ export default abstract class ImageStage implements IImageStage {
     this.centerImage();
   }
 
-  showImage(show: boolean, zoom: boolean = false): void {
+  showImage(show: boolean): void {
     let classes = styles.mibreit_ImageStage;
     if (show) {
-      if (zoom) {
+      if (this.zoomAnimation) {
         this.startZoomAnimation();
       }
 

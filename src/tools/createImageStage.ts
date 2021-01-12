@@ -15,7 +15,7 @@ export const createImageState = function (
   scaleMode: EImageScaleMode,
   imageHandle: HTMLElement,
   imageWidth: number,
-  imageHeight: number
+  imageHeight: number,  
 ): IImageStage {
   switch (scaleMode) {
     case EImageScaleMode.EXPAND:

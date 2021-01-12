@@ -44,7 +44,7 @@ export default class Slideshow {
     if (index != this.currentIndex) {
       this.imageStages[this.currentIndex].showImage(false);
       this.currentIndex = index;
-      this.imageStages[this.currentIndex].showImage(true, true);
+      this.imageStages[this.currentIndex].showImage(true);
 
       this.imageChangedCallbacks.forEach((callback) => {
         callback(this.currentIndex);
