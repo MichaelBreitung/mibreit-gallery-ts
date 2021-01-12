@@ -9,14 +9,20 @@ import { SLIDESHOW_INTERVAL } from './constants';
 export const documentReady = DomTools.documentReady;
 export const ImageScaleMode = EImageScaleMode;
 
-export async function createSlideshow(scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT): Promise<void> {
-  const imagesSelector = DomTools.getElements('#container > img');
+export async function createSlideshow(
+  containerSelector: string,
+  scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT,
+  interval: number = SLIDESHOW_INTERVAL,
+  zoom: boolean = false
+): Promise<void> {
+  const imagesSelector = DomTools.getElements(`${containerSelector} img`);
   const images: Array<Image> = new Array();
   const imageStages: Array<IImageStage> = new Array();
 
   for (let i = 0; i < imagesSelector.length; i++) {
     const image = new Image(imagesSelector[i]);
     const imageStage = createImageState(scaleMode, imagesSelector[i], image.getWidth(), image.getHeight());
+    imageStage.setZoomAnimation(zoom);
     image.addWasLoadedCallback(() => {
       imageStage.applyScaleMode();
     });
@@ -33,5 +39,5 @@ export async function createSlideshow(scaleMode: EImageScaleMode = EImageScaleMo
   slideshow.showNextImage();
   setInterval(function () {
     slideshow.showNextImage();
-  }, SLIDESHOW_INTERVAL);
+  }, interval);
 }
