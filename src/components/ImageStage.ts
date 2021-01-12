@@ -1,6 +1,6 @@
-import DomTools from "../tools/domTools";
-import styles from "./ImageStage.module.css";
-import IImageStage from "./IImageStage";
+import DomTools from '../tools/domTools';
+import styles from './ImageStage.module.css';
+import IImageStage from '../interfaces/IImageStage';
 
 /**
  * The ImageStage is responsible for proper scaling and centering
@@ -30,7 +30,7 @@ export default abstract class ImageStage implements IImageStage {
   protected abstract applyScaleModeImpl(): void;
 
   private createStage(): HTMLElement {
-    const wrapper = DomTools.createElement("div");
+    const wrapper = DomTools.createElement('div');
     DomTools.applyCssClass(wrapper, styles.mibreit_ImageStage);
     DomTools.wrapElement(this.imageHandle, wrapper);
     return wrapper;
@@ -39,11 +39,10 @@ export default abstract class ImageStage implements IImageStage {
   private centerImage() {
     const { width, height } = DomTools.getElementDimension(this.imageHandle);
 
-    console.log("width ", width, "height ", height);
+    console.log('width ', width, 'height ', height);
     const x: number = (width + this.parentWidth) / 2 - width;
     const y: number = (height + this.parentHeight) / 2 - height;
-    DomTools.applyCssStyle(this.imageHandle, "margin-left", `${x}px`);
-    DomTools.applyCssStyle(this.imageHandle, "margin-top", `${y}px`);
+    DomTools.applyCssStyle(this.imageHandle, 'margin-left', `${x}px`);
+    DomTools.applyCssStyle(this.imageHandle, 'margin-top', `${y}px`);
   }
 }
-

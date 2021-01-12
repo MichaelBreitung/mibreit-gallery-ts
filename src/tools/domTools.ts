@@ -1,6 +1,5 @@
-function documentReady(callback: () => void)
-{
-  document.addEventListener("DOMContentLoaded", callback);
+function documentReady(callback: () => void) {
+  document.addEventListener('DOMContentLoaded', callback);
 }
 
 function createElement(tagName: string): HTMLElement {
@@ -12,41 +11,42 @@ function wrapElement(element: HTMLElement, wrapper: HTMLElement) {
   wrapper.appendChild(element);
 }
 
-function getParentElement(element: HTMLElement) : HTMLElement {
+function getParentElement(element: HTMLElement): HTMLElement {
   return element.parentElement;
 }
 
-function getElementDimension(element: HTMLElement) : {width: number, height: number} {  
+function getElementDimension(element: HTMLElement): { width: number; height: number } {
   return {
     width: element.clientWidth,
-    height: element.clientHeight
-  }
+    height: element.clientHeight,
+  };
 }
 
-function applyCssClass(element: HTMLElement, cssClass: string)
-{
-  element.setAttribute("class", cssClass);
+function applyCssClass(element: HTMLElement, cssClass: string) {
+  element.setAttribute('class', cssClass);
 }
 
-function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: string)
-{
+function getCssStyle(element: HTMLElement, styleName: string) {
+  element.style.getPropertyValue(styleName);
+}
+
+function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: string) {
   element.style.setProperty(styleName, styleProperty);
 }
 
 function disableContextMenu(element: HTMLElement) {
-  element.addEventListener('contextmenu', e => {
+  element.addEventListener('contextmenu', (e) => {
     e.preventDefault();
   });
 }
 
 function disableDragging(element: HTMLElement) {
-  element.addEventListener('dragstart', e => {
+  element.addEventListener('dragstart', (e) => {
     e.preventDefault();
   });
 }
 
-function getElements(selector: string) : NodeListOf<HTMLElement>
-{
+function getElements(selector: string): NodeListOf<HTMLElement> {
   return document.querySelectorAll(selector);
 }
 
@@ -57,8 +57,9 @@ export default {
   getParentElement,
   getElementDimension,
   applyCssClass,
+  getCssStyle,
   applyCssStyle,
   disableContextMenu,
   disableDragging,
-  getElements
-}
+  getElements,
+};

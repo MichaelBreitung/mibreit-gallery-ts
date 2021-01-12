@@ -1,3 +1,3 @@
 export default interface IImageLoader {
-  load: () => Promise<boolean> 
+  load: () => Promise<boolean>;
 }

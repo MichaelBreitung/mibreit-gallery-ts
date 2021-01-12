@@ -1,6 +1,11 @@
-import { IMAGE_DATA_SRC_ATTRIBUTE, IMAGE_SRC_ATTRIBUTE, IMAGE_TITLE_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from "../constants";
-import DomTools from "../tools/domTools";
-import IImageLoader from "../interfaces/ImageLoader"
+import {
+  IMAGE_DATA_SRC_ATTRIBUTE,
+  IMAGE_SRC_ATTRIBUTE,
+  IMAGE_TITLE_ATTRIBUTE,
+  IMAGE_DATA_TITLE_ATTRIBUTE,
+} from '../constants';
+import DomTools from '../tools/domTools';
+import IImageLoader from '../interfaces/ImageLoader';
 
 export enum EImageState {
   INACTIVE,
@@ -24,8 +29,8 @@ export default class Image implements IImageLoader {
     }
 
     this.title = imageHandle.getAttribute(IMAGE_DATA_TITLE_ATTRIBUTE);
-    this.width = parseInt(imageHandle.getAttribute("width"));
-    this.height = parseInt(imageHandle.getAttribute("height"));
+    this.width = parseInt(imageHandle.getAttribute('width'));
+    this.height = parseInt(imageHandle.getAttribute('height'));
     this.limitMaxSizeTo(this.width, this.height);
     DomTools.disableContextMenu(this.imageHandle);
     DomTools.disableDragging(this.imageHandle);
@@ -40,13 +45,11 @@ export default class Image implements IImageLoader {
           resolve(true);
         };
         this.state = EImageState.LOADING;
-        const dataSrc = this.imageHandle.getAttribute(IMAGE_DATA_SRC_ATTRIBUTE)
+        const dataSrc = this.imageHandle.getAttribute(IMAGE_DATA_SRC_ATTRIBUTE);
         this.imageHandle.setAttribute(IMAGE_SRC_ATTRIBUTE, dataSrc);
-      }
-      else if (this.state === EImageState.LOADING) {
+      } else if (this.state === EImageState.LOADING) {
         reject(false);
-      }
-      else {
+      } else {
         resolve(true);
       }
     });
@@ -54,6 +57,16 @@ export default class Image implements IImageLoader {
 
   wasLoaded(): boolean {
     return this.state === EImageState.LOADED;
+  }
+
+  startZoomAnimation(targetZoom: number, time: number) {
+    DomTools.applyCssStyle(this.imageHandle, 'transition', `transform ${time / 1000}s linear`);
+    DomTools.applyCssStyle(this.imageHandle, 'transform', `scale(${targetZoom / 100})`);
+  }
+
+  resetZoom() {
+    DomTools.applyCssStyle(this.imageHandle, 'transition', `none`);
+    DomTools.applyCssStyle(this.imageHandle, 'transform', `scale(1.0)`);
   }
 
   getElement(): HTMLElement {
@@ -65,9 +78,9 @@ export default class Image implements IImageLoader {
   }
 
   getUrl() {
-    return this.imageHandle.hasAttribute("data-src")
-      ? this.imageHandle.getAttribute("data-src")
-      : this.imageHandle.getAttribute("src");
+    return this.imageHandle.hasAttribute('data-src')
+      ? this.imageHandle.getAttribute('data-src')
+      : this.imageHandle.getAttribute('src');
   }
 
   getWidth(): number {
@@ -79,8 +92,8 @@ export default class Image implements IImageLoader {
   }
 
   private limitMaxSizeTo(maxWidth: number, maxHeight: number): void {
-    DomTools.applyCssStyle(this.imageHandle, "max-width", `${maxWidth}px`);
-    DomTools.applyCssStyle(this.imageHandle, "max-height", `${maxHeight}px`);
+    DomTools.applyCssStyle(this.imageHandle, 'max-width', `${maxWidth}px`);
+    DomTools.applyCssStyle(this.imageHandle, 'max-height', `${maxHeight}px`);
   }
 
   private removeTitle(imageHandle: HTMLElement) {

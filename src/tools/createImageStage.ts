@@ -1,8 +1,8 @@
-import IImageStage from "../components/IImageStage";
-import ImageStageFitAspect from "../components/ImageStageFitAspect";
-import ImageStageExpand from "../components/ImageStageExpand";
-import ImageStageStretch from "../components/ImageStageStretch";
-import ImageStageNoScale from "../components/ImageStageNoScale";
+import IImageStage from '../interfaces/IImageStage';
+import ImageStageFitAspect from '../components/ImageStageFitAspect';
+import ImageStageExpand from '../components/ImageStageExpand';
+import ImageStageStretch from '../components/ImageStageStretch';
+import ImageStageNoScale from '../components/ImageStageNoScale';
 
 export enum EImageScaleMode {
   NONE,
@@ -11,7 +11,12 @@ export enum EImageScaleMode {
   EXPAND,
 }
 
-export const createImageState = function (scaleMode: EImageScaleMode, imageHandle: HTMLElement, imageWidth: number, imageHeight: number) : IImageStage {
+export const createImageState = function (
+  scaleMode: EImageScaleMode,
+  imageHandle: HTMLElement,
+  imageWidth: number,
+  imageHeight: number
+): IImageStage {
   switch (scaleMode) {
     case EImageScaleMode.EXPAND:
       return new ImageStageExpand(imageHandle, imageWidth, imageHeight);
@@ -19,8 +24,8 @@ export const createImageState = function (scaleMode: EImageScaleMode, imageHandl
       return new ImageStageFitAspect(imageHandle, imageWidth, imageHeight);
     case EImageScaleMode.STRETCH:
       return new ImageStageStretch(imageHandle, imageWidth, imageHeight);
-    case EImageScaleMode.NONE:      
+    case EImageScaleMode.NONE:
     default:
       return new ImageStageNoScale(imageHandle, imageWidth, imageHeight);
   }
-}
+};
