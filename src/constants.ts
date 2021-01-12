@@ -1,3 +1,8 @@
+/**
+ * @author Michael Breitung
+ * @copyright Michael Breitung Photography (www.mibreit-photo.com)
+ */
+
 // Css properties
 export const IMAGE_DATA_SRC_ATTRIBUTE = 'data-src';
 export const IMAGE_SRC_ATTRIBUTE = 'src';

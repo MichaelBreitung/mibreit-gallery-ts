@@ -1,3 +1,8 @@
+/**
+ * @author Michael Breitung
+ * @copyright Michael Breitung Photography (www.mibreit-photo.com)
+ */
+
 import ImageStage from './ImageStage';
 import DomTools from '../tools/domTools';
 

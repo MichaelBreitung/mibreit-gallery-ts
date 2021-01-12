@@ -1,3 +1,8 @@
+/**
+ * @author Michael Breitung
+ * @copyright Michael Breitung Photography (www.mibreit-photo.com)
+ */
+
 import IImageStage from '../interfaces/IImageStage';
 
 export default class Slideshow {

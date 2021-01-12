@@ -1,3 +1,8 @@
+/**
+ * @author Michael Breitung
+ * @copyright Michael Breitung Photography (www.mibreit-photo.com)
+ */
+
 import {
   IMAGE_DATA_SRC_ATTRIBUTE,
   IMAGE_SRC_ATTRIBUTE,

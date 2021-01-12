@@ -1,3 +1,8 @@
+/**
+ * @author Michael Breitung
+ * @copyright Michael Breitung Photography (www.mibreit-photo.com)
+ */
+
 import IImageStage from '../interfaces/IImageStage';
 import ImageStageFitAspect from '../components/ImageStageFitAspect';
 import ImageStageExpand from '../components/ImageStageExpand';

@@ -1,3 +1,8 @@
+/**
+ * @author Michael Breitung
+ * @copyright Michael Breitung Photography (www.mibreit-photo.com)
+ */
+
 function documentReady(callback: () => void) {
   document.addEventListener('DOMContentLoaded', callback);
 }

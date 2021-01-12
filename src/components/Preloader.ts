@@ -1,3 +1,8 @@
+/**
+ * @author Michael Breitung
+ * @copyright Michael Breitung Photography (www.mibreit-photo.com)
+ */
+
 import { PRELOADER_RIGHT_SIZE, PRELOADER_LEFT_SIZE } from '../constants';
 import IImageLoader from '../interfaces/IImageLoader';
 
@@ -9,7 +14,7 @@ export default class Preloader {
   private imageLoaders: Array<IImageLoader>;
 
   constructor(imageLoaders: Array<IImageLoader>) {
-    this.currentIndex = -1; 
+    this.currentIndex = -1;
     this.imageLoaders = imageLoaders;
     this.nrImagesLoaded = this.getLoadedCount();
   }
@@ -68,7 +73,7 @@ export default class Preloader {
   }
 
   private loadImages(start: number, end: number) {
-    for (let i = start < 0 ? 0 : start; i < end && i < this.imageLoaders.length; i++) {      
+    for (let i = start < 0 ? 0 : start; i < end && i < this.imageLoaders.length; i++) {
       this.loadImage(i);
     }
   }
