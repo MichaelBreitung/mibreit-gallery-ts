@@ -8,6 +8,7 @@ import IImageStage from '../interfaces/IImageStage';
  */
 export default abstract class ImageStage implements IImageStage {
   protected imageHandle: HTMLElement;
+  protected imageStage: HTMLElement;
   protected imageWidth: number;
   protected imageHeight: number;
   protected parentWidth: number;
@@ -17,14 +18,23 @@ export default abstract class ImageStage implements IImageStage {
     this.imageHandle = imageHandle;
     this.imageWidth = imageWidth;
     this.imageHeight = imageHeight;
-    const stage = this.createStage();
-    const parent: HTMLElement = DomTools.getParentElement(stage);
+    this.imageStage = this.createStage();
+    const parent: HTMLElement = DomTools.getParentElement(this.imageStage);
     ({ width: this.parentWidth, height: this.parentHeight } = DomTools.getElementDimension(parent));
   }
 
   applyScaleMode(): void {
     this.applyScaleModeImpl();
     this.centerImage();
+  }
+
+  showImage(show: boolean): void {
+    let classes = styles.mibreit_ImageStage;
+    if (show)
+    {
+      classes += ` ${styles.visible}`;
+    }
+    DomTools.applyCssClass(this.imageStage, classes);
   }
 
   protected abstract applyScaleModeImpl(): void;
@@ -37,9 +47,7 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   private centerImage() {
-    const { width, height } = DomTools.getElementDimension(this.imageHandle);
-
-    console.log('width ', width, 'height ', height);
+    const { width, height } = DomTools.getElementDimension(this.imageHandle);   
     const x: number = (width + this.parentWidth) / 2 - width;
     const y: number = (height + this.parentHeight) / 2 - height;
     DomTools.applyCssStyle(this.imageHandle, 'margin-left', `${x}px`);

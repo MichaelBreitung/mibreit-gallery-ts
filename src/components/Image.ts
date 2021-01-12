@@ -5,9 +5,9 @@ import {
   IMAGE_DATA_TITLE_ATTRIBUTE,
 } from '../constants';
 import DomTools from '../tools/domTools';
-import IImageLoader from '../interfaces/ImageLoader';
+import IImageLoader from '../interfaces/IImageLoader';
 
-export enum EImageState {
+enum EImageState {
   INACTIVE,
   LOADING,
   LOADED,
@@ -19,6 +19,7 @@ export default class Image implements IImageLoader {
   private title: string;
   private width: number;
   private height: number;
+  private wasLoadedCallbacks: Array<() => void> = new Array();
 
   constructor(imageHandle: HTMLElement) {
     this.imageHandle = imageHandle;
@@ -42,6 +43,9 @@ export default class Image implements IImageLoader {
         this.imageHandle.onload = () => {
           this.imageHandle.removeAttribute(IMAGE_DATA_SRC_ATTRIBUTE);
           this.state = EImageState.LOADED;
+          this.wasLoadedCallbacks.forEach((callback) => {
+            callback();
+          });
           resolve(true);
         };
         this.state = EImageState.LOADING;
@@ -50,13 +54,21 @@ export default class Image implements IImageLoader {
       } else if (this.state === EImageState.LOADING) {
         reject(false);
       } else {
-        resolve(true);
+        reject(true);
       }
     });
   }
 
   wasLoaded(): boolean {
     return this.state === EImageState.LOADED;
+  }
+
+  addWasLoadedCallback(callback: () => void)
+  {
+    if (!this.wasLoadedCallbacks.includes(callback))
+    {
+      this.wasLoadedCallbacks.push(callback);
+    }   
   }
 
   startZoomAnimation(targetZoom: number, time: number) {
@@ -67,10 +79,6 @@ export default class Image implements IImageLoader {
   resetZoom() {
     DomTools.applyCssStyle(this.imageHandle, 'transition', `none`);
     DomTools.applyCssStyle(this.imageHandle, 'transform', `scale(1.0)`);
-  }
-
-  getElement(): HTMLElement {
-    return this.imageHandle;
   }
 
   getTitle(): string {

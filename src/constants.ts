@@ -6,3 +6,7 @@ export const IMAGE_DATA_TITLE_ATTRIBUTE = 'data-title';
 
 // Css classes
 export const CSS_IMAGE_STATE_CLASS = 'mibreit-image-stage';
+
+// Gallery Configuration
+export const PRELOADER_RIGHT_SIZE = 7;
+export const PRELOADER_LEFT_SIZE = 3;
