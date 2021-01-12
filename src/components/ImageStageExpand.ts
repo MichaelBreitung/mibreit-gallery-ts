@@ -8,8 +8,6 @@ export default class ImageStageExpand extends ImageStage {
   }
 
   protected applyScaleModeImpl() {
-    this.imageHandle.style.width = `100%`;
-    this.imageHandle.style.height = `100%`;
     const aspect = this.imageWidth / this.imageHeight;
     if (this.parentWidth / this.parentHeight > aspect) {
       // fit based on width

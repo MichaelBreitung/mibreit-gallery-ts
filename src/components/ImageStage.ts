@@ -1,44 +1,37 @@
 import DomTools from "../tools/domTools";
 import styles from "./ImageStage.module.css";
-
-export enum EImageScaleMode {
-  NONE,
-  FIT_ASPECT,
-  STRETCH,
-  EXPAND,
-}
+import IImageStage from "./IImageStage";
 
 /**
  * The ImageStage is responsible for proper scaling and centering
  * of images on the stage
  */
-export default abstract class ImageStage {
+export default abstract class ImageStage implements IImageStage {
   protected imageHandle: HTMLElement;
   protected imageWidth: number;
   protected imageHeight: number;
   protected parentWidth: number;
-  protected parentHeight: number;  
+  protected parentHeight: number;
 
   constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number) {
     this.imageHandle = imageHandle;
     this.imageWidth = imageWidth;
-    this.imageHeight = imageHeight;    
+    this.imageHeight = imageHeight;
     const stage = this.createStage();
     const parent: HTMLElement = DomTools.getParentElement(stage);
     ({ width: this.parentWidth, height: this.parentHeight } = DomTools.getElementDimension(parent));
   }
 
-  applyScaleMode() : void
-  {
+  applyScaleMode(): void {
     this.applyScaleModeImpl();
     this.centerImage();
   }
 
-  protected abstract applyScaleModeImpl() : void;
+  protected abstract applyScaleModeImpl(): void;
 
   private createStage(): HTMLElement {
     const wrapper = DomTools.createElement("div");
-    DomTools.applyCssClass(wrapper, styles.mibreit_ImageStage);    
+    DomTools.applyCssClass(wrapper, styles.mibreit_ImageStage);
     DomTools.wrapElement(this.imageHandle, wrapper);
     return wrapper;
   }
@@ -53,3 +46,4 @@ export default abstract class ImageStage {
     DomTools.applyCssStyle(this.imageHandle, "margin-top", `${y}px`);
   }
 }
+
