@@ -71,16 +71,6 @@ export default class Image implements IImageLoader {
     }   
   }
 
-  startZoomAnimation(targetZoom: number, time: number) {
-    DomTools.applyCssStyle(this.imageHandle, 'transition', `transform ${time / 1000}s linear`);
-    DomTools.applyCssStyle(this.imageHandle, 'transform', `scale(${targetZoom / 100})`);
-  }
-
-  resetZoom() {
-    DomTools.applyCssStyle(this.imageHandle, 'transition', `none`);
-    DomTools.applyCssStyle(this.imageHandle, 'transform', `scale(1.0)`);
-  }
-
   getTitle(): string {
     return this.title;
   }

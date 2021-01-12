@@ -22,8 +22,14 @@ function getElementDimension(element: HTMLElement): { width: number; height: num
   };
 }
 
-function applyCssClass(element: HTMLElement, cssClass: string) {
-  element.setAttribute('class', cssClass);
+function applyCssClass(element: HTMLElement, cssClass: string | null) {
+  if (cssClass !== null)
+  {
+    element.setAttribute('class', cssClass);
+  }
+  else{
+    element.removeAttribute('class');
+  }  
 }
 
 function getCssStyle(element: HTMLElement, styleName: string) {

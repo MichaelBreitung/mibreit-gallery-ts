@@ -28,12 +28,21 @@ export default abstract class ImageStage implements IImageStage {
     this.centerImage();
   }
 
-  showImage(show: boolean): void {
+  showImage(show: boolean, zoom: boolean = false): void {
     let classes = styles.mibreit_ImageStage;
-    if (show)
-    {
+    if (show) {
+      if (zoom) {
+        this.startZoomAnimation();
+      }
+
       classes += ` ${styles.visible}`;
+    } else {
+      // leave enough time for hide animation to be applied
+      setTimeout(() => {
+        this.resetZoom();
+      }, 1000);
     }
+
     DomTools.applyCssClass(this.imageStage, classes);
   }
 
@@ -47,10 +56,18 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   private centerImage() {
-    const { width, height } = DomTools.getElementDimension(this.imageHandle);   
+    const { width, height } = DomTools.getElementDimension(this.imageHandle);
     const x: number = (width + this.parentWidth) / 2 - width;
     const y: number = (height + this.parentHeight) / 2 - height;
     DomTools.applyCssStyle(this.imageHandle, 'margin-left', `${x}px`);
     DomTools.applyCssStyle(this.imageHandle, 'margin-top', `${y}px`);
+  }
+
+  private startZoomAnimation() {
+    DomTools.applyCssClass(this.imageHandle, 'zoom');
+  }
+
+  private resetZoom() {
+    DomTools.applyCssClass(this.imageHandle, null);
   }
 }
