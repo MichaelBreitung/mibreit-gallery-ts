@@ -11,6 +11,7 @@ import {
 } from '../constants';
 import DomTools from '../tools/domTools';
 import IImageLoader from '../interfaces/IImageLoader';
+import IImageInfo from '../interfaces/IImageInfo';
 
 enum EImageState {
   INACTIVE,
@@ -18,7 +19,7 @@ enum EImageState {
   LOADED,
 }
 
-export default class Image implements IImageLoader {
+export default class Image implements IImageLoader, IImageInfo {
   private imageHandle: HTMLElement;
   private state: EImageState = EImageState.INACTIVE;
   private title: string;
@@ -68,12 +69,10 @@ export default class Image implements IImageLoader {
     return this.state === EImageState.LOADED;
   }
 
-  addWasLoadedCallback(callback: () => void)
-  {
-    if (!this.wasLoadedCallbacks.includes(callback))
-    {
+  addWasLoadedCallback(callback: () => void) {
+    if (!this.wasLoadedCallbacks.includes(callback)) {
       this.wasLoadedCallbacks.push(callback);
-    }   
+    }
   }
 
   getTitle(): string {

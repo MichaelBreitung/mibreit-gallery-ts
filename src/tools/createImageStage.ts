@@ -16,11 +16,11 @@ export enum EImageScaleMode {
   EXPAND,
 }
 
-export const createImageState = function (
-  scaleMode: EImageScaleMode,
+export const createImageStage = function (
   imageHandle: HTMLElement,
   imageWidth: number,
   imageHeight: number,  
+  scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT
 ): IImageStage {
   switch (scaleMode) {
     case EImageScaleMode.EXPAND:

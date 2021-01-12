@@ -8,26 +8,36 @@ import Image from './components/Image';
 import IImageStage from './interfaces/IImageStage';
 import Slideshow from './components/Slideshow';
 import Preloader from './components/Preloader';
-import { EImageScaleMode, createImageState } from './tools/createImageStage';
+import { EImageScaleMode, createImageStage } from './tools/createImageStage';
 import { SLIDESHOW_INTERVAL } from './constants';
 
 export const documentReady = DomTools.documentReady;
 export const ImageScaleMode = EImageScaleMode;
+export type TSlideshowConfig = {
+  containerSelector: string;
+  scaleMode?: EImageScaleMode;
+  interval?: number;
+  zoom?: boolean;
+};
 
-export async function createSlideshow(
-  containerSelector: string,
-  scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT,
-  interval: number = SLIDESHOW_INTERVAL,
-  zoom: boolean = false
-): Promise<void> {
-  const imagesSelector = DomTools.getElements(`${containerSelector} img`);
+export async function createSlideshow(config: TSlideshowConfig): Promise<void> {
+  const imagesSelector = DomTools.getElements(`${config.containerSelector} img`);
   const images: Array<Image> = new Array();
   const imageStages: Array<IImageStage> = new Array();
 
   for (let i = 0; i < imagesSelector.length; i++) {
     const image = new Image(imagesSelector[i]);
-    const imageStage = createImageState(scaleMode, imagesSelector[i], image.getWidth(), image.getHeight());
-    imageStage.setZoomAnimation(zoom);
+    const imageStage = createImageStage(      
+      imagesSelector[i],
+      image.getWidth(),
+      image.getHeight(),
+      config.scaleMode
+    );
+    if (config.zoom)
+    {
+      imageStage.setZoomAnimation(config.zoom);
+    }
+    
     image.addWasLoadedCallback(() => {
       imageStage.applyScaleMode();
     });
@@ -44,5 +54,5 @@ export async function createSlideshow(
   slideshow.showNextImage();
   setInterval(function () {
     slideshow.showNextImage();
-  }, interval);
+  }, config.interval ? config.interval : SLIDESHOW_INTERVAL);
 }
