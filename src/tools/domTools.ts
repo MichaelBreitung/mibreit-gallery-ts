@@ -27,6 +27,10 @@ function getElementDimension(element: HTMLElement): { width: number; height: num
   };
 }
 
+function getCssClass(element: HTMLElement): string {
+  return element.getAttribute('class');
+}
+
 function applyCssClass(element: HTMLElement, cssClass: string | null) {
   if (cssClass !== null) {
     element.setAttribute('class', cssClass);
@@ -44,6 +48,9 @@ function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: s
     element.style.setProperty(styleName, styleProperty);
   } else {
     element.style.removeProperty(styleName);
+    if (element.style.length === 0) {
+      element.removeAttribute('style');
+    }
   }
 }
 
@@ -69,6 +76,7 @@ export default {
   wrapElement,
   getParentElement,
   getElementDimension,
+  getCssClass,
   applyCssClass,
   getCssStyle,
   applyCssStyle,
