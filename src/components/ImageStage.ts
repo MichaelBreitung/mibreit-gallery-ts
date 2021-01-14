@@ -4,8 +4,8 @@
  */
 
 import DomTools from '../tools/domTools';
-import styles from './ImageStage.module.css';
 import IImageStage from '../interfaces/IImageStage';
+import styles from './ImageStage.module.css';
 
 /**
  * The ImageStage is responsible for proper scaling and centering
@@ -13,7 +13,7 @@ import IImageStage from '../interfaces/IImageStage';
  */
 export default abstract class ImageStage implements IImageStage {
   private zoomAnimation: boolean = false;
-  private imageStage: HTMLElement;
+  protected imageStage: HTMLElement;
   protected imageHandle: HTMLElement;
   protected imageWidth: number;
   protected imageHeight: number;
@@ -48,22 +48,21 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   showImage(show: boolean): void {
-    console.log("ImageStage#showImage", show);
-    let classes = styles.mibreit_ImageStage;
+    console.log("ImageStage#showImage", show);    
     if (show) {
       if (this.zoomAnimation) {
         this.startZoomAnimation();
       }
-
-      classes += ` ${styles.visible}`;
+      DomTools.applyCssStyle(this.imageStage, "opacity", "1");
+      DomTools.applyCssStyle(this.imageStage, "z-index", "1");
     } else {
       // leave enough time for hide animation to be applied
       setTimeout(() => {
         this.resetZoom();
       }, 1000);
+      DomTools.applyCssStyle(this.imageStage, "opacity", null);
+      DomTools.applyCssStyle(this.imageStage, "z-index", null);
     }
-
-    DomTools.applyCssClass(this.imageStage, classes);
   }
 
   protected abstract applyScaleModeImpl(stageWidth: number, stageHeight: number): void;

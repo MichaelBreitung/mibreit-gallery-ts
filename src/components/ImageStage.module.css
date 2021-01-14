@@ -13,11 +13,6 @@
   overflow: hidden;
 }
 
-.mibreit_ImageStage.visible {
-  opacity: 1;
-  z-index: 1;
-}
-
 .mibreit_ImageStage > img.zoom {
   -webkit-transition: transform 10000ms linear;
   -moz-transition: transform 10000ms linear;
