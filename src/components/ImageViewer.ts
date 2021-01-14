@@ -5,7 +5,7 @@
 
 import IImageStage from '../interfaces/IImageStage';
 
-export default class Slideshow {
+export default class ImageViewer {
   private currentIndex: number = 0;
   private imageStages: Array<IImageStage>;
   private imageChangedCallbacks: Array<(index: number) => void> = new Array();

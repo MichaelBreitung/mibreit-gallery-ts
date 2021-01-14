@@ -6,7 +6,7 @@
 import DomTools from './tools/domTools';
 import Image from './components/Image';
 import IImageStage from './interfaces/IImageStage';
-import Slideshow from './components/Slideshow';
+import ImageViewer from './components/ImageViewer';
 import Preloader from './components/Preloader';
 import { EImageScaleMode, createImageStage } from './tools/createImageStage';
 import { SLIDESHOW_INTERVAL } from './constants';
@@ -46,7 +46,7 @@ export async function createSlideshow(config: TSlideshowConfig): Promise<void> {
   }
 
   const preloader: Preloader = new Preloader(images);
-  const slideshow: Slideshow = new Slideshow(imageStages);
+  const slideshow: ImageViewer = new ImageViewer(imageStages);
   slideshow.addImageChangedCallback((index) => {
     preloader.setCurrentIndex(index);
   });
