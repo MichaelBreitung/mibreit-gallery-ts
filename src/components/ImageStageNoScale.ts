@@ -11,8 +11,8 @@ export default class ImageStageNoScale extends ImageStage {
     super(imageHandle, imageWidth, imageHeight);
   }
 
-  protected applyScaleModeImpl() {
-    DomTools.applyCssStyle(this.imageHandle, 'width', `${this.imageWidth}px`);
-    DomTools.applyCssStyle(this.imageHandle, 'height', `${this.imageHeight}px`);
+  protected applyScaleModeImpl(_stageWidth: number, _stageHeight: number) {
+    DomTools.applyCssStyle(this.imageHandle, 'width', null);
+    DomTools.applyCssStyle(this.imageHandle, 'height', null);
   }
 }

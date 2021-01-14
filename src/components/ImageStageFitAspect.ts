@@ -11,18 +11,18 @@ export default class ImageStageFitAspect extends ImageStage {
     super(imageHandle, imageWidth, imageHeight);
   }
 
-  protected applyScaleModeImpl() {
+  protected applyScaleModeImpl(stageWidth: number, stageHeight: number) {
     const aspect = this.imageWidth / this.imageHeight;
     let newWidth: string = 'auto';
     let newHeight: string = 'auto';
-    if (this.parentWidth / this.parentHeight > aspect) {
+    if (stageWidth / stageHeight > aspect) {
       // fit based on height
-      if (this.parentHeight <= this.imageHeight) {
+      if (stageHeight <= this.imageHeight) {
         newHeight = `100%`;
       }
     } else {
       // fit based on width
-      if (this.parentWidth <= this.imageWidth) {
+      if (stageWidth <= this.imageWidth) {
         newWidth = `100%`;
       }
     }
