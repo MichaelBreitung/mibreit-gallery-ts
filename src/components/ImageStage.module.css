@@ -18,10 +18,6 @@
   z-index: 1;
 }
 
-.mibreit_ImageStage > img {
-  align-self: center;
-}
-
 .mibreit_ImageStage > img.zoom {
   -webkit-transition: transform 10000ms linear;
   -moz-transition: transform 10000ms linear;
