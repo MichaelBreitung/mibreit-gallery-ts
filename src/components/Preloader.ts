@@ -14,9 +14,10 @@ export default class Preloader {
   private imageLoaders: Array<IImageLoader>;
 
   constructor(imageLoaders: Array<IImageLoader>) {
-    this.currentIndex = -1;
+    this.currentIndex = 0;
     this.imageLoaders = imageLoaders;
     this.nrImagesLoaded = this.getLoadedCount();
+    this.moveWindow();
   }
 
   setCurrentIndex(newIndex: number) {

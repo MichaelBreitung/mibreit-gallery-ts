@@ -3,9 +3,10 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
+import IImageViewer from "../interfaces/IIMageViewer";
 import IImageStage from '../interfaces/IImageStage';
 
-export default class ImageViewer {
+export default class ImageViewer implements IImageViewer {
   private currentIndex: number = 0;
   private imageStages: Array<IImageStage>;
   private imageChangedCallbacks: Array<(index: number) => void> = new Array();
@@ -14,9 +15,22 @@ export default class ImageViewer {
     this.imageStages = imageStages;
   }
 
+  init(): void
+  {
+    console.log("ImageViewer#init");
+    if(this.isValidIndex(0))
+    {
+      
+      this.changeCurrentImage(0);
+    } 
+  }
+
   showImage(index: number): boolean {
     if (this.isValidIndex(index)) {
-      this.changeCurrentImage(index);
+      if (index != this.currentIndex) {
+        this.imageStages[this.currentIndex].showImage(false);
+        this.changeCurrentImage(index);
+      }
       return true;
     } else {
       return false;
@@ -45,15 +59,12 @@ export default class ImageViewer {
     return index >= 0 && index < this.imageStages.length;
   }
 
-  private changeCurrentImage(index: number) {
-    if (index != this.currentIndex) {
-      this.imageStages[this.currentIndex].showImage(false);
+  private changeCurrentImage(index: number) {  
+      console.log("ImageViewer#changeCurrentImage", index);
       this.currentIndex = index;
       this.imageStages[this.currentIndex].showImage(true);
-
       this.imageChangedCallbacks.forEach((callback) => {
         callback(this.currentIndex);
-      });
-    }
+      });  
   }
 }
