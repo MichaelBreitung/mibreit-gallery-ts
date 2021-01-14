@@ -28,21 +28,23 @@ function getElementDimension(element: HTMLElement): { width: number; height: num
 }
 
 function applyCssClass(element: HTMLElement, cssClass: string | null) {
-  if (cssClass !== null)
-  {
+  if (cssClass !== null) {
     element.setAttribute('class', cssClass);
-  }
-  else{
+  } else {
     element.removeAttribute('class');
-  }  
+  }
 }
 
 function getCssStyle(element: HTMLElement, styleName: string) {
   element.style.getPropertyValue(styleName);
 }
 
-function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: string) {
-  element.style.setProperty(styleName, styleProperty);
+function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: string | null) {
+  if (styleProperty !== null) {
+    element.style.setProperty(styleName, styleProperty);
+  } else {
+    element.style.removeProperty(styleName);
+  }
 }
 
 function disableContextMenu(element: HTMLElement) {
