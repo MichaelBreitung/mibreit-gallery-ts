@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import IImageViewer from "../interfaces/IIMageViewer";
+import IImageViewer from "../interfaces/IImageViewer";
 import IImageStage from '../interfaces/IImageStage';
 
 export default class ImageViewer implements IImageViewer {
