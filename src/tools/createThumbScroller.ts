@@ -14,6 +14,7 @@ import ThumbStage from '../components/ThumbStage';
 export type ThumbScrollerConfig = {
   thumbContainerSelector: string;
   thumbSelector: string;
+  thumbSizeCss: string;
 }
 
 export default function createThumbScroller(config: ThumbScrollerConfig): IThumbScroller {
@@ -29,12 +30,12 @@ export default function createThumbScroller(config: ThumbScrollerConfig): IThumb
       thumbStage.applyScaleMode();
     });
     thumbStage.showImage(true);
-    thumbStage.setSize("100px", "100px");
+    thumbStage.setSize(config.thumbSizeCss, config.thumbSizeCss);
     thumbs.push(image);
     thumbStages.push(thumbStage);
   }
 
-  const preloader: Preloader = new Preloader(thumbs);
+  const preloader: Preloader = new Preloader(thumbs, 10, 10);
   
   const thumbScroller: ThumbScroller = new ThumbScroller(container, thumbStages);
 

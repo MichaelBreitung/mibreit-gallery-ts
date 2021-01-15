@@ -1,4 +1,6 @@
 .mibreit_ThumbStage {
-  margin: 0.5rem;
+  margin: 0.25rem;
+  position: relative;
+  flex-shrink: 0;
 }
 

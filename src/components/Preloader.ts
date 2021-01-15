@@ -8,14 +8,20 @@ import IImageLoader from '../interfaces/IImageLoader';
 
 export default class Preloader {
   private currentIndex: number;
-  private preloaderLeftSize: number = PRELOADER_LEFT_SIZE;
-  private preloaderRightSize: number = PRELOADER_RIGHT_SIZE;
+  private preloaderLeftSize: number;
+  private preloaderRightSize: number;
   private nrImagesLoaded: number;
   private imageLoaders: Array<IImageLoader>;
 
-  constructor(imageLoaders: Array<IImageLoader>) {
+  constructor(
+    imageLoaders: Array<IImageLoader>,
+    preloaderLeftSize = PRELOADER_LEFT_SIZE,
+    preloaderRightSize = PRELOADER_RIGHT_SIZE
+  ) {
     this.currentIndex = 0;
     this.imageLoaders = imageLoaders;
+    this.preloaderLeftSize = preloaderLeftSize;
+    this.preloaderRightSize = preloaderRightSize;
     this.nrImagesLoaded = this.getLoadedCount();
     this.moveWindow();
   }
