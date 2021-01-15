@@ -34,6 +34,6 @@ module.exports = {
     extensions: ['.ts'],
   },
   optimization: {
-    minimize: false
+    minimize: true
   },
 };
