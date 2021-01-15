@@ -19,7 +19,7 @@
   -o-transition: transform 10000ms linear;
   transition: transform 10000ms linear;
   -webkit-transform: scale(1.125);
-  -moz-transform: scale(1.125);  
+  -moz-transform: scale(1.125);
   -o-transform: scale(1.125);
   transform: scale(1.125);
 }
