@@ -7,7 +7,7 @@ import DomTools from './domTools';
 import IImageStage from '../interfaces/IImageStage';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import Image from '../components/Image';
-import ThumbScroller from '../components/ThumbScroller';
+import HorizontalScroller from '../components/HorizontalScroller';
 import Preloader from '../components/Preloader';
 import ThumbStage from '../components/ThumbStage';
 
@@ -37,7 +37,7 @@ export default function createThumbScroller(config: ThumbScrollerConfig): IThumb
 
   const preloader: Preloader = new Preloader(thumbs, 10, 10);
   
-  const thumbScroller: ThumbScroller = new ThumbScroller(container, thumbStages);
-
-  return thumbScroller;
+  const thumbScroller: HorizontalScroller = new HorizontalScroller(container);
+  thumbScroller.scrollTo(-400);
+  return null;
 }

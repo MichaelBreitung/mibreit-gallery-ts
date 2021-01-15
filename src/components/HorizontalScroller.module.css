@@ -1,0 +1,10 @@
+.mibreit_ThumbScroller {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  -webkit-transition: transform 600ms ease-in-out;
+  -moz-transition: transform 600ms ease-in-out;
+  -o-transition: transform 600ms ease-in-out;
+  transition: transform 600ms ease-in-out;
+}
