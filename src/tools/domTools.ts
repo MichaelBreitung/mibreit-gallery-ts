@@ -11,9 +11,9 @@ function createElement(tagName: string): HTMLElement {
   return document.createElement(tagName);
 }
 
-function wrapElement(element: HTMLElement, wrapper: HTMLElement) {
-  element.parentNode.insertBefore(wrapper, element);
-  wrapper.appendChild(element);
+function wrapElements(elements: Array<Node>, wrapper: HTMLElement) {
+  elements[0].parentNode.insertBefore(wrapper, elements[0]);
+  elements.forEach((element: HTMLElement) => {wrapper.appendChild(element);});  
 }
 
 function getParentElement(element: HTMLElement): HTMLElement {
@@ -73,7 +73,7 @@ function getElements(selector: string): NodeListOf<HTMLElement> {
 export default {
   documentReady,
   createElement,
-  wrapElement,
+  wrapElements,
   getParentElement,
   getElementDimension,
   getCssClass,

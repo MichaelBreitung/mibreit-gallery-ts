@@ -70,7 +70,7 @@ export default abstract class ImageStage implements IImageStage {
   private createStage(): HTMLElement {
     const wrapper = DomTools.createElement('div');
     DomTools.applyCssClass(wrapper, styles.mibreit_ImageStage);
-    DomTools.wrapElement(this.imageHandle, wrapper);
+    DomTools.wrapElements([this.imageHandle], wrapper);
     return wrapper;
   }
 
