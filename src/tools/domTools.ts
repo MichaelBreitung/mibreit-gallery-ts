@@ -7,13 +7,31 @@ function documentReady(callback: () => void) {
   document.addEventListener('DOMContentLoaded', callback);
 }
 
+function getRootFontSize() : number {
+  return parseFloat(window.getComputedStyle(document.body).getPropertyValue('font-size'));
+}
+
 function createElement(tagName: string): HTMLElement {
   return document.createElement(tagName);
 }
 
+function prependChildElement(element: HTMLElement, parent: HTMLElement) {
+  parent.prepend(element);
+}
+
+function appendChildElement(element: HTMLElement, parent: HTMLElement) {
+  parent.appendChild(element);
+}
+
+function setInnerHtml(inner: string, parent: HTMLElement) {
+  parent.innerHTML = inner;
+}
+
 function wrapElements(elements: Array<Node>, wrapper: HTMLElement) {
   elements[0].parentNode.insertBefore(wrapper, elements[0]);
-  elements.forEach((element: HTMLElement) => {wrapper.appendChild(element);});  
+  elements.forEach((element: HTMLElement) => {
+    wrapper.appendChild(element);
+  });
 }
 
 function getParentElement(element: HTMLElement): HTMLElement {
@@ -39,8 +57,8 @@ function applyCssClass(element: HTMLElement, cssClass: string | null) {
   }
 }
 
-function getCssStyle(element: HTMLElement, styleName: string) {
-  element.style.getPropertyValue(styleName);
+function getCssStyle(element: HTMLElement, styleName: string) : string {
+  return element.style.getPropertyValue(styleName);
 }
 
 function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: string | null) {
@@ -52,6 +70,10 @@ function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: s
       element.removeAttribute('style');
     }
   }
+}
+
+function addClickEventListener(element: HTMLElement, callback: () => void) {
+  element.addEventListener('click', callback);
 }
 
 function disableContextMenu(element: HTMLElement) {
@@ -72,7 +94,11 @@ function getElements(selector: string): NodeListOf<HTMLElement> {
 
 export default {
   documentReady,
+  getRootFontSize,
   createElement,
+  prependChildElement,
+  appendChildElement,
+  setInnerHtml,
   wrapElements,
   getParentElement,
   getElementDimension,
@@ -80,6 +106,7 @@ export default {
   applyCssClass,
   getCssStyle,
   applyCssStyle,
+  addClickEventListener,
   disableContextMenu,
   disableDragging,
   getElements,

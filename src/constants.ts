@@ -16,3 +16,7 @@ export const CSS_IMAGE_STATE_CLASS = 'mibreit-image-stage';
 export const PRELOADER_RIGHT_SIZE = 7;
 export const PRELOADER_LEFT_SIZE = 3;
 export const SLIDESHOW_INTERVAL = 5000;
+
+// Sizes
+export const THUMBS_BUTTON_WIDTH_REM = 4;
+export const THUMBS_MARGIN = 0.5;
