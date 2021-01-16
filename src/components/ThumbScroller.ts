@@ -4,6 +4,7 @@
  */
 
 import DomTools from '../tools/domTools';
+import calculateThumbSize from '../tools/calculateThumbSize';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import HorizontalScroller from './HorizontalScroller';
 import styles from './ThumbScroller.module.css';
@@ -17,10 +18,20 @@ export default class ThumbScroller implements IThumbScroller {
   private numberOfThumbs: number;
   private numberOfVisibleThumbs: number;
 
-  constructor(container: HTMLElement, thumbSizeRem: number, numberOfThumbs: number, numberOfVisibleThumbs: number) {
-    this.thumbSizeRem = thumbSizeRem;
-    this.numberOfThumbs = numberOfVisibleThumbs;
+  constructor(container: HTMLElement, numberOfThumbs: number, numberOfVisibleThumbs: number) {
+    this.thumbSizeRem = calculateThumbSize(container, numberOfVisibleThumbs);
+    this.numberOfThumbs = numberOfThumbs;
     this.numberOfVisibleThumbs = numberOfVisibleThumbs;
+
+    console.log(
+      'ThumbScroller#constructor - thumbSizeRem = ',
+      this.thumbSizeRem,
+      ', numberOfThumbs = ',
+      this.numberOfThumbs,
+      ', numberOfVisibleThumbs = ',
+      this.numberOfVisibleThumbs
+    );
+
     const oldContainerClass = DomTools.getCssClass(container);
     DomTools.applyCssClass(container, `${oldContainerClass} ${styles.mibreit_ThumbScrollerParentContainer}`);
     const scrollerContainer = this.createScrollerContainer(container);
@@ -30,7 +41,7 @@ export default class ThumbScroller implements IThumbScroller {
 
   scrollTo(index: number): boolean {
     this.currentScrollIndex = index;
-    const currentScrollPosition = - index * this.thumbSizeRem;
+    const currentScrollPosition = -index * this.thumbSizeRem;
     this.scroller.scrollTo(currentScrollPosition, true);
     return true;
   }
