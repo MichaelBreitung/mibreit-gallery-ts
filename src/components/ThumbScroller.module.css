@@ -1,0 +1,27 @@
+.mibreit_ThumbScrollerParentContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.mibreit_ThumbScrollerContainer {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.mibreit_ThumbScrollerParentContainer svg {
+  width: 3rem;
+  height: 3rem;
+  fill: #727f88;
+}
+
+.mibreit_ThumbScrollerPrevious,
+.mibreit_ThumbScrollerNext {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.mibreit_ThumbScrollerPrevious > svg {
+  transform: scaleX(-1);
+}
