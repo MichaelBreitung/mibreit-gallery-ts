@@ -27,7 +27,11 @@ module.exports = {
           }
         }],
         exclude: /node_modules/,        
-      }
+      },
+      {
+        test: /\.svg$/,
+        use: 'raw-loader',
+      },
     ],
   },
   resolve: {
