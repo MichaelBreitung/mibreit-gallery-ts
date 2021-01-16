@@ -18,7 +18,12 @@ module.exports = {
       },
       {
         test: /\.css?$/,
-        use: ['style-loader',  {
+        use: [{
+          loader: 'style-loader', 
+          options: {
+            injectType: 'singletonStyleTag'
+          }
+        },{
           loader: 'css-loader',
           options: {            
             modules: {
