@@ -4,11 +4,11 @@
  */
 
 export default interface IThumbScroller {
-  scrollTo(index: number, useCenterIndex: boolean): boolean;
+  scrollTo(index: number, useCenterIndex: boolean): void;
 
-  scrollPrevious(): boolean;
+  scrollPrevious(): void;
 
-  scrollNext(): boolean;
+  scrollNext(): void;
 
   addScrollIndexChangedCallback(callback: (index: number) => void): void;
 }

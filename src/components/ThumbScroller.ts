@@ -27,58 +27,48 @@ export default class ThumbScroller implements IThumbScroller {
       this.numberOfThumbs,
       ', numberOfVisibleThumbs = ',
       this.numberOfVisibleThumbs
-    );    
+    );
   }
 
-  scrollTo(index: number, useCenterIndex: boolean = false): boolean {
+  scrollTo(index: number, useCenterIndex: boolean = false): void {
     let newIndex = index;
-    if (useCenterIndex)
-    {
+    if (useCenterIndex) {
       newIndex -= Math.floor(this.numberOfVisibleThumbs / 2);
     }
 
-    if (this.isValidIndex(newIndex))
-    {
-      this.currentScrollIndex = newIndex;
-      const currentScrollPosition = -newIndex * this.thumbSizeRem;
-      this.scroller.scrollTo(currentScrollPosition, true);
-      return true;
-    }
-    else{
-      return false;
-    }
+    newIndex = this.normalizeIndex(newIndex);
+
+    this.currentScrollIndex = newIndex;
+    const currentScrollPosition = -newIndex * this.thumbSizeRem;
+    this.scroller.scrollTo(currentScrollPosition, true);
   }
 
-  scrollNext(): boolean {
+  scrollNext(): void {
     let newIndex = this.currentScrollIndex + this.numberOfVisibleThumbs;
     const maxPos = this.numberOfThumbs - this.numberOfVisibleThumbs;
-    if (this.currentScrollIndex === maxPos)
-    {
+    if (this.currentScrollIndex === maxPos) {
       newIndex = 0;
-    }
-    else if (newIndex >= maxPos) {
+    } else if (newIndex >= maxPos) {
       newIndex = maxPos;
     }
 
-    console.log("ThumbScroller#scrollNext - oldIndex = ", this.currentScrollIndex, ", newIndex = ", newIndex);
+    console.log('ThumbScroller#scrollNext - oldIndex = ', this.currentScrollIndex, ', newIndex = ', newIndex);
 
-    return this.scrollTo(newIndex);
+    this.scrollTo(newIndex);
   }
 
-  scrollPrevious(): boolean {
+  scrollPrevious(): void {
     let newIndex = this.currentScrollIndex - this.numberOfVisibleThumbs;
     const maxPos = this.numberOfThumbs - this.numberOfVisibleThumbs;
-    if (this.currentScrollIndex === 0)
-    {
+    if (this.currentScrollIndex === 0) {
       newIndex = maxPos;
-    }
-    else if (newIndex < 0) {
+    } else if (newIndex < 0) {
       newIndex = 0;
     }
 
-    console.log("ThumbScroller#scrollPrevious - oldIndex = ", this.currentScrollIndex, ", newIndex = ", newIndex);
+    console.log('ThumbScroller#scrollPrevious - oldIndex = ', this.currentScrollIndex, ', newIndex = ', newIndex);
 
-    return this.scrollTo(newIndex);
+    this.scrollTo(newIndex);
   }
 
   addScrollIndexChangedCallback(callback: (index: number) => void): void {
@@ -87,7 +77,15 @@ export default class ThumbScroller implements IThumbScroller {
     }
   }
 
-  private isValidIndex(index: number) : boolean{
-    return index <= this.numberOfThumbs - this.numberOfVisibleThumbs && index >= 0;
+  private normalizeIndex(index: number): number {
+    const maxPos = this.numberOfThumbs - this.numberOfVisibleThumbs;
+    if (index >= maxPos) {
+      return maxPos;
+    } else if (index < 0) {
+      return 0;
+    }
+    else{
+      return index;
+    }
   }
 }
