@@ -3,12 +3,8 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import DomTools from '../tools/domTools';
-import calculateThumbSize from '../tools/calculateThumbSize';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import HorizontalScroller from './HorizontalScroller';
-import styles from './ThumbScroller.module.css';
-import nextThumbs from '../images/nextThumbs.svg';
 
 export default class ThumbScroller implements IThumbScroller {
   private scroller: HorizontalScroller;
@@ -18,10 +14,11 @@ export default class ThumbScroller implements IThumbScroller {
   private numberOfThumbs: number;
   private numberOfVisibleThumbs: number;
 
-  constructor(container: HTMLElement, numberOfThumbs: number, numberOfVisibleThumbs: number) {
-    this.thumbSizeRem = calculateThumbSize(container, numberOfVisibleThumbs);
+  constructor(container: HTMLElement, thumbSizeRem: number, numberOfThumbs: number, numberOfVisibleThumbs: number) {
+    this.thumbSizeRem = thumbSizeRem;
     this.numberOfThumbs = numberOfThumbs;
     this.numberOfVisibleThumbs = numberOfVisibleThumbs;
+    this.scroller = new HorizontalScroller(container);
 
     console.log(
       'ThumbScroller#constructor - thumbSizeRem = ',
@@ -30,13 +27,7 @@ export default class ThumbScroller implements IThumbScroller {
       this.numberOfThumbs,
       ', numberOfVisibleThumbs = ',
       this.numberOfVisibleThumbs
-    );
-
-    const oldContainerClass = DomTools.getCssClass(container);
-    DomTools.applyCssClass(container, `${oldContainerClass} ${styles.mibreit_ThumbScrollerParentContainer}`);
-    const scrollerContainer = this.createScrollerContainer(container);
-    this.scroller = new HorizontalScroller(scrollerContainer);
-    this.createScrollerButtons(container);
+    );    
   }
 
   scrollTo(index: number): boolean {
@@ -46,16 +37,16 @@ export default class ThumbScroller implements IThumbScroller {
     return true;
   }
 
-  scrollNext(nrOfThumbs: number): boolean {
-    let newIndex = this.currentScrollIndex + nrOfThumbs;
+  scrollNext(): boolean {
+    let newIndex = this.currentScrollIndex + this.numberOfVisibleThumbs;
     if (newIndex >= this.numberOfThumbs) {
       newIndex = 0;
     }
     return this.scrollTo(newIndex);
   }
 
-  scrollPrevious(nrOfThumbs: number): boolean {
-    let newIndex = this.currentScrollIndex - nrOfThumbs;
+  scrollPrevious(): boolean {
+    let newIndex = this.currentScrollIndex - this.numberOfVisibleThumbs;
     if (newIndex < 0) {
       newIndex = this.numberOfThumbs - 1;
     }
@@ -66,35 +57,5 @@ export default class ThumbScroller implements IThumbScroller {
     if (!this.scrollIndexChangedCallbacks.includes(callback)) {
       this.scrollIndexChangedCallbacks.push(callback);
     }
-  }
-
-  private createScrollerContainer(container: HTMLElement): HTMLElement {
-    const nodes: NodeList = container.childNodes;
-    const nodesArray: Array<Node> = new Array();
-    for (let i = 0; i < nodes.length; ++i) {
-      nodesArray.push(nodes[i]);
-    }
-    const scrollerContainer = DomTools.createElement('div');
-    DomTools.applyCssClass(scrollerContainer, styles.mibreit_ThumbScrollerContainer);
-    DomTools.wrapElements(nodesArray, scrollerContainer);
-    return scrollerContainer;
-  }
-
-  private createScrollerButtons(container: HTMLElement) {
-    const previous = DomTools.createElement('div');
-    DomTools.addClickEventListener(previous, () => {
-      this.scrollPrevious(this.numberOfVisibleThumbs);
-    });
-    DomTools.setInnerHtml(nextThumbs, previous);
-    DomTools.applyCssClass(previous, styles.mibreit_ThumbScrollerPrevious);
-    DomTools.prependChildElement(previous, container);
-
-    const next = DomTools.createElement('div');
-    DomTools.addClickEventListener(next, () => {
-      this.scrollNext(this.numberOfVisibleThumbs);
-    });
-    DomTools.setInnerHtml(nextThumbs, next);
-    DomTools.applyCssClass(next, styles.mibreit_ThumbScrollerNext);
-    DomTools.appendChildElement(next, container);
   }
 }

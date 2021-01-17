@@ -6,9 +6,9 @@
 export default interface IThumbScroller {
   scrollTo(index: number): boolean;
 
-  scrollPrevious(nrOfThumbs: number): boolean;
+  scrollPrevious(): boolean;
 
-  scrollNext(nrOfThumbs: number): boolean;
+  scrollNext(): boolean;
 
   addScrollIndexChangedCallback(callback: (index: number) => void): void;
 }

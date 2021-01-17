@@ -10,7 +10,7 @@ import Image from '../components/Image';
 import ThumbScroller from '../components/ThumbScroller';
 import Preloader from '../components/Preloader';
 import ThumbStage from '../components/ThumbStage';
-import calculateThumbSize from './calculateThumbSize';
+import createThumbScrollerLayout, {ThumbScrollerLayout} from './createThumbScrollerLayout';
 
 export type ThumbScrollerConfig = {
   thumbContainerSelector: string;
@@ -21,10 +21,9 @@ export type ThumbScrollerConfig = {
 
 export default function createThumbScroller(config: ThumbScrollerConfig): IThumbScroller {
   const thumbSelector = DomTools.getElements(config.thumbSelector);
-  const container: HTMLElement = DomTools.getElements(config.thumbContainerSelector)[0];
+  const container: HTMLElement = DomTools.getElements(config.thumbContainerSelector)[0];  
   const thumbs: Array<Image> = new Array();
   const thumbStages: Array<IImageStage> = new Array();
-  const thumbStageSizeInRem = calculateThumbSize(container, config.numberOfVisibleThumbs, true);
 
   for (let i = 0; i < thumbSelector.length; i++) {
     const image = new Image(thumbSelector[i]);
@@ -33,20 +32,21 @@ export default function createThumbScroller(config: ThumbScrollerConfig): IThumb
       thumbStage.applyScaleMode();
     });
     thumbStage.showImage(true);
-    thumbStage.setSize(`${thumbStageSizeInRem}rem`, `${thumbStageSizeInRem}rem`);
     thumbs.push(image);
     thumbStages.push(thumbStage);
   }
 
   const preloader: Preloader = new Preloader(thumbs, config.numberOfVisibleThumbs, config.numberOfVisibleThumbs);
-  const thumbScroller: ThumbScroller = new ThumbScroller(
-    container,
-    thumbStages.length,
-    config.numberOfVisibleThumbs
-  );
+  const thumbScrollerLayout : ThumbScrollerLayout = createThumbScrollerLayout(container, thumbStages, config.numberOfVisibleThumbs);  
+  const thumbScroller: ThumbScroller = new ThumbScroller(thumbScrollerLayout.scrollerContainer, thumbScrollerLayout.thumbSizeRem, thumbStages.length, config.numberOfVisibleThumbs);
+ 
+  DomTools.addClickEventListener(thumbScrollerLayout.nextButton, () => {thumbScroller.scrollNext()});
+  DomTools.addClickEventListener(thumbScrollerLayout.previousButton, () => {thumbScroller.scrollPrevious()});
+
   thumbScroller.addScrollIndexChangedCallback((index: number) => {
     preloader.setCurrentIndex(index);
   });
+
   thumbScroller.scrollTo(config.initialIndex ? config.initialIndex : 0);
   return thumbScroller;
 }

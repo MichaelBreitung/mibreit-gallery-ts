@@ -20,7 +20,7 @@ function prependChildElement(element: HTMLElement, parent: HTMLElement) {
 }
 
 function appendChildElement(element: HTMLElement, parent: HTMLElement) {
-  parent.appendChild(element);
+  parent.append(element);
 }
 
 function setInnerHtml(inner: string, parent: HTMLElement) {
