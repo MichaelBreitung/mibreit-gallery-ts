@@ -45,6 +45,13 @@ function getElementDimension(element: HTMLElement): { width: number; height: num
   };
 }
 
+function getElementPosition(element: HTMLElement): { x: number; y: number } {
+  const rect = element.getBoundingClientRect(),
+  scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  return { y: rect.top + scrollTop, x: rect.left + scrollLeft }
+}
+
 function getCssClass(element: HTMLElement): string {
   return element.getAttribute('class');
 }
@@ -72,7 +79,7 @@ function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: s
   }
 }
 
-function addClickEventListener(element: HTMLElement, callback: () => void) {
+function addClickEventListener(element: HTMLElement, callback: (event?: MouseEvent) => void) {
   element.addEventListener('click', callback);
 }
 
@@ -106,6 +113,7 @@ export default {
   wrapElements,
   getParentElement,
   getElementDimension,
+  getElementPosition,
   getCssClass,
   applyCssClass,
   getCssStyle,

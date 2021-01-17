@@ -15,18 +15,24 @@ export type GalleryConfig = ThumbScrollerConfig & SlideshowConfig & { galleryCon
 
 export default function createGallery(config: GalleryConfig): IImageViewer {
   const container: HTMLElement = DomTools.getElements(config.galleryContainerSelector)[0];
+  const containerWidth: number = DomTools.getElementDimension(container).width;
+  const containerPosX: number = DomTools.getElementPosition(container).x;
   const imageViewer: IImageViewer = createSlideshow(config);
   const thumbScroller: IThumbScroller = createThumbScroller(config, (index: number) => {
     imageViewer.showImage(index);
   });
   const galleryButtons: GalleryButtons = createGalleryButtons(container);
 
-  DomTools.addClickEventListener(galleryButtons.nextButton, () => {
-    imageViewer.showNextImage();
-  });
-  DomTools.addClickEventListener(galleryButtons.previousButton, () => {
-    imageViewer.showPreviousImage();
-  });
+  DomTools.addClickEventListener(container, (event: MouseEvent) => {    
+    if (event.pageX - containerPosX > containerWidth / 2)
+    {
+      imageViewer.showNextImage();
+    }
+    else
+    {
+      imageViewer.showPreviousImage();
+    }
+  });  
   DomTools.addEventListener(container, 'mouseenter', () => {
     DomTools.applyCssStyle(galleryButtons.nextButton, 'opacity', `${GALLERY_BUTTONS_SHOW_OPACITY}`);
     DomTools.applyCssStyle(galleryButtons.previousButton, 'opacity', `${GALLERY_BUTTONS_SHOW_OPACITY}`);
