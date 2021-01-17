@@ -16,7 +16,9 @@ export type GalleryConfig = ThumbScrollerConfig & SlideshowConfig & { galleryCon
 export default function createGallery(config: GalleryConfig): IImageViewer {
   const container: HTMLElement = DomTools.getElements(config.galleryContainerSelector)[0];
   const imageViewer: IImageViewer = createSlideshow(config);
-  const thumbScroller: IThumbScroller = createThumbScroller(config);
+  const thumbScroller: IThumbScroller = createThumbScroller(config, (index: number) => {
+    imageViewer.showImage(index);
+  });
   const galleryButtons: GalleryButtons = createGalleryButtons(container);
 
   DomTools.addClickEventListener(galleryButtons.nextButton, () => {

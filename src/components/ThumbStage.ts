@@ -13,4 +13,8 @@ export default class ThumbStage extends ImageStageExpand {
     const oldClasses = DomTools.getCssClass(this.imageStage);
     DomTools.applyCssClass(this.imageStage, `${oldClasses} ${styles.mibreit_ThumbStage}`);
   }
+
+  addStageClickedCallback(callback: () => void): void {
+    DomTools.addClickEventListener(this.imageStage, callback);
+  }
 }
