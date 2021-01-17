@@ -76,6 +76,10 @@ function addClickEventListener(element: HTMLElement, callback: () => void) {
   element.addEventListener('click', callback);
 }
 
+function addEventListener(element: HTMLElement, event: string, callback: () => void) {
+  element.addEventListener(event, callback);
+}
+
 function disableContextMenu(element: HTMLElement) {
   element.addEventListener('contextmenu', (e) => {
     e.preventDefault();
@@ -107,6 +111,7 @@ export default {
   getCssStyle,
   applyCssStyle,
   addClickEventListener,
+  addEventListener,
   disableContextMenu,
   disableDragging,
   getElements,

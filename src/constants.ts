@@ -20,3 +20,6 @@ export const SLIDESHOW_INTERVAL = 5000;
 // Sizes
 export const THUMBS_BUTTON_WIDTH_REM = 4;
 export const THUMBS_MARGIN = 0.5;
+
+// Opacities
+export const GALLERY_BUTTONS_SHOW_OPACITY = 0.5;
