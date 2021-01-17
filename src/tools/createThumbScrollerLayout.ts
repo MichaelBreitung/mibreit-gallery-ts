@@ -72,6 +72,6 @@ export default function (container: HTMLElement, thumbStages: Array<IImageStage>
     scrollerContainer,
     previousButton,
     nextButton,
-    thumbSizeRem: (newThumbSize + 2*THUMBS_MARGIN)
+    thumbSizeRem: (newThumbSize + THUMBS_MARGIN)
   };
 }
