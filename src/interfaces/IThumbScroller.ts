@@ -4,7 +4,7 @@
  */
 
 export default interface IThumbScroller {
-  scrollTo(index: number): boolean;
+  scrollTo(index: number, useCenterIndex: boolean): boolean;
 
   scrollPrevious(): boolean;
 

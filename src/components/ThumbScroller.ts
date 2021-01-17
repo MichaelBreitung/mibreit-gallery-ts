@@ -30,11 +30,17 @@ export default class ThumbScroller implements IThumbScroller {
     );    
   }
 
-  scrollTo(index: number): boolean {
-    if (this.isValidIndex(index))
+  scrollTo(index: number, useCenterIndex: boolean = false): boolean {
+    let newIndex = index;
+    if (useCenterIndex)
     {
-      this.currentScrollIndex = index;
-      const currentScrollPosition = -index * this.thumbSizeRem;
+      newIndex -= Math.floor(this.numberOfVisibleThumbs / 2);
+    }
+
+    if (this.isValidIndex(newIndex))
+    {
+      this.currentScrollIndex = newIndex;
+      const currentScrollPosition = -newIndex * this.thumbSizeRem;
       this.scroller.scrollTo(currentScrollPosition, true);
       return true;
     }
