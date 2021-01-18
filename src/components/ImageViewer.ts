@@ -3,32 +3,32 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import IImageViewer from "../interfaces/IImageViewer";
+import IImageViewer from '../interfaces/IImageViewer';
 import IImageStage from '../interfaces/IImageStage';
+import IImageInfo from '../interfaces/IImageInfo';
 
 export default class ImageViewer implements IImageViewer {
   private currentIndex: number = 0;
   private imageStages: Array<IImageStage>;
-  private imageChangedCallbacks: Array<(index: number) => void> = new Array();
+  private imageInfos: Array<IImageInfo>;
+  private imageChangedCallbacks: Array<(index: number, imageInfo: IImageInfo) => void> = new Array();
 
-  constructor(imageStages: Array<IImageStage>) {
+  constructor(imageStages: Array<IImageStage>, imageInfos: Array<IImageInfo>) {
     this.imageStages = imageStages;
+    this.imageInfos = imageInfos;
   }
 
-  init(): void
-  {
-    console.log("ImageViewer#init");
-    if(this.isValidIndex(0))
-    {
-      
+  init(): void {
+    console.log('ImageViewer#init');
+    if (this.isValidIndex(0)) {
       this.changeCurrentImage(0);
-    } 
+    }
   }
 
   showImage(index: number): boolean {
     if (this.isValidIndex(index)) {
       if (index != this.currentIndex) {
-        this.imageStages[this.currentIndex].showImage(false);
+        this.imageStages[this.currentIndex].hideImage();
         this.changeCurrentImage(index);
       }
       return true;
@@ -49,7 +49,7 @@ export default class ImageViewer implements IImageViewer {
     return this.showImage(newIndex);
   }
 
-  addImageChangedCallback(callback: (index: number) => void) {
+  addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void) {
     if (!this.imageChangedCallbacks.includes(callback)) {
       this.imageChangedCallbacks.push(callback);
     }
@@ -59,12 +59,12 @@ export default class ImageViewer implements IImageViewer {
     return index >= 0 && index < this.imageStages.length;
   }
 
-  private changeCurrentImage(index: number) {  
-      console.log("ImageViewer#changeCurrentImage", index);
-      this.currentIndex = index;
-      this.imageStages[this.currentIndex].showImage(true);
-      this.imageChangedCallbacks.forEach((callback) => {
-        callback(this.currentIndex);
-      });  
+  private changeCurrentImage(index: number) {
+    console.log('ImageViewer#changeCurrentImage', index);
+    this.currentIndex = index;
+    this.imageStages[this.currentIndex].showImage();
+    this.imageChangedCallbacks.forEach((callback) => {
+      callback(this.currentIndex, this.imageInfos[this.currentIndex]);
+    });
   }
 }

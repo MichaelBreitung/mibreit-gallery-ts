@@ -22,47 +22,46 @@ export default abstract class ImageStage implements IImageStage {
     this.imageHandle = imageHandle;
     this.imageWidth = imageWidth;
     this.imageHeight = imageHeight;
-    this.imageStage = this.createStage();    
+    this.imageStage = this.createStage();
   }
 
   setZoomAnimation(activate: boolean): void {
     this.zoomAnimation = activate;
   }
 
-  applyScaleMode(): void {   
-    const stageDimenstion = DomTools.getElementDimension(this.imageStage) 
+  applyScaleMode(): void {
+    const stageDimenstion = DomTools.getElementDimension(this.imageStage);
     this.applyScaleModeImpl(stageDimenstion.width, stageDimenstion.height);
     this.centerImage(stageDimenstion.width, stageDimenstion.height);
   }
 
-  setSize(widthCss: string, heightCss: string)
-  {
-    DomTools.applyCssStyle(this.imageStage, "width", widthCss);
-    DomTools.applyCssStyle(this.imageStage, "height", heightCss);
+  setSize(widthCss: string, heightCss: string) {
+    DomTools.applyCssStyle(this.imageStage, 'width', widthCss);
+    DomTools.applyCssStyle(this.imageStage, 'height', heightCss);
     this.applyScaleMode();
   }
 
-  setMargin(marginCss: string)
-  {
-    DomTools.applyCssStyle(this.imageStage, "margin", marginCss);
+  setMargin(marginCss: string) {
+    DomTools.applyCssStyle(this.imageStage, 'margin', marginCss);
   }
 
-  showImage(show: boolean): void {
-    console.log("ImageStage#showImage", show);    
-    if (show) {
-      if (this.zoomAnimation) {
-        this.startZoomAnimation();
-      }
-      DomTools.applyCssStyle(this.imageStage, "opacity", "1");
-      DomTools.applyCssStyle(this.imageStage, "z-index", "1");
-    } else {
-      // leave enough time for hide animation to be applied
-      setTimeout(() => {
-        this.resetZoom();
-      }, 1000);
-      DomTools.applyCssStyle(this.imageStage, "opacity", null);
-      DomTools.applyCssStyle(this.imageStage, "z-index", null);
+  hideImage(): void {
+    console.log('ImageStage#hideImage');
+    // leave enough time for hide animation to be applied
+    setTimeout(() => {
+      this.resetZoom();
+    }, 1000);
+    DomTools.applyCssStyle(this.imageStage, 'opacity', null);
+    DomTools.applyCssStyle(this.imageStage, 'z-index', null);
+  }
+
+  showImage(): void {
+    console.log('ImageStage#showImage');
+    if (this.zoomAnimation) {
+      this.startZoomAnimation();
     }
+    DomTools.applyCssStyle(this.imageStage, 'opacity', '1');
+    DomTools.applyCssStyle(this.imageStage, 'z-index', '1');
   }
 
   protected abstract applyScaleModeImpl(stageWidth: number, stageHeight: number): void;

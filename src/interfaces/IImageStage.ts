@@ -12,5 +12,7 @@ export default interface IImageStage {
 
   setMargin(margin: string): void;
 
-  showImage(show: boolean, zoom?: boolean): void;
+  showImage(): void;
+
+  hideImage(): void;
 }
