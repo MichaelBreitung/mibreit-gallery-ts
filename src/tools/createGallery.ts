@@ -6,6 +6,7 @@
 import DomTools from '../tools/domTools';
 import IImageViewer from '../interfaces/IImageViewer';
 import IThumbScroller from '../interfaces/IThumbScroller';
+import IImageInfo from '../interfaces/IImageInfo';
 import createThumbScroller, { ThumbScrollerConfig } from './createThumbScroller';
 import createSlideshow, { SlideshowConfig } from './createSlideshow';
 import createGalleryButtons, { GalleryButtons } from './createGalleryButtons';
@@ -47,7 +48,7 @@ export default function createGallery(config: GalleryConfig): IImageViewer {
     DomTools.applyCssStyle(galleryButtons.previousButton, 'opacity', '0');
   });
 
-  imageViewer.addImageChangedCallback((index: number) => {
+  imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
     thumbScroller.scrollTo(index, true);
   });
 

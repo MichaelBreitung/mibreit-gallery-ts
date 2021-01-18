@@ -19,12 +19,12 @@ function createScrollerContainer(container: HTMLElement): HTMLElement {
 
 function createScrollerButtons(container: HTMLElement): { previousButton: HTMLElement; nextButton: HTMLElement } {
   const previousButton = DomTools.createElement('div');
-  DomTools.setInnerHtml(nextThumbs, previousButton);
+  DomTools.setInnerHtml(previousButton, nextThumbs);
   DomTools.applyCssClass(previousButton, styles.mibreit_ThumbScrollerPrevious);
   DomTools.prependChildElement(previousButton, container);
 
   const nextButton = DomTools.createElement('div');
-  DomTools.setInnerHtml(nextThumbs, nextButton);
+  DomTools.setInnerHtml(nextButton, nextThumbs);
   DomTools.applyCssClass(nextButton, styles.mibreit_ThumbScrollerNext);
   DomTools.appendChildElement(nextButton, container);
 

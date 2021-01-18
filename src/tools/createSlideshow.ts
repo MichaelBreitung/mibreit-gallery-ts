@@ -5,12 +5,12 @@
 
 import DomTools from './domTools';
 import IImageStage from '../interfaces/IImageStage';
-import IImageLoader from '../interfaces/IImageLoader';
 import IImageViewer from '../interfaces/IImageViewer';
 import Image from '../components/Image';
 import ImageViewer from '../components/ImageViewer';
 import Preloader from '../components/Preloader';
 import { EImageScaleMode, createImageStage } from './createImageStage';
+import IImageInfo from '../interfaces/IImageInfo';
 
 function checkConfig(config: SlideshowConfig)
 {
@@ -24,7 +24,7 @@ function prepareImages(
   imagesSelector: NodeListOf<HTMLElement>,
   scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT,
   zoom: boolean = false
-): { imageLoaders: Array<IImageLoader>; imageStages: Array<IImageStage> } {
+): { images: Array<Image>; imageStages: Array<IImageStage> } {
   const images: Array<Image> = new Array();
   const imageStages: Array<IImageStage> = new Array();
   for (let i = 0; i < imagesSelector.length; i++) {
@@ -39,7 +39,7 @@ function prepareImages(
     images.push(image);
     imageStages.push(imageStage);
   }
-  return { imageStages, imageLoaders: images };
+  return { imageStages, images };
 }
 
 export type SlideshowConfig = {
@@ -52,15 +52,15 @@ export type SlideshowConfig = {
 export default function createSlideshow(config: SlideshowConfig): IImageViewer {
   checkConfig(config);
   
-  const { imageLoaders, imageStages } = prepareImages(
+  const { images, imageStages } = prepareImages(
     DomTools.getElements(config.imageSelector),
     config.scaleMode,
     config.zoom
   );
 
-  const preloader: Preloader = new Preloader(imageLoaders);
-  const imageViewer: ImageViewer = new ImageViewer(imageStages);
-  imageViewer.addImageChangedCallback((index) => {
+  const preloader: Preloader = new Preloader(images);
+  const imageViewer: ImageViewer = new ImageViewer(imageStages, images);
+  imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
     preloader.setCurrentIndex(index);
   });
   imageViewer.init();

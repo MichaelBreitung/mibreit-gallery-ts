@@ -32,7 +32,7 @@ function getChildNodes(element: HTMLElement): Array<Node> {
   return nodesArray;
 }
 
-function setInnerHtml(inner: string, parent: HTMLElement) {
+function setInnerHtml(parent: HTMLElement, inner: string) {
   parent.innerHTML = inner;
 }
 
@@ -108,6 +108,10 @@ function disableDragging(element: HTMLElement) {
   });
 }
 
+function getElement(selector: string): HTMLElement | null {
+  return document.querySelector(selector);
+}
+
 function getElements(selector: string): NodeListOf<HTMLElement> {
   return document.querySelectorAll(selector);
 }
@@ -132,5 +136,6 @@ export default {
   addEventListener,
   disableContextMenu,
   disableDragging,
+  getElement,
   getElements,
 };

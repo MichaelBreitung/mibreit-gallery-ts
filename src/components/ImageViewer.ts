@@ -55,6 +55,22 @@ export default class ImageViewer implements IImageViewer {
     }
   }
 
+  getImageIndex() : number
+  {
+    return this.currentIndex;
+  }
+
+  getImageInfo(index: number) : IImageInfo | null
+  {
+    if (this.isValidIndex(index))
+    {
+      return this.imageInfos[index];
+    } 
+    else{
+      return null;
+    }   
+  }
+
   private isValidIndex(index: number) {
     return index >= 0 && index < this.imageStages.length;
   }

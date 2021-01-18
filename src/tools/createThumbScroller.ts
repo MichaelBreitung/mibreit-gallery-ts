@@ -35,7 +35,7 @@ function prepareThumbs(
     image.addWasLoadedCallback(() => {
       thumbStage.applyScaleMode();
     });
-    thumbStage.showImage(true);
+    thumbStage.showImage();
     thumbStage.addStageClickedCallback(() => {
       thumbClickedCallback(i);
     });
@@ -71,7 +71,7 @@ export default function createThumbScroller(
   const { thumbLoaders, thumbStages } = prepareThumbs(DomTools.getElements(config.thumbSelector), thumbClickedCallback);
   const preloader: Preloader = new Preloader(thumbLoaders, config.numberOfVisibleThumbs, config.numberOfVisibleThumbs);
   const thumbScrollerLayout: ThumbScrollerLayout = createThumbScrollerLayout(
-    DomTools.getElements(config.thumbContainerSelector)[0],
+    DomTools.getElement(config.thumbContainerSelector),
     thumbStages,
     numberOfVisibleThumbs
   );
