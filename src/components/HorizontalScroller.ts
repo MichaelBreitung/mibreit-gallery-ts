@@ -29,17 +29,10 @@ export default class HorizontalScroller {
   }
 
   private createScroller(container: HTMLElement): HTMLElement {    
-    const nodes : NodeList = container.childNodes;
-    const nodesArray : Array<Node> = new Array();
-
-    for (let i = 0; i < nodes.length; ++i)
-    {
-      nodesArray.push(nodes[i]);
-    }
-
+    const childNodes : Array<Node> = DomTools.getChildNodes(container);
     const scroller = DomTools.createElement('div');
     DomTools.applyCssClass(scroller, styles.mibreit_HorizontalScroller);
-    DomTools.wrapElements(nodesArray, scroller);
+    DomTools.wrapElements(childNodes, scroller);
     
     return scroller;
   }

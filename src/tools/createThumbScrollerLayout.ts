@@ -10,14 +10,10 @@ import IImageStage from '../interfaces/IImageStage';
 import {THUMBS_BUTTON_WIDTH_REM, THUMBS_MARGIN} from "../constants";
 
 function createScrollerContainer(container: HTMLElement): HTMLElement {
-  const nodes: NodeList = container.childNodes;
-  const nodesArray: Array<Node> = new Array();
-  for (let i = 0; i < nodes.length; ++i) {
-    nodesArray.push(nodes[i]);
-  }
+  const childNodes : Array<Node> = DomTools.getChildNodes(container); 
   const scrollerContainer = DomTools.createElement('div');
   DomTools.applyCssClass(scrollerContainer, styles.mibreit_ThumbScrollerContainer);
-  DomTools.wrapElements(nodesArray, scrollerContainer);
+  DomTools.wrapElements(childNodes, scrollerContainer);
   return scrollerContainer;
 }
 

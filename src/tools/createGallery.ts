@@ -11,9 +11,17 @@ import createSlideshow, { SlideshowConfig } from './createSlideshow';
 import createGalleryButtons, { GalleryButtons } from './createGalleryButtons';
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
 
+function checkConfig(config: GalleryConfig) {
+  if (typeof config.galleryContainerSelector === 'undefined') {
+    throw new Error('GalleryConfig invalid: no galleryContainerSelector provided');
+  }
+}
+
 export type GalleryConfig = ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string };
 
 export default function createGallery(config: GalleryConfig): IImageViewer {
+  checkConfig(config);
+
   const container: HTMLElement = DomTools.getElements(config.galleryContainerSelector)[0];
   const containerWidth: number = DomTools.getElementDimension(container).width;
   const containerPosX: number = DomTools.getElementPosition(container).x;
@@ -23,16 +31,13 @@ export default function createGallery(config: GalleryConfig): IImageViewer {
   });
   const galleryButtons: GalleryButtons = createGalleryButtons(container);
 
-  DomTools.addClickEventListener(container, (event: MouseEvent) => {    
-    if (event.pageX - containerPosX > containerWidth / 2)
-    {
+  DomTools.addClickEventListener(container, (event: MouseEvent) => {
+    if (event.pageX - containerPosX > containerWidth / 2) {
       imageViewer.showNextImage();
-    }
-    else
-    {
+    } else {
       imageViewer.showPreviousImage();
     }
-  });  
+  });
   DomTools.addEventListener(container, 'mouseenter', () => {
     DomTools.applyCssStyle(galleryButtons.nextButton, 'opacity', `${GALLERY_BUTTONS_SHOW_OPACITY}`);
     DomTools.applyCssStyle(galleryButtons.previousButton, 'opacity', `${GALLERY_BUTTONS_SHOW_OPACITY}`);

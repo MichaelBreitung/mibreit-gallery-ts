@@ -7,7 +7,7 @@ function documentReady(callback: () => void) {
   document.addEventListener('DOMContentLoaded', callback);
 }
 
-function getRootFontSize() : number {
+function getRootFontSize(): number {
   return parseFloat(window.getComputedStyle(document.body).getPropertyValue('font-size'));
 }
 
@@ -21,6 +21,15 @@ function prependChildElement(element: HTMLElement, parent: HTMLElement) {
 
 function appendChildElement(element: HTMLElement, parent: HTMLElement) {
   parent.append(element);
+}
+
+function getChildNodes(element: HTMLElement): Array<Node> {
+  const nodes: NodeList = element.childNodes;
+  const nodesArray: Array<Node> = new Array();
+  for (let i = 0; i < nodes.length; ++i) {
+    nodesArray.push(nodes[i]);
+  }
+  return nodesArray;
 }
 
 function setInnerHtml(inner: string, parent: HTMLElement) {
@@ -47,9 +56,9 @@ function getElementDimension(element: HTMLElement): { width: number; height: num
 
 function getElementPosition(element: HTMLElement): { x: number; y: number } {
   const rect = element.getBoundingClientRect(),
-  scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  return { y: rect.top + scrollTop, x: rect.left + scrollLeft }
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  return { y: rect.top + scrollTop, x: rect.left + scrollLeft };
 }
 
 function getCssClass(element: HTMLElement): string {
@@ -64,7 +73,7 @@ function applyCssClass(element: HTMLElement, cssClass: string | null) {
   }
 }
 
-function getCssStyle(element: HTMLElement, styleName: string) : string {
+function getCssStyle(element: HTMLElement, styleName: string): string {
   return element.style.getPropertyValue(styleName);
 }
 
@@ -109,6 +118,7 @@ export default {
   createElement,
   prependChildElement,
   appendChildElement,
+  getChildNodes,
   setInnerHtml,
   wrapElements,
   getParentElement,
