@@ -28,20 +28,26 @@ export default class FullscreenView implements IFullscreenView {
     if (!this.fullscreenActive) {
       if (this.fullScreenContainer == null) {
         this.createFullscreenContainer();
+      }      
+      this.moveGalleryToFullscreen();
+      if (this.thumbContainer)
+      {
+        this.moveThumbsToFullscreen();
       }
-      this.insertPlaceholders();
-      const body = DomTools.getElement('body');
-      DomTools.appendChildElement(this.fullScreenContainer, body);
+      this.addFullscreen();
       this.fullscreenActive = true;
     }
   }
 
   deActivate() {
     if (this.fullscreenActive) {
-      const body = DomTools.getElement('body');
-      DomTools.removeChildElement(this.fullScreenContainer, body);
+      this.removeGalleryFromFullscreen();
+      if (this.thumbContainer)
+      {
+        this.removeThumbsFromFullscreen();
+      }      
+      this.removeFullscreen();            
       this.fullscreenActive = false;
-      this.removePlaceholders();
     }
   }
 
@@ -58,17 +64,39 @@ export default class FullscreenView implements IFullscreenView {
     DomTools.setAttribute(this.thumbContainerPlaceholder, 'id', THUMBS_PLACEHOLDER_ID);
   }
 
-  private insertPlaceholders() {
-    DomTools.prependBeforeChild(this.galleryContainerPlaceholder, this.galleryContainer);
-    if (this.thumbContainer) {
-      DomTools.prependBeforeChild(this.thumbContainerPlaceholder, this.thumbContainer);
-    }
+  private addFullscreen() {
+    const body = DomTools.getElement('body');
+    DomTools.appendChildElement(this.fullScreenContainer, body);
   }
 
-  private removePlaceholders() {
+  private removeFullscreen() {
+    const body = DomTools.getElement('body');
+    DomTools.removeChildElement(this.fullScreenContainer, body);
+  }
+
+  private moveGalleryToFullscreen()
+  {
+    DomTools.prependBeforeChild(this.galleryContainerPlaceholder, this.galleryContainer);
+    DomTools.appendChildElement(this.galleryContainer, this.fullScreenContainer);
+  }
+
+  private removeGalleryFromFullscreen()
+  {
+    DomTools.removeChildElement(this.galleryContainer, this.fullScreenContainer);
+    DomTools.prependBeforeChild(this.galleryContainer, this.galleryContainerPlaceholder);
     DomTools.removeChildElement(this.galleryContainerPlaceholder);
-    if (this.thumbContainer) {
-      DomTools.removeChildElement(this.thumbContainerPlaceholder);
-    }
+  }
+
+  private moveThumbsToFullscreen()
+  {
+    DomTools.prependBeforeChild(this.thumbContainerPlaceholder, this.thumbContainer);
+    DomTools.appendChildElement(this.thumbContainer, this.fullScreenContainer);
+  }
+
+  private removeThumbsFromFullscreen()
+  {
+    DomTools.removeChildElement(this.thumbContainer, this.fullScreenContainer);
+    DomTools.prependBeforeChild(this.thumbContainer, this.thumbContainerPlaceholder);
+    DomTools.removeChildElement(this.thumbContainerPlaceholder);
   }
 }
