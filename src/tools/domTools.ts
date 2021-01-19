@@ -23,6 +23,20 @@ function appendChildElement(element: HTMLElement, parent: HTMLElement) {
   parent.append(element);
 }
 
+function removeChildElement(element: HTMLElement, parent: HTMLElement = null) {
+  if (parent)
+  {
+    parent.removeChild(element);
+  }
+  else{
+    getParentElement(element).removeChild(element);
+  }
+}
+
+function prependBeforeChild(element: HTMLElement, child: HTMLElement) {  
+  child.parentElement.insertBefore(element, child);
+}
+
 function getChildNodes(element: HTMLElement): Array<Node> {
   const nodes: NodeList = element.childNodes;
   const nodesArray: Array<Node> = new Array();
@@ -88,6 +102,16 @@ function applyCssStyle(element: HTMLElement, styleName: string, styleProperty: s
   }
 }
 
+function setAttribute(element: HTMLElement, attribute: string, value: string)
+{
+  element.setAttribute(attribute, value);
+}
+
+function removeAttribute(element: HTMLElement, attribute: string)
+{
+  element.removeAttribute(attribute);
+}
+
 function addClickEventListener(element: HTMLElement, callback: (event?: MouseEvent) => void) {
   element.addEventListener('click', callback);
 }
@@ -116,12 +140,19 @@ function getElements(selector: string): NodeListOf<HTMLElement> {
   return document.querySelectorAll(selector);
 }
 
+function getKeyFromEvent(event: KeyboardEvent) : string
+{
+  return event.key;  
+}
+
 export default {
   documentReady,
   getRootFontSize,
   createElement,
   prependChildElement,
   appendChildElement,
+  removeChildElement,
+  prependBeforeChild,
   getChildNodes,
   setInnerHtml,
   wrapElements,
@@ -132,10 +163,13 @@ export default {
   applyCssClass,
   getCssStyle,
   applyCssStyle,
+  setAttribute,
+  removeAttribute,
   addClickEventListener,
   addEventListener,
   disableContextMenu,
   disableDragging,
   getElement,
   getElements,
+  getKeyFromEvent
 };

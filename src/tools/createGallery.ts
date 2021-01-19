@@ -7,15 +7,50 @@ import DomTools from '../tools/domTools';
 import IImageViewer from '../interfaces/IImageViewer';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IImageInfo from '../interfaces/IImageInfo';
+import IFullscreenView from '../interfaces/IFullscreenView';
 import createThumbScroller, { ThumbScrollerConfig } from './createThumbScroller';
 import createSlideshow, { SlideshowConfig } from './createSlideshow';
 import createGalleryButtons, { GalleryButtons } from './createGalleryButtons';
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
+import { createFullscreen } from './createFullscreen';
 
 function checkConfig(config: GalleryConfig) {
   if (typeof config.galleryContainerSelector === 'undefined') {
     throw new Error('GalleryConfig invalid: no galleryContainerSelector provided');
   }
+}
+
+function setupKeyEvents(imageViewer: IImageViewer, fullScreen: IFullscreenView) {
+  document.addEventListener('keydown', (event : KeyboardEvent) => {
+    const key : string = DomTools.getKeyFromEvent(event);  
+    switch (key)    
+    {
+      case "ArrowRight":
+        imageViewer.showNextImage();
+        break;
+      case "ArrowLeft":
+        imageViewer.showPreviousImage();
+        break;
+      case "Escape":
+        fullScreen.deActivate();
+        break;
+      case "f":
+        if (fullScreen.isFullscreenActive())
+        {
+          fullScreen.deActivate();
+        }
+        else{
+          fullScreen.activate();
+        }
+        break;
+      default:
+        if (fullScreen.isFullscreenActive())
+        {
+          fullScreen.deActivate();
+        }
+        break;
+    }
+  });
 }
 
 export type GalleryConfig = ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string };
@@ -31,6 +66,7 @@ export default function createGallery(config: GalleryConfig): IImageViewer {
     imageViewer.showImage(index);
   });
   const galleryButtons: GalleryButtons = createGalleryButtons(container);
+  const fullScreen: IFullscreenView = createFullscreen(container, DomTools.getElement(config.thumbContainerSelector));
 
   DomTools.addClickEventListener(container, (event: MouseEvent) => {
     if (event.pageX - containerPosX > containerWidth / 2) {
@@ -51,6 +87,8 @@ export default function createGallery(config: GalleryConfig): IImageViewer {
   imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
     thumbScroller.scrollTo(index, true);
   });
+
+  setupKeyEvents(imageViewer, fullScreen);
 
   return imageViewer;
 }
