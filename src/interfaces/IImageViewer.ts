@@ -12,9 +12,11 @@ export default interface IImageViewer {
 
   showPreviousImage(): boolean;
 
+  reinitSize(): void;
+
   addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void): void;
 
-  getImageIndex() : number;
+  getImageIndex(): number;
 
   getImageInfo(index: number): IImageInfo | null;
 }

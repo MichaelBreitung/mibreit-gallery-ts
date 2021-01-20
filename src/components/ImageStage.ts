@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import DomTools from '../tools/domTools';
+import DomTools, { TStageDimention } from '../tools/domTools';
 import IImageStage from '../interfaces/IImageStage';
 import styles from './ImageStage.module.css';
 
@@ -12,7 +12,7 @@ import styles from './ImageStage.module.css';
  * of images on the stage
  */
 export default abstract class ImageStage implements IImageStage {
-  private zoomAnimation: boolean = false;
+  private zoomAnimation: boolean = false; 
   protected imageStage: HTMLElement;
   protected imageHandle: HTMLElement;
   protected imageWidth: number;
@@ -30,9 +30,9 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   applyScaleMode(): void {
-    const stageDimenstion = DomTools.getElementDimension(this.imageStage);
-    this.applyScaleModeImpl(stageDimenstion.width, stageDimenstion.height);
-    this.centerImage(stageDimenstion.width, stageDimenstion.height);
+    const stageDimension: TStageDimention = DomTools.getElementDimension(this.imageStage);
+    this.applyScaleModeImpl(stageDimension.width, stageDimension.height);
+    this.centerImage(stageDimension.width, stageDimension.height);
   }
 
   setSize(widthCss: string, heightCss: string) {
@@ -57,6 +57,7 @@ export default abstract class ImageStage implements IImageStage {
 
   showImage(): void {
     console.log('ImageStage#showImage');
+    this.applyScaleMode();
     if (this.zoomAnimation) {
       this.startZoomAnimation();
     }

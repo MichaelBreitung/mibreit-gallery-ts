@@ -33,6 +33,7 @@ function setupKeyEvents(imageViewer: IImageViewer, fullScreen: IFullscreenView) 
         break;
       case "Escape":
         fullScreen.deActivate();
+        imageViewer.reinitSize();
         break;
       case "f":
         if (fullScreen.isFullscreenActive())
@@ -40,13 +41,15 @@ function setupKeyEvents(imageViewer: IImageViewer, fullScreen: IFullscreenView) 
           fullScreen.deActivate();
         }
         else{
-          fullScreen.activate();
+          fullScreen.activate();  
         }
+        imageViewer.reinitSize();
         break;
       default:
         if (fullScreen.isFullscreenActive())
         {
           fullScreen.deActivate();
+          imageViewer.reinitSize();
         }
         break;
     }

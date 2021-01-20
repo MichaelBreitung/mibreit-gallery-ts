@@ -49,6 +49,10 @@ export default class ImageViewer implements IImageViewer {
     return this.showImage(newIndex);
   }
 
+  reinitSize(): void {
+    this.imageStages[this.currentIndex].applyScaleMode();
+  }
+
   addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void) {
     if (!this.imageChangedCallbacks.includes(callback)) {
       this.imageChangedCallbacks.push(callback);

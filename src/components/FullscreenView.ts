@@ -78,6 +78,8 @@ export default class FullscreenView implements IFullscreenView {
   {
     DomTools.prependBeforeChild(this.galleryContainerPlaceholder, this.galleryContainer);
     DomTools.appendChildElement(this.galleryContainer, this.fullScreenContainer);
+    DomTools.applyCssStyle(this.galleryContainer, "width", "100%");
+    DomTools.applyCssStyle(this.galleryContainer, "flex-grow", "1");
   }
 
   private removeGalleryFromFullscreen()
@@ -85,12 +87,15 @@ export default class FullscreenView implements IFullscreenView {
     DomTools.removeChildElement(this.galleryContainer, this.fullScreenContainer);
     DomTools.prependBeforeChild(this.galleryContainer, this.galleryContainerPlaceholder);
     DomTools.removeChildElement(this.galleryContainerPlaceholder);
+    DomTools.applyCssStyle(this.galleryContainer, "width", null);
+    DomTools.applyCssStyle(this.galleryContainer, "flex-grow", null);
   }
 
   private moveThumbsToFullscreen()
   {
     DomTools.prependBeforeChild(this.thumbContainerPlaceholder, this.thumbContainer);
     DomTools.appendChildElement(this.thumbContainer, this.fullScreenContainer);
+    DomTools.applyCssStyle(this.thumbContainer, "flex-grow", "0");
   }
 
   private removeThumbsFromFullscreen()
@@ -98,5 +103,6 @@ export default class FullscreenView implements IFullscreenView {
     DomTools.removeChildElement(this.thumbContainer, this.fullScreenContainer);
     DomTools.prependBeforeChild(this.thumbContainer, this.thumbContainerPlaceholder);
     DomTools.removeChildElement(this.thumbContainerPlaceholder);
+    DomTools.applyCssStyle(this.thumbContainer, "flex-grow", null);
   }
 }

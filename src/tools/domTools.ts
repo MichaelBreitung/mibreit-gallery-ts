@@ -3,6 +3,8 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
+export type TStageDimention = {width: number, height: number};
+
 function documentReady(callback: () => void) {
   document.addEventListener('DOMContentLoaded', callback);
 }
@@ -61,7 +63,7 @@ function getParentElement(element: HTMLElement): HTMLElement {
   return element.parentElement;
 }
 
-function getElementDimension(element: HTMLElement): { width: number; height: number } {
+function getElementDimension(element: HTMLElement): TStageDimention {
   return {
     width: element.clientWidth,
     height: element.clientHeight,
