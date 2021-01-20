@@ -21,38 +21,40 @@ function checkConfig(config: GalleryConfig) {
 }
 
 function setupKeyEvents(imageViewer: IImageViewer, fullScreen: IFullscreenView) {
-  document.addEventListener('keydown', (event : KeyboardEvent) => {
-    const key : string = DomTools.getKeyFromEvent(event);  
-    switch (key)    
-    {
-      case "ArrowRight":
+  DomTools.addKeyEventListener((event: KeyboardEvent) => {
+    const key: string = DomTools.getKeyFromEvent(event);
+    switch (key) {
+      case 'ArrowRight':
         imageViewer.showNextImage();
         break;
-      case "ArrowLeft":
+      case 'ArrowLeft':
         imageViewer.showPreviousImage();
         break;
-      case "Escape":
+      case 'Escape':
         fullScreen.deActivate();
         imageViewer.reinitSize();
         break;
-      case "f":
-        if (fullScreen.isFullscreenActive())
-        {
+      case 'f':
+        if (fullScreen.isFullscreenActive()) {
           fullScreen.deActivate();
-        }
-        else{
-          fullScreen.activate();  
+        } else {
+          fullScreen.activate();
         }
         imageViewer.reinitSize();
         break;
       default:
-        if (fullScreen.isFullscreenActive())
-        {
+        if (fullScreen.isFullscreenActive()) {
           fullScreen.deActivate();
           imageViewer.reinitSize();
         }
         break;
     }
+  });
+}
+
+function setupResizeHandler(imageViewer: IImageViewer) {
+  DomTools.addResizeEventListener((_event: UIEvent) => {
+    imageViewer.reinitSize();
   });
 }
 
@@ -92,6 +94,8 @@ export default function createGallery(config: GalleryConfig): IImageViewer {
   });
 
   setupKeyEvents(imageViewer, fullScreen);
+
+  setupResizeHandler(imageViewer);
 
   return imageViewer;
 }

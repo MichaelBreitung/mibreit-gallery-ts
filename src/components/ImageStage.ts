@@ -46,7 +46,6 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   hideImage(): void {
-    console.log('ImageStage#hideImage');
     // leave enough time for hide animation to be applied
     setTimeout(() => {
       this.resetZoom();
@@ -55,8 +54,7 @@ export default abstract class ImageStage implements IImageStage {
     DomTools.applyCssStyle(this.imageStage, 'z-index', null);
   }
 
-  showImage(): void {
-    console.log('ImageStage#showImage');
+  showImage(): void {    
     this.applyScaleMode();
     if (this.zoomAnimation) {
       this.startZoomAnimation();

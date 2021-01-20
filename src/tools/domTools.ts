@@ -118,6 +118,14 @@ function addClickEventListener(element: HTMLElement, callback: (event?: MouseEve
   element.addEventListener('click', callback);
 }
 
+function addKeyEventListener(callback: (event: KeyboardEvent) => void) {
+  document.addEventListener('keydown', callback);
+};
+
+function addResizeEventListener(callback: (event: UIEvent) => void) {
+  window.addEventListener('resize', callback);
+}
+
 function addEventListener(element: HTMLElement, event: string, callback: () => void) {
   element.addEventListener(event, callback);
 }
@@ -168,6 +176,8 @@ export default {
   setAttribute,
   removeAttribute,
   addClickEventListener,
+  addKeyEventListener,
+  addResizeEventListener,
   addEventListener,
   disableContextMenu,
   disableDragging,
