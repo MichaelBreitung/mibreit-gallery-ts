@@ -13,6 +13,7 @@ import createSlideshow, { SlideshowConfig } from './createSlideshow';
 import createGalleryButtons, { GalleryButtons } from './createGalleryButtons';
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
 import { createFullscreen } from './createFullscreen';
+import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
 
 function checkConfig(config: GalleryConfig) {
   if (typeof config.galleryContainerSelector === 'undefined') {
@@ -58,14 +59,34 @@ function setupResizeHandler(imageViewer: IImageViewer) {
   });
 }
 
+function setupSwipeHandler(container: HTMLElement, imageViewer: IImageViewer) {
+  const containerWidth: number = DomTools.getElementDimension(container).width;
+  const containerPosX: number = DomTools.getElementPosition(container).x;
+
+  DomTools.applyCssStyle(container, 'touch-action', 'pinch-zoom pan-y');
+
+  new SwipeHander(container, (direction: ESwipeDirection, position: TPosition) => {    
+    if (direction === ESwipeDirection.LEFT) {
+      imageViewer.showPreviousImage();
+    } else if (direction === ESwipeDirection.RIGHT) {
+      imageViewer.showNextImage();
+    } else {
+      console.log("clicik");
+      if (position.x - containerPosX > containerWidth / 2) {
+        imageViewer.showNextImage();
+      } else {
+        imageViewer.showPreviousImage();
+      }
+    }
+  });
+}
+
 export type GalleryConfig = ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string };
 
 export default function createGallery(config: GalleryConfig): IImageViewer {
   checkConfig(config);
 
-  const container: HTMLElement = DomTools.getElements(config.galleryContainerSelector)[0];
-  const containerWidth: number = DomTools.getElementDimension(container).width;
-  const containerPosX: number = DomTools.getElementPosition(container).x;
+  const container: HTMLElement = DomTools.getElement(config.galleryContainerSelector);
   const imageViewer: IImageViewer = createSlideshow(config);
   const thumbScroller: IThumbScroller = createThumbScroller(config, (index: number) => {
     imageViewer.showImage(index);
@@ -73,13 +94,6 @@ export default function createGallery(config: GalleryConfig): IImageViewer {
   const galleryButtons: GalleryButtons = createGalleryButtons(container);
   const fullScreen: IFullscreenView = createFullscreen(container, DomTools.getElement(config.thumbContainerSelector));
 
-  DomTools.addClickEventListener(container, (event: MouseEvent) => {
-    if (event.pageX - containerPosX > containerWidth / 2) {
-      imageViewer.showNextImage();
-    } else {
-      imageViewer.showPreviousImage();
-    }
-  });
   DomTools.addEventListener(container, 'mouseenter', () => {
     DomTools.applyCssStyle(galleryButtons.nextButton, 'opacity', `${GALLERY_BUTTONS_SHOW_OPACITY}`);
     DomTools.applyCssStyle(galleryButtons.previousButton, 'opacity', `${GALLERY_BUTTONS_SHOW_OPACITY}`);
@@ -94,6 +108,8 @@ export default function createGallery(config: GalleryConfig): IImageViewer {
   });
 
   setupKeyEvents(imageViewer, fullScreen);
+
+  setupSwipeHandler(container, imageViewer);
 
   setupResizeHandler(imageViewer);
 
