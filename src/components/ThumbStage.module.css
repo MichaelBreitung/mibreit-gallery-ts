@@ -3,3 +3,7 @@
   position: relative;
   flex-shrink: 0;
 }
+
+.mibreit_ThumbStage:hover {
+  transform: scale(1.1);
+}
