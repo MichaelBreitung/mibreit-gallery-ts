@@ -3,8 +3,8 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import {LazyLoader, Element} from 'mibreit-lazy-loader';
-import DomTools from './domTools';
+import { LazyLoader } from 'mibreit-lazy-loader';
+import { DomTools } from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import Image from '../components/Image';
@@ -68,7 +68,11 @@ export default function createThumbScroller(
 
   const numberOfVisibleThumbs = config.numberOfVisibleThumbs ? config.numberOfVisibleThumbs : NUMBER_OF_VISIBLE_THUMBS;
   const { thumbLoaders, thumbStages } = prepareThumbs(DomTools.getElements(config.thumbSelector), thumbClickedCallback);
-  const lazyLoader: LazyLoader = new LazyLoader(thumbLoaders, config.numberOfVisibleThumbs, config.numberOfVisibleThumbs);
+  const lazyLoader: LazyLoader = new LazyLoader(
+    thumbLoaders,
+    config.numberOfVisibleThumbs,
+    config.numberOfVisibleThumbs
+  );
   const thumbScrollerLayout: ThumbScrollerLayout = createThumbScrollerLayout(
     DomTools.getElement(config.thumbContainerSelector),
     thumbStages,

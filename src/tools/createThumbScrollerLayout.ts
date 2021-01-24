@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import DomTools from '../tools/domTools';
+import { DomTools } from 'mibreit-dom-tools';
 import styles from './ThumbScrollerLayout.module.css';
 import nextThumbs from '../images/nextThumbs.svg';
 import IImageStage from '../interfaces/IImageStage';

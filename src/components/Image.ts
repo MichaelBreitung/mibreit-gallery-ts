@@ -3,9 +3,9 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
+import { DomTools } from 'mibreit-dom-tools';
 import { Element } from 'mibreit-lazy-loader';
 import { IMAGE_TITLE_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from '../constants';
-import DomTools from '../tools/domTools';
 import IImageInfo from '../interfaces/IImageInfo';
 
 export default class Image extends Element implements IImageInfo {
@@ -33,8 +33,7 @@ export default class Image extends Element implements IImageInfo {
   }
 
   private limitMaxSizeTo(imageHandle: HTMLElement, maxWidth: number, maxHeight: number): void {
-    DomTools.applyCssStyle(imageHandle, 'max-width', `${maxWidth}px`);
-    DomTools.applyCssStyle(imageHandle, 'max-height', `${maxHeight}px`);
+    DomTools.applyCssStyles(imageHandle, `max-width: ${maxWidth}px; max-height: ${maxHeight}px`);
   }
 
   private removeTitle(imageHandle: HTMLElement) {

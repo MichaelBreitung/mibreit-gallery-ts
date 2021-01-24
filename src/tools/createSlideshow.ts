@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import DomTools from './domTools';
+import { DomTools } from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import IImageViewer from '../interfaces/IImageViewer';
 import Image from '../components/Image';

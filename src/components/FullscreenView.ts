@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import DomTools from '../tools/domTools';
+import { DomTools } from 'mibreit-dom-tools';
 import IFullscreenView from '../interfaces/IFullscreenView';
 import styles from './FullscreenView.module.css';
 
@@ -28,10 +28,9 @@ export default class FullscreenView implements IFullscreenView {
     if (!this.fullscreenActive) {
       if (this.fullScreenContainer == null) {
         this.createFullscreenContainer();
-      }      
+      }
       this.moveGalleryToFullscreen();
-      if (this.thumbContainer)
-      {
+      if (this.thumbContainer) {
         this.moveThumbsToFullscreen();
       }
       this.addFullscreen();
@@ -42,11 +41,10 @@ export default class FullscreenView implements IFullscreenView {
   deActivate() {
     if (this.fullscreenActive) {
       this.removeGalleryFromFullscreen();
-      if (this.thumbContainer)
-      {
+      if (this.thumbContainer) {
         this.removeThumbsFromFullscreen();
-      }      
-      this.removeFullscreen();            
+      }
+      this.removeFullscreen();
       this.fullscreenActive = false;
     }
   }
@@ -70,39 +68,32 @@ export default class FullscreenView implements IFullscreenView {
   }
 
   private removeFullscreen() {
-    const body = DomTools.getElement('body');
-    DomTools.removeChildElement(this.fullScreenContainer, body);
+    DomTools.removeElement(this.fullScreenContainer);
   }
 
-  private moveGalleryToFullscreen()
-  {
+  private moveGalleryToFullscreen() {
     DomTools.prependBeforeChild(this.galleryContainerPlaceholder, this.galleryContainer);
     DomTools.appendChildElement(this.galleryContainer, this.fullScreenContainer);
-    DomTools.applyCssStyle(this.galleryContainer, "width", "100%");
-    DomTools.applyCssStyle(this.galleryContainer, "flex-grow", "1");
+    DomTools.applyCssStyles(this.galleryContainer, 'width: 100%; flex-grow: 1;');
   }
 
-  private removeGalleryFromFullscreen()
-  {
-    DomTools.removeChildElement(this.galleryContainer, this.fullScreenContainer);
+  private removeGalleryFromFullscreen() {
+    DomTools.removeElement(this.galleryContainer);
     DomTools.prependBeforeChild(this.galleryContainer, this.galleryContainerPlaceholder);
-    DomTools.removeChildElement(this.galleryContainerPlaceholder);
-    DomTools.applyCssStyle(this.galleryContainer, "width", null);
-    DomTools.applyCssStyle(this.galleryContainer, "flex-grow", null);
+    DomTools.removeElement(this.galleryContainerPlaceholder);
+    DomTools.applyCssStyles(this.galleryContainer, null);
   }
 
-  private moveThumbsToFullscreen()
-  {
+  private moveThumbsToFullscreen() {
     DomTools.prependBeforeChild(this.thumbContainerPlaceholder, this.thumbContainer);
     DomTools.appendChildElement(this.thumbContainer, this.fullScreenContainer);
-    DomTools.applyCssStyle(this.thumbContainer, "flex-grow", "0");
+    DomTools.applyCssStyle(this.thumbContainer, 'flex-grow', '0');
   }
 
-  private removeThumbsFromFullscreen()
-  {
-    DomTools.removeChildElement(this.thumbContainer, this.fullScreenContainer);
+  private removeThumbsFromFullscreen() {
+    DomTools.removeElement(this.thumbContainer);
     DomTools.prependBeforeChild(this.thumbContainer, this.thumbContainerPlaceholder);
-    DomTools.removeChildElement(this.thumbContainerPlaceholder);
-    DomTools.applyCssStyle(this.thumbContainer, "flex-grow", null);
+    DomTools.removeElement(this.thumbContainerPlaceholder);
+    DomTools.applyCssStyle(this.thumbContainer, 'flex-grow', null);
   }
 }

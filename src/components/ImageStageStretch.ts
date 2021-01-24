@@ -3,8 +3,8 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
+import { DomTools } from 'mibreit-dom-tools';
 import ImageStage from './ImageStage';
-import DomTools from '../tools/domTools';
 
 export default class ImageStageStretch extends ImageStage {
   constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number) {

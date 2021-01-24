@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-export { default as DomTools } from './tools/domTools';
+export { DomTools } from 'mibreit-dom-tools';
 export { EImageScaleMode } from './tools/createImageStage';
 export {default as createSlideshow} from './tools/createSlideshow';
 export { SlideshowConfig } from './tools/createSlideshow';
