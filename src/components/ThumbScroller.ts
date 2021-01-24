@@ -41,6 +41,9 @@ export default class ThumbScroller implements IThumbScroller {
     this.currentScrollIndex = newIndex;
     const currentScrollPosition = -newIndex * this.thumbSizeRem;
     this.scroller.scrollTo(currentScrollPosition, true);
+    this.scrollIndexChangedCallbacks.forEach((callback) => {
+      callback(this.currentScrollIndex);
+    });
   }
 
   scrollNext(): void {

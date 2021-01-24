@@ -12,7 +12,7 @@ import styles from './ImageStage.module.css';
  * of images on the stage
  */
 export default abstract class ImageStage implements IImageStage {
-  private zoomAnimation: boolean = false; 
+  private zoomAnimation: boolean = false;
   protected imageStage: HTMLElement;
   protected imageHandle: HTMLElement;
   protected imageWidth: number;
@@ -54,7 +54,7 @@ export default abstract class ImageStage implements IImageStage {
     DomTools.applyCssStyle(this.imageStage, 'z-index', null);
   }
 
-  showImage(): void {    
+  showImage(): void {
     this.applyScaleMode();
     if (this.zoomAnimation) {
       this.startZoomAnimation();
@@ -74,10 +74,10 @@ export default abstract class ImageStage implements IImageStage {
 
   private centerImage(stageWidth: number, stageHeight: number) {
     const { width, height } = DomTools.getElementDimension(this.imageHandle);
-    const x: number = (width + stageWidth) / 2 - width;
-    const y: number = (height + stageHeight) / 2 - height;
-    DomTools.applyCssStyle(this.imageHandle, 'margin-left', `${x}px`);
-    DomTools.applyCssStyle(this.imageHandle, 'margin-top', `${y}px`);
+    const x: number = (((width + stageWidth) / 2 - width) * 100) / stageWidth;
+    const y: number = (((height + stageHeight) / 2 - height) * 100) / stageHeight;
+    DomTools.applyCssStyle(this.imageHandle, 'margin-left', `${x}%`);
+    DomTools.applyCssStyle(this.imageHandle, 'margin-top', `${y}%`);
   }
 
   private startZoomAnimation() {

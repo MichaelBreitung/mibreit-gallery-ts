@@ -71,9 +71,9 @@ function getElementDimension(element: HTMLElement): TStageDimention {
 }
 
 function getElementPosition(element: HTMLElement): { x: number; y: number } {
-  const rect = element.getBoundingClientRect(),
-    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const rect = element.getBoundingClientRect();
+  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   return { y: rect.top + scrollTop, x: rect.left + scrollLeft };
 }
 

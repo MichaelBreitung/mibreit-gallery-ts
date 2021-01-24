@@ -8,9 +8,9 @@ import IImageStage from '../interfaces/IImageStage';
 import IImageViewer from '../interfaces/IImageViewer';
 import Image from '../components/Image';
 import ImageViewer from '../components/ImageViewer';
-import Preloader from '../components/Preloader';
 import { EImageScaleMode, createImageStage } from './createImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
+import {LazyLoader} from 'mibreit-lazy-loader';
 
 function checkConfig(config: SlideshowConfig)
 {
@@ -58,7 +58,7 @@ export default function createSlideshow(config: SlideshowConfig): IImageViewer {
     config.zoom
   );
 
-  const preloader: Preloader = new Preloader(images);
+  const preloader: LazyLoader = new LazyLoader(images);
   const imageViewer: ImageViewer = new ImageViewer(imageStages, images);
   imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
     preloader.setCurrentIndex(index);

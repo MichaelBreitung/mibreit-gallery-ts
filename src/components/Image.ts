@@ -3,76 +3,23 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import {
-  IMAGE_DATA_SRC_ATTRIBUTE,
-  IMAGE_SRC_ATTRIBUTE,
-  IMAGE_TITLE_ATTRIBUTE,
-  IMAGE_DATA_TITLE_ATTRIBUTE,
-} from '../constants';
+import { Element } from 'mibreit-lazy-loader';
+import { IMAGE_TITLE_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from '../constants';
 import DomTools from '../tools/domTools';
-import IImageLoader from '../interfaces/IImageLoader';
 import IImageInfo from '../interfaces/IImageInfo';
 
-enum EImageState {
-  INACTIVE,
-  LOADING,
-  LOADED,
-}
-
-export default class Image implements IImageLoader, IImageInfo {
-  private imageHandle: HTMLElement;
-  private state: EImageState = EImageState.INACTIVE;
+export default class Image extends Element implements IImageInfo {
   private title: string;
-  private width: number;
-  private height: number;
-  private wasLoadedCallbacks: Array<() => void> = new Array();
 
   constructor(imageHandle: HTMLElement) {
-    this.imageHandle = imageHandle;
-    this.state = !imageHandle.hasAttribute(IMAGE_DATA_SRC_ATTRIBUTE) ? EImageState.LOADED : EImageState.INACTIVE;
-
+    super(imageHandle);
     if (imageHandle.hasAttribute(IMAGE_TITLE_ATTRIBUTE)) {
       this.removeTitle(imageHandle);
     }
-
     this.title = imageHandle.getAttribute(IMAGE_DATA_TITLE_ATTRIBUTE);
-    this.width = parseInt(imageHandle.getAttribute('width'));
-    this.height = parseInt(imageHandle.getAttribute('height'));
-    this.limitMaxSizeTo(this.width, this.height);
-    DomTools.disableContextMenu(this.imageHandle);
-    DomTools.disableDragging(this.imageHandle);
-  }
-
-  load(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (this.state === EImageState.INACTIVE) {
-        this.imageHandle.onload = () => {
-          this.imageHandle.removeAttribute(IMAGE_DATA_SRC_ATTRIBUTE);
-          this.state = EImageState.LOADED;
-          this.wasLoadedCallbacks.forEach((callback) => {
-            callback();
-          });
-          resolve(true);
-        };
-        this.state = EImageState.LOADING;
-        const dataSrc = this.imageHandle.getAttribute(IMAGE_DATA_SRC_ATTRIBUTE);
-        this.imageHandle.setAttribute(IMAGE_SRC_ATTRIBUTE, dataSrc);
-      } else if (this.state === EImageState.LOADING) {
-        reject(false);
-      } else {
-        reject(true);
-      }
-    });
-  }
-
-  wasLoaded(): boolean {
-    return this.state === EImageState.LOADED;
-  }
-
-  addWasLoadedCallback(callback: () => void) {
-    if (!this.wasLoadedCallbacks.includes(callback)) {
-      this.wasLoadedCallbacks.push(callback);
-    }
+    this.limitMaxSizeTo(imageHandle, this.getWidth(), this.getHeight());
+    DomTools.disableContextMenu(imageHandle);
+    DomTools.disableDragging(imageHandle);
   }
 
   getTitle(): string {
@@ -80,22 +27,14 @@ export default class Image implements IImageLoader, IImageInfo {
   }
 
   getUrl() {
-    return this.imageHandle.hasAttribute('data-src')
-      ? this.imageHandle.getAttribute('data-src')
-      : this.imageHandle.getAttribute('src');
+    return this.element.hasAttribute('data-src')
+      ? this.element.getAttribute('data-src')
+      : this.element.getAttribute('src');
   }
 
-  getWidth(): number {
-    return this.width;
-  }
-
-  getHeight(): number {
-    return this.height;
-  }
-
-  private limitMaxSizeTo(maxWidth: number, maxHeight: number): void {
-    DomTools.applyCssStyle(this.imageHandle, 'max-width', `${maxWidth}px`);
-    DomTools.applyCssStyle(this.imageHandle, 'max-height', `${maxHeight}px`);
+  private limitMaxSizeTo(imageHandle: HTMLElement, maxWidth: number, maxHeight: number): void {
+    DomTools.applyCssStyle(imageHandle, 'max-width', `${maxWidth}px`);
+    DomTools.applyCssStyle(imageHandle, 'max-height', `${maxHeight}px`);
   }
 
   private removeTitle(imageHandle: HTMLElement) {
