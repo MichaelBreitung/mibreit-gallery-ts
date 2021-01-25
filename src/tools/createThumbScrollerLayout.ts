@@ -34,7 +34,9 @@ function createScrollerButtons(container: HTMLElement): { previousButton: HTMLEl
 function calculateThumbsize(container: HTMLElement, numberOfVisibleThumbs: number, excludeMargin = false) : number
 {
   const oneRemSize = DomTools.getRootFontSize();  
-  const containerWidthRem = DomTools.getElementDimension(container).width / oneRemSize;
+  const containerWidthRem = DomTools.getElementDimension(container).width / oneRemSize;  
+  // for this calculation to hold, we need to fix the container size
+  DomTools.applyCssStyle(container, "width", `${containerWidthRem}rem`);
   const thumbsize = ((containerWidthRem - 2*THUMBS_BUTTON_WIDTH_REM) / numberOfVisibleThumbs) - (excludeMargin ? THUMBS_MARGIN : 0); 
   return thumbsize;
 }
