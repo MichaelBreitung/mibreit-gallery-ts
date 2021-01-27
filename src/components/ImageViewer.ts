@@ -6,15 +6,15 @@
 import IImageViewer from '../interfaces/IImageViewer';
 import IImageStage from '../interfaces/IImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
-import Image from './Image';
+import { IElementLoaderInfo } from 'mibreit-lazy-loader';
 
 export default class ImageViewer implements IImageViewer {
   private currentIndex: number = 0;
   private imageStages: Array<IImageStage>;
-  private images: Array<Image>;
+  private images: Array<IImageInfo & IElementLoaderInfo>;
   private imageChangedCallbacks: Array<(index: number, imageInfo: IImageInfo) => void> = new Array();
 
-  constructor(imageStages: Array<IImageStage>, images: Array<Image>) {
+  constructor(imageStages: Array<IImageStage>, images: Array<IImageInfo & IElementLoaderInfo>) {
     this.imageStages = imageStages;
     this.images = images;
   }
@@ -90,7 +90,7 @@ export default class ImageViewer implements IImageViewer {
   }
 
   private changeCurrentImage(index: number) {
-    console.log('ImageViewer#changeCurrentImage', index);    
+    console.log('ImageViewer#changeCurrentImage', index);
     this.currentIndex = index;
     this.imageStages[this.currentIndex].showImage();
     this.imageChangedCallbacks.forEach((callback) => {

@@ -67,11 +67,11 @@
   <script src="../dist/mibreit-gallery/mibreitGalleryTs.min.js" type="text/javascript"></script>
   <script>
     mibreitGalleryTs.DomTools.documentReady(function () {
-      const imageViewer = mibreitGalleryTs.createGallery({galleryContainerSelector: "#container", imageSelector: "#container > img", scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT, thumbContainerSelector: "#thumbContainer", thumbSelector: "#thumbContainer > img", numberOfVisibleThumbs: 8});
+      const {viewer, loader} = mibreitGalleryTs.createGallery({galleryContainerSelector: "#container", imageSelector: "#container > img", scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT, thumbContainerSelector: "#thumbContainer", thumbSelector: "#thumbContainer > img", numberOfVisibleThumbs: 8});
 
       const titleElement = mibreitGalleryTs.DomTools.getElement("#title");
-      mibreitGalleryTs.DomTools.setInnerHtml(titleElement, imageViewer.getImageInfo(imageViewer.getImageIndex()).getTitle());
-      imageViewer.addImageChangedCallback((index, imageInfo) => {mibreitGalleryTs.DomTools.setInnerHtml(titleElement, imageInfo.getTitle());});
+      mibreitGalleryTs.DomTools.setInnerHtml(titleElement, viewer.getImageInfo(viewer.getImageIndex()).getTitle());
+      viewer.addImageChangedCallback((index, imageInfo) => {mibreitGalleryTs.DomTools.setInnerHtml(titleElement, imageInfo.getTitle());});
     });
   </script>
 </html>

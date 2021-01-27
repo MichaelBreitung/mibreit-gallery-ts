@@ -13,7 +13,7 @@ import createSlideshow, { SlideshowConfig } from './createSlideshow';
 import createGalleryButtons, { GalleryButtons } from './createGalleryButtons';
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
 import { createFullscreen } from './createFullscreen';
-import { LazyLoader } from 'mibreit-lazy-loader';
+import { ILazyLoader } from 'mibreit-lazy-loader';
 import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
 
 function checkConfig(config: GalleryConfig) {
@@ -83,14 +83,14 @@ function setupSwipeHandler(container: HTMLElement, imageViewer: IImageViewer) {
 
 export type GalleryConfig = ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string };
 
-export default function createGallery(config: GalleryConfig): IImageViewer {
+export default function createGallery(config: GalleryConfig): {viewer: IImageViewer, loader: ILazyLoader} {
   checkConfig(config);
 
   const container: HTMLElement = DomTools.getElement(config.galleryContainerSelector);
-  const { imageViewer, preloader } = createSlideshow(config);
+  const { viewer, loader } = createSlideshow(config);
   const thumbScroller: IThumbScroller = createThumbScroller(config, (index: number) => {
-    preloader.setCurrentIndex(index);
-    imageViewer.showImage(index);
+    loader.setCurrentIndex(index);
+    viewer.showImage(index);
   });
   const galleryButtons: GalleryButtons = createGalleryButtons(container);
   const fullScreen: IFullscreenView = createFullscreen(container, DomTools.getElement(config.thumbContainerSelector));
@@ -104,15 +104,15 @@ export default function createGallery(config: GalleryConfig): IImageViewer {
     DomTools.addCssStyle(galleryButtons.previousButton, 'opacity', '0');
   });
 
-  imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+  viewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
     thumbScroller.scrollTo(index, true);
   });
 
-  setupKeyEvents(imageViewer, fullScreen);
+  setupKeyEvents(viewer, fullScreen);
 
-  setupSwipeHandler(container, imageViewer);
+  setupSwipeHandler(container, viewer);
 
-  setupResizeHandler(imageViewer);
+  setupResizeHandler(viewer);
 
-  return imageViewer;
+  return {viewer, loader};
 }

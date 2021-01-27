@@ -10,7 +10,7 @@ import Image from '../components/Image';
 import ImageViewer from '../components/ImageViewer';
 import { EImageScaleMode, createImageStage } from './createImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
-import { LazyLoader } from 'mibreit-lazy-loader';
+import { ILazyLoader, createLazyLoader } from 'mibreit-lazy-loader';
 
 function checkConfig(config: SlideshowConfig) {
   if (typeof config.imageSelector === 'undefined') {
@@ -47,7 +47,7 @@ export type SlideshowConfig = {
   zoom?: boolean;
 };
 
-export default function createSlideshow(config: SlideshowConfig): { imageViewer: IImageViewer; preloader: LazyLoader } {
+export default function createSlideshow(config: SlideshowConfig): { viewer: IImageViewer; loader: ILazyLoader } {
   checkConfig(config);
 
   const { images, imageStages } = prepareImages(
@@ -56,12 +56,12 @@ export default function createSlideshow(config: SlideshowConfig): { imageViewer:
     config.zoom
   );
 
-  const preloader: LazyLoader = new LazyLoader(images);
+  const loader: ILazyLoader = createLazyLoader(images, {});
   const imageViewer: ImageViewer = new ImageViewer(imageStages, images);
   imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-    preloader.setCurrentIndex(index);
+    loader.setCurrentIndex(index);
   });
-  preloader.setCurrentIndex(0);
+  loader.setCurrentIndex(0);
   imageViewer.init();
 
   if (config.interval) {
@@ -70,5 +70,5 @@ export default function createSlideshow(config: SlideshowConfig): { imageViewer:
     }, config.interval);
   }
 
-  return { imageViewer, preloader };
+  return { viewer: imageViewer, loader };
 }
