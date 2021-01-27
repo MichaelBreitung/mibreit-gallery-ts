@@ -33,7 +33,7 @@ export default class Image extends Element implements IImageInfo {
   }
 
   private limitMaxSizeTo(imageHandle: HTMLElement, maxWidth: number, maxHeight: number): void {
-    DomTools.applyCssStyles(imageHandle, `max-width: ${maxWidth}px; max-height: ${maxHeight}px`);
+    DomTools.overwriteCssStyles(imageHandle, `max-width: ${maxWidth}px; max-height: ${maxHeight}px`);
   }
 
   private removeTitle(imageHandle: HTMLElement) {

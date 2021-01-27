@@ -10,13 +10,11 @@ import Image from '../components/Image';
 import ImageViewer from '../components/ImageViewer';
 import { EImageScaleMode, createImageStage } from './createImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
-import {LazyLoader} from 'mibreit-lazy-loader';
+import { LazyLoader } from 'mibreit-lazy-loader';
 
-function checkConfig(config: SlideshowConfig)
-{
-  if (typeof config.imageSelector === "undefined")
-  {
-    throw new Error("SlideshowConfig invalid: no imageSelector provided");
+function checkConfig(config: SlideshowConfig) {
+  if (typeof config.imageSelector === 'undefined') {
+    throw new Error('SlideshowConfig invalid: no imageSelector provided');
   }
 }
 
@@ -49,9 +47,9 @@ export type SlideshowConfig = {
   zoom?: boolean;
 };
 
-export default function createSlideshow(config: SlideshowConfig): IImageViewer {
+export default function createSlideshow(config: SlideshowConfig): { imageViewer: IImageViewer; preloader: LazyLoader } {
   checkConfig(config);
-  
+
   const { images, imageStages } = prepareImages(
     DomTools.getElements(config.imageSelector),
     config.scaleMode,
@@ -63,6 +61,7 @@ export default function createSlideshow(config: SlideshowConfig): IImageViewer {
   imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
     preloader.setCurrentIndex(index);
   });
+  preloader.setCurrentIndex(0);
   imageViewer.init();
 
   if (config.interval) {
@@ -71,5 +70,5 @@ export default function createSlideshow(config: SlideshowConfig): IImageViewer {
     }, config.interval);
   }
 
-  return imageViewer;
+  return { imageViewer, preloader };
 }

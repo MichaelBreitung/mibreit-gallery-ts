@@ -9,9 +9,8 @@ import styles from './ThumbStage.module.css';
 
 export default class ThumbStage extends ImageStageExpand {
   constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number) {
-    super(imageHandle, imageWidth, imageHeight);
-    const oldClasses = DomTools.getCssClass(this.imageStage);
-    DomTools.applyCssClass(this.imageStage, `${oldClasses} ${styles.mibreit_ThumbStage}`);
+    super(imageHandle, imageWidth, imageHeight);    
+    DomTools.addCssClass(this.imageStage, styles.mibreit_ThumbStage);
   }
 
   addStageClickedCallback(callback: () => void): void {

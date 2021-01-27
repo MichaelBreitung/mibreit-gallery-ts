@@ -30,28 +30,31 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   applyScaleMode(): void {
+    console.log('ImageStage#applyScaleMode');
     const stageDimension: TElementDimention = DomTools.getElementDimension(this.imageStage);
     this.applyScaleModeImpl(stageDimension.width, stageDimension.height);
     this.centerImage(stageDimension.width, stageDimension.height);
   }
 
   setSize(widthCss: string, heightCss: string) {
-    DomTools.applyCssStyle(this.imageStage, 'width', widthCss);
-    DomTools.applyCssStyle(this.imageStage, 'height', heightCss);
+    DomTools.addCssStyle(this.imageStage, 'width', widthCss);
+    DomTools.addCssStyle(this.imageStage, 'height', heightCss);
     this.applyScaleMode();
   }
 
   setMargin(marginCss: string) {
-    DomTools.applyCssStyle(this.imageStage, 'margin', marginCss);
+    DomTools.addCssStyle(this.imageStage, 'margin', marginCss);
   }
 
   hideImage(): void {
     // leave enough time for hide animation to be applied
-    setTimeout(() => {
-      this.resetZoom();
-    }, 1000);
-    DomTools.applyCssStyle(this.imageStage, 'opacity', null);
-    DomTools.applyCssStyle(this.imageStage, 'z-index', null);
+    if (this.zoomAnimation) {
+      setTimeout(() => {
+        this.resetZoom();
+      }, 1000);
+    }
+    DomTools.removeCssStyle(this.imageStage, 'opacity');
+    DomTools.removeCssStyle(this.imageStage, 'z-index');
   }
 
   showImage(): void {
@@ -59,15 +62,15 @@ export default abstract class ImageStage implements IImageStage {
     if (this.zoomAnimation) {
       this.startZoomAnimation();
     }
-    DomTools.applyCssStyle(this.imageStage, 'opacity', '1');
-    DomTools.applyCssStyle(this.imageStage, 'z-index', '1');
+    DomTools.addCssStyle(this.imageStage, 'opacity', '1');
+    DomTools.addCssStyle(this.imageStage, 'z-index', '1');
   }
 
   protected abstract applyScaleModeImpl(stageWidth: number, stageHeight: number): void;
 
   private createStage(): HTMLElement {
     const wrapper = DomTools.createElement('div');
-    DomTools.applyCssClass(wrapper, styles.mibreit_ImageStage);
+    DomTools.addCssClass(wrapper, styles.mibreit_ImageStage);
     DomTools.wrapElements([this.imageHandle], wrapper);
     return wrapper;
   }
@@ -76,15 +79,17 @@ export default abstract class ImageStage implements IImageStage {
     const { width, height } = DomTools.getElementDimension(this.imageHandle);
     const x: number = (((width + stageWidth) / 2 - width) * 100) / stageWidth;
     const y: number = (((height + stageHeight) / 2 - height) * 100) / stageHeight;
-    DomTools.applyCssStyle(this.imageHandle, 'margin-left', `${x}%`);
-    DomTools.applyCssStyle(this.imageHandle, 'margin-top', `${y}%`);
+    DomTools.addCssStyle(this.imageHandle, 'margin-left', `${x}%`);
+    DomTools.addCssStyle(this.imageHandle, 'margin-top', `${y}%`);
   }
 
   private startZoomAnimation() {
-    DomTools.applyCssClass(this.imageHandle, 'zoom');
+    console.log('ImageStage#startZoomAnimation');
+    DomTools.addCssClass(this.imageHandle, 'zoom');
   }
 
   private resetZoom() {
-    DomTools.applyCssClass(this.imageHandle, null);
+    console.log('ImageStage#resetZoom');
+    DomTools.removeCssClass(this.imageHandle, 'zoom');
   }
 }

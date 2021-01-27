@@ -10,12 +10,12 @@ import nextImage from '../images/nextImage.svg';
 function createPreviousNextButtons(container: HTMLElement): { previousButton: HTMLElement; nextButton: HTMLElement } {
   const previousButton = DomTools.createElement('div');
   DomTools.setInnerHtml(previousButton, nextImage);
-  DomTools.applyCssClass(previousButton, styles.mibreit_GalleryPrevious);
+  DomTools.addCssClass(previousButton, styles.mibreit_GalleryPrevious);
   DomTools.prependChildElement(previousButton, container);
 
   const nextButton = DomTools.createElement('div');
   DomTools.setInnerHtml(nextButton, nextImage);
-  DomTools.applyCssClass(nextButton, styles.mibreit_GalleryNext);
+  DomTools.addCssClass(nextButton, styles.mibreit_GalleryNext);
   DomTools.appendChildElement(nextButton, container);
 
   return { previousButton, nextButton };

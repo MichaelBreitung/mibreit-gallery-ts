@@ -20,14 +20,14 @@ export default class HorizontalScroller {
     } else {
       positionCss = `${position}px`;
     }
-    DomTools.applyCssStyle(this.scroller, 'transform', `translate(${positionCss})`);
+    DomTools.addCssStyle(this.scroller, 'transform', `translate(${positionCss})`);
     return true;
   }
 
   private createScroller(container: HTMLElement): HTMLElement {
     const childNodes: Array<Node> = DomTools.getChildNodes(container);
     const scroller = DomTools.createElement('div');
-    DomTools.applyCssClass(scroller, styles.mibreit_HorizontalScroller);
+    DomTools.addCssClass(scroller, styles.mibreit_HorizontalScroller);
     DomTools.wrapElements(childNodes, scroller);
 
     return scroller;

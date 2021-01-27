@@ -12,7 +12,7 @@ export default class ImageStageNoScale extends ImageStage {
   }
 
   protected applyScaleModeImpl(_stageWidth: number, _stageHeight: number) {
-    DomTools.applyCssStyle(this.imageHandle, 'width', null);
-    DomTools.applyCssStyle(this.imageHandle, 'height', null);
+    DomTools.removeCssStyle(this.imageHandle, 'width');
+    DomTools.removeCssStyle(this.imageHandle, 'height');
   }
 }

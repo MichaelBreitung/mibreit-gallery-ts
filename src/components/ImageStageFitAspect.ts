@@ -26,7 +26,7 @@ export default class ImageStageFitAspect extends ImageStage {
         newWidth = `100%`;
       }
     }
-    DomTools.applyCssStyle(this.imageHandle, 'width', newWidth);
-    DomTools.applyCssStyle(this.imageHandle, 'height', newHeight);
+    DomTools.addCssStyle(this.imageHandle, 'width', newWidth);
+    DomTools.addCssStyle(this.imageHandle, 'height', newHeight);
   }
 }
