@@ -10,7 +10,10 @@ import Image from '../components/Image';
 import ImageViewer from '../components/ImageViewer';
 import { EImageScaleMode, createImageStage } from './createImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
-import { ILazyLoader, createLazyLoader } from 'mibreit-lazy-loader';
+import { ILazyLoader, createLazyLoader, ELazyMode } from 'mibreit-lazy-loader';
+
+const PRELOADER_BEFORE_SIZE = 3;
+const PRELOADER_AFTER_SIZE = 7;
 
 function checkConfig(config: SlideshowConfig) {
   if (typeof config.imageSelector === 'undefined') {
@@ -56,7 +59,11 @@ export default function createSlideshow(config: SlideshowConfig): { viewer: IIma
     config.zoom
   );
 
-  const loader: ILazyLoader = createLazyLoader(images, {});
+  const loader: ILazyLoader = createLazyLoader(images, {
+    mode: ELazyMode.WINDOWED_EXTERNAL,
+    preloaderBeforeSize: PRELOADER_BEFORE_SIZE,
+    preloaderAfterSize: PRELOADER_AFTER_SIZE,
+  });
   const imageViewer: ImageViewer = new ImageViewer(imageStages, images);
   imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
     loader.setCurrentIndex(index);
