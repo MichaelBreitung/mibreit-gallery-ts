@@ -7,10 +7,10 @@ import { DomTools } from 'mibreit-dom-tools';
 import styles from './HorizontalScroller.module.css';
 
 export default class HorizontalScroller {
-  private scroller: HTMLElement;
+  private _scroller: HTMLElement;
 
   constructor(container: HTMLElement) {
-    this.scroller = this.createScroller(container);
+    this._scroller = this._createScroller(container);
   }
 
   scrollTo(position: number, useRem: boolean = false): boolean {
@@ -20,11 +20,11 @@ export default class HorizontalScroller {
     } else {
       positionCss = `${position}px`;
     }
-    DomTools.addCssStyle(this.scroller, 'transform', `translate(${positionCss})`);
+    DomTools.addCssStyle(this._scroller, 'transform', `translate(${positionCss})`);
     return true;
   }
 
-  private createScroller(container: HTMLElement): HTMLElement {
+  private _createScroller(container: HTMLElement): HTMLElement {
     const childNodes: Array<Node> = DomTools.getChildNodes(container);
     const scroller = DomTools.createElement('div');
     DomTools.addCssClass(scroller, styles.mibreit_HorizontalScroller);

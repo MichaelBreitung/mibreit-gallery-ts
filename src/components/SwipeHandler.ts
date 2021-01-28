@@ -20,44 +20,44 @@ export enum ESwipeDirection {
 }
 
 export default class SwipeHander {
-  private callback: (direction: ESwipeDirection, position: TPosition) => void;
-  private touchStartTime: number;
-  private touchStartPosition: TPosition;
-  private swipeActive: boolean = false;
+  private _callback: (direction: ESwipeDirection, position: TPosition) => void;
+  private _touchStartTime: number;
+  private _touchStartPosition: TPosition;
+  private _swipeActive: boolean = false;
 
   constructor(target: HTMLElement, callback: (direction: ESwipeDirection, position: TPosition) => void) {
-    this.callback = callback;
-    DomTools.addEventListener(target, 'pointerdown', this.touchStart);
-    DomTools.addEventListener(target, 'pointerup', this.touchEnd);
+    this._callback = callback;
+    DomTools.addEventListener(target, 'pointerdown', this._touchStart);
+    DomTools.addEventListener(target, 'pointerup', this._touchEnd);
   }
 
-  private touchStart = (event: PointerEvent) => {
+  private _touchStart = (event: PointerEvent) => {
     console.log('SwipeHander#touchStart');
-    this.swipeActive = true;
-    this.touchStartTime = Date.now();
-    this.touchStartPosition = this.getTouchPosition(event);
+    this._swipeActive = true;
+    this._touchStartTime = Date.now();
+    this._touchStartPosition = this._getTouchPosition(event);
   };
 
-  private touchEnd = (event: PointerEvent) => {
+  private _touchEnd = (event: PointerEvent) => {
     console.log('SwipeHander#touchEnd');
-    if (this.swipeActive && Date.now() - this.touchStartTime < MAXTIME) {
-      const touchEndPosition = this.getTouchPosition(event);
-      const direction = this.detectDirection(this.touchStartPosition, touchEndPosition);
+    if (this._swipeActive && Date.now() - this._touchStartTime < MAXTIME) {
+      const touchEndPosition = this._getTouchPosition(event);
+      const direction = this._detectDirection(this._touchStartPosition, touchEndPosition);
 
       console.log('SwipeHander#touchEnd - direction: ', direction);
-      this.callback(direction, touchEndPosition);
+      this._callback(direction, touchEndPosition);
     }
-    this.swipeActive = false;
+    this._swipeActive = false;
   };
 
-  private getTouchPosition(event: PointerEvent): TPosition {
+  private _getTouchPosition(event: PointerEvent): TPosition {
     return {
       x: event.pageX,
       y: event.pageY,
     };
   }
 
-  private detectDirection(start: TPosition, end: TPosition): ESwipeDirection {
+  private _detectDirection(start: TPosition, end: TPosition): ESwipeDirection {
     const diff: number = start.x - end.x;
     if (diff > TRESHHOLD) {
       return ESwipeDirection.RIGHT;

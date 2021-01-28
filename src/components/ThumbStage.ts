@@ -10,10 +10,10 @@ import styles from './ThumbStage.module.css';
 export default class ThumbStage extends ImageStageExpand {
   constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number) {
     super(imageHandle, imageWidth, imageHeight);    
-    DomTools.addCssClass(this.imageStage, styles.mibreit_ThumbStage);
+    DomTools.addCssClass(this._imageStage, styles.mibreit_ThumbStage);
   }
 
   addStageClickedCallback(callback: () => void): void {
-    DomTools.addClickEventListener(this.imageStage, callback);
+    DomTools.addClickEventListener(this._imageStage, callback);
   }
 }

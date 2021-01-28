@@ -11,8 +11,8 @@ export default class ImageStageStretch extends ImageStage {
     super(imageHandle, imageWidth, imageHeight);
   }
 
-  protected applyScaleModeImpl(_stageWidth: number, _stageHeight: number) {
-    DomTools.addCssStyle(this.imageHandle, 'width', `100%`);
-    DomTools.addCssStyle(this.imageHandle, 'height', `100%`);
+  protected _applyScaleModeImpl(_stageWidth: number, _stageHeight: number) {
+    DomTools.addCssStyle(this._imageHandle, 'width', `100%`);
+    DomTools.addCssStyle(this._imageHandle, 'height', `100%`);
   }
 }

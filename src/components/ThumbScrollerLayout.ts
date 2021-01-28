@@ -11,74 +11,74 @@ import IImageStage from '../interfaces/IImageStage';
 const THUMBSTAGE_MARGIN_REM = 0.5;
 
 export default class ThumbScrollerLayout {
-  private scrollerContainer: HTMLElement;
-  private previousButton: HTMLElement;
-  private nextButton: HTMLElement;
-  private thumbSizeRem: number;
-  private thumbStages: Array<IImageStage>;
-  private numberOfVisibleThumbs: number;
+  private _scrollerContainer: HTMLElement;
+  private _previousButton: HTMLElement;
+  private _nextButton: HTMLElement;
+  private _thumbSizeRem: number;
+  private _thumbStages: Array<IImageStage>;
+  private _numberOfVisibleThumbs: number;
 
   constructor(container: HTMLElement, thumbStages: Array<IImageStage>, numberOfVisibleThumbs: number) {
-    this.numberOfVisibleThumbs = numberOfVisibleThumbs;
-    this.thumbStages = thumbStages;
+    this._numberOfVisibleThumbs = numberOfVisibleThumbs;
+    this._thumbStages = thumbStages;
 
-    this.createScrollerContainer(container);
-    this.createScrollerButtons(container);
+    this._createScrollerContainer(container);
+    this._createScrollerButtons(container);
     DomTools.addCssClass(container, styles.mibreit_ThumbScrollerParentContainer);
 
     this.reinitSize();
   }
 
   reinitSize() {
-    const thumbSize = this.calculateThumbsize(this.scrollerContainer, this.numberOfVisibleThumbs);
-    this.resizeThumbStages(thumbSize);
-    this.thumbSizeRem = thumbSize + THUMBSTAGE_MARGIN_REM;
+    const thumbSize = this._calculateThumbsize(this._scrollerContainer, this._numberOfVisibleThumbs);
+    this._resizeThumbStages(thumbSize);
+    this._thumbSizeRem = thumbSize + THUMBSTAGE_MARGIN_REM;
   }
 
   getThumbSizeRem(): number {
-    return this.thumbSizeRem;
+    return this._thumbSizeRem;
   }
 
   getNumberOfVisibleThumbs(): number {
-    return this.numberOfVisibleThumbs;
+    return this._numberOfVisibleThumbs;
   }
 
   getThumbScrollerButtons(): { previousButton: HTMLElement; nextButton: HTMLElement } {
-    return { previousButton: this.previousButton, nextButton: this.nextButton };
+    return { previousButton: this._previousButton, nextButton: this._nextButton };
   }
 
   getScrollerContainer(): HTMLElement {
-    return this.scrollerContainer;
+    return this._scrollerContainer;
   }
 
-  private createScrollerContainer(container: HTMLElement) {
+  private _createScrollerContainer(container: HTMLElement) {
     const childNodes: Array<Node> = DomTools.getChildNodes(container);
-    this.scrollerContainer = DomTools.createElement('div');
-    DomTools.addCssClass(this.scrollerContainer, styles.mibreit_ThumbScrollerContainer);
-    DomTools.wrapElements(childNodes, this.scrollerContainer);
+    this._scrollerContainer = DomTools.createElement('div');
+    DomTools.addCssClass(this._scrollerContainer, styles.mibreit_ThumbScrollerContainer);
+    DomTools.wrapElements(childNodes, this._scrollerContainer);
   }
 
-  private calculateThumbsize(container: HTMLElement, numberOfVisibleThumbs: number): number {
+  private _calculateThumbsize(container: HTMLElement, numberOfVisibleThumbs: number): number {
     const oneRemSize = DomTools.getRootFontSize();
     const containerWidthRem = DomTools.getElementDimension(container).width / oneRemSize;  
     const thumbsize = containerWidthRem / numberOfVisibleThumbs - THUMBSTAGE_MARGIN_REM;
     return thumbsize;
   }
 
-  private createScrollerButtons(container: HTMLElement) {
-    this.previousButton = DomTools.createElement('div');
-    DomTools.setInnerHtml(this.previousButton, nextThumbs);
-    DomTools.addCssClass(this.previousButton, styles.mibreit_ThumbScrollerPrevious);
-    DomTools.prependChildElement(this.previousButton, container);
+  private _createScrollerButtons(container: HTMLElement) {
+    this._previousButton = DomTools.createElement('div');
+    DomTools.setInnerHtml(this._previousButton, nextThumbs);
+    DomTools.addCssClass(this._previousButton, styles.mibreit_ThumbScrollerPrevious);
+    DomTools.prependChildElement(this._previousButton, container);
 
-    this.nextButton = DomTools.createElement('div');
-    DomTools.setInnerHtml(this.nextButton, nextThumbs);
-    DomTools.addCssClass(this.nextButton, styles.mibreit_ThumbScrollerNext);
-    DomTools.appendChildElement(this.nextButton, container);
+    this._nextButton = DomTools.createElement('div');
+    DomTools.setInnerHtml(this._nextButton, nextThumbs);
+    DomTools.addCssClass(this._nextButton, styles.mibreit_ThumbScrollerNext);
+    DomTools.appendChildElement(this._nextButton, container);
   }
 
-  private resizeThumbStages(size: number) {
-    this.thumbStages.forEach((thumbStage: IImageStage) => {
+  private _resizeThumbStages(size: number) {
+    this._thumbStages.forEach((thumbStage: IImageStage) => {
       thumbStage.setSize(`${size}rem`, `${size}rem`);
     });
   }

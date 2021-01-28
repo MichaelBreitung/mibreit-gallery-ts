@@ -9,21 +9,21 @@ import { IMAGE_TITLE_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from '../constants'
 import IImageInfo from '../interfaces/IImageInfo';
 
 export default class Image extends Element implements IImageInfo {
-  private title: string;
+  private _title: string;
 
   constructor(imageHandle: HTMLElement) {
     super(imageHandle);
     if (imageHandle.hasAttribute(IMAGE_TITLE_ATTRIBUTE)) {
-      this.removeTitle(imageHandle);
+      this._removeTitle(imageHandle);
     }
-    this.title = imageHandle.getAttribute(IMAGE_DATA_TITLE_ATTRIBUTE);
-    this.limitMaxSizeTo(imageHandle, this.getWidth(), this.getHeight());
+    this._title = imageHandle.getAttribute(IMAGE_DATA_TITLE_ATTRIBUTE);
+    this._limitMaxSizeTo(imageHandle, this.getWidth(), this.getHeight());
     DomTools.disableContextMenu(imageHandle);
     DomTools.disableDragging(imageHandle);
   }
 
   getTitle(): string {
-    return this.title;
+    return this._title;
   }
 
   getUrl() {
@@ -32,11 +32,11 @@ export default class Image extends Element implements IImageInfo {
       : this.element.getAttribute('src');
   }
 
-  private limitMaxSizeTo(imageHandle: HTMLElement, maxWidth: number, maxHeight: number): void {
+  private _limitMaxSizeTo(imageHandle: HTMLElement, maxWidth: number, maxHeight: number): void {
     DomTools.overwriteCssStyles(imageHandle, `max-width: ${maxWidth}px; max-height: ${maxHeight}px`);
   }
 
-  private removeTitle(imageHandle: HTMLElement) {
+  private _removeTitle(imageHandle: HTMLElement) {
     imageHandle.setAttribute(IMAGE_DATA_TITLE_ATTRIBUTE, imageHandle.getAttribute(IMAGE_TITLE_ATTRIBUTE));
     imageHandle.removeAttribute(IMAGE_TITLE_ATTRIBUTE);
   }
