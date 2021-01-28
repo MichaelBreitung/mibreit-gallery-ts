@@ -4,42 +4,46 @@
  */
 
 import IThumbScroller from '../interfaces/IThumbScroller';
+import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
 import HorizontalScroller from './HorizontalScroller';
 
 export default class ThumbScroller implements IThumbScroller {
   private scroller: HorizontalScroller;
+  private layout: IThumbScrollerLayout;
   private scrollIndexChangedCallbacks: Array<(index: number) => void> = new Array();
-  private currentScrollIndex: number;
-  private thumbSizeRem: number;
+  private currentScrollIndex: number;  
   private numberOfThumbs: number;
-  private numberOfVisibleThumbs: number;
-
-  constructor(container: HTMLElement, thumbSizeRem: number, numberOfThumbs: number, numberOfVisibleThumbs: number) {
-    this.thumbSizeRem = thumbSizeRem;
-    this.numberOfThumbs = numberOfThumbs;
-    this.numberOfVisibleThumbs = numberOfVisibleThumbs;
-    this.scroller = new HorizontalScroller(container);
+ 
+  constructor(layout: IThumbScrollerLayout, numberOfThumbs: number) {
+    this.layout = layout;
+    this.numberOfThumbs = numberOfThumbs;    
+    this.scroller = new HorizontalScroller(layout.getScrollerContainer());
 
     console.log(
       'ThumbScroller#constructor - thumbSizeRem = ',
-      this.thumbSizeRem,
+      this.layout.getThumbSizeRem(),
       ', numberOfThumbs = ',
       this.numberOfThumbs,
       ', numberOfVisibleThumbs = ',
-      this.numberOfVisibleThumbs
+      this.layout.getNumberOfVisibleThumbs()
     );
+  }
+
+  reinitSize()
+  {
+    this.layout.reinitSize();    
   }
 
   scrollTo(index: number, useCenterIndex: boolean = false): void {
     let newIndex = index;
     if (useCenterIndex) {
-      newIndex -= Math.floor(this.numberOfVisibleThumbs / 2);
+      newIndex -= Math.floor(this.layout.getNumberOfVisibleThumbs() / 2);
     }
 
     newIndex = this.normalizeIndex(newIndex);
 
     this.currentScrollIndex = newIndex;
-    const currentScrollPosition = -newIndex * this.thumbSizeRem;
+    const currentScrollPosition = -newIndex * this.layout.getThumbSizeRem();
     this.scroller.scrollTo(currentScrollPosition, true);
     this.scrollIndexChangedCallbacks.forEach((callback) => {
       callback(this.currentScrollIndex);
@@ -47,8 +51,8 @@ export default class ThumbScroller implements IThumbScroller {
   }
 
   scrollNext(): void {
-    let newIndex = this.currentScrollIndex + this.numberOfVisibleThumbs;
-    const maxPos = this.numberOfThumbs - this.numberOfVisibleThumbs;
+    let newIndex = this.currentScrollIndex + this.layout.getNumberOfVisibleThumbs();
+    const maxPos = this.numberOfThumbs - this.layout.getNumberOfVisibleThumbs();
     if (this.currentScrollIndex === maxPos) {
       newIndex = 0;
     } else if (newIndex >= maxPos) {
@@ -61,8 +65,8 @@ export default class ThumbScroller implements IThumbScroller {
   }
 
   scrollPrevious(): void {
-    let newIndex = this.currentScrollIndex - this.numberOfVisibleThumbs;
-    const maxPos = this.numberOfThumbs - this.numberOfVisibleThumbs;
+    let newIndex = this.currentScrollIndex - this.layout.getNumberOfVisibleThumbs();
+    const maxPos = this.numberOfThumbs - this.layout.getNumberOfVisibleThumbs();
     if (this.currentScrollIndex === 0) {
       newIndex = maxPos;
     } else if (newIndex < 0) {
@@ -81,13 +85,12 @@ export default class ThumbScroller implements IThumbScroller {
   }
 
   private normalizeIndex(index: number): number {
-    const maxPos = this.numberOfThumbs - this.numberOfVisibleThumbs;
+    const maxPos = this.numberOfThumbs - this.layout.getNumberOfVisibleThumbs();
     if (index >= maxPos) {
       return maxPos;
     } else if (index < 0) {
       return 0;
-    }
-    else{
+    } else {
       return index;
     }
   }

@@ -7,10 +7,11 @@ import { ILazyLoader, createLazyLoader } from 'mibreit-lazy-loader';
 import { DomTools } from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import IThumbScroller from '../interfaces/IThumbScroller';
+import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
 import Image from '../components/Image';
 import ThumbScroller from '../components/ThumbScroller';
 import ThumbStage from '../components/ThumbStage';
-import createThumbScrollerLayout, { ThumbScrollerLayout } from './createThumbScrollerLayout';
+import ThumbScrollerLayout from '../components/ThumbScrollerLayout';
 import { NUMBER_OF_VISIBLE_THUMBS } from '../constants';
 
 function checkConfig(config: ThumbScrollerConfig) {
@@ -44,11 +45,12 @@ function prepareThumbs(
   return { thumbStages, thumbLoaders: thumbs };
 }
 
-function addThumbScrollerInteraction(thumbScroller: IThumbScroller, thumbScrollerLayout: ThumbScrollerLayout) {
-  DomTools.addClickEventListener(thumbScrollerLayout.nextButton, () => {
+function addThumbScrollerInteraction(thumbScroller: IThumbScroller, thumbScrollerLayout: IThumbScrollerLayout) {
+  const {previousButton, nextButton} = thumbScrollerLayout.getThumbScrollerButtons();
+  DomTools.addClickEventListener(nextButton, () => {
     thumbScroller.scrollNext();
   });
-  DomTools.addClickEventListener(thumbScrollerLayout.previousButton, () => {
+  DomTools.addClickEventListener(previousButton, () => {
     thumbScroller.scrollPrevious();
   });
 }
@@ -72,16 +74,14 @@ export default function createThumbScroller(
     preloaderBeforeSize: config.numberOfVisibleThumbs,
     preloaderAfterSize: config.numberOfVisibleThumbs,
   });
-  const thumbScrollerLayout: ThumbScrollerLayout = createThumbScrollerLayout(
+  const thumbScrollerLayout: IThumbScrollerLayout = new ThumbScrollerLayout(
     DomTools.getElement(config.thumbContainerSelector),
     thumbStages,
     numberOfVisibleThumbs
   );
   const thumbScroller: ThumbScroller = new ThumbScroller(
-    thumbScrollerLayout.scrollerContainer,
-    thumbScrollerLayout.thumbSizeRem,
-    thumbStages.length,
-    numberOfVisibleThumbs
+    thumbScrollerLayout,
+    thumbStages.length
   );
 
   addThumbScrollerInteraction(thumbScroller, thumbScrollerLayout);

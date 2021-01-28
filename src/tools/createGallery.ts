@@ -54,9 +54,10 @@ function setupKeyEvents(imageViewer: IImageViewer, fullScreen: IFullscreenView) 
   });
 }
 
-function setupResizeHandler(imageViewer: IImageViewer) {
+function setupResizeHandler(imageViewer: IImageViewer, thumbScroller: IThumbScroller) {
   DomTools.addResizeEventListener((_event: UIEvent) => {
     imageViewer.reinitSize();
+    thumbScroller.reinitSize();
   });
 }
 
@@ -112,7 +113,7 @@ export default function createGallery(config: GalleryConfig): {viewer: IImageVie
 
   setupSwipeHandler(container, viewer);
 
-  setupResizeHandler(viewer);
+  setupResizeHandler(viewer, thumbScroller);
 
   return {viewer, loader};
 }

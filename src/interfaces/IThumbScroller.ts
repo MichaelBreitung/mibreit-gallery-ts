@@ -10,5 +10,7 @@ export default interface IThumbScroller {
 
   scrollNext(): void;
 
+  reinitSize(): void;
+
   addScrollIndexChangedCallback(callback: (index: number) => void): void;
 }

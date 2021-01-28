@@ -18,9 +18,5 @@ export const PRELOADER_LEFT_SIZE = 3;
 export const SLIDESHOW_INTERVAL = 5000;
 export const NUMBER_OF_VISIBLE_THUMBS = 7;
 
-// Sizes
-export const THUMBS_BUTTON_WIDTH_REM = 4;
-export const THUMBS_MARGIN = 0.5;
-
 // Opacities
 export const GALLERY_BUTTONS_SHOW_OPACITY = 0.5;

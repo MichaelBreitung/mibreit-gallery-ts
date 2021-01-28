@@ -1,14 +1,14 @@
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   mode: 'production',
   entry: './src/index.ts',
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "./mibreit-gallery/mibreitGalleryTs.min.js",
-    library: "mibreitGalleryTs",
-    libraryTarget: "var",
+    path: path.resolve(__dirname, 'dist'),
+    filename: './mibreit-gallery/mibreitGalleryTs.min.js',
+    library: 'mibreitGalleryTs',
+    libraryTarget: 'var',
   },
   module: {
     rules: [
@@ -19,20 +19,23 @@ module.exports = {
       },
       {
         test: /\.css?$/,
-        use: [{
-          loader: 'style-loader', 
-          options: {
-            injectType: 'singletonStyleTag'
-          }
-        },{
-          loader: 'css-loader',
-          options: {            
-            modules: {
-              localIdentName: '[local]'
-            }
-          }
-        }],
-        exclude: /node_modules/,        
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              injectType: 'singletonStyleTag',
+            },
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[local]',
+              },
+            },
+          },
+        ],
+        exclude: /node_modules/,
       },
       {
         test: /\.svg$/,
@@ -45,17 +48,16 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({
-        uglifyOptions: {          
-          output: {
-            // removing comments
-            comments: false,
+      new TerserPlugin({
+        terserOptions: {
+          // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+          mangle: {
+            properties: {
+              regex: /^_/,
+            },
           },
           compress: {
-            // remove console.logs
             drop_console: true,
-            unused: true,
-            dead_code: true
           },
         },
       }),
