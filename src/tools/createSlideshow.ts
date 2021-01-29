@@ -4,13 +4,13 @@
  */
 
 import { DomTools } from 'mibreit-dom-tools';
+import { ILazyLoader, createLazyLoader, ELazyMode } from 'mibreit-lazy-loader';
 import IImageStage from '../interfaces/IImageStage';
 import IImageViewer from '../interfaces/IImageViewer';
 import Image from '../components/Image';
 import ImageViewer from '../components/ImageViewer';
 import { EImageScaleMode, createImageStage } from './createImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
-import { ILazyLoader, createLazyLoader, ELazyMode } from 'mibreit-lazy-loader';
 
 const PRELOADER_BEFORE_SIZE = 3;
 const PRELOADER_AFTER_SIZE = 7;

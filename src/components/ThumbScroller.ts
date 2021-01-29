@@ -31,19 +31,22 @@ export default class ThumbScroller implements IThumbScroller {
 
   reinitSize()
   {
-    this._layout.reinitSize();    
+    this._layout.reinitSize();  
+    this.scrollTo(this._currentScrollIndex, false);  
   }
 
-  scrollTo(index: number, useCenterIndex: boolean = false): void {
+  scrollTo(index: number, useCenterIndex: boolean = true): void {    
     let newIndex = index;
     if (useCenterIndex) {
       newIndex -= Math.floor(this._layout.getNumberOfVisibleThumbs() / 2);
     }
 
-    newIndex = this._normalizeIndex(newIndex);
+    const normalizedIndex = this._normalizeIndex(newIndex);
 
-    this._currentScrollIndex = newIndex;
-    const currentScrollPosition = -newIndex * this._layout.getThumbSizeRem();
+    console.log("ThumbScroller#scrollTo", newIndex, normalizedIndex);
+
+    this._currentScrollIndex = normalizedIndex;
+    const currentScrollPosition = -normalizedIndex * this._layout.getThumbSizeRem();
     this._scroller.scrollTo(currentScrollPosition, true);
     this._scrollIndexChangedCallbacks.forEach((callback) => {
       callback(this._currentScrollIndex);
@@ -58,9 +61,6 @@ export default class ThumbScroller implements IThumbScroller {
     } else if (newIndex >= maxPos) {
       newIndex = maxPos;
     }
-
-    console.log('ThumbScroller#scrollNext - oldIndex = ', this._currentScrollIndex, ', newIndex = ', newIndex);
-
     this.scrollTo(newIndex);
   }
 
@@ -72,9 +72,6 @@ export default class ThumbScroller implements IThumbScroller {
     } else if (newIndex < 0) {
       newIndex = 0;
     }
-
-    console.log('ThumbScroller#scrollPrevious - oldIndex = ', this._currentScrollIndex, ', newIndex = ', newIndex);
-
     this.scrollTo(newIndex);
   }
 
@@ -84,7 +81,7 @@ export default class ThumbScroller implements IThumbScroller {
     }
   }
 
-  private _normalizeIndex(index: number): number {
+  private _normalizeIndex(index: number): number { 
     const maxPos = this._numberOfThumbs - this._layout.getNumberOfVisibleThumbs();
     if (index >= maxPos) {
       return maxPos;

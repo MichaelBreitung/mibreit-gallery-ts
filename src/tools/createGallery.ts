@@ -15,6 +15,9 @@ import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
 import { createFullscreen } from './createFullscreen';
 import { ILazyLoader } from 'mibreit-lazy-loader';
 import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
+import debounce from './debounce';
+
+const DEBOUNCE_TIMER = 500;
 
 function checkConfig(config: GalleryConfig) {
   if (typeof config.galleryContainerSelector === 'undefined') {
@@ -55,10 +58,11 @@ function setupKeyEvents(imageViewer: IImageViewer, fullScreen: IFullscreenView) 
 }
 
 function setupResizeHandler(imageViewer: IImageViewer, thumbScroller: IThumbScroller) {
-  DomTools.addResizeEventListener((_event: UIEvent) => {
-    imageViewer.reinitSize();
+  const debouncedThumbResizer = debounce(() => {    
     thumbScroller.reinitSize();
-  });
+  }, DEBOUNCE_TIMER, false);
+
+  DomTools.addResizeEventListener(() => {imageViewer.reinitSize(); debouncedThumbResizer();});
 }
 
 function setupSwipeHandler(container: HTMLElement, imageViewer: IImageViewer) {
@@ -84,7 +88,7 @@ function setupSwipeHandler(container: HTMLElement, imageViewer: IImageViewer) {
 
 export type GalleryConfig = ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string };
 
-export default function createGallery(config: GalleryConfig): {viewer: IImageViewer, loader: ILazyLoader} {
+export default function createGallery(config: GalleryConfig): { viewer: IImageViewer; loader: ILazyLoader } {
   checkConfig(config);
 
   const container: HTMLElement = DomTools.getElement(config.galleryContainerSelector);
@@ -115,5 +119,5 @@ export default function createGallery(config: GalleryConfig): {viewer: IImageVie
 
   setupResizeHandler(viewer, thumbScroller);
 
-  return {viewer, loader};
+  return { viewer, loader };
 }
