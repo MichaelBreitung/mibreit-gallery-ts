@@ -27,9 +27,9 @@ export default class Image extends Element implements IImageInfo {
   }
 
   getUrl() {
-    return this.element.hasAttribute('data-src')
-      ? this.element.getAttribute('data-src')
-      : this.element.getAttribute('src');
+    return this._element.hasAttribute('data-src')
+      ? this._element.getAttribute('data-src')
+      : this._element.getAttribute('src');
   }
 
   private _limitMaxSizeTo(imageHandle: HTMLElement, maxWidth: number, maxHeight: number): void {
