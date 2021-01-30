@@ -7,10 +7,11 @@ import { DomTools } from 'mibreit-dom-tools';
 import styles from './ThumbScrollerLayout.module.css';
 import nextThumbs from '../images/nextThumbs.svg';
 import IImageStage from '../interfaces/IImageStage';
+import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
 
 const THUMBSTAGE_MARGIN_REM = 0.5;
 
-export default class ThumbScrollerLayout {
+export default class ThumbScrollerLayout implements IThumbScrollerLayout {
   private _scrollerContainer: HTMLElement;
   private _previousButton: HTMLElement;
   private _nextButton: HTMLElement;
@@ -41,6 +42,11 @@ export default class ThumbScrollerLayout {
 
   getNumberOfVisibleThumbs(): number {
     return this._numberOfVisibleThumbs;
+  }
+
+  getNumberOfThumbs(): number 
+  {
+    return this._thumbStages.length;
   }
 
   getThumbScrollerButtons(): { previousButton: HTMLElement; nextButton: HTMLElement } {

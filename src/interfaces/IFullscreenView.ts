@@ -8,5 +8,7 @@ export default interface IFullscreenView {
 
   deActivate(): void;
 
+  addFullscreenChangedCallback(callback: (active: boolean) => void): void;
+
   isFullscreenActive(): boolean;
 }

@@ -6,6 +6,7 @@
 import { DomTools, TElementDimention } from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import styles from './ImageStage.module.css';
+import animationStyles from '../tools/animations.module.css';
 
 /**
  * The ImageStage is responsible for proper scaling and centering
@@ -71,16 +72,17 @@ export default abstract class ImageStage implements IImageStage {
   private _createStage(): HTMLElement {
     const wrapper = DomTools.createElement('div');
     DomTools.addCssClass(wrapper, styles.mibreit_ImageStage);
+    DomTools.addCssClass(wrapper, animationStyles.mibreit_GalleryFade);
     DomTools.wrapElements([this._imageHandle], wrapper);
     return wrapper;
   }
 
   private centerImage(stageWidth: number, stageHeight: number) {
     const { width, height } = DomTools.getElementDimension(this._imageHandle);
-    const x: number = (((width + stageWidth) / 2 - width) * 100) / stageWidth;
-    const y: number = (((height + stageHeight) / 2 - height) * 100) / stageHeight;
-    DomTools.addCssStyle(this._imageHandle, 'margin-left', `${x}%`);
-    DomTools.addCssStyle(this._imageHandle, 'margin-top', `${y}%`);
+    const x: number = (width + stageWidth) / 2 - width;
+    const y: number = (height + stageHeight) / 2 - height;
+    DomTools.addCssStyle(this._imageHandle, 'margin-left', `${x}px`);
+    DomTools.addCssStyle(this._imageHandle, 'margin-top', `${y}px`);    
   }
 
   private startZoomAnimation() {

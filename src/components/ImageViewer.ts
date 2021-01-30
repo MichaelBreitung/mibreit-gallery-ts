@@ -6,21 +6,19 @@
 import IImageViewer from '../interfaces/IImageViewer';
 import IImageStage from '../interfaces/IImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
-import { IElementLoaderInfo } from 'mibreit-lazy-loader';
+import Image from './Image';
+import createImageStage, { EImageScaleMode } from '../factories/createImageStage';
 
 export default class ImageViewer implements IImageViewer {
   private _currentIndex: number = 0;
-  private _imageStages: Array<IImageStage>;
-  private _images: Array<IImageInfo & IElementLoaderInfo>;
+  private _imageStages: Array<IImageStage> = [];
+  private _images: Array<Image>;
   private _imageChangedCallbacks: Array<(index: number, imageInfo: IImageInfo) => void> = new Array();
 
-  constructor(imageStages: Array<IImageStage>, images: Array<IImageInfo & IElementLoaderInfo>) {
-    this._imageStages = imageStages;
+  constructor(images: Array<Image>, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {   
     this._images = images;
-  }
+    this._prepareImageStages(images, scaleMode);
 
-  init(): void {
-    console.log('ImageViewer#init');
     if (this._isValidIndex(0)) {
       if (!this._images[0].wasLoaded()) {
         this._images[0].addWasLoadedCallback(() => {
@@ -67,6 +65,12 @@ export default class ImageViewer implements IImageViewer {
     this._imageStages[this._currentIndex].applyScaleMode();
   }
 
+  setZoomAnimation(active: boolean): void {
+    this._imageStages.forEach(stage => {
+      stage.setZoomAnimation(active);
+    })
+  }
+
   addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void) {
     if (!this._imageChangedCallbacks.includes(callback)) {
       this._imageChangedCallbacks.push(callback);
@@ -83,6 +87,17 @@ export default class ImageViewer implements IImageViewer {
     } else {
       return null;
     }
+  }
+
+  private _prepareImageStages(images: Array<Image>, scaleMode: EImageScaleMode)
+  {    
+    images.forEach(image => {
+      const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);     
+      image.addWasLoadedCallback(() => {
+        imageStage.applyScaleMode();
+      });      
+      this._imageStages.push(imageStage);
+    });      
   }
 
   private _isValidIndex(index: number) {

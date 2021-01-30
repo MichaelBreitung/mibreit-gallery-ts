@@ -14,6 +14,8 @@ export default interface IImageViewer {
 
   reinitSize(): void;
 
+  setZoomAnimation(active: boolean): void;
+
   addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void): void;
 
   getImageIndex(): number;

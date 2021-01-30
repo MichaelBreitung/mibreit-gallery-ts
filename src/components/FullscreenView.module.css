@@ -18,6 +18,7 @@
   height: 3rem;
   right: 1rem;
   top: 1rem;
+  z-index: 3;
 }
 
 .mibreit_Fullscreen > .mibreit_Fullscreen_exit > svg {

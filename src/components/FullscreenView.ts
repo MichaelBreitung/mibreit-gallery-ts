@@ -6,17 +6,20 @@
 import { DomTools } from 'mibreit-dom-tools';
 import IFullscreenView from '../interfaces/IFullscreenView';
 import styles from './FullscreenView.module.css';
+import fullscreenClose from '../images/close.svg';
 
 const GALLERY_PLACEHOLDER_ID = 'galleryContainerPlaceholder';
 const THUMBS_PLACEHOLDER_ID = 'thumbContainerPlaceholder';
 
 export default class FullscreenView implements IFullscreenView {
+  private _fullscreenChangedCallbacks: Array<(active: boolean) => void> = [];
   private _fullscreenActive: boolean;
   private _galleryContainer: HTMLElement;
   private _thumbContainer?: HTMLElement;
   private _fullScreenContainer: HTMLElement | null = null;
   private _galleryContainerPlaceholder: HTMLElement | null = null;
   private _thumbContainerPlaceholder: HTMLElement | null = null;
+  private _fullScreenCloseButton: HTMLElement | null = null;
 
   constructor(galleryContainer: HTMLElement, thumbContainer?: HTMLElement) {
     this._fullscreenActive = false;
@@ -34,7 +37,11 @@ export default class FullscreenView implements IFullscreenView {
         this._moveThumbsToFullscreen();
       }
       this._addFullscreen();
+      this._setupCloseButtonHandler();
       this._fullscreenActive = true;
+      this._fullscreenChangedCallbacks.forEach((callback) => {
+        callback(true);
+      });
     }
   }
 
@@ -46,6 +53,15 @@ export default class FullscreenView implements IFullscreenView {
       }
       this._removeFullscreen();
       this._fullscreenActive = false;
+      this._fullscreenChangedCallbacks.forEach((callback) => {
+        callback(false);
+      });
+    }
+  }
+
+  addFullscreenChangedCallback(callback: (active: boolean) => void) {
+    if (!this._fullscreenChangedCallbacks.includes(callback)) {
+      this._fullscreenChangedCallbacks.push(callback);
     }
   }
 
@@ -60,6 +76,10 @@ export default class FullscreenView implements IFullscreenView {
     DomTools.setAttribute(this._galleryContainerPlaceholder, 'id', GALLERY_PLACEHOLDER_ID);
     this._thumbContainerPlaceholder = DomTools.createElement('div');
     DomTools.setAttribute(this._thumbContainerPlaceholder, 'id', THUMBS_PLACEHOLDER_ID);
+    this._fullScreenCloseButton = DomTools.createElement('div');
+    DomTools.setInnerHtml(this._fullScreenCloseButton, fullscreenClose);
+    DomTools.addCssClass(this._fullScreenCloseButton, styles.mibreit_Fullscreen_exit);
+    DomTools.appendChildElement(this._fullScreenCloseButton, this._fullScreenContainer);
   }
 
   private _addFullscreen() {
@@ -97,5 +117,14 @@ export default class FullscreenView implements IFullscreenView {
     DomTools.prependBeforeChild(this._thumbContainer, this._thumbContainerPlaceholder);
     DomTools.removeElement(this._thumbContainerPlaceholder);
     DomTools.removeCssStyle(this._thumbContainer, 'flex-grow');
+  }
+
+  private _setupCloseButtonHandler() {
+    DomTools.addClickEventListener(this._fullScreenCloseButton, (event: MouseEvent) => {
+      event.stopPropagation();
+      if (this._fullscreenActive) {
+        this.deActivate();
+      }
+    });
   }
 }

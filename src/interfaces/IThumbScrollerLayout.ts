@@ -8,6 +8,8 @@ export default interface IThumbScrollerLayout {
 
   getNumberOfVisibleThumbs(): number;
 
+  getNumberOfThumbs(): number;
+
   getThumbScrollerButtons(): { previousButton: HTMLElement; nextButton: HTMLElement };
 
   getScrollerContainer(): HTMLElement;

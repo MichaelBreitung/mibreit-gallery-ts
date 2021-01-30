@@ -6,7 +6,7 @@
 import FullscreenView from '../components/FullscreenView';
 import IFullscreenView from '../interfaces/IFullscreenView';
 
-export const createFullscreen = function (
+export default function (
   galleryContainer: HTMLElement,
   thumbContainer?: HTMLElement
 ): IFullscreenView { 

@@ -16,7 +16,7 @@ export enum EImageScaleMode {
   EXPAND,
 }
 
-export const createImageStage = function (
+export default function (
   imageHandle: HTMLElement,
   imageWidth: number,
   imageHeight: number,  
