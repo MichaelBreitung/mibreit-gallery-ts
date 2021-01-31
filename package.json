@@ -1,12 +1,14 @@
 {
   "name": "mibreit-gallery-ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Versatile Javascript Gallery written in Typescript",
   "main": "lib/index.js",
+  "types": "lib/src/index.d.ts",
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack --config webpack.config.js",
     "build:dev": "webpack --config webpack.config.dev.js",
+    "build:npm": "webpack --config webpack.config.npm.js",
     "test": "jest"
   },
   "keywords": [
