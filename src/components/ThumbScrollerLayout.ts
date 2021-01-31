@@ -9,8 +9,6 @@ import nextThumbs from '../images/nextThumbs.svg';
 import IImageStage from '../interfaces/IImageStage';
 import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
 
-const THUMBSTAGE_MARGIN_REM = 0.5;
-
 export default class ThumbScrollerLayout implements IThumbScrollerLayout {
   private _scrollerContainer: HTMLElement;
   private _previousButton: HTMLElement;
@@ -31,9 +29,8 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
   }
 
   reinitSize() {
-    const thumbSize = this._calculateThumbsize(this._scrollerContainer, this._numberOfVisibleThumbs);
-    this._resizeThumbStages(thumbSize);
-    this._thumbSizeRem = thumbSize + THUMBSTAGE_MARGIN_REM;
+    this._thumbSizeRem = this._calculateThumbsize(this._scrollerContainer, this._numberOfVisibleThumbs);
+    this._resizeThumbStages(this._thumbSizeRem);
   }
 
   getThumbSizeRem(): number {
@@ -44,8 +41,7 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
     return this._numberOfVisibleThumbs;
   }
 
-  getNumberOfThumbs(): number 
-  {
+  getNumberOfThumbs(): number {
     return this._thumbStages.length;
   }
 
@@ -66,8 +62,8 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
 
   private _calculateThumbsize(container: HTMLElement, numberOfVisibleThumbs: number): number {
     const oneRemSize = DomTools.getRootFontSize();
-    const containerWidthRem = DomTools.getElementDimension(container).width / oneRemSize;  
-    const thumbsize = containerWidthRem / numberOfVisibleThumbs - THUMBSTAGE_MARGIN_REM;
+    const containerWidthRem = DomTools.getElementDimension(container).width / oneRemSize;
+    const thumbsize = containerWidthRem / numberOfVisibleThumbs;
     return thumbsize;
   }
 
@@ -84,8 +80,11 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
   }
 
   private _resizeThumbStages(size: number) {
+    const innnerSize: number = size * 0.9;
+    const margin: number = size * 0.05;
     this._thumbStages.forEach((thumbStage: IImageStage) => {
-      thumbStage.setSize(`${size}rem`, `${size}rem`);
+      thumbStage.setSize(`${innnerSize}rem`, `${innnerSize}rem`);
+      thumbStage.setMargin(`${margin}rem`);
     });
   }
 }
