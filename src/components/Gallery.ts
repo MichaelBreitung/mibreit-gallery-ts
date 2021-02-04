@@ -31,13 +31,15 @@ export default class Gallery {
     this._checkConfig(config);
     const container: HTMLElement = DomTools.getElement(config.galleryContainerSelector);
     this._slideShow = new Slideshow(config);
-    const thumbScroller = new ThumbScrollerView(config, (index: number) => {
+    const thumbScroller: IThumbScroller | null = new ThumbScrollerView(config, (index: number) => {
       this._slideShow.getLoader().setCurrentIndex(index);
       this._slideShow.getViewer().showImage(index);
     }).getScroller();
-    this._slideShow.getViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-      thumbScroller.scrollTo(index, true);
-    });
+    if (thumbScroller) {
+      this._slideShow.getViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+        thumbScroller.scrollTo(index, true);
+      });
+    }
     const fullScreenView = createFullscreen(container, DomTools.getElement(config.thumbContainerSelector));
     const { previousButton, nextButton } = this._createPreviousNextButtons(container);
     const fullscreenButton = this._createFullscreenButton(container);
@@ -128,19 +130,24 @@ export default class Gallery {
     });
   }
 
-  private _setupResizeHandler(imageViewer: IImageViewer, thumbScroller: IThumbScroller) {
-    const debouncedThumbResizer = debounce(
-      () => {
-        thumbScroller.reinitSize();
-      },
-      DEBOUNCE_TIMER,
-      false
-    );
-
-    DomTools.addResizeEventListener(() => {
-      imageViewer.reinitSize();
-      debouncedThumbResizer();
-    });
+  private _setupResizeHandler(imageViewer: IImageViewer, thumbScroller: IThumbScroller | null) {
+    if (thumbScroller) {
+      const debouncedThumbResizer = debounce(
+        () => {
+          thumbScroller.reinitSize();
+        },
+        DEBOUNCE_TIMER,
+        false
+      );
+      DomTools.addResizeEventListener(() => {
+        imageViewer.reinitSize();
+        debouncedThumbResizer();
+      });
+    } else {
+      DomTools.addResizeEventListener(() => {
+        imageViewer.reinitSize();
+      });
+    }
   }
 
   private _setupSwipeHandler(container: HTMLElement, imageViewer: IImageViewer) {
@@ -183,10 +190,12 @@ export default class Gallery {
     fullscreenView: IFullscreenView,
     fullscreenButton: HTMLElement,
     imageViewer: IImageViewer,
-    thumbScroller: IThumbScroller
+    thumbScroller: IThumbScroller | null
   ) {
     fullscreenView.addFullscreenChangedCallback((active: boolean) => {
-      thumbScroller.reinitSize();
+      if (thumbScroller) {
+        thumbScroller.reinitSize();
+      }
       imageViewer.reinitSize();
       if (active) {
         DomTools.addCssStyle(fullscreenButton, 'display', 'none');

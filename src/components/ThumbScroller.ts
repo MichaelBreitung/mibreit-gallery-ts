@@ -11,10 +11,10 @@ export default class ThumbScroller implements IThumbScroller {
   private _scroller: HorizontalScroller;
   private _layout: IThumbScrollerLayout;
   private _scrollIndexChangedCallbacks: Array<(index: number) => void> = new Array();
-  private _currentScrollIndex: number;  
- 
+  private _currentScrollIndex: number;
+
   constructor(layout: IThumbScrollerLayout) {
-    this._layout = layout;     
+    this._layout = layout;
     this._scroller = new HorizontalScroller(layout.getScrollerContainer());
 
     console.log(
@@ -27,13 +27,12 @@ export default class ThumbScroller implements IThumbScroller {
     );
   }
 
-  reinitSize()
-  {
-    this._layout.reinitSize();  
-    this.scrollTo(this._currentScrollIndex, false);  
+  reinitSize() {
+    this._layout.reinitSize();
+    this.scrollTo(this._currentScrollIndex, false);
   }
 
-  scrollTo(index: number, useCenterIndex: boolean = true): void {    
+  scrollTo(index: number, useCenterIndex: boolean = true): void {
     let newIndex = index;
     if (useCenterIndex) {
       newIndex -= Math.floor(this._layout.getNumberOfVisibleThumbs() / 2);
@@ -41,7 +40,7 @@ export default class ThumbScroller implements IThumbScroller {
 
     const normalizedIndex = this._normalizeIndex(newIndex);
 
-    console.log("ThumbScroller#scrollTo", newIndex, normalizedIndex);
+    console.log('ThumbScroller#scrollTo', newIndex, normalizedIndex);
 
     this._currentScrollIndex = normalizedIndex;
     const currentScrollPosition = -normalizedIndex * this._layout.getThumbSizeRem();
@@ -79,7 +78,7 @@ export default class ThumbScroller implements IThumbScroller {
     }
   }
 
-  private _normalizeIndex(index: number): number { 
+  private _normalizeIndex(index: number): number {
     const maxPos = this._layout.getNumberOfThumbs() - this._layout.getNumberOfVisibleThumbs();
     if (index >= maxPos) {
       return maxPos;

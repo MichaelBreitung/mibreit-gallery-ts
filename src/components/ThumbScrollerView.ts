@@ -14,13 +14,13 @@ import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
 export type ThumbScrollerConfig = {
   thumbContainerSelector: string;
   thumbSelector: string;
-  numberOfVisibleThumbs?: number;
+  numberOfVisibleThumbs: number;
   initialIndex?: number;
 };
 
 export default class ThumbScrollerView {
   private _loader: ILazyLoader;
-  private _thumbScroller: IThumbScroller;
+  private _thumbScroller: IThumbScroller = null;
 
   constructor(config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void) {
     this._checkConfig(config);
@@ -35,11 +35,13 @@ export default class ThumbScrollerView {
       config.numberOfVisibleThumbs,
       thumbClickedCallback
     );
-    this._thumbScroller = this._prepareThumbScroller(layout, this._loader);
-    this._addThumbScrollerInteraction(this._thumbScroller, layout);
+    if (config.numberOfVisibleThumbs <= thumbs.length) {
+      this._thumbScroller = this._prepareThumbScroller(layout, this._loader);
+      this._addThumbScrollerInteraction(this._thumbScroller, layout);
+    }
   }
 
-  getScroller(): IThumbScroller {
+  getScroller(): IThumbScroller | null {
     return this._thumbScroller;
   }
 
