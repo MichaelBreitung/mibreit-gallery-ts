@@ -21,8 +21,9 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
     this._numberOfVisibleThumbs = numberOfVisibleThumbs;
     this._thumbStages = thumbStages;
 
-    this._createScrollerContainer(container, numberOfVisibleThumbs > thumbStages.length);
-    this._createScrollerButtons(container, numberOfVisibleThumbs > thumbStages.length);    
+    const willThumbsFitContainer = numberOfVisibleThumbs >= thumbStages.length;
+    this._createScrollerContainer(container, willThumbsFitContainer);
+    this._createScrollerButtons(container, willThumbsFitContainer);    
     DomTools.addCssClass(container, styles.mibreit_ThumbScrollerParentContainer);
 
     this.reinitSize();

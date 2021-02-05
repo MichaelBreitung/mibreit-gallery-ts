@@ -35,7 +35,7 @@ export default class ThumbScrollerView {
       config.numberOfVisibleThumbs,
       thumbClickedCallback
     );
-    if (config.numberOfVisibleThumbs <= thumbs.length) {
+    if (config.numberOfVisibleThumbs < thumbs.length) {
       this._thumbScroller = this._prepareThumbScroller(layout, this._loader);
       this._addThumbScrollerInteraction(this._thumbScroller, layout);
     }
