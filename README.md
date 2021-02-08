@@ -2,7 +2,7 @@
 
 ## About
 
-I have developed this gallery to fit the needs of my [homepage](www.mibreit-photo.com). The goal was a fast and versatile gallery, which could be easily maintained and extended. The gallery is written in modular Typescript and contains windowed lazy loading techniques, a slideshow, a thumb viewer and a fullscreen. 
+I have developed this gallery to fit the needs of my [homepage](https://www.mibreit-photo.com). The goal was a fast and versatile gallery, which could be easily maintained and extended. The gallery is written in modular Typescript and contains windowed lazy loading techniques, a slideshow, a thumb viewer and a fullscreen. 
 
 ## Technologie
 
