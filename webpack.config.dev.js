@@ -31,7 +31,7 @@ module.exports = {
             }
           }
         }],
-        exclude: /node_modules/,        
+        include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules/mibreit-lazy-loader')],    
       },
       {
         test: /\.svg$/,
@@ -41,7 +41,7 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.ts', '.js'],
   },
   optimization: {
     minimize: false
