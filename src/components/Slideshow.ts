@@ -23,8 +23,7 @@ export default class Slideshow {
   private _loader: ILazyLoader;
   private _imageViewer: IImageViewer;
 
-  constructor(config: SlideshowConfig) {
-    this._checkConfig(config);
+  constructor(config: SlideshowConfig) {   
     const images = this._prepareImages(DomTools.getElements(config.imageSelector));
     this._loader = this._prepareLoader(images);
     this._imageViewer = this._prepareImageViewer(images, this._loader, config.scaleMode, config.zoom);
@@ -44,12 +43,6 @@ export default class Slideshow {
   getLoader() : ILazyLoader
   {
     return this._loader;
-  }
-
-  private _checkConfig(config: SlideshowConfig) {
-    if (typeof config.imageSelector === 'undefined') {
-      throw new Error('SlideshowConfig invalid: no imageSelector provided');
-    }
   }
 
   private _prepareImages(imagesSelector: NodeListOf<HTMLElement>): Array<Image> {

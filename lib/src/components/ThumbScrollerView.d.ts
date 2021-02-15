@@ -9,12 +9,12 @@ export declare type ThumbScrollerConfig = {
     numberOfVisibleThumbs: number;
     initialIndex?: number;
 };
+export declare function isThumbScrollerConfig(config: any): boolean;
 export default class ThumbScrollerView {
     private _loader;
     private _thumbScroller;
     constructor(config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void);
     getScroller(): IThumbScroller | null;
-    private _checkConfig;
     private _prepareThumbs;
     private _prepareThumbScroller;
     private _addThumbScrollerInteraction;

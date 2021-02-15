@@ -9,7 +9,7 @@ import IImageViewer from '../interfaces/IImageViewer';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IImageInfo from '../interfaces/IImageInfo';
 import IFullscreenView from '../interfaces/IFullscreenView';
-import ThumbScrollerView, { ThumbScrollerConfig } from '../components/ThumbScrollerView';
+import { isThumbScrollerConfig, ThumbScrollerConfig } from '../components/ThumbScrollerView';
 import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
 import Slideshow, { SlideshowConfig } from '../components/Slideshow';
 import createFullscreen from '../factories/createFullscreen';
@@ -19,28 +19,39 @@ import styles from './Gallery.module.css';
 import animationStyles from '../tools/animations.module.css';
 import nextImage from '../images/nextImage.svg';
 import fullscreen from '../images/fullscreen.svg';
+import createSlideshow from '../factories/createSlideshow';
+import createThumbScrollerView from '../factories/createThumbScrollerView';
 
 const DEBOUNCE_TIMER = 500;
 
-export type GalleryConfig = ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string };
+export type GalleryConfig =
+  | (ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string })
+  | (SlideshowConfig & { galleryContainerSelector: string });
 
 export default class Gallery {
   private _slideShow: Slideshow;
 
   constructor(config: GalleryConfig) {
-    this._checkConfig(config);
     const container: HTMLElement = DomTools.getElement(config.galleryContainerSelector);
-    this._slideShow = new Slideshow(config);
-    const thumbScroller: IThumbScroller | null = new ThumbScrollerView(config, (index: number) => {
-      this._slideShow.getLoader().setCurrentIndex(index);
-      this._slideShow.getViewer().showImage(index);
-    }).getScroller();
-    if (thumbScroller) {
-      this._slideShow.getViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-        thumbScroller.scrollTo(index, true);
-      });
+    this._slideShow = createSlideshow(config);
+
+    let thumbContainer: HTMLElement;
+    let thumbScroller: IThumbScroller | null = null;
+    if (isThumbScrollerConfig(config)) {
+      const thumbConfig: ThumbScrollerConfig = config as ThumbScrollerConfig;
+      thumbContainer = DomTools.getElement(thumbConfig.thumbContainerSelector);
+      thumbScroller = createThumbScrollerView(thumbConfig, (index: number) => {
+        this._slideShow.getLoader().setCurrentIndex(index);
+        this._slideShow.getViewer().showImage(index);
+      }).getScroller();
+      if (thumbScroller) {
+        this._slideShow.getViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+          thumbScroller.scrollTo(index, true);
+        });
+      }
     }
-    const fullScreenView = createFullscreen(container, DomTools.getElement(config.thumbContainerSelector));
+
+    const fullScreenView = createFullscreen(container, thumbContainer);
     const { previousButton, nextButton } = this._createPreviousNextButtons(container);
     const fullscreenButton = this._createFullscreenButton(container);
     this._setupHoverEvents(container, [previousButton, nextButton, fullscreenButton]);
@@ -57,12 +68,6 @@ export default class Gallery {
 
   getLoader(): ILazyLoader {
     return this._slideShow.getLoader();
-  }
-
-  private _checkConfig(config: GalleryConfig) {
-    if (typeof config.galleryContainerSelector === 'undefined') {
-      throw new Error('GalleryConfig invalid: no galleryContainerSelector provided');
-    }
   }
 
   private _createPreviousNextButtons(container: HTMLElement): { previousButton: HTMLElement; nextButton: HTMLElement } {

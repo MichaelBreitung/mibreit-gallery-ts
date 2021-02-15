@@ -18,12 +18,23 @@ export type ThumbScrollerConfig = {
   initialIndex?: number;
 };
 
+export function isThumbScrollerConfig(config: any) : boolean
+{
+  let isConfig = true;
+  if (typeof config.thumbContainerSelector !== 'string') {
+    isConfig = false;
+  }
+  if (typeof config.thumbSelector !== 'string') {
+    isConfig = false;
+  }
+  return isConfig;
+}
+
 export default class ThumbScrollerView {
   private _loader: ILazyLoader;
   private _thumbScroller: IThumbScroller = null;
 
-  constructor(config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void) {
-    this._checkConfig(config);
+  constructor(config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void) {    
     const thumbs = this._prepareThumbs(DomTools.getElements(config.thumbSelector));
     this._loader = createLazyLoader(thumbs, {
       preloaderBeforeSize: config.numberOfVisibleThumbs,
@@ -43,15 +54,6 @@ export default class ThumbScrollerView {
 
   getScroller(): IThumbScroller | null {
     return this._thumbScroller;
-  }
-
-  private _checkConfig(config: ThumbScrollerConfig) {
-    if (typeof config.thumbContainerSelector === 'undefined') {
-      throw new Error('ThumbScrollerConfig invalid: no thumbContainerSelector provided');
-    }
-    if (typeof config.thumbSelector === 'undefined') {
-      throw new Error('ThumbScrollerConfig invalid: no thumbSelector provided');
-    }
   }
 
   private _prepareThumbs(thumbSelector: NodeListOf<HTMLElement>): Array<Image> {

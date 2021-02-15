@@ -17,7 +17,6 @@ export default class Slideshow {
     constructor(config: SlideshowConfig);
     getViewer(): IImageViewer;
     getLoader(): ILazyLoader;
-    private _checkConfig;
     private _prepareImages;
     private _prepareLoader;
     private _prepareImageViewer;
