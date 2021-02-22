@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { ILazyLoader, createLazyLoader } from 'mibreit-lazy-loader';
+import { ILazyLoader, createLazyLoader, ELazyMode } from 'mibreit-lazy-loader';
 import { DomTools } from 'mibreit-dom-tools';
 import Image from '../components/Image';
 import createThumbScroller from '../factories/createThumbScroller';
@@ -18,8 +18,7 @@ export type ThumbScrollerConfig = {
   initialIndex?: number;
 };
 
-export function isThumbScrollerConfig(config: any) : boolean
-{
+export function isThumbScrollerConfig(config: any): boolean {
   let isConfig = true;
   if (typeof config.thumbContainerSelector !== 'string') {
     isConfig = false;
@@ -34,11 +33,12 @@ export default class ThumbScrollerView {
   private _loader: ILazyLoader;
   private _thumbScroller: IThumbScroller = null;
 
-  constructor(config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void) {    
+  constructor(config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void) {
     const thumbs = this._prepareThumbs(DomTools.getElements(config.thumbSelector));
     this._loader = createLazyLoader(thumbs, {
       preloaderBeforeSize: config.numberOfVisibleThumbs,
       preloaderAfterSize: config.numberOfVisibleThumbs,
+      mode: ELazyMode.WINDOWED_EXTERNAL,
     });
     const layout: IThumbScrollerLayout = createThumbScrollerLayout(
       DomTools.getElement(config.thumbContainerSelector),
