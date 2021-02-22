@@ -32,7 +32,13 @@ export default class Gallery {
   private _slideShow: Slideshow;
 
   constructor(config: GalleryConfig) {
-    const container: HTMLElement = DomTools.getElement(config.galleryContainerSelector);
+    const container: HTMLElement | null = DomTools.getElement(config.galleryContainerSelector);
+
+    if (!container)
+    {
+      throw new Error(`Gallery#constructor - no container found for ${config.galleryContainerSelector}`)
+    }
+
     this._slideShow = createSlideshow(config);
 
     let thumbContainer: HTMLElement;
