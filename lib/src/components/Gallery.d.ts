@@ -3,6 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 import { ILazyLoader } from 'mibreit-lazy-loader';
+import IGallery from '../interfaces/IGallery';
 import IImageViewer from '../interfaces/IImageViewer';
 import { ThumbScrollerConfig } from '../components/ThumbScrollerView';
 import { SlideshowConfig } from '../components/Slideshow';
@@ -11,7 +12,7 @@ export declare type GalleryConfig = (ThumbScrollerConfig & SlideshowConfig & {
 }) | (SlideshowConfig & {
     galleryContainerSelector: string;
 });
-export default class Gallery {
+export default class Gallery implements IGallery {
     private _slideShow;
     constructor(config: GalleryConfig);
     getViewer(): IImageViewer;

@@ -5,6 +5,7 @@
 
 import { DomTools } from 'mibreit-dom-tools';
 import { ILazyLoader } from 'mibreit-lazy-loader';
+import IGallery from '../interfaces/IGallery';
 import IImageViewer from '../interfaces/IImageViewer';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IImageInfo from '../interfaces/IImageInfo';
@@ -28,7 +29,7 @@ export type GalleryConfig =
   | (ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string })
   | (SlideshowConfig & { galleryContainerSelector: string });
 
-export default class Gallery {
+export default class Gallery implements IGallery {
   private _slideShow: Slideshow;
 
   constructor(config: GalleryConfig) {
