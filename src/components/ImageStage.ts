@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools, TElementDimention } from 'mibreit-dom-tools';
+import { DomTools, TElementDimension } from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import styles from './ImageStage.module.css';
 import animationStyles from '../tools/animations.module.css';
@@ -32,7 +32,7 @@ export default abstract class ImageStage implements IImageStage {
 
   applyScaleMode(): void {
     console.log('ImageStage#applyScaleMode');
-    const stageDimension: TElementDimention = DomTools.getElementDimension(this._imageStage);
+    const stageDimension: TElementDimension = DomTools.getElementDimension(this._imageStage);
     this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
     this.centerImage(stageDimension.width, stageDimension.height);
   }
