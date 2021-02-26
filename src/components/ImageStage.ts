@@ -34,7 +34,7 @@ export default abstract class ImageStage implements IImageStage {
     console.log('ImageStage#applyScaleMode');
     const stageDimension: TElementDimension = DomTools.getElementDimension(this._imageStage);
     this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
-    this.centerImage(stageDimension.width, stageDimension.height);
+    this._centerImage(stageDimension.width, stageDimension.height);
   }
 
   setSize(widthCss: string, heightCss: string) {
@@ -51,7 +51,7 @@ export default abstract class ImageStage implements IImageStage {
     // leave enough time for hide animation to be applied
     if (this._zoomAnimation) {
       setTimeout(() => {
-        this.resetZoom();
+        this._resetZoom();
       }, 1000);
     }
     DomTools.removeCssStyle(this._imageStage, 'opacity');
@@ -61,7 +61,7 @@ export default abstract class ImageStage implements IImageStage {
   showImage(): void {
     this.applyScaleMode();
     if (this._zoomAnimation) {
-      this.startZoomAnimation();
+      this._startZoomAnimation();
     }
     DomTools.addCssStyle(this._imageStage, 'opacity', '1');
     DomTools.addCssStyle(this._imageStage, 'z-index', '1');
@@ -77,7 +77,7 @@ export default abstract class ImageStage implements IImageStage {
     return wrapper;
   }
 
-  private centerImage(stageWidth: number, stageHeight: number) {
+  private _centerImage(stageWidth: number, stageHeight: number) {
     const { width, height } = DomTools.getElementDimension(this._imageHandle);
     const x: number = (width + stageWidth) / 2 - width;
     const y: number = (height + stageHeight) / 2 - height;
@@ -85,12 +85,12 @@ export default abstract class ImageStage implements IImageStage {
     DomTools.addCssStyle(this._imageHandle, 'margin-top', `${y}px`);    
   }
 
-  private startZoomAnimation() {
+  private _startZoomAnimation() {
     console.log('ImageStage#startZoomAnimation');
     DomTools.addCssClass(this._imageHandle, 'zoom');
   }
 
-  private resetZoom() {
+  private _resetZoom() {
     console.log('ImageStage#resetZoom');
     DomTools.removeCssClass(this._imageHandle, 'zoom');
   }

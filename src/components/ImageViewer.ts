@@ -51,13 +51,11 @@ export default class ImageViewer implements IImageViewer {
 
   showNextImage(): boolean {
     const newIndex = this._currentIndex < this._imageStages.length - 1 ? this._currentIndex + 1 : 0;
-
     return this.showImage(newIndex);
   }
 
   showPreviousImage(): boolean {
     const newIndex = this._currentIndex > 0 ? this._currentIndex - 1 : this._imageStages.length - 1;
-
     return this.showImage(newIndex);
   }
 
