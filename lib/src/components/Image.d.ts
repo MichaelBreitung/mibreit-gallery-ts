@@ -8,7 +8,7 @@ export default class Image extends Element implements IImageInfo {
     private _title;
     constructor(imageHandle: HTMLElement);
     getTitle(): string;
-    getUrl(): string;
+    getUrl(): string | null;
     private _limitMaxSizeTo;
-    private _removeTitle;
+    private _prepareTitle;
 }

@@ -6,6 +6,6 @@ import IFullscreen from './IFullscreen';
 import ISlideshowContainer from './ISlideshowContainer';
 import IThumbScroller from './IThumbScroller';
 export default interface IGalleryContainer extends ISlideshowContainer {
-    getFullscreen(): IFullscreen;
-    getScroller(): IThumbScroller;
+    getFullscreen(): IFullscreen | null;
+    getScroller(): IThumbScroller | null;
 }

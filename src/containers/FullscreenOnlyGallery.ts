@@ -29,39 +29,47 @@ export default class FullscreenOnlyGallery implements IFullscreen {
     this._container = DomTools.createElement('div');
     DomTools.addCssClass(this._container, styles.mibreit_gallery_fullscreen_only_container);
     const body = DomTools.getElement('body');
+    // @ts-ignore - there will always be a body, no nullcheck needed
     DomTools.appendChildElement(this._container, body);
     originalImages.forEach((image: HTMLElement) => {
       DomTools.appendChildElement(DomTools.cloneElement(image), this._container);
     });
+
     const adaptedConfig = {
       ...config,
       slideshowContainerSelector: `.${styles.mibreit_gallery_fullscreen_only_container}`,
     };
     adaptedConfig.imageSelector = `.${styles.mibreit_gallery_fullscreen_only_container} > img`;
+
     this._gallery = createGallery(adaptedConfig);
-    this._gallery.getFullscreen().addFullscreenChangedCallback((active: boolean) => {
-      if (active) {
-        DomTools.addCssStyle(this._container, 'display', 'unset');
-        this._gallery.getViewer().reinitSize();
-      } else {
-        DomTools.addCssStyle(this._container, 'display', 'none');
-      }
-    });
+    const fullscreen = this._gallery.getFullscreen();
+    const viewer = this._gallery.getViewer();
+    if (fullscreen && viewer) {
+      fullscreen.addFullscreenChangedCallback((active: boolean) => {
+        if (active) {
+          DomTools.addCssStyle(this._container, 'display', 'unset');
+          viewer.reinitSize();
+        } else {
+          DomTools.addCssStyle(this._container, 'display', 'none');
+        }
+      });
+    }
   }
 
-  activate(): void {
-    this._gallery.getFullscreen().activate();
+  activate(): void {    
+    this._gallery.getFullscreen()?.activate();
   }
 
   deActivate(): void {
-    this._gallery.getFullscreen().deActivate();
+    this._gallery.getFullscreen()?.deActivate();
   }
 
   addFullscreenChangedCallback(callback: (active: boolean) => void): void {
-    this._gallery.getFullscreen().addFullscreenChangedCallback(callback);
+    this._gallery.getFullscreen()?.addFullscreenChangedCallback(callback);
   }
 
   isFullscreenActive(): boolean {
-    return this._gallery.getFullscreen().isFullscreenActive();
+    const isActive = this._gallery.getFullscreen()?.isFullscreenActive();
+    return isActive ? isActive : false;
   }
 }

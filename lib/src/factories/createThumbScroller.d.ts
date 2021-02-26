@@ -4,4 +4,4 @@
  */
 import { ThumbScrollerConfig } from '../containers/ThumbScrollerContainer';
 import IThumbScroller from '../interfaces/IThumbScroller';
-export default function (config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void): IThumbScroller;
+export default function (config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void): IThumbScroller | null;

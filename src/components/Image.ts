@@ -13,10 +13,7 @@ export default class Image extends Element implements IImageInfo {
 
   constructor(imageHandle: HTMLElement) {
     super(imageHandle);
-    if (imageHandle.hasAttribute(IMAGE_TITLE_ATTRIBUTE)) {
-      this._removeTitle(imageHandle);
-    }
-    this._title = imageHandle.getAttribute(IMAGE_DATA_TITLE_ATTRIBUTE);
+    this._prepareTitle(imageHandle);
     this._limitMaxSizeTo(imageHandle, this.getWidth(), this.getHeight());
     DomTools.disableContextMenu(imageHandle);
     DomTools.disableDragging(imageHandle);
@@ -36,8 +33,14 @@ export default class Image extends Element implements IImageInfo {
     DomTools.overwriteCssStyles(imageHandle, `max-width: ${maxWidth}px; max-height: ${maxHeight}px`);
   }
 
-  private _removeTitle(imageHandle: HTMLElement) {
-    imageHandle.setAttribute(IMAGE_DATA_TITLE_ATTRIBUTE, imageHandle.getAttribute(IMAGE_TITLE_ATTRIBUTE));
-    imageHandle.removeAttribute(IMAGE_TITLE_ATTRIBUTE);
+  private _prepareTitle(imageHandle: HTMLElement) {
+    let title = imageHandle.getAttribute(IMAGE_TITLE_ATTRIBUTE);
+    if (title) {
+      imageHandle.setAttribute(IMAGE_DATA_TITLE_ATTRIBUTE, title);
+      imageHandle.removeAttribute(IMAGE_TITLE_ATTRIBUTE);
+    } else {
+      title = imageHandle.getAttribute(IMAGE_DATA_TITLE_ATTRIBUTE);
+    }
+    this._title = title ? title : '';
   }
 }

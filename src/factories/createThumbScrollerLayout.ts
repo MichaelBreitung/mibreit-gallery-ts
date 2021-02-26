@@ -17,9 +17,12 @@ function prepareThumbStages(thumbs: Array<Image>, thumbClickedCallback?: (index:
       thumbStage.applyScaleMode();
     });
     thumbStage.showImage();
-    thumbStage.addStageClickedCallback(() => {
-      thumbClickedCallback(index);
-    });
+    if (thumbClickedCallback)
+    {
+      thumbStage.addStageClickedCallback(() => {
+        thumbClickedCallback(index);
+      });
+    }    
     thumbStages.push(thumbStage);
   });
   return thumbStages;

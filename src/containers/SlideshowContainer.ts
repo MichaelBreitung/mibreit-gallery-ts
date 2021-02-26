@@ -30,26 +30,35 @@ export type SlideshowConfig = {
 };
 
 export default class SlideshowContainer implements ISlideshowContainer {
-  private _loader: ILazyLoader;
-  private _imageViewer: IImageViewer;
+  private _loader: ILazyLoader | null = null;
+  private _imageViewer: IImageViewer | null = null;
 
   constructor(config: SlideshowConfig) {
     const images = this._prepareImages(DomTools.getElements(config.imageSelector));
-    this._loader = this._prepareLoader(images);
-    this._imageViewer = this._prepareImageViewer(images, this._loader, config.scaleMode, config.zoom);
-
-    if (config.interval !== undefined) {
-      setInterval(() => {
-        this._imageViewer.showNextImage();
-      }, config.interval);
-    }
+    if (images.length > 0)
+    {
+      this._loader = this._prepareLoader(images);
+      this._imageViewer = this._prepareImageViewer(images, this._loader, config.scaleMode, config.zoom);
+  
+      if (config.interval !== undefined) {
+        setInterval(() => {
+          // @ts-ignore
+          this._imageViewer.showNextImage();
+        }, config.interval);
+      }
+    }    
   }
 
-  getViewer(): IImageViewer {
+  isInitialized() : boolean
+  {
+    return this._imageViewer != null && this._loader != null;
+  }
+
+  getViewer(): IImageViewer | null {
     return this._imageViewer;
   }
 
-  getLoader(): ILazyLoader {
+  getLoader(): ILazyLoader | null {
     return this._loader;
   }
 

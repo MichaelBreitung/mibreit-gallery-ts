@@ -43,7 +43,7 @@ export type GalleryConfig =
 
 export default class GalleryContainer implements IGallery {
   private _slideShowContainer: ISlideshowContainer;
-  private _fullscreenContainer: IFullscreen;
+  private _fullscreenContainer: IFullscreen | null = null;
   private _thumbScroller: IThumbScroller | null = null;
 
   constructor(config: GalleryConfig) {
@@ -55,45 +55,55 @@ export default class GalleryContainer implements IGallery {
 
     this._slideShowContainer = createSlideshow(config);
 
-    let thumbContainer: HTMLElement;    
-    if (isThumbScrollerConfig(config)) {
-      const thumbConfig: ThumbScrollerConfig = config as ThumbScrollerConfig;
-      thumbContainer = DomTools.getElement(thumbConfig.thumbContainerSelector);
-      this._thumbScroller = createThumbScroller(thumbConfig, (index: number) => {
-        this._slideShowContainer.getLoader().setCurrentIndex(index);
-        this._slideShowContainer.getViewer().showImage(index);
-      });
-      if (this._thumbScroller) {
-        this._slideShowContainer.getViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-          this._thumbScroller.scrollTo(index, true);
+    const viewer = this._slideShowContainer.getViewer();
+    const loader = this._slideShowContainer.getLoader();
+    if (viewer != null && loader != null)
+    {
+      let thumbContainer: HTMLElement | null | undefined;    
+      if (isThumbScrollerConfig(config)) {
+        const thumbConfig: ThumbScrollerConfig = config as ThumbScrollerConfig;
+        thumbContainer = DomTools.getElement(thumbConfig.thumbContainerSelector);
+        this._thumbScroller = createThumbScroller(thumbConfig, (index: number) => {
+          loader.setCurrentIndex(index);
+          viewer.showImage(index);
         });
+        if (this._thumbScroller != null) {
+          viewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+            // @ts-ignore - once it is initialized it will not get null again
+            this._thumbScroller.scrollTo(index, true);
+          });
+        }
       }
+  
+      this._fullscreenContainer = createFullscreen(container, thumbContainer);
+      const { previousButton, nextButton } = this._createPreviousNextButtons(container);
+      const fullscreenButton = this._createFullscreenButton(container);
+      this._setupHoverEvents(container, [previousButton, nextButton, fullscreenButton]);
+      this._setupKeyEvents(viewer, this._fullscreenContainer, fullscreenButton);
+      this._setupSwipeHandler(container, viewer);
+      this._setupFullscreenClickEvent(fullscreenButton, this._fullscreenContainer, viewer);
+      this._setupResizeHandler(viewer, this._thumbScroller);
+      this._setupFullscreenChangedHandler(this._fullscreenContainer, fullscreenButton, viewer, this._thumbScroller);
     }
-
-    this._fullscreenContainer = createFullscreen(container, thumbContainer);
-    const { previousButton, nextButton } = this._createPreviousNextButtons(container);
-    const fullscreenButton = this._createFullscreenButton(container);
-    this._setupHoverEvents(container, [previousButton, nextButton, fullscreenButton]);
-    this._setupKeyEvents(this.getViewer(), this._fullscreenContainer, fullscreenButton);
-    this._setupSwipeHandler(container, this.getViewer());
-    this._setupFullscreenClickEvent(fullscreenButton, this._fullscreenContainer, this.getViewer());
-    this._setupResizeHandler(this.getViewer(), this._thumbScroller);
-    this._setupFullscreenChangedHandler(this._fullscreenContainer, fullscreenButton, this.getViewer(), this._thumbScroller);
+  }
+  
+  isInitialized(): boolean {
+    return this._slideShowContainer.isInitialized();
   }
 
-  getViewer(): IImageViewer {
+  getViewer(): IImageViewer | null {
     return this._slideShowContainer.getViewer();
   }
 
-  getLoader(): ILazyLoader {
+  getLoader(): ILazyLoader | null {
     return this._slideShowContainer.getLoader();
   }
 
-  getScroller(): IThumbScroller {
+  getScroller(): IThumbScroller | null {
     return this._thumbScroller;
   }
 
-  getFullscreen(): IFullscreen {
+  getFullscreen(): IFullscreen | null {
     return this._fullscreenContainer;
   }
 

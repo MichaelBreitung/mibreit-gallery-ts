@@ -21,7 +21,7 @@ function checkConfig(config: ThumbScrollerConfig) {
   }
 }
 
-export default function (config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void): IThumbScroller {
+export default function (config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void): IThumbScroller | null {
   checkConfig(config);
   return new ThumbScrollerContainer(config, thumbClickedCallback).getScroller();
 }

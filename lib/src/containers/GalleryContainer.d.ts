@@ -19,10 +19,11 @@ export default class GalleryContainer implements IGallery {
     private _fullscreenContainer;
     private _thumbScroller;
     constructor(config: GalleryConfig);
-    getViewer(): IImageViewer;
-    getLoader(): ILazyLoader;
-    getScroller(): IThumbScroller;
-    getFullscreen(): IFullscreen;
+    isInitialized(): boolean;
+    getViewer(): IImageViewer | null;
+    getLoader(): ILazyLoader | null;
+    getScroller(): IThumbScroller | null;
+    getFullscreen(): IFullscreen | null;
     private _createPreviousNextButtons;
     private _createFullscreenButton;
     private _setupHoverEvents;

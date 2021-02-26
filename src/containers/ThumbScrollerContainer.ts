@@ -40,8 +40,12 @@ export default class ThumbScrollerContainer {
       preloaderAfterSize: config.numberOfVisibleThumbs,
       mode: ELazyMode.WINDOWED_EXTERNAL,
     });
+    const thumbContainer = DomTools.getElement(config.thumbContainerSelector);
+    if (!thumbContainer) {
+      throw new Error('ThumbScrollerContainer#constructor - invalid thumb container selector');
+    }
     const layout: IThumbScrollerLayout = createThumbScrollerLayout(
-      DomTools.getElement(config.thumbContainerSelector),
+      thumbContainer,
       thumbs,
       config.numberOfVisibleThumbs,
       thumbClickedCallback

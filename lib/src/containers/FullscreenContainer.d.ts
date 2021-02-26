@@ -17,12 +17,15 @@ export default class FullscreenContainer implements IFullscreen {
     private _thumbContainerPlaceholder;
     private _fullScreenCloseButton;
     private _usePlaceholder;
-    constructor(slideshowContainer: HTMLElement, thumbContainer?: HTMLElement, usePlaceholder?: boolean);
+    constructor(slideshowContainer: HTMLElement, thumbContainer?: HTMLElement | null, usePlaceholder?: boolean);
     activate(): void;
     deActivate(): void;
     addFullscreenChangedCallback(callback: (active: boolean) => void): void;
     isFullscreenActive(): boolean;
     private _createFullscreenContainer;
+    private _createFullscreenCloseButton;
+    private _createSlideshowContainerPlaceholder;
+    private _createThumbContainerPlaceholder;
     private _addFullscreen;
     private _removeFullscreen;
     private _moveGalleryToFullscreen;
