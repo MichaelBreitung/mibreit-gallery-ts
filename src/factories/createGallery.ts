@@ -3,16 +3,16 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import Gallery, { GalleryConfig } from '../components/Gallery';
-import IGallery from '../interfaces/IGallery';
+import GalleryContainer, { GalleryConfig } from '../containers/GalleryContainer';
+import IGalleryContainer from '../interfaces/IGalleryContainer';
 
 function checkConfig(config: GalleryConfig) {
-  if (typeof config.galleryContainerSelector !== 'string') {
-    throw new Error('createGallery - config missing galleryContainerSelector string');
+  if (typeof config.slideshowContainerSelector !== 'string') {
+    throw new Error('createGallery - config missing slideshowContainerSelector string');
   }
 }
 
-export default function (config: GalleryConfig): IGallery {
+export default function (config: GalleryConfig): IGalleryContainer {
   checkConfig(config);
-  return new Gallery(config);
+  return new GalleryContainer(config);
 }

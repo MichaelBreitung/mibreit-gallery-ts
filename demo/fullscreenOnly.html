@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta name="copyright" content="Michael Breitung"/>
+    <meta name="author" content="Michael Breitung"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Landscape Photography by Michael Breitung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+      #container {
+        position: relative;
+        width: 960px;        
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;        
+      }
+      #container > img
+      {
+        width: 100%;
+        height: auto;
+      }    
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      Nisi non veniam do eu ut Lorem tempor minim duis reprehenderit. Officia reprehenderit et veniam excepteur do. Proident duis irure ex elit veniam cillum. Deserunt eiusmod minim dolore qui cupidatat consequat commodo consequat veniam aliqua.
+      <img src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg" data-title="Stubai Mountains" alt="Stubai Mountains" width="1280" height="853"/>
+      Quis officia dolor pariatur commodo duis laboris esse magna do. Excepteur incididunt cillum eiusmod mollit eu voluptate veniam magna incididunt veniam commodo ad. Non deserunt laboris fugiat id. Sunt velit ad est ad. Culpa fugiat fugiat officia ipsum dolore officia. Ipsum cupidatat voluptate occaecat reprehenderit deserunt qui deserunt. Ad mollit eu culpa ipsum ad esse non esse voluptate magna do ex quis.
+      <img src="https://www.mibreit-photo.com/galleries/favorites/images/Fantasia.jpg" alt="Fantasia" width="1280" height="853"/>
+      In enim fugiat ut anim pariatur velit ut in mollit eiusmod. In consectetur cupidatat in nisi deserunt voluptate sint ut. Veniam aliquip non duis in amet quis incididunt veniam incididunt.
+      <img src="https://www.mibreit-photo.com/galleries/favorites/images/Heidelberg-Transition.jpg" title="Heidelberg Evening" alt="The old Castle in Heidelberg and Heidelberg Old Town during Sunset." width="1280" height="640"/>
+      <img src="https://www.mibreit-photo.com/galleries/favorites/images/Secret-Beach-Blues.jpg" alt="Secret Beach" width="1280" height="853"/> 
+      Quis nisi ad reprehenderit cupidatat. Ad eiusmod cupidatat labore et sunt ex. Do nostrud proident ea minim pariatur dolor nostrud sit elit ullamco exercitation laboris do. Adipisicing excepteur labore ut fugiat id Lorem qui laboris aliquip. Fugiat id deserunt ipsum culpa. Deserunt tempor irure eiusmod est ad sunt Lorem in pariatur. Magna adipisicing excepteur irure excepteur culpa.
+      <img src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg" title="Cuernos" alt="Cuernos" width="720" height="1080"/>
+      Est magna consectetur aliquip deserunt sint pariatur duis culpa quis. Deserunt eu nisi sint occaecat. Veniam sint excepteur in occaecat consectetur cillum id ullamco labore exercitation. Elit veniam aute elit ad culpa. Ad adipisicing exercitation exercitation nisi sint nisi sunt anim sunt.
+      <img src="https://www.mibreit-photo.com/galleries/favorites/images/Revelation.jpg" alt="Revelation" width="1280" height="853"/>            
+    </div>
+  </body>
+  <script src="../dist/mibreit-gallery/mibreitGalleryTs.min.js" type="text/javascript"></script>
+  <script>
+    mibreitGalleryTs.DomTools.documentReady(function () {
+      const gallery = mibreitGalleryTs.createFullscreenOnlyGallery({imageSelector: "#container > img", scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT});
+      gallery.activate();
+    });
+  </script>
+</html>

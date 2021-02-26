@@ -5,12 +5,22 @@
 
 import { DomTools } from 'mibreit-dom-tools';
 import { ILazyLoader, createLazyLoader, ELazyMode } from 'mibreit-lazy-loader';
-import Image from '../components/Image';
-import { EImageScaleMode } from '../factories/createImageStage';
-import createImageViewer from '../factories/createImageViewer';
+
+// interfaces
 import IImageInfo from '../interfaces/IImageInfo';
 import IImageViewer from '../interfaces/IImageViewer';
+import ISlideshowContainer from '../interfaces/ISlideshowContainer';
+
+// helpers
+import Image from '../components/Image';
+import { EImageScaleMode } from '../factories/createImageStage';
+
+// factories
+import createImageViewer from '../factories/createImageViewer';
+
+// constants
 import { PRELOADER_LEFT_SIZE, PRELOADER_RIGHT_SIZE } from '../constants';
+
 
 export type SlideshowConfig = {
   imageSelector: string;
@@ -19,11 +29,11 @@ export type SlideshowConfig = {
   zoom?: boolean;
 };
 
-export default class Slideshow { 
+export default class SlideshowContainer implements ISlideshowContainer {
   private _loader: ILazyLoader;
   private _imageViewer: IImageViewer;
 
-  constructor(config: SlideshowConfig) {   
+  constructor(config: SlideshowConfig) {
     const images = this._prepareImages(DomTools.getElements(config.imageSelector));
     this._loader = this._prepareLoader(images);
     this._imageViewer = this._prepareImageViewer(images, this._loader, config.scaleMode, config.zoom);
@@ -35,13 +45,11 @@ export default class Slideshow {
     }
   }
 
-  getViewer() : IImageViewer
-  {
+  getViewer(): IImageViewer {
     return this._imageViewer;
   }
 
-  getLoader() : ILazyLoader
-  {
+  getLoader(): ILazyLoader {
     return this._loader;
   }
 

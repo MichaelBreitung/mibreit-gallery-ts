@@ -4,77 +4,97 @@
  */
 
 import { DomTools } from 'mibreit-dom-tools';
+
+// interfaces
 import { ILazyLoader } from 'mibreit-lazy-loader';
-import IGallery from '../interfaces/IGallery';
+import ISlideshowContainer from '../interfaces/ISlideshowContainer';
+import IGallery from '../interfaces/IGalleryContainer';
 import IImageViewer from '../interfaces/IImageViewer';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IImageInfo from '../interfaces/IImageInfo';
-import IFullscreenView from '../interfaces/IFullscreenView';
-import { isThumbScrollerConfig, ThumbScrollerConfig } from '../components/ThumbScrollerView';
+import IFullscreen from '../interfaces/IFullscreen';
+
+// helpers
+import { isThumbScrollerConfig, ThumbScrollerConfig } from './ThumbScrollerContainer';
+import { SlideshowConfig } from './SlideshowContainer';
 import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
-import Slideshow, { SlideshowConfig } from '../components/Slideshow';
-import createFullscreen from '../factories/createFullscreen';
 import debounce from '../tools/debounce';
-import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
-import styles from './Gallery.module.css';
-import animationStyles from '../tools/animations.module.css';
+
+// factories
+import createFullscreen from '../factories/createFullscreen';
+import createSlideshow from '../factories/createSlideshow';
+import createThumbScroller from '../factories/createThumbScroller';
+
+// images
 import nextImage from '../images/nextImage.svg';
 import fullscreen from '../images/fullscreen.svg';
-import createSlideshow from '../factories/createSlideshow';
-import createThumbScrollerView from '../factories/createThumbScrollerView';
 
+// styles
+import animationStyles from '../tools/animations.module.css';
+import styles from './GalleryContainer.module.css';
+
+// constants
+import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
 const DEBOUNCE_TIMER = 500;
 
 export type GalleryConfig =
-  | (ThumbScrollerConfig & SlideshowConfig & { galleryContainerSelector: string })
-  | (SlideshowConfig & { galleryContainerSelector: string });
+  | (ThumbScrollerConfig & SlideshowConfig & { slideshowContainerSelector: string })
+  | (SlideshowConfig & { slideshowContainerSelector: string });
 
-export default class Gallery implements IGallery {
-  private _slideShow: Slideshow;
+export default class GalleryContainer implements IGallery {
+  private _slideShowContainer: ISlideshowContainer;
+  private _fullscreenContainer: IFullscreen;
+  private _thumbScroller: IThumbScroller | null = null;
 
   constructor(config: GalleryConfig) {
-    const container: HTMLElement | null = DomTools.getElement(config.galleryContainerSelector);
-
+    const container: HTMLElement | null = DomTools.getElement(config.slideshowContainerSelector);
     if (!container)
     {
-      throw new Error(`Gallery#constructor - no container found for ${config.galleryContainerSelector}`)
+      throw new Error(`Gallery#constructor - no container found for ${config.slideshowContainerSelector}`)
     }
 
-    this._slideShow = createSlideshow(config);
+    this._slideShowContainer = createSlideshow(config);
 
-    let thumbContainer: HTMLElement;
-    let thumbScroller: IThumbScroller | null = null;
+    let thumbContainer: HTMLElement;    
     if (isThumbScrollerConfig(config)) {
       const thumbConfig: ThumbScrollerConfig = config as ThumbScrollerConfig;
       thumbContainer = DomTools.getElement(thumbConfig.thumbContainerSelector);
-      thumbScroller = createThumbScrollerView(thumbConfig, (index: number) => {
-        this._slideShow.getLoader().setCurrentIndex(index);
-        this._slideShow.getViewer().showImage(index);
-      }).getScroller();
-      if (thumbScroller) {
-        this._slideShow.getViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-          thumbScroller.scrollTo(index, true);
+      this._thumbScroller = createThumbScroller(thumbConfig, (index: number) => {
+        this._slideShowContainer.getLoader().setCurrentIndex(index);
+        this._slideShowContainer.getViewer().showImage(index);
+      });
+      if (this._thumbScroller) {
+        this._slideShowContainer.getViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+          this._thumbScroller.scrollTo(index, true);
         });
       }
     }
 
-    const fullScreenView = createFullscreen(container, thumbContainer);
+    this._fullscreenContainer = createFullscreen(container, thumbContainer);
     const { previousButton, nextButton } = this._createPreviousNextButtons(container);
     const fullscreenButton = this._createFullscreenButton(container);
     this._setupHoverEvents(container, [previousButton, nextButton, fullscreenButton]);
-    this._setupKeyEvents(this.getViewer(), fullScreenView, fullscreenButton);
+    this._setupKeyEvents(this.getViewer(), this._fullscreenContainer, fullscreenButton);
     this._setupSwipeHandler(container, this.getViewer());
-    this._setupFullscreenClickEvent(fullscreenButton, fullScreenView, this.getViewer());
-    this._setupResizeHandler(this.getViewer(), thumbScroller);
-    this._setupFullscreenChangedHandler(fullScreenView, fullscreenButton, this.getViewer(), thumbScroller);
+    this._setupFullscreenClickEvent(fullscreenButton, this._fullscreenContainer, this.getViewer());
+    this._setupResizeHandler(this.getViewer(), this._thumbScroller);
+    this._setupFullscreenChangedHandler(this._fullscreenContainer, fullscreenButton, this.getViewer(), this._thumbScroller);
   }
 
   getViewer(): IImageViewer {
-    return this._slideShow.getViewer();
+    return this._slideShowContainer.getViewer();
   }
 
   getLoader(): ILazyLoader {
-    return this._slideShow.getLoader();
+    return this._slideShowContainer.getLoader();
+  }
+
+  getScroller(): IThumbScroller {
+    return this._thumbScroller;
+  }
+
+  getFullscreen(): IFullscreen {
+    return this._fullscreenContainer;
   }
 
   private _createPreviousNextButtons(container: HTMLElement): { previousButton: HTMLElement; nextButton: HTMLElement } {
@@ -113,7 +133,7 @@ export default class Gallery implements IGallery {
     });
   }
 
-  private _setupKeyEvents(imageViewer: IImageViewer, fullScreen: IFullscreenView, fullscreenButton: HTMLElement) {
+  private _setupKeyEvents(imageViewer: IImageViewer, fullScreen: IFullscreen, fullscreenButton: HTMLElement) {
     DomTools.addKeyEventListener((event: KeyboardEvent) => {
       const key: string = DomTools.getKeyFromEvent(event);
       switch (key) {
@@ -185,7 +205,7 @@ export default class Gallery implements IGallery {
 
   private _setupFullscreenClickEvent(
     fullscreenButton: HTMLElement,
-    fullScreen: IFullscreenView,
+    fullScreen: IFullscreen,
     imageViewer: IImageViewer
   ) {
     DomTools.addClickEventListener(fullscreenButton, (event: MouseEvent) => {
@@ -199,12 +219,12 @@ export default class Gallery implements IGallery {
   }
 
   private _setupFullscreenChangedHandler(
-    fullscreenView: IFullscreenView,
+    FullscreenContainer: IFullscreen,
     fullscreenButton: HTMLElement,
     imageViewer: IImageViewer,
     thumbScroller: IThumbScroller | null
   ) {
-    fullscreenView.addFullscreenChangedCallback((active: boolean) => {
+    FullscreenContainer.addFullscreenChangedCallback((active: boolean) => {
       if (thumbScroller) {
         thumbScroller.reinitSize();
       }

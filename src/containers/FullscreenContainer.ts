@@ -4,27 +4,34 @@
  */
 
 import { DomTools } from 'mibreit-dom-tools';
-import IFullscreenView from '../interfaces/IFullscreenView';
-import styles from './FullscreenView.module.css';
+import IFullscreen from '../interfaces/IFullscreen';
+import styles from './FullscreenContainer.module.css';
 import fullscreenClose from '../images/close.svg';
 
-const GALLERY_PLACEHOLDER_ID = 'galleryContainerPlaceholder';
+const GALLERY_PLACEHOLDER_ID = 'slideshowContainerPlaceholder';
 const THUMBS_PLACEHOLDER_ID = 'thumbContainerPlaceholder';
 
-export default class FullscreenView implements IFullscreenView {
+export type FullscreenConfig = {
+  slideshowContainerSelector: string;
+  thumbContainerSelector: string;  
+};
+
+export default class FullscreenContainer implements IFullscreen {
   private _fullscreenChangedCallbacks: Array<(active: boolean) => void> = [];
   private _fullscreenActive: boolean;
-  private _galleryContainer: HTMLElement;
-  private _thumbContainer?: HTMLElement;
+  private _slideshowContainer: HTMLElement;
+  private _thumbContainer: HTMLElement | null;
   private _fullScreenContainer: HTMLElement | null = null;
-  private _galleryContainerPlaceholder: HTMLElement | null = null;
+  private _slideshowContainerPlaceholder: HTMLElement | null = null;
   private _thumbContainerPlaceholder: HTMLElement | null = null;
   private _fullScreenCloseButton: HTMLElement | null = null;
+  private _usePlaceholder: boolean;
 
-  constructor(galleryContainer: HTMLElement, thumbContainer?: HTMLElement) {
+  constructor(slideshowContainer: HTMLElement, thumbContainer: HTMLElement = null, usePlaceholder: boolean = true) {
     this._fullscreenActive = false;
-    this._galleryContainer = galleryContainer;
+    this._slideshowContainer = slideshowContainer;
     this._thumbContainer = thumbContainer;
+    this._usePlaceholder = usePlaceholder;
   }
 
   activate() {
@@ -72,8 +79,8 @@ export default class FullscreenView implements IFullscreenView {
   private _createFullscreenContainer() {
     this._fullScreenContainer = DomTools.createElement('div');
     DomTools.addCssClass(this._fullScreenContainer, styles.mibreit_Fullscreen);
-    this._galleryContainerPlaceholder = DomTools.createElement('div');
-    DomTools.setAttribute(this._galleryContainerPlaceholder, 'id', GALLERY_PLACEHOLDER_ID);
+    this._slideshowContainerPlaceholder = DomTools.createElement('div');
+    DomTools.setAttribute(this._slideshowContainerPlaceholder, 'id', GALLERY_PLACEHOLDER_ID);
     this._thumbContainerPlaceholder = DomTools.createElement('div');
     DomTools.setAttribute(this._thumbContainerPlaceholder, 'id', THUMBS_PLACEHOLDER_ID);
     this._fullScreenCloseButton = DomTools.createElement('div');
@@ -92,30 +99,38 @@ export default class FullscreenView implements IFullscreenView {
   }
 
   private _moveGalleryToFullscreen() {
-    DomTools.prependBeforeChild(this._galleryContainerPlaceholder, this._galleryContainer);
-    DomTools.appendChildElement(this._galleryContainer, this._fullScreenContainer);
-    DomTools.addCssStyle(this._galleryContainer, 'width', '100%');
-    DomTools.addCssStyle(this._galleryContainer, 'flex-grow', '1');
+    if (this._usePlaceholder) {
+      DomTools.prependBeforeChild(this._slideshowContainerPlaceholder, this._slideshowContainer);
+    }
+    DomTools.appendChildElement(this._slideshowContainer, this._fullScreenContainer);
+    DomTools.addCssStyle(this._slideshowContainer, 'width', '100%');
+    DomTools.addCssStyle(this._slideshowContainer, 'flex-grow', '1');
   }
 
   private _removeGalleryFromFullscreen() {
-    DomTools.removeElement(this._galleryContainer);
-    DomTools.prependBeforeChild(this._galleryContainer, this._galleryContainerPlaceholder);
-    DomTools.removeElement(this._galleryContainerPlaceholder);
-    DomTools.removeCssStyle(this._galleryContainer, 'width');
-    DomTools.removeCssStyle(this._galleryContainer, 'flex-grow');
+    DomTools.removeElement(this._slideshowContainer);
+    if (this._usePlaceholder) {
+      DomTools.prependBeforeChild(this._slideshowContainer, this._slideshowContainerPlaceholder);
+      DomTools.removeElement(this._slideshowContainerPlaceholder);
+    }
+    DomTools.removeCssStyle(this._slideshowContainer, 'width');
+    DomTools.removeCssStyle(this._slideshowContainer, 'flex-grow');
   }
 
   private _moveThumbsToFullscreen() {
-    DomTools.prependBeforeChild(this._thumbContainerPlaceholder, this._thumbContainer);
+    if (this._usePlaceholder) {
+      DomTools.prependBeforeChild(this._thumbContainerPlaceholder, this._thumbContainer);
+    }
     DomTools.appendChildElement(this._thumbContainer, this._fullScreenContainer);
     DomTools.addCssStyle(this._thumbContainer, 'flex-grow', '0');
   }
 
   private _removeThumbsFromFullscreen() {
     DomTools.removeElement(this._thumbContainer);
-    DomTools.prependBeforeChild(this._thumbContainer, this._thumbContainerPlaceholder);
-    DomTools.removeElement(this._thumbContainerPlaceholder);
+    if (this._usePlaceholder) {
+      DomTools.prependBeforeChild(this._thumbContainer, this._thumbContainerPlaceholder);
+      DomTools.removeElement(this._thumbContainerPlaceholder);
+    }
     DomTools.removeCssStyle(this._thumbContainer, 'flex-grow');
   }
 

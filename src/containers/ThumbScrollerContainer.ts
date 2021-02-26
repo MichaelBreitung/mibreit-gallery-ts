@@ -6,10 +6,10 @@
 import { ILazyLoader, createLazyLoader, ELazyMode } from 'mibreit-lazy-loader';
 import { DomTools } from 'mibreit-dom-tools';
 import Image from '../components/Image';
-import createThumbScroller from '../factories/createThumbScroller';
 import createThumbScrollerLayout from '../factories/createThumbScrollerLayout';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
+import ThumbScroller from '../components/ThumbScroller';
 
 export type ThumbScrollerConfig = {
   thumbContainerSelector: string;
@@ -29,9 +29,9 @@ export function isThumbScrollerConfig(config: any): boolean {
   return isConfig;
 }
 
-export default class ThumbScrollerView {
+export default class ThumbScrollerContainer {
   private _loader: ILazyLoader;
-  private _thumbScroller: IThumbScroller = null;
+  private _thumbScroller: IThumbScroller | null = null;
 
   constructor(config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void) {
     const thumbs = this._prepareThumbs(DomTools.getElements(config.thumbSelector));
@@ -70,7 +70,7 @@ export default class ThumbScrollerView {
     loader: ILazyLoader,
     initialIndex: number = 0
   ): IThumbScroller {
-    const thumbScroller = createThumbScroller(layout);
+    const thumbScroller = new ThumbScroller(layout);
     thumbScroller.addScrollIndexChangedCallback((index: number) => {
       loader.setCurrentIndex(index);
     });

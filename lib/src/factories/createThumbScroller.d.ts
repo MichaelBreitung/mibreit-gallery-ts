@@ -2,6 +2,6 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
+import { ThumbScrollerConfig } from '../containers/ThumbScrollerContainer';
 import IThumbScroller from '../interfaces/IThumbScroller';
-import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
-export default function (thumbScrollerLayout: IThumbScrollerLayout): IThumbScroller;
+export default function (config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void): IThumbScroller;

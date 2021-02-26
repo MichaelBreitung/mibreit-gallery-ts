@@ -9,6 +9,5 @@ import IImageViewer from '../interfaces/IImageViewer';
 import { EImageScaleMode } from './createImageStage';
 
 export default function(images: Array<Image>, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT): IImageViewer {
-  const imageViewer: ImageViewer = new ImageViewer(images, scaleMode);
-  return imageViewer;
+  return new ImageViewer(images, scaleMode);  
 }

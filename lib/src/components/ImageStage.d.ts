@@ -22,7 +22,7 @@ export default abstract class ImageStage implements IImageStage {
     showImage(): void;
     protected abstract _applyScaleModeImpl(stageWidth: number, stageHeight: number): void;
     private _createStage;
-    private centerImage;
-    private startZoomAnimation;
-    private resetZoom;
+    private _centerImage;
+    private _startZoomAnimation;
+    private _resetZoom;
 }

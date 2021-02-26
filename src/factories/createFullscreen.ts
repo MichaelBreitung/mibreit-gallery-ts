@@ -3,12 +3,13 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import FullscreenView from '../components/FullscreenView';
-import IFullscreenView from '../interfaces/IFullscreenView';
+import FullscreenContainer from '../containers/FullscreenContainer';
+import IFullscreen from '../interfaces/IFullscreen';
 
 export default function (
-  galleryContainer: HTMLElement,
-  thumbContainer?: HTMLElement
-): IFullscreenView { 
-  return new FullscreenView(galleryContainer, thumbContainer);
+  galleryContainer: HTMLElement,  
+  thumbContainer?: HTMLElement | null,
+  usePlaceholder?: boolean,
+): IFullscreen { 
+  return new FullscreenContainer(galleryContainer, thumbContainer, usePlaceholder);
 };

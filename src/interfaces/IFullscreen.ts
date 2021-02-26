@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-export default interface IFullscreenView {
+export default interface IFullscreen {
   activate(): void;
 
   deActivate(): void;
