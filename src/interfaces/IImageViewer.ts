@@ -12,6 +12,8 @@ export default interface IImageViewer {
 
   showPreviousImage(): boolean;
 
+  getNumberOfImages(): number;
+
   reinitSize(): void;
 
   setZoomAnimation(active: boolean): void;

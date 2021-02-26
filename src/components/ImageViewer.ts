@@ -29,7 +29,7 @@ export default class ImageViewer implements IImageViewer {
       }
     }
   }
-
+  
   showImage(index: number): boolean {
     if (this._isValidIndex(index)) {
       if (index != this._currentIndex) {
@@ -57,6 +57,10 @@ export default class ImageViewer implements IImageViewer {
   showPreviousImage(): boolean {
     const newIndex = this._currentIndex > 0 ? this._currentIndex - 1 : this._imageStages.length - 1;
     return this.showImage(newIndex);
+  }
+
+  getNumberOfImages(): number {
+    return this._imageStages.length;
   }
 
   reinitSize(): void {

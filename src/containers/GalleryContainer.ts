@@ -60,27 +60,31 @@ export default class GalleryContainer implements IGallery {
     if (viewer != null && loader != null)
     {
       let thumbContainer: HTMLElement | null | undefined;    
-      if (isThumbScrollerConfig(config)) {
-        const thumbConfig: ThumbScrollerConfig = config as ThumbScrollerConfig;
-        thumbContainer = DomTools.getElement(thumbConfig.thumbContainerSelector);
-        this._thumbScroller = createThumbScroller(thumbConfig, (index: number) => {
-          loader.setCurrentIndex(index);
-          viewer.showImage(index);
-        });
-        if (this._thumbScroller != null) {
-          viewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-            // @ts-ignore - once it is initialized it will not get null again
-            this._thumbScroller.scrollTo(index, true);
+      if (viewer.getNumberOfImages() > 1)
+      {
+        if (isThumbScrollerConfig(config))
+        {
+          const thumbConfig: ThumbScrollerConfig = config as ThumbScrollerConfig;
+          thumbContainer = DomTools.getElement(thumbConfig.thumbContainerSelector);
+          this._thumbScroller = createThumbScroller(thumbConfig, (index: number) => {
+            loader.setCurrentIndex(index);
+            viewer.showImage(index);
           });
+          if (this._thumbScroller != null) {
+            viewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+              // @ts-ignore - once it is initialized it will not get null again
+              this._thumbScroller.scrollTo(index, true);
+            });
+          }
         }
+        const { previousButton, nextButton } = this._createPreviousNextButtons(container);  
+        this._setupHoverEvents(container, [previousButton, nextButton]);
+        this._setupSwipeHandler(container, viewer);
       }
-  
-      this._fullscreenContainer = createFullscreen(container, thumbContainer);
-      const { previousButton, nextButton } = this._createPreviousNextButtons(container);
+      this._fullscreenContainer = createFullscreen(container, thumbContainer);      
       const fullscreenButton = this._createFullscreenButton(container);
-      this._setupHoverEvents(container, [previousButton, nextButton, fullscreenButton]);
-      this._setupKeyEvents(viewer, this._fullscreenContainer, fullscreenButton);
-      this._setupSwipeHandler(container, viewer);
+      this._setupHoverEvents(container, [fullscreenButton]);
+      this._setupKeyEvents(viewer, this._fullscreenContainer, fullscreenButton);     
       this._setupFullscreenClickEvent(fullscreenButton, this._fullscreenContainer, viewer);
       this._setupResizeHandler(viewer, this._thumbScroller);
       this._setupFullscreenChangedHandler(this._fullscreenContainer, fullscreenButton, viewer, this._thumbScroller);
