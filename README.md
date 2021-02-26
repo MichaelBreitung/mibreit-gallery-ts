@@ -35,8 +35,10 @@ The gallery exposes three _create_ methods.
             STRETCH,
             EXPAND,
           }
-    - interval?: number - *optional* interval for automatic image change in milliseconds
-    - zoom?: boolean - *optional* boolean to activate zoom effect
+    - interval?: number - **optional** interval for automatic image change in milliseconds
+    - zoom?: boolean - **optional** boolean to activate zoom effect
+    - preloaderBeforeSize?: number - **optional** specifies the number of elements to lazy load before the current index (**default is 3**)
+    - preloaderAfterSize?: number - **optional** specifies the number of elements to lazy load after the current index (**default is 7**)
   
 - createThumbScrollerView(config: ThumbScrollerConfig) - Creates a thumb scroller for a set of images. The config contains the following settings:
     - thumbContainerSelector: string;

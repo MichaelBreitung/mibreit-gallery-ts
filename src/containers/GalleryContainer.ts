@@ -193,12 +193,11 @@ export default class GalleryContainer implements IGallery {
   }
 
   private _setupSwipeHandler(container: HTMLElement, imageViewer: IImageViewer) {
-    const containerWidth: number = DomTools.getElementDimension(container).width;
-    const containerPosX: number = DomTools.getElementPosition(container).x;
-
     DomTools.addCssStyle(container, 'touch-action', 'pinch-zoom pan-y');
 
     new SwipeHander(container, (direction: ESwipeDirection, position: TPosition) => {
+      const containerWidth: number = DomTools.getElementDimension(container).width;
+      const containerPosX: number = DomTools.getElementPosition(container).x;
       if (direction === ESwipeDirection.LEFT) {
         imageViewer.showPreviousImage();
       } else if (direction === ESwipeDirection.RIGHT) {

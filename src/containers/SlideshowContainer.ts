@@ -27,6 +27,8 @@ export type SlideshowConfig = {
   scaleMode?: EImageScaleMode;
   interval?: number;
   zoom?: boolean;
+  preloaderBeforeSize?: number,
+  preloaderAfterSize?: number
 };
 
 export default class SlideshowContainer implements ISlideshowContainer {
@@ -37,7 +39,7 @@ export default class SlideshowContainer implements ISlideshowContainer {
     const images = this._prepareImages(DomTools.getElements(config.imageSelector));
     if (images.length > 0)
     {
-      this._loader = this._prepareLoader(images);
+      this._loader = this._prepareLoader(images, config.preloaderBeforeSize, config.preloaderAfterSize);
       this._imageViewer = this._prepareImageViewer(images, this._loader, config.scaleMode, config.zoom);
   
       if (config.interval !== undefined) {
@@ -71,11 +73,11 @@ export default class SlideshowContainer implements ISlideshowContainer {
     return images;
   }
 
-  private _prepareLoader(images: Array<Image>): ILazyLoader {
+  private _prepareLoader(images: Array<Image>, preloaderBeforeSize: number = PRELOADER_LEFT_SIZE, preloaderAfterSize: number = PRELOADER_RIGHT_SIZE): ILazyLoader {
     const loader = createLazyLoader(images, {
       mode: ELazyMode.WINDOWED_EXTERNAL,
-      preloaderBeforeSize: PRELOADER_LEFT_SIZE,
-      preloaderAfterSize: PRELOADER_RIGHT_SIZE,
+      preloaderBeforeSize: preloaderBeforeSize,
+      preloaderAfterSize: preloaderAfterSize,
     });
     loader.setCurrentIndex(0);
     return loader;
