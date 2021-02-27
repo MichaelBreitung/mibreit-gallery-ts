@@ -3,8 +3,9 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import FullscreenOnlyGallery, { FullscreenOnlyGalleryConfig } from '../containers/FullscreenOnlyGallery';
+import FullscreenOnlyGalleryContainer, { FullscreenOnlyGalleryConfig } from '../containers/FullscreenOnlyGalleryContainer';
+import IGalleryContainer from '../interfaces/IGalleryContainer';
 
-export default function (config: FullscreenOnlyGalleryConfig): FullscreenOnlyGallery {  
-  return new FullscreenOnlyGallery(config);
+export default function (config: FullscreenOnlyGalleryConfig): IGalleryContainer {  
+  return new FullscreenOnlyGalleryContainer(config);
 }

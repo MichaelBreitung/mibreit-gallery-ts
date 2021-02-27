@@ -8,7 +8,7 @@ import { DomTools } from 'mibreit-dom-tools';
 // interfaces
 import { ILazyLoader } from 'mibreit-lazy-loader';
 import ISlideshowContainer from '../interfaces/ISlideshowContainer';
-import IGallery from '../interfaces/IGalleryContainer';
+import IGalleryContainer from '../interfaces/IGalleryContainer';
 import IImageViewer from '../interfaces/IImageViewer';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IImageInfo from '../interfaces/IImageInfo';
@@ -41,7 +41,7 @@ export type GalleryConfig =
   | (ThumbScrollerConfig & SlideshowConfig & { slideshowContainerSelector: string })
   | (SlideshowConfig & { slideshowContainerSelector: string });
 
-export default class GalleryContainer implements IGallery {
+export default class GalleryContainer implements IGalleryContainer {
   private _slideShowContainer: ISlideshowContainer;
   private _fullscreenContainer: IFullscreen | null = null;
   private _thumbScroller: IThumbScroller | null = null;

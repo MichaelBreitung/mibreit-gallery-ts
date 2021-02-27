@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 import { ILazyLoader } from 'mibreit-lazy-loader';
-import IGallery from '../interfaces/IGalleryContainer';
+import IGalleryContainer from '../interfaces/IGalleryContainer';
 import IImageViewer from '../interfaces/IImageViewer';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IFullscreen from '../interfaces/IFullscreen';
@@ -14,7 +14,7 @@ export declare type GalleryConfig = (ThumbScrollerConfig & SlideshowConfig & {
 }) | (SlideshowConfig & {
     slideshowContainerSelector: string;
 });
-export default class GalleryContainer implements IGallery {
+export default class GalleryContainer implements IGalleryContainer {
     private _slideShowContainer;
     private _fullscreenContainer;
     private _thumbScroller;
