@@ -7,6 +7,10 @@ import { DomTools, TElementDimension } from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import styles from './ImageStage.module.css';
 import animationStyles from '../tools/animations.module.css';
+import { ESwipeDirection } from './SwipeHandler';
+
+// constants
+const ANIMATIONS_RESET_TIMEOUT = 1000;
 
 /**
  * The ImageStage is responsible for proper scaling and centering
@@ -47,21 +51,35 @@ export default abstract class ImageStage implements IImageStage {
     DomTools.addCssStyle(this._imageStage, 'margin', marginCss);
   }
 
-  hideImage(): void {
+  hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): void {
     // leave enough time for hide animation to be applied
     if (this._zoomAnimation) {
       setTimeout(() => {
         this._resetZoom();
-      }, 1000);
+      }, ANIMATIONS_RESET_TIMEOUT);
+    }
+    if (swipeDirection != ESwipeDirection.NONE) {
+      const animationClass = this._getSwipeAnimationClass(swipeDirection, false);
+      setTimeout(() => {
+        DomTools.removeCssClass(this._imageStage, animationClass);
+      }, ANIMATIONS_RESET_TIMEOUT);
+      DomTools.addCssClass(this._imageStage, animationClass);
     }
     DomTools.removeCssStyle(this._imageStage, 'opacity');
     DomTools.removeCssStyle(this._imageStage, 'z-index');
   }
 
-  showImage(): void {
+  showImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): void {
     this.applyScaleMode();
     if (this._zoomAnimation) {
       this._startZoomAnimation();
+    }
+    if (swipeDirection != ESwipeDirection.NONE) {
+      const animationClass = this._getSwipeAnimationClass(swipeDirection, true);
+      setTimeout(() => {
+        DomTools.removeCssClass(this._imageStage, animationClass);
+      }, ANIMATIONS_RESET_TIMEOUT);
+      DomTools.addCssClass(this._imageStage, animationClass);
     }
     DomTools.addCssStyle(this._imageStage, 'opacity', '1');
     DomTools.addCssStyle(this._imageStage, 'z-index', '1');
@@ -82,7 +100,7 @@ export default abstract class ImageStage implements IImageStage {
     const x: number = (width + stageWidth) / 2 - width;
     const y: number = (height + stageHeight) / 2 - height;
     DomTools.addCssStyle(this._imageHandle, 'margin-left', `${x}px`);
-    DomTools.addCssStyle(this._imageHandle, 'margin-top', `${y}px`);    
+    DomTools.addCssStyle(this._imageHandle, 'margin-top', `${y}px`);
   }
 
   private _startZoomAnimation() {
@@ -93,5 +111,21 @@ export default abstract class ImageStage implements IImageStage {
   private _resetZoom() {
     console.log('ImageStage#resetZoom');
     DomTools.removeCssClass(this._imageHandle, 'zoom');
+  }
+
+  private _getSwipeAnimationClass(swipeDirection: ESwipeDirection, show: boolean): string {
+    if (swipeDirection == ESwipeDirection.LEFT) {
+      if (show) {
+        return animationStyles.mibreit_GallerySlideInLeft;
+      } else {
+        return animationStyles.mibreit_GallerySlideOutRight;
+      }
+    } else {
+      if (show) {
+        return animationStyles.mibreit_GallerySlideInRight;
+      } else {
+        return animationStyles.mibreit_GallerySlideOutLeft;
+      }
+    }
   }
 }

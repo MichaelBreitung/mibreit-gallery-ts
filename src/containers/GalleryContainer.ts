@@ -203,9 +203,9 @@ export default class GalleryContainer implements IGalleryContainer {
       const containerWidth: number = DomTools.getElementDimension(container).width;
       const containerPosX: number = DomTools.getElementPosition(container).x;
       if (direction === ESwipeDirection.LEFT) {
-        imageViewer.showPreviousImage();
+        imageViewer.showPreviousImage(direction);
       } else if (direction === ESwipeDirection.RIGHT) {
-        imageViewer.showNextImage();
+        imageViewer.showNextImage(direction);
       } else {
         if (position.x - containerPosX > containerWidth / 2) {
           imageViewer.showNextImage();

@@ -3,6 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 import IImageStage from '../interfaces/IImageStage';
+import { ESwipeDirection } from './SwipeHandler';
 /**
  * The ImageStage is responsible for proper scaling and centering
  * of images on the stage
@@ -18,11 +19,12 @@ export default abstract class ImageStage implements IImageStage {
     applyScaleMode(): void;
     setSize(widthCss: string, heightCss: string): void;
     setMargin(marginCss: string): void;
-    hideImage(): void;
-    showImage(): void;
+    hideImage(swipeDirection?: ESwipeDirection): void;
+    showImage(swipeDirection?: ESwipeDirection): void;
     protected abstract _applyScaleModeImpl(stageWidth: number, stageHeight: number): void;
     private _createStage;
     private _centerImage;
     private _startZoomAnimation;
     private _resetZoom;
+    private _getSwipeAnimationClass;
 }

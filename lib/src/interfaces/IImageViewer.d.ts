@@ -2,11 +2,12 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
+import { ESwipeDirection } from '../components/SwipeHandler';
 import IImageInfo from './IImageInfo';
 export default interface IImageViewer {
     showImage(index: number): boolean;
-    showNextImage(): boolean;
-    showPreviousImage(): boolean;
+    showNextImage(swipeDirection?: ESwipeDirection): boolean;
+    showPreviousImage(swipeDirection?: ESwipeDirection): boolean;
     getNumberOfImages(): number;
     reinitSize(): void;
     setZoomAnimation(active: boolean): void;
