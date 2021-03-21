@@ -1,6 +1,6 @@
 {
   "name": "mibreit-gallery-ts",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Versatile Javascript Gallery written in Typescript",
   "main": "lib/index.js",
   "types": "lib/src/index.d.ts",

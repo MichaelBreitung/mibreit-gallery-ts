@@ -48,22 +48,18 @@ export default class GalleryContainer implements IGalleryContainer {
 
   constructor(config: GalleryConfig) {
     const container: HTMLElement | null = DomTools.getElement(config.slideshowContainerSelector);
-    if (!container)
-    {
-      throw new Error(`Gallery#constructor - no container found for ${config.slideshowContainerSelector}`)
+    if (!container) {
+      throw new Error(`Gallery#constructor - no container found for ${config.slideshowContainerSelector}`);
     }
 
     this._slideShowContainer = createSlideshow(config);
 
     const viewer = this._slideShowContainer.getViewer();
     const loader = this._slideShowContainer.getLoader();
-    if (viewer != null && loader != null)
-    {
-      let thumbContainer: HTMLElement | null | undefined;    
-      if (viewer.getNumberOfImages() > 1)
-      {
-        if (isThumbScrollerConfig(config))
-        {
+    if (viewer != null && loader != null) {
+      let thumbContainer: HTMLElement | null | undefined;
+      if (viewer.getNumberOfImages() > 1) {
+        if (isThumbScrollerConfig(config)) {
           const thumbConfig: ThumbScrollerConfig = config as ThumbScrollerConfig;
           thumbContainer = DomTools.getElement(thumbConfig.thumbContainerSelector);
           this._thumbScroller = createThumbScroller(thumbConfig, (index: number) => {
@@ -77,20 +73,20 @@ export default class GalleryContainer implements IGalleryContainer {
             });
           }
         }
-        const { previousButton, nextButton } = this._createPreviousNextButtons(container);  
+        const { previousButton, nextButton } = this._createPreviousNextButtons(container);
         this._setupHoverEvents(container, [previousButton, nextButton]);
         this._setupSwipeHandler(container, viewer);
       }
-      this._fullscreenContainer = createFullscreen(container, thumbContainer);      
+      this._fullscreenContainer = createFullscreen(container, thumbContainer);
       const fullscreenButton = this._createFullscreenButton(container);
       this._setupHoverEvents(container, [fullscreenButton]);
-      this._setupKeyEvents(viewer, this._fullscreenContainer, fullscreenButton);     
+      this._setupKeyEvents(viewer, this._fullscreenContainer, fullscreenButton);
       this._setupFullscreenClickEvent(fullscreenButton, this._fullscreenContainer, viewer);
       this._setupResizeHandler(viewer, this._thumbScroller);
       this._setupFullscreenChangedHandler(this._fullscreenContainer, fullscreenButton, viewer, this._thumbScroller);
     }
   }
-  
+
   isInitialized(): boolean {
     return this._slideShowContainer.isInitialized();
   }
@@ -221,7 +217,10 @@ export default class GalleryContainer implements IGalleryContainer {
     fullScreen: IFullscreen,
     imageViewer: IImageViewer
   ) {
-    DomTools.addClickEventListener(fullscreenButton, (event: MouseEvent) => {
+    DomTools.addEventListener(fullscreenButton, 'pointerdown', (event: PointerEvent) => {
+      event.stopPropagation();
+    });
+    DomTools.addEventListener(fullscreenButton, 'pointerup', (event: PointerEvent) => {
       event.stopPropagation();
       if (!fullScreen.isFullscreenActive()) {
         fullScreen.activate();
