@@ -1,71 +1,14 @@
 .mibreit_GalleryFade
 {
-  -webkit-transition: opacity 800ms ease-out;
-  -moz-transition: opacity 800ms ease-out;
-  -o-transition: opacity 800ms ease-out;
-  transition: opacity 800ms ease-out;
+  -webkit-transition: opacity 750ms ease-out;
+  -moz-transition: opacity 750ms ease-out;
+  -o-transition: opacity 750ms ease-out;
+  transition: opacity 750ms ease-out;
 }
-
-.mibreit_GallerySlideInRight 
+.mibreit_GalleryTransition
 {
-  animation-duration: 600ms;
-  animation-name: mibreit_slideInRight;
-}
-
-.mibreit_GallerySlideInLeft 
-{
-  animation-duration: 600ms;
-  animation-name: mibreit_slideInLeft;
-}
-
-.mibreit_GallerySlideOutRight 
-{
-  animation-duration: 600ms;
-  animation-name: mibreit_slideOutRight;
-}
-
-.mibreit_GallerySlideOutLeft 
-{
-  animation-duration: 600ms;
-  animation-name: mibreit_slideOutLeft;
-}
-
-@keyframes mibreit_slideInRight {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(0%);
-  }
-}
-
-@keyframes mibreit_slideInLeft {
-  from {
-    transform: translateX(-100%);
-  }
-
-  to {
-    transform: translateX(0%);
-  }
-}
-
-@keyframes mibreit_slideOutLeft {
-  from {
-    transform: translateX(0%);
-  }
-
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes mibreit_slideOutRight {
-  from {
-    transform: translateX(0%);
-  }
-
-  to {
-    transform: translateX(100%);
-  }
+  -webkit-transition: all 750ms ease-out;
+  -moz-transition: all 750ms ease-out;
+  -o-transition: all 750ms ease-out;
+  transition: all 750ms ease-out;
 }
