@@ -62,11 +62,11 @@ export default abstract class ImageStage implements IImageStage {
     await sleepTillNextRenderFinished();    
     if (swipeDirection == ESwipeDirection.RIGHT) {               
       DomTools.addCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);   
-      DomTools.addCssStyle(this._imageStage, 'margin-left', '-100%'); 
+      DomTools.addCssStyle(this._imageStage, 'left', '-100%'); 
     }
     else if (swipeDirection == ESwipeDirection.LEFT) {              
       DomTools.addCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);   
-      DomTools.addCssStyle(this._imageStage, 'margin-left', '100%'); 
+      DomTools.addCssStyle(this._imageStage, 'left', '100%'); 
     }
     DomTools.removeCssStyle(this._imageStage, 'opacity');    
   }
@@ -80,21 +80,21 @@ export default abstract class ImageStage implements IImageStage {
     await sleepTillNextRenderFinished();
     if (swipeDirection == ESwipeDirection.RIGHT) {        
       DomTools.removeCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);             
-      DomTools.addCssStyle(this._imageStage, 'margin-left', '100%'); 
+      DomTools.addCssStyle(this._imageStage, 'left', '100%'); 
       await sleepTillNextRenderFinished();      
       DomTools.addCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);       
-      DomTools.removeCssStyle(this._imageStage, 'margin-left'); 
+      DomTools.removeCssStyle(this._imageStage, 'left'); 
     }
     else if (swipeDirection == ESwipeDirection.LEFT) {        
       DomTools.removeCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);             
-      DomTools.addCssStyle(this._imageStage, 'margin-left', '-100%'); 
+      DomTools.addCssStyle(this._imageStage, 'left', '-100%'); 
       await sleepTillNextRenderFinished();     
       DomTools.addCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);       
-      DomTools.removeCssStyle(this._imageStage, 'margin-left');  
+      DomTools.removeCssStyle(this._imageStage, 'left');  
     }
     else{
       DomTools.removeCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);   
-      DomTools.removeCssStyle(this._imageStage, 'margin-left');     
+      DomTools.removeCssStyle(this._imageStage, 'left');     
     }
     DomTools.addCssStyle(this._imageStage, 'opacity', '1');
   }
