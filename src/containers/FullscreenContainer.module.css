@@ -2,6 +2,10 @@
   position: fixed;
   box-sizing: border-box;
   background-color: #181818;
+  -webkit-transition: background-color 750ms ease-in-out;
+  -moz-transition: background-color 750ms ease-in-out;
+  -o-transition: background-color 750ms ease-in-out;
+  transition: background-color 750ms ease-in-out;
   overflow: hidden;
   top: 0;
   padding: 1rem;

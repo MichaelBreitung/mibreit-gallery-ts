@@ -22,6 +22,7 @@ export default class FullscreenContainer implements IFullscreen {
     deActivate(): void;
     addFullscreenChangedCallback(callback: (active: boolean) => void): void;
     isFullscreenActive(): boolean;
+    setBackgroundColor(color: string): void;
     private _createFullscreenContainer;
     private _createFullscreenCloseButton;
     private _createSlideshowContainerPlaceholder;

@@ -77,6 +77,14 @@ export default class ImageViewer implements IImageViewer {
     }
   }
 
+  getImageElement(index: number): HTMLElement | null {
+    if (this._isValidIndex(index)) {
+      return this._images[index].getHtmlElement();
+    } else {
+      return null;
+    }
+  }
+
   private _showImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE) : boolean
   {
     if (this._isValidIndex(index)) {

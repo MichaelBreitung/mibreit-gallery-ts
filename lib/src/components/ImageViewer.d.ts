@@ -22,6 +22,7 @@ export default class ImageViewer implements IImageViewer {
     addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void): void;
     getImageIndex(): number;
     getImageInfo(index: number): IImageInfo | null;
+    getImageElement(index: number): HTMLElement | null;
     private _showImage;
     private _prepareImageStages;
     private _isValidIndex;

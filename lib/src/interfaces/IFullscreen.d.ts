@@ -7,4 +7,5 @@ export default interface IFullscreen {
     deActivate(): void;
     addFullscreenChangedCallback(callback: (active: boolean) => void): void;
     isFullscreenActive(): boolean;
+    setBackgroundColor(color: string): void;
 }

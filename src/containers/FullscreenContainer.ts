@@ -75,8 +75,13 @@ export default class FullscreenContainer implements IFullscreen {
     }
   }
 
-  isFullscreenActive() {
+  isFullscreenActive() : boolean {
     return this._fullscreenActive;
+  }
+
+  setBackgroundColor(color: string): void
+  {
+    DomTools.addCssStyle(this._fullScreenContainer, "background-color", color);
   }
 
   private _createFullscreenContainer(): HTMLElement {

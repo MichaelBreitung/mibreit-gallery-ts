@@ -14,4 +14,5 @@ export default interface IImageViewer {
     addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void): void;
     getImageIndex(): number;
     getImageInfo(index: number): IImageInfo | null;
+    getImageElement(index: number): HTMLElement | null;
 }

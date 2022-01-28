@@ -24,4 +24,6 @@ export default interface IImageViewer {
   getImageIndex(): number;
 
   getImageInfo(index: number): IImageInfo | null;
+
+  getImageElement(index:number): HTMLElement | null;
 }
