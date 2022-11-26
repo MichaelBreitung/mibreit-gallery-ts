@@ -111,8 +111,8 @@ export default abstract class ImageStage implements IImageStage {
 
   private _centerImage(stageWidth: number, stageHeight: number) {
     const { width, height } = DomTools.getElementDimension(this._imageHandle);
-    const x: number = (width + stageWidth) / 2 - width;
-    const y: number = (height + stageHeight) / 2 - height;
+    const x: number = (width + stageWidth) / 2.0 - width;
+    const y: number = (height + stageHeight) / 2.0 - height;
     DomTools.addCssStyle(this._imageHandle, 'margin-left', `${x}px`);
     DomTools.addCssStyle(this._imageHandle, 'margin-top', `${y}px`);
   }

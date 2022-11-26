@@ -16,6 +16,15 @@
   flex-direction: column;
 }
 
+.mibreit_Fullscreen > div > .mibreit_ImageStage {
+  overflow: visible;
+}
+
+.mibreit_Fullscreen > div > .mibreit_ImageStage img {
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.5); 
+  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.5);
+}
+
 .mibreit_Fullscreen > .mibreit_Fullscreen_exit {
   position: absolute;
   width: 3rem;
