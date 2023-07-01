@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 import IFullscreen from '../interfaces/IFullscreen';
-export declare type FullscreenConfig = {
+export type FullscreenConfig = {
     slideshowContainerSelector: string;
     thumbContainerSelector: string;
 };

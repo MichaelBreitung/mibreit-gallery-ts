@@ -9,7 +9,7 @@ import IThumbScroller from '../interfaces/IThumbScroller';
 import IFullscreen from '../interfaces/IFullscreen';
 import { ThumbScrollerConfig } from './ThumbScrollerContainer';
 import { SlideshowConfig } from './SlideshowContainer';
-export declare type GalleryConfig = (ThumbScrollerConfig & SlideshowConfig & {
+export type GalleryConfig = (ThumbScrollerConfig & SlideshowConfig & {
     slideshowContainerSelector: string;
 }) | (SlideshowConfig & {
     slideshowContainerSelector: string;

@@ -6,7 +6,7 @@ import { ILazyLoader } from 'mibreit-lazy-loader';
 import IImageViewer from '../interfaces/IImageViewer';
 import ISlideshowContainer from '../interfaces/ISlideshowContainer';
 import { EImageScaleMode } from '../factories/createImageStage';
-export declare type SlideshowConfig = {
+export type SlideshowConfig = {
     imageSelector: string;
     scaleMode?: EImageScaleMode;
     interval?: number;

@@ -13,13 +13,15 @@ export default class ImageStageExpand extends ImageStage {
 
   protected _applyScaleModeImpl(stageWidth: number, stageHeight: number) {
     const aspect = this._imageWidth / this._imageHeight;
-    if (stageWidth / stageHeight > aspect) {
+    const stageAspect = stageWidth / stageHeight;
+
+    if (stageAspect > aspect) {
       // fit based on width
       DomTools.addCssStyle(this._imageHandle, 'width', `100%`);
-      DomTools.addCssStyle(this._imageHandle, 'height', `${100/aspect}%`);
+      DomTools.addCssStyle(this._imageHandle, 'height', `${100/aspect*stageAspect}%`);
     } else {
       // fit based on height
-      DomTools.addCssStyle(this._imageHandle, 'width', `${aspect*100}%`);
+      DomTools.addCssStyle(this._imageHandle, 'width', `${aspect*100/stageAspect}%`);
       DomTools.addCssStyle(this._imageHandle, 'height', `100%`);
     }
   }

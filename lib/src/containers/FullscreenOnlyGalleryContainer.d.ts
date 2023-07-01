@@ -4,7 +4,7 @@
  */
 import { SlideshowConfig } from './SlideshowContainer';
 import GalleryContainer from './GalleryContainer';
-export declare type FullscreenOnlyGalleryConfig = SlideshowConfig;
+export type FullscreenOnlyGalleryConfig = SlideshowConfig;
 export default class FullscreenOnlyGallery extends GalleryContainer {
     constructor(config: FullscreenOnlyGalleryConfig);
 }

@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 import IThumbScroller from '../interfaces/IThumbScroller';
-export declare type ThumbScrollerConfig = {
+export type ThumbScrollerConfig = {
     thumbContainerSelector: string;
     thumbSelector: string;
     numberOfVisibleThumbs: number;

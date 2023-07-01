@@ -2,7 +2,7 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-export declare type TPosition = {
+export type TPosition = {
     x: number;
     y: number;
 };
