@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools } from 'mibreit-dom-tools';
+import { addCssClass, addCssStyle, createElement, getChildNodes, wrapElements } from 'mibreit-dom-tools';
 import styles from './HorizontalScroller.module.css';
 
 export default class HorizontalScroller {
@@ -20,15 +20,15 @@ export default class HorizontalScroller {
     } else {
       positionCss = `${position}px`;
     }
-    DomTools.addCssStyle(this._scroller, 'transform', `translate(${positionCss})`);
+    addCssStyle(this._scroller, 'transform', `translate(${positionCss})`);
     return true;
   }
 
   private _createScroller(container: HTMLElement): HTMLElement {
-    const childNodes: Array<Node> = DomTools.getChildNodes(container);
-    const scroller = DomTools.createElement('div');
-    DomTools.addCssClass(scroller, styles.mibreit_HorizontalScroller);
-    DomTools.wrapElements(childNodes, scroller);
+    const childNodes: Array<Node> = getChildNodes(container);
+    const scroller = createElement('div');
+    addCssClass(scroller, styles.mibreit_HorizontalScroller);
+    wrapElements(childNodes, scroller);
 
     return scroller;
   }

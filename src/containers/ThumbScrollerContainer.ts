@@ -3,54 +3,44 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { ILazyLoader, createLazyLoader, ELazyMode } from 'mibreit-lazy-loader';
-import { DomTools } from 'mibreit-dom-tools';
+import { ILazyLoader, LazyLoader } from 'mibreit-lazy-loader';
+import { addClickEventListener } from 'mibreit-dom-tools';
 import Image from '../components/Image';
 import createThumbScrollerLayout from '../factories/createThumbScrollerLayout';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
 import ThumbScroller from '../components/ThumbScroller';
 
+const DEFAULT_NUMBER_VISIBLE_THUMBS = 7;
+
 export type ThumbScrollerConfig = {
-  thumbContainerSelector: string;
-  thumbSelector: string;
-  numberOfVisibleThumbs: number;
+  numberOfVisibleThumbs?: number;
   initialIndex?: number;
 };
-
-export function isThumbScrollerConfig(config: any): boolean {
-  let isConfig = true;
-  if (typeof config.thumbContainerSelector !== 'string') {
-    isConfig = false;
-  }
-  if (typeof config.thumbSelector !== 'string') {
-    isConfig = false;
-  }
-  return isConfig;
-}
 
 export default class ThumbScrollerContainer {
   private _loader: ILazyLoader;
   private _thumbScroller: IThumbScroller | null = null;
 
-  constructor(config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void) {
-    const thumbs = this._prepareThumbs(DomTools.getElements(config.thumbSelector));
-    this._loader = createLazyLoader(thumbs, {
-      preloaderBeforeSize: config.numberOfVisibleThumbs,
-      preloaderAfterSize: config.numberOfVisibleThumbs,
-      mode: ELazyMode.WINDOWED_EXTERNAL,
-    });
-    const thumbContainer = DomTools.getElement(config.thumbContainerSelector);
-    if (!thumbContainer) {
-      throw new Error('ThumbScrollerContainer#constructor - invalid thumb container selector');
-    }
+  constructor(
+    thumbContainer: HTMLElement,
+    thumbElements: NodeListOf<HTMLElement>,
+    config: ThumbScrollerConfig,
+    thumbClickedCallback?: (index: number) => void
+  ) {
+    const numberVisibleThumbs = config.numberOfVisibleThumbs
+      ? config.numberOfVisibleThumbs
+      : DEFAULT_NUMBER_VISIBLE_THUMBS;
+    const thumbs = this._prepareThumbs(thumbElements);
+    this._loader = new LazyLoader(thumbs, numberVisibleThumbs, numberVisibleThumbs);
+
     const layout: IThumbScrollerLayout = createThumbScrollerLayout(
       thumbContainer,
       thumbs,
-      config.numberOfVisibleThumbs,
+      numberVisibleThumbs,
       thumbClickedCallback
     );
-    if (config.numberOfVisibleThumbs < thumbs.length) {
+    if (numberVisibleThumbs < thumbs.length) {
       this._thumbScroller = this._prepareThumbScroller(layout, this._loader);
       this._addThumbScrollerInteraction(this._thumbScroller, layout);
     }
@@ -84,10 +74,10 @@ export default class ThumbScrollerContainer {
 
   private _addThumbScrollerInteraction(thumbScroller: IThumbScroller, thumbScrollerLayout: IThumbScrollerLayout) {
     const { previousButton, nextButton } = thumbScrollerLayout.getThumbScrollerButtons();
-    DomTools.addClickEventListener(nextButton, () => {
+    addClickEventListener(nextButton, () => {
       thumbScroller.scrollNext();
     });
-    DomTools.addClickEventListener(previousButton, () => {
+    addClickEventListener(previousButton, () => {
       thumbScroller.scrollPrevious();
     });
   }

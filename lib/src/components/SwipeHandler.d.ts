@@ -15,7 +15,6 @@ export default class SwipeHander {
     private _callback;
     private _touchStartTime;
     private _touchStartPosition;
-    private _swipeActive;
     constructor(target: HTMLElement, callback: (direction: ESwipeDirection, position: TPosition) => void);
     private _touchStart;
     private _touchEnd;

@@ -2,10 +2,10 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
+import { EImageScaleMode } from '../factories/createImageStage';
+import Image from './Image';
 import IImageViewer from '../interfaces/IImageViewer';
 import IImageInfo from '../interfaces/IImageInfo';
-import Image from './Image';
-import { EImageScaleMode } from '../factories/createImageStage';
 import { ESwipeDirection } from './SwipeHandler';
 export default class ImageViewer implements IImageViewer {
     private _currentIndex;

@@ -3,11 +3,15 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
+import createImageStage, { EImageScaleMode } from '../factories/createImageStage';
+import Image from './Image';
+
+// interfaces
 import IImageViewer from '../interfaces/IImageViewer';
 import IImageStage from '../interfaces/IImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
-import Image from './Image';
-import createImageStage, { EImageScaleMode } from '../factories/createImageStage';
+
+// types
 import { ESwipeDirection } from './SwipeHandler';
 
 export default class ImageViewer implements IImageViewer {
@@ -16,7 +20,7 @@ export default class ImageViewer implements IImageViewer {
   private _images: Array<Image>;
   private _imageChangedCallbacks: Array<(index: number, imageInfo: IImageInfo) => void> = new Array();
 
-  constructor(images: Array<Image>, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {   
+  constructor(images: Array<Image>, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {
     this._images = images;
     this._prepareImageStages(images, scaleMode);
 
@@ -30,7 +34,7 @@ export default class ImageViewer implements IImageViewer {
       }
     }
   }
-  
+
   showImage(index: number): boolean {
     return this._showImage(index);
   }
@@ -54,9 +58,9 @@ export default class ImageViewer implements IImageViewer {
   }
 
   setZoomAnimation(active: boolean): void {
-    this._imageStages.forEach(stage => {
+    this._imageStages.forEach((stage) => {
       stage.setZoomAnimation(active);
-    })
+    });
   }
 
   addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void) {
@@ -85,8 +89,7 @@ export default class ImageViewer implements IImageViewer {
     }
   }
 
-  private _showImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE) : boolean
-  {
+  private _showImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE): boolean {
     if (this._isValidIndex(index)) {
       if (index != this._currentIndex) {
         if (!this._images[index].wasLoaded()) {
@@ -105,15 +108,14 @@ export default class ImageViewer implements IImageViewer {
     }
   }
 
-  private _prepareImageStages(images: Array<Image>, scaleMode: EImageScaleMode)
-  {    
-    images.forEach(image => {
-      const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);     
+  private _prepareImageStages(images: Array<Image>, scaleMode: EImageScaleMode) {
+    images.forEach((image) => {
+      const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
       image.addWasLoadedCallback(() => {
         imageStage.applyScaleMode();
-      });      
+      });
       this._imageStages.push(imageStage);
-    });      
+    });
   }
 
   private _isValidIndex(index: number) {

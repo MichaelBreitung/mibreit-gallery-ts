@@ -4,4 +4,4 @@
  */
 import { SlideshowConfig } from '../containers/SlideshowContainer';
 import ISlideshowContainer from '../interfaces/ISlideshowContainer';
-export default function (config: SlideshowConfig): ISlideshowContainer;
+export default function (imageSelector: string, config: SlideshowConfig): ISlideshowContainer;

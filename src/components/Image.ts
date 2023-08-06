@@ -3,20 +3,24 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools } from 'mibreit-dom-tools';
+import { disableContextMenu, disableDragging, overwriteCssStyles } from 'mibreit-dom-tools';
 import { Element } from 'mibreit-lazy-loader';
-import { IMAGE_TITLE_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from '../constants';
+
+// interfaces
 import IImageInfo from '../interfaces/IImageInfo';
 
+// constants
+import { IMAGE_TITLE_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from '../constants';
+
 export default class Image extends Element implements IImageInfo {
-  private _title: string;
+  private _title: string = '';
 
   constructor(imageHandle: HTMLElement) {
     super(imageHandle);
     this._prepareTitle(imageHandle);
     this._limitMaxSizeTo(imageHandle, this.getWidth(), this.getHeight());
-    DomTools.disableContextMenu(imageHandle);
-    DomTools.disableDragging(imageHandle);
+    disableContextMenu(imageHandle);
+    disableDragging(imageHandle);
   }
 
   getTitle(): string {
@@ -30,7 +34,7 @@ export default class Image extends Element implements IImageInfo {
   }
 
   private _limitMaxSizeTo(imageHandle: HTMLElement, maxWidth: number, maxHeight: number): void {
-    DomTools.overwriteCssStyles(imageHandle, `max-width: ${maxWidth}px; max-height: ${maxHeight}px`);
+    overwriteCssStyles(imageHandle, `max-width: ${maxWidth}px; max-height: ${maxHeight}px`);
   }
 
   private _prepareTitle(imageHandle: HTMLElement) {

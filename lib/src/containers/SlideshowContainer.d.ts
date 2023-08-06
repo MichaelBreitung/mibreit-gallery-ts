@@ -7,20 +7,16 @@ import IImageViewer from '../interfaces/IImageViewer';
 import ISlideshowContainer from '../interfaces/ISlideshowContainer';
 import { EImageScaleMode } from '../factories/createImageStage';
 export type SlideshowConfig = {
-    imageSelector: string;
     scaleMode?: EImageScaleMode;
     interval?: number;
     zoom?: boolean;
-    preloaderBeforeSize?: number;
-    preloaderAfterSize?: number;
 };
 export default class SlideshowContainer implements ISlideshowContainer {
-    private _loader;
     private _imageViewer;
-    constructor(config: SlideshowConfig);
-    isInitialized(): boolean;
-    getViewer(): IImageViewer | null;
-    getLoader(): ILazyLoader | null;
+    private _loader;
+    constructor(elements: NodeListOf<HTMLElement>, config: SlideshowConfig);
+    getViewer(): IImageViewer;
+    getLoader(): ILazyLoader;
     private _prepareImages;
     private _prepareLoader;
     private _prepareImageViewer;

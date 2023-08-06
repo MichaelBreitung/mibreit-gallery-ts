@@ -4,8 +4,8 @@ module.exports = {
   mode: 'production',
   entry: './src/index.ts',
   output: {
-    path: path.resolve(__dirname, 'lib'),  
-    filename: './index.js',  
+    path: path.resolve(__dirname, 'lib'),
+    filename: './index.js',
     libraryTarget: 'commonjs',
   },
   module: {
@@ -33,7 +33,6 @@ module.exports = {
             },
           },
         ],
-        include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules/mibreit-lazy-loader')],
       },
       {
         test: /\.svg$/,

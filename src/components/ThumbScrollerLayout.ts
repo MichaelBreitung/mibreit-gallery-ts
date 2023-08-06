@@ -3,7 +3,18 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools } from 'mibreit-dom-tools';
+import {
+  addCssClass,
+  addCssStyle,
+  appendChildElement,
+  createElement,
+  getChildNodes,
+  getElementDimension,
+  getRootFontSize,
+  prependChildElement,
+  setInnerHtml,
+  wrapElements,
+} from 'mibreit-dom-tools';
 import styles from './ThumbScrollerLayout.module.css';
 import nextThumbs from '../images/nextThumbs.svg';
 import IImageStage from '../interfaces/IImageStage';
@@ -18,15 +29,16 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
   private _numberOfVisibleThumbs: number;
 
   constructor(container: HTMLElement, thumbStages: Array<IImageStage>, numberOfVisibleThumbs: number) {
+    addCssClass(container, styles.mibreit_ThumbScrollerParentContainer);
     this._numberOfVisibleThumbs = numberOfVisibleThumbs;
     this._thumbStages = thumbStages;
-
     const willThumbsFitContainer = numberOfVisibleThumbs >= thumbStages.length;
-    this._createScrollerContainer(container, willThumbsFitContainer);
-    this._createScrollerButtons(container, willThumbsFitContainer);    
-    DomTools.addCssClass(container, styles.mibreit_ThumbScrollerParentContainer);
-
-    this.reinitSize();
+    this._scrollerContainer = this._createScrollerContainer(container, willThumbsFitContainer);
+    const [previousButton, nextButton] = this._createScrollerButtons(container, willThumbsFitContainer);
+    this._previousButton = previousButton;
+    this._nextButton = nextButton;
+    this._thumbSizeRem = this._calculateThumbsize(this._scrollerContainer, numberOfVisibleThumbs);
+    this._resizeThumbStages(this._thumbSizeRem);
   }
 
   reinitSize() {
@@ -54,42 +66,42 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
     return this._scrollerContainer;
   }
 
-  private _createScrollerContainer(container: HTMLElement, centerThumbs: boolean) {
-    const childNodes: Array<Node> = DomTools.getChildNodes(container);
-    this._scrollerContainer = DomTools.createElement('div');    
-    if (centerThumbs)
-    {
-      DomTools.addCssClass(this._scrollerContainer, styles.mibreit_ThumbScrollerContainerCentered);
+  private _createScrollerContainer(container: HTMLElement, centerThumbs: boolean): HTMLElement {
+    const childNodes: Array<Node> = getChildNodes(container);
+    const scrollerContainer = createElement('div');
+    if (centerThumbs) {
+      addCssClass(scrollerContainer, styles.mibreit_ThumbScrollerContainerCentered);
+    } else {
+      addCssClass(scrollerContainer, styles.mibreit_ThumbScrollerContainer);
     }
-    else{
-      DomTools.addCssClass(this._scrollerContainer, styles.mibreit_ThumbScrollerContainer);
-    }
-    DomTools.wrapElements(childNodes, this._scrollerContainer);
+    wrapElements(childNodes, scrollerContainer);
+    return scrollerContainer;
   }
 
   private _calculateThumbsize(container: HTMLElement, numberOfVisibleThumbs: number): number {
-    const oneRemSize = DomTools.getRootFontSize();
-    const containerWidthRem = DomTools.getElementDimension(container).width / oneRemSize;
+    const oneRemSize = getRootFontSize();
+    const containerWidthRem = getElementDimension(container).width / oneRemSize;
     const thumbsize = containerWidthRem / numberOfVisibleThumbs;
     return thumbsize;
   }
 
-  private _createScrollerButtons(container: HTMLElement, hidden: boolean) {
-    this._previousButton = DomTools.createElement('div');
-    DomTools.setInnerHtml(this._previousButton, nextThumbs);
-    DomTools.addCssClass(this._previousButton, styles.mibreit_ThumbScrollerPrevious);
-    DomTools.prependChildElement(this._previousButton, container);
+  private _createScrollerButtons(container: HTMLElement, hidden: boolean): [HTMLElement, HTMLElement] {
+    const previousButton = createElement('div');
+    setInnerHtml(previousButton, nextThumbs);
+    addCssClass(previousButton, styles.mibreit_ThumbScrollerPrevious);
+    prependChildElement(previousButton, container);
 
-    this._nextButton = DomTools.createElement('div');
-    DomTools.setInnerHtml(this._nextButton, nextThumbs);
-    DomTools.addCssClass(this._nextButton, styles.mibreit_ThumbScrollerNext);
-    DomTools.appendChildElement(this._nextButton, container);
+    const nextButton = createElement('div');
+    setInnerHtml(nextButton, nextThumbs);
+    addCssClass(nextButton, styles.mibreit_ThumbScrollerNext);
+    appendChildElement(nextButton, container);
 
-    if (hidden)
-    {
-      DomTools.addCssStyle(this._previousButton, 'opacity', '0');
-      DomTools.addCssStyle(this._nextButton, 'opacity', '0');
+    if (hidden) {
+      addCssStyle(previousButton, 'opacity', '0');
+      addCssStyle(nextButton, 'opacity', '0');
     }
+
+    return [previousButton, nextButton];
   }
 
   private _resizeThumbStages(size: number) {
