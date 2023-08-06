@@ -15,7 +15,7 @@ import IImageInfo from '../interfaces/IImageInfo';
 import { ESwipeDirection } from './SwipeHandler';
 
 export default class ImageViewer implements IImageViewer {
-  private _currentIndex: number = 0;
+  private _currentIndex: number = -1;
   private _imageStages: Array<IImageStage> = [];
   private _images: Array<Image>;
   private _imageChangedCallbacks: Array<(index: number, imageInfo: IImageInfo) => void> = new Array();
@@ -23,16 +23,6 @@ export default class ImageViewer implements IImageViewer {
   constructor(images: Array<Image>, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {
     this._images = images;
     this._prepareImageStages(images, scaleMode);
-
-    if (this._isValidIndex(0)) {
-      if (!this._images[0].wasLoaded()) {
-        this._images[0].addWasLoadedCallback(() => {
-          this._changeCurrentImage(0);
-        });
-      } else {
-        this._changeCurrentImage(0);
-      }
-    }
   }
 
   showImage(index: number): boolean {
@@ -94,17 +84,23 @@ export default class ImageViewer implements IImageViewer {
       if (index != this._currentIndex) {
         if (!this._images[index].wasLoaded()) {
           this._images[index].addWasLoadedCallback(() => {
-            this._imageStages[this._currentIndex].hideImage(swipeDirection);
+            this._hideImage(this._currentIndex, swipeDirection);
             this._changeCurrentImage(index, swipeDirection);
           });
         } else {
-          this._imageStages[this._currentIndex].hideImage(swipeDirection);
+          this._hideImage(this._currentIndex, swipeDirection);
           this._changeCurrentImage(index, swipeDirection);
         }
       }
       return true;
     } else {
       return false;
+    }
+  }
+
+  private _hideImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE) {
+    if (this._isValidIndex(index)) {
+      this._imageStages[this._currentIndex].hideImage(swipeDirection);
     }
   }
 

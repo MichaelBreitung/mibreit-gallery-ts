@@ -14,11 +14,9 @@ import ISlideshowContainer from '../interfaces/ISlideshowContainer';
 import Image from '../components/Image';
 import { EImageScaleMode } from '../factories/createImageStage';
 
-// factories
-import createImageViewer from '../factories/createImageViewer';
-
 // constants
 import { PRELOADER_LEFT_SIZE, PRELOADER_RIGHT_SIZE } from '../constants';
+import ImageViewer from '../components/ImageViewer';
 
 export type SlideshowConfig = {
   scaleMode?: EImageScaleMode;
@@ -80,7 +78,7 @@ export default class SlideshowContainer implements ISlideshowContainer {
     scaleMode?: EImageScaleMode,
     zoom?: boolean
   ): IImageViewer {
-    const imageViewer = createImageViewer(images, scaleMode);
+    const imageViewer = new ImageViewer(images, scaleMode);
     if (zoom !== undefined) {
       imageViewer.setZoomAnimation(zoom);
     }
