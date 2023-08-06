@@ -24,6 +24,7 @@ export default class ImageViewer implements IImageViewer {
     getImageInfo(index: number): IImageInfo | null;
     getImageElement(index: number): HTMLElement | null;
     private _showImage;
+    private _hideImage;
     private _prepareImageStages;
     private _isValidIndex;
     private _changeCurrentImage;
