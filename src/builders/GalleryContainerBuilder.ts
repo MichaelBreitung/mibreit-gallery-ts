@@ -97,7 +97,7 @@ export default class GalleryContainerBuilder {
       );
     }
 
-    return new GalleryContainer(this._viewer, this._thumbScroller, this._fullscreenContainer);
+    return new GalleryContainer(this._viewer, this._loader, this._thumbScroller, this._fullscreenContainer);
   }
 
   private _createPreviousNextButtons(container: HTMLElement): { previousButton: HTMLElement; nextButton: HTMLElement } {

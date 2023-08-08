@@ -22,6 +22,8 @@ export type SlideshowConfig = {
   scaleMode?: EImageScaleMode;
   interval?: number;
   zoom?: boolean;
+  preloaderBeforeSize?: number;
+  preloaderAfterSize?: number;
 };
 
 export default class SlideshowContainer implements ISlideshowContainer {
@@ -30,7 +32,7 @@ export default class SlideshowContainer implements ISlideshowContainer {
 
   constructor(elements: NodeListOf<HTMLElement>, config: SlideshowConfig) {
     const images = this._prepareImages(elements);
-    this._loader = this._prepareLoader(images);
+    this._loader = this._prepareLoader(images, config.preloaderBeforeSize, config.preloaderAfterSize);
     this._imageViewer = this._prepareImageViewer(images, this._loader, config.scaleMode, config.zoom);
 
     if (config.interval !== undefined) {

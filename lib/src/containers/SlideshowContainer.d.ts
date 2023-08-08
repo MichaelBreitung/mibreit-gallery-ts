@@ -10,6 +10,8 @@ export type SlideshowConfig = {
     scaleMode?: EImageScaleMode;
     interval?: number;
     zoom?: boolean;
+    preloaderBeforeSize?: number;
+    preloaderAfterSize?: number;
 };
 export default class SlideshowContainer implements ISlideshowContainer {
     private _imageViewer;

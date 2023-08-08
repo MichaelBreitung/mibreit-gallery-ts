@@ -159,8 +159,12 @@
       scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT,
     });
     const titleElement = document.querySelector('#title');
-    titleElement.innerHTML = gallery.getViewer().getImageInfo(gallery.getViewer().getImageIndex()).getTitle();
-    gallery.getViewer().addImageChangedCallback((index, imageInfo) => {
+    const viewer = gallery.getViewer();
+    const imageInfo = viewer.getImageInfo(viewer.getImageIndex());
+    if (imageInfo) {
+      titleElement.innerHTML = imageInfo.getTitle();
+    }
+    viewer.addImageChangedCallback((index, imageInfo) => {
       titleElement.innerHTML = imageInfo.getTitle();
     });
   </script>

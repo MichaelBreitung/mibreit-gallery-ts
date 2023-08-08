@@ -18,4 +18,16 @@ export default function checkSlideshowConfig(config: SlideshowConfig) {
   if (typeof config.zoom !== 'undefined' && typeof config.zoom !== 'boolean') {
     throw new Error('checkSlideshowConfig - config zoom should be of type boolean');
   }
+  if (
+    typeof config.preloaderAfterSize !== 'undefined' &&
+    (typeof config.preloaderAfterSize !== 'number' || config.preloaderAfterSize < 0)
+  ) {
+    throw new Error('checkSlideshowConfig - config preloaderAfterSize should be of type number');
+  }
+  if (
+    typeof config.preloaderBeforeSize !== 'undefined' &&
+    (typeof config.preloaderBeforeSize !== 'number' || config.preloaderBeforeSize < 0)
+  ) {
+    throw new Error('checkSlideshowConfig - config preloaderBeforeSize should be of type number');
+  }
 }
