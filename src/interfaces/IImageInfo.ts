@@ -2,14 +2,10 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-export default interface IImageInfo  {
+
+import { IElementInfo } from "mibreit-lazy-loader";
+export default interface IImageInfo extends IElementInfo  {
   getTitle(): string;
 
   getUrl(): void;
-
-  getWidth(): number;
-
-  getHeight(): number;
-
-  wasLoaded(): boolean;
 }
