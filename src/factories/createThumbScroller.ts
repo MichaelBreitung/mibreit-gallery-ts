@@ -11,7 +11,7 @@ import checkConfig from '../tools/checkThumbScrollerConfig';
 export default function (
   containerSelector: string,
   thumbSelector: string,
-  config: ThumbScrollerConfig,
+  config?: ThumbScrollerConfig,
   thumbClickedCallback?: (index: number) => void
 ): IThumbScroller | null {
   if (typeof containerSelector !== 'string') {
@@ -20,7 +20,10 @@ export default function (
   if (typeof thumbSelector !== 'string') {
     throw new Error('createThumbScroller - second parameter must be imageSelector string');
   }
-  checkConfig(config);
+  if (config) {
+    checkConfig(config);
+  }
+
   const elements = getElements(thumbSelector);
   const container = getElement(containerSelector);
 

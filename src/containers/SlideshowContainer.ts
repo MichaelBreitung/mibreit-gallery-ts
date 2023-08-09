@@ -30,12 +30,12 @@ export default class SlideshowContainer implements ISlideshowContainer {
   private _imageViewer: IImageViewer;
   private _loader: ILazyLoader;
 
-  constructor(elements: NodeListOf<HTMLElement>, config: SlideshowConfig) {
+  constructor(elements: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
     const images = this._prepareImages(elements);
-    this._loader = this._prepareLoader(images, config.preloaderBeforeSize, config.preloaderAfterSize);
-    this._imageViewer = this._prepareImageViewer(images, this._loader, config.scaleMode, config.zoom);
+    this._loader = this._prepareLoader(images, config?.preloaderBeforeSize, config?.preloaderAfterSize);
+    this._imageViewer = this._prepareImageViewer(images, this._loader, config?.scaleMode, config?.zoom);
 
-    if (config.interval !== undefined) {
+    if (config?.interval) {
       setInterval(() => {
         this._imageViewer.showNextImage();
       }, config.interval);

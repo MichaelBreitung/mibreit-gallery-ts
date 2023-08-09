@@ -10,7 +10,7 @@ export type ThumbScrollerConfig = {
 export default class ThumbScrollerContainer {
     private _loader;
     private _thumbScroller;
-    constructor(thumbContainer: HTMLElement, thumbElements: NodeListOf<HTMLElement>, config: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void);
+    constructor(thumbContainer: HTMLElement, thumbElements: NodeListOf<HTMLElement>, config?: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void);
     getScroller(): IThumbScroller | null;
     private _prepareThumbs;
     private _prepareThumbScroller;

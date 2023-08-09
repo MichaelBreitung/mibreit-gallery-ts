@@ -9,4 +9,4 @@ export type GalleryConfig = SlideshowConfig & ThumbScrollerConfig & {
     thumbContainerSelector?: string;
     thumbSelector?: string;
 };
-export default function (containerSelector: string, imageSelector: string, config: GalleryConfig): IGalleryContainer;
+export default function (containerSelector: string, imageSelector: string, config?: GalleryConfig): IGalleryContainer;

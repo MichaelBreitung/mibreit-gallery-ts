@@ -53,7 +53,7 @@ export default class GalleryContainerBuilder {
   private _thumbScroller: IThumbScroller | null = null;
   private _fullscreenContainer: IFullscreen | null = null;
 
-  constructor(container: HTMLElement, images: NodeListOf<HTMLElement>, config: SlideshowConfig) {
+  constructor(container: HTMLElement, images: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
     this._container = container;
 
     const slideshowContainer = new SlideshowContainer(images, config);
@@ -67,7 +67,7 @@ export default class GalleryContainerBuilder {
   public addThumbScroller(
     thumbContainer: HTMLElement,
     thumbs: NodeListOf<HTMLElement>,
-    config: ThumbScrollerConfig
+    config?: ThumbScrollerConfig
   ): GalleryContainerBuilder {
     this._thumbContainer = thumbContainer;
     this._thumbScroller = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index: number) => {

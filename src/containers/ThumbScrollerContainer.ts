@@ -25,10 +25,10 @@ export default class ThumbScrollerContainer {
   constructor(
     thumbContainer: HTMLElement,
     thumbElements: NodeListOf<HTMLElement>,
-    config: ThumbScrollerConfig,
+    config?: ThumbScrollerConfig,
     thumbClickedCallback?: (index: number) => void
   ) {
-    const numberVisibleThumbs = config.numberOfVisibleThumbs
+    const numberVisibleThumbs = config?.numberOfVisibleThumbs
       ? config.numberOfVisibleThumbs
       : DEFAULT_NUMBER_VISIBLE_THUMBS;
     const thumbs = this._prepareThumbs(thumbElements);
@@ -41,7 +41,7 @@ export default class ThumbScrollerContainer {
       thumbClickedCallback
     );
     if (numberVisibleThumbs < thumbs.length) {
-      this._thumbScroller = this._prepareThumbScroller(layout, this._loader);
+      this._thumbScroller = this._prepareThumbScroller(layout, this._loader, config?.initialIndex);
       this._addThumbScrollerInteraction(this._thumbScroller, layout);
     }
   }

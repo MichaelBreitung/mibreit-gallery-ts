@@ -16,7 +16,7 @@ export type SlideshowConfig = {
 export default class SlideshowContainer implements ISlideshowContainer {
     private _imageViewer;
     private _loader;
-    constructor(elements: NodeListOf<HTMLElement>, config: SlideshowConfig);
+    constructor(elements: NodeListOf<HTMLElement>, config?: SlideshowConfig);
     getViewer(): IImageViewer;
     getLoader(): ILazyLoader;
     private _prepareImages;

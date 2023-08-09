@@ -8,13 +8,15 @@ import SlideshowContainer, { SlideshowConfig } from '../containers/SlideshowCont
 import ISlideshowContainer from '../interfaces/ISlideshowContainer';
 import checkSlideshowConfig from '../tools/checkSlideshowConfig';
 
-export default function (imageSelector: string, config: SlideshowConfig): ISlideshowContainer {
+export default function (imageSelector: string, config?: SlideshowConfig): ISlideshowContainer {
   if (typeof imageSelector !== 'string') {
     throw new Error('createSlideshow - second parameter must be imageSelector string');
   }
   const elements = getElements(imageSelector);
   if (elements?.length > 0) {
-    checkSlideshowConfig(config);
+    if (config) {
+      checkSlideshowConfig(config);
+    }
     return new SlideshowContainer(elements, config);
   } else {
     throw new Error('createSlideshow - no images selected');

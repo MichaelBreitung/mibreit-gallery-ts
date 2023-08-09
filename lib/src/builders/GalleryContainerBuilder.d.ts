@@ -13,8 +13,8 @@ export default class GalleryContainerBuilder {
     private _loader;
     private _thumbScroller;
     private _fullscreenContainer;
-    constructor(container: HTMLElement, images: NodeListOf<HTMLElement>, config: SlideshowConfig);
-    addThumbScroller(thumbContainer: HTMLElement, thumbs: NodeListOf<HTMLElement>, config: ThumbScrollerConfig): GalleryContainerBuilder;
+    constructor(container: HTMLElement, images: NodeListOf<HTMLElement>, config?: SlideshowConfig);
+    addThumbScroller(thumbContainer: HTMLElement, thumbs: NodeListOf<HTMLElement>, config?: ThumbScrollerConfig): GalleryContainerBuilder;
     build(): IGalleryContainer;
     private _createPreviousNextButtons;
     private _setupSwipeHandler;
