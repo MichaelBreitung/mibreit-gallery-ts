@@ -44,7 +44,9 @@ export default class ImageViewer implements IImageViewer {
   }
 
   reinitSize(): void {
-    this._imageStages[this._currentIndex].applyScaleMode();
+    if (this._isValidIndex(this._currentIndex)) {
+      this._imageStages[this._currentIndex]!.applyScaleMode();
+    }
   }
 
   setZoomAnimation(active: boolean): void {
@@ -65,7 +67,7 @@ export default class ImageViewer implements IImageViewer {
 
   getImageInfo(index: number): IImageInfo | null {
     if (this._isValidIndex(index)) {
-      return this._images[index];
+      return this._images[index]!;
     } else {
       return null;
     }
@@ -73,7 +75,7 @@ export default class ImageViewer implements IImageViewer {
 
   getImageElement(index: number): HTMLElement | null {
     if (this._isValidIndex(index)) {
-      return this._images[index].getHtmlElement();
+      return this._images[index]!.getHtmlElement();
     } else {
       return null;
     }
@@ -82,8 +84,8 @@ export default class ImageViewer implements IImageViewer {
   private _showImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE): boolean {
     if (this._isValidIndex(index)) {
       if (index != this._currentIndex) {
-        if (!this._images[index].wasLoaded()) {
-          this._images[index].addWasLoadedCallback(() => {
+        if (!this._images[index]!.wasLoaded()) {
+          this._images[index]!.addWasLoadedCallback(() => {
             this._hideImage(this._currentIndex, swipeDirection);
             this._changeCurrentImage(index, swipeDirection);
           });
@@ -100,7 +102,7 @@ export default class ImageViewer implements IImageViewer {
 
   private _hideImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE) {
     if (this._isValidIndex(index)) {
-      this._imageStages[this._currentIndex].hideImage(swipeDirection);
+      this._imageStages[this._currentIndex]!.hideImage(swipeDirection);
     }
   }
 
@@ -121,9 +123,9 @@ export default class ImageViewer implements IImageViewer {
   private _changeCurrentImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE) {
     console.log('ImageViewer#changeCurrentImage', index);
     this._currentIndex = index;
-    this._imageStages[this._currentIndex].showImage(swipeDirection);
+    this._imageStages[this._currentIndex]!.showImage(swipeDirection);
     this._imageChangedCallbacks.forEach((callback) => {
-      callback(this._currentIndex, this._images[this._currentIndex]);
+      callback(this._currentIndex, this._images[this._currentIndex]!);
     });
   }
 }

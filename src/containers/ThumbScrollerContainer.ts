@@ -53,7 +53,7 @@ export default class ThumbScrollerContainer {
   private _prepareThumbs(thumbSelector: NodeListOf<HTMLElement>): Array<Image> {
     const thumbs: Array<Image> = new Array();
     for (let i = 0; i < thumbSelector.length; i++) {
-      const image: Image = new Image(thumbSelector[i]);
+      const image: Image = new Image(thumbSelector[i]!);
       thumbs.push(image);
     }
     return thumbs;
