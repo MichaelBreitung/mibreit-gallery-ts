@@ -4,8 +4,7 @@
  */
 
 import { IElementInfo } from "mibreit-lazy-loader";
-
-export default interface IImageInfo extends IElementInfo {
+export default interface IImageInfo extends IElementInfo  {
   getTitle(): string;
 
   getUrl(): void;

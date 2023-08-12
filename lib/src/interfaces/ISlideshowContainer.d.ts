@@ -5,7 +5,6 @@
 import { ILazyLoader } from 'mibreit-lazy-loader';
 import IImageViewer from './IImageViewer';
 export default interface ISlideshowContainer {
-    isInitialized(): boolean;
-    getViewer(): IImageViewer | null;
-    getLoader(): ILazyLoader | null;
+    getViewer(): IImageViewer;
+    getLoader(): ILazyLoader;
 }

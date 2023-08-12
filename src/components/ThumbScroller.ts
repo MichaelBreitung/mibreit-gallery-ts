@@ -11,7 +11,7 @@ export default class ThumbScroller implements IThumbScroller {
   private _scroller: HorizontalScroller;
   private _layout: IThumbScrollerLayout;
   private _scrollIndexChangedCallbacks: Array<(index: number) => void> = new Array();
-  private _currentScrollIndex: number;
+  private _currentScrollIndex: number = 0;
 
   constructor(layout: IThumbScrollerLayout) {
     this._layout = layout;

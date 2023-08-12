@@ -2,34 +2,19 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { ILazyLoader } from 'mibreit-lazy-loader';
 import IGalleryContainer from '../interfaces/IGalleryContainer';
 import IImageViewer from '../interfaces/IImageViewer';
 import IThumbScroller from '../interfaces/IThumbScroller';
 import IFullscreen from '../interfaces/IFullscreen';
-import { ThumbScrollerConfig } from './ThumbScrollerContainer';
-import { SlideshowConfig } from './SlideshowContainer';
-export type GalleryConfig = (ThumbScrollerConfig & SlideshowConfig & {
-    slideshowContainerSelector: string;
-}) | (SlideshowConfig & {
-    slideshowContainerSelector: string;
-});
+import { ILazyLoader } from 'mibreit-lazy-loader';
 export default class GalleryContainer implements IGalleryContainer {
-    private _slideShowContainer;
+    private _viewer;
+    private _loader;
     private _fullscreenContainer;
     private _thumbScroller;
-    constructor(config: GalleryConfig);
-    isInitialized(): boolean;
-    getViewer(): IImageViewer | null;
-    getLoader(): ILazyLoader | null;
+    constructor(viewer: IImageViewer, loader: ILazyLoader, thumbScroller: IThumbScroller | null, fullscreenContainer: IFullscreen | null);
+    getViewer(): IImageViewer;
+    getLoader(): ILazyLoader;
     getScroller(): IThumbScroller | null;
     getFullscreen(): IFullscreen | null;
-    private _createPreviousNextButtons;
-    private _createFullscreenButton;
-    private _setupHoverEvents;
-    private _setupKeyEvents;
-    private _setupResizeHandler;
-    private _setupSwipeHandler;
-    private _setupFullscreenClickEvent;
-    private _setupFullscreenChangedHandler;
 }

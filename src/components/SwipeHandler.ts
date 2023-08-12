@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools } from 'mibreit-dom-tools';
+import { addEventListener } from 'mibreit-dom-tools';
 
 const TRESHHOLD = 50;
 const MAXTIME = 700;
@@ -21,33 +21,31 @@ export enum ESwipeDirection {
 
 export default class SwipeHander {
   private _callback: (direction: ESwipeDirection, position: TPosition) => void;
-  private _touchStartTime: number;
-  private _touchStartPosition: TPosition;
-  private _swipeActive: boolean = false;
+  private _touchStartTime: number | null = null;
+  private _touchStartPosition: TPosition | null = null;
 
   constructor(target: HTMLElement, callback: (direction: ESwipeDirection, position: TPosition) => void) {
     this._callback = callback;
-    DomTools.addEventListener(target, 'pointerdown', this._touchStart);
-    DomTools.addEventListener(target, 'pointerup', this._touchEnd);
+    addEventListener(target, 'pointerdown', this._touchStart);
+    addEventListener(target, 'pointerup', this._touchEnd);
   }
 
   private _touchStart = (event: PointerEvent) => {
     console.log('SwipeHander#touchStart');
-    this._swipeActive = true;
     this._touchStartTime = Date.now();
     this._touchStartPosition = this._getTouchPosition(event);
   };
 
   private _touchEnd = (event: PointerEvent) => {
     console.log('SwipeHander#touchEnd');
-    if (this._swipeActive && Date.now() - this._touchStartTime < MAXTIME) {
+    if (this._touchStartTime && this._touchStartPosition && Date.now() - this._touchStartTime < MAXTIME) {
       const touchEndPosition = this._getTouchPosition(event);
       const direction = this._detectDirection(this._touchStartPosition, touchEndPosition);
-
       console.log('SwipeHander#touchEnd - direction: ', direction);
       this._callback(direction, touchEndPosition);
     }
-    this._swipeActive = false;
+    this._touchStartPosition = null;
+    this._touchStartTime = null;
   };
 
   private _getTouchPosition(event: PointerEvent): TPosition {

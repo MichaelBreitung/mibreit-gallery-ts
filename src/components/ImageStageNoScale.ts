@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools } from 'mibreit-dom-tools';
+import { removeCssStyle } from 'mibreit-dom-tools';
 import ImageStage from './ImageStage';
 
 export default class ImageStageNoScale extends ImageStage {
@@ -12,7 +12,7 @@ export default class ImageStageNoScale extends ImageStage {
   }
 
   protected _applyScaleModeImpl(_stageWidth: number, _stageHeight: number) {
-    DomTools.removeCssStyle(this._imageHandle, 'width');
-    DomTools.removeCssStyle(this._imageHandle, 'height');
+    removeCssStyle(this._imageHandle, 'width');
+    removeCssStyle(this._imageHandle, 'height');
   }
 }

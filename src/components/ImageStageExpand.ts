@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools } from 'mibreit-dom-tools';
+import { addCssStyle } from 'mibreit-dom-tools';
 import ImageStage from './ImageStage';
 
 export default class ImageStageExpand extends ImageStage {
@@ -17,12 +17,12 @@ export default class ImageStageExpand extends ImageStage {
 
     if (stageAspect > aspect) {
       // fit based on width
-      DomTools.addCssStyle(this._imageHandle, 'width', `100%`);
-      DomTools.addCssStyle(this._imageHandle, 'height', `${100/aspect*stageAspect}%`);
+      addCssStyle(this._imageHandle, 'width', `100%`);
+      addCssStyle(this._imageHandle, 'height', `${(100 / aspect) * stageAspect}%`);
     } else {
       // fit based on height
-      DomTools.addCssStyle(this._imageHandle, 'width', `${aspect*100/stageAspect}%`);
-      DomTools.addCssStyle(this._imageHandle, 'height', `100%`);
+      addCssStyle(this._imageHandle, 'width', `${(aspect * 100) / stageAspect}%`);
+      addCssStyle(this._imageHandle, 'height', `100%`);
     }
   }
 }

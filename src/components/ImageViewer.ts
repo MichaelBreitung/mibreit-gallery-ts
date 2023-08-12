@@ -3,34 +3,28 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
+import createImageStage, { EImageScaleMode } from '../factories/createImageStage';
+import Image from './Image';
+
+// interfaces
 import IImageViewer from '../interfaces/IImageViewer';
 import IImageStage from '../interfaces/IImageStage';
 import IImageInfo from '../interfaces/IImageInfo';
-import Image from './Image';
-import createImageStage, { EImageScaleMode } from '../factories/createImageStage';
+
+// types
 import { ESwipeDirection } from './SwipeHandler';
 
 export default class ImageViewer implements IImageViewer {
-  private _currentIndex: number = 0;
+  private _currentIndex: number = -1;
   private _imageStages: Array<IImageStage> = [];
   private _images: Array<Image>;
   private _imageChangedCallbacks: Array<(index: number, imageInfo: IImageInfo) => void> = new Array();
 
-  constructor(images: Array<Image>, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {   
+  constructor(images: Array<Image>, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {
     this._images = images;
     this._prepareImageStages(images, scaleMode);
-
-    if (this._isValidIndex(0)) {
-      if (!this._images[0].wasLoaded()) {
-        this._images[0].addWasLoadedCallback(() => {
-          this._changeCurrentImage(0);
-        });
-      } else {
-        this._changeCurrentImage(0);
-      }
-    }
   }
-  
+
   showImage(index: number): boolean {
     return this._showImage(index);
   }
@@ -50,13 +44,15 @@ export default class ImageViewer implements IImageViewer {
   }
 
   reinitSize(): void {
-    this._imageStages[this._currentIndex].applyScaleMode();
+    if (this._isValidIndex(this._currentIndex)) {
+      this._imageStages[this._currentIndex]!.applyScaleMode();
+    }
   }
 
   setZoomAnimation(active: boolean): void {
-    this._imageStages.forEach(stage => {
+    this._imageStages.forEach((stage) => {
       stage.setZoomAnimation(active);
-    })
+    });
   }
 
   addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void) {
@@ -71,7 +67,7 @@ export default class ImageViewer implements IImageViewer {
 
   getImageInfo(index: number): IImageInfo | null {
     if (this._isValidIndex(index)) {
-      return this._images[index];
+      return this._images[index]!;
     } else {
       return null;
     }
@@ -79,23 +75,22 @@ export default class ImageViewer implements IImageViewer {
 
   getImageElement(index: number): HTMLElement | null {
     if (this._isValidIndex(index)) {
-      return this._images[index].getHtmlElement();
+      return this._images[index]!.getHtmlElement();
     } else {
       return null;
     }
   }
 
-  private _showImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE) : boolean
-  {
+  private _showImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE): boolean {
     if (this._isValidIndex(index)) {
       if (index != this._currentIndex) {
-        if (!this._images[index].wasLoaded()) {
-          this._images[index].addWasLoadedCallback(() => {
-            this._imageStages[this._currentIndex].hideImage(swipeDirection);
+        if (!this._images[index]!.wasLoaded()) {
+          this._images[index]!.addWasLoadedCallback(() => {
+            this._hideImage(this._currentIndex, swipeDirection);
             this._changeCurrentImage(index, swipeDirection);
           });
         } else {
-          this._imageStages[this._currentIndex].hideImage(swipeDirection);
+          this._hideImage(this._currentIndex, swipeDirection);
           this._changeCurrentImage(index, swipeDirection);
         }
       }
@@ -105,15 +100,20 @@ export default class ImageViewer implements IImageViewer {
     }
   }
 
-  private _prepareImageStages(images: Array<Image>, scaleMode: EImageScaleMode)
-  {    
-    images.forEach(image => {
-      const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);     
+  private _hideImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE) {
+    if (this._isValidIndex(index)) {
+      this._imageStages[this._currentIndex]!.hideImage(swipeDirection);
+    }
+  }
+
+  private _prepareImageStages(images: Array<Image>, scaleMode: EImageScaleMode) {
+    images.forEach((image) => {
+      const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
       image.addWasLoadedCallback(() => {
         imageStage.applyScaleMode();
-      });      
+      });
       this._imageStages.push(imageStage);
-    });      
+    });
   }
 
   private _isValidIndex(index: number) {
@@ -123,9 +123,9 @@ export default class ImageViewer implements IImageViewer {
   private _changeCurrentImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE) {
     console.log('ImageViewer#changeCurrentImage', index);
     this._currentIndex = index;
-    this._imageStages[this._currentIndex].showImage(swipeDirection);
+    this._imageStages[this._currentIndex]!.showImage(swipeDirection);
     this._imageChangedCallbacks.forEach((callback) => {
-      callback(this._currentIndex, this._images[this._currentIndex]);
+      callback(this._currentIndex, this._images[this._currentIndex]!);
     });
   }
 }

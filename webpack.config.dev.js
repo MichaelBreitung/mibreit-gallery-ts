@@ -30,8 +30,7 @@ module.exports = {
               localIdentName: '[local]'
             }
           }
-        }],
-        include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules/mibreit-lazy-loader')],    
+        }],    
       },
       {
         test: /\.svg$/,

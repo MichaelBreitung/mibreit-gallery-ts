@@ -4,7 +4,9 @@
  */
 import { SlideshowConfig } from './SlideshowContainer';
 import GalleryContainer from './GalleryContainer';
+import { ILazyLoader } from 'mibreit-lazy-loader';
 export type FullscreenOnlyGalleryConfig = SlideshowConfig;
 export default class FullscreenOnlyGallery extends GalleryContainer {
-    constructor(config: FullscreenOnlyGalleryConfig);
+    constructor(originalImages: NodeListOf<HTMLElement>, config: FullscreenOnlyGalleryConfig, lazyLoader?: ILazyLoader);
+    private static _createContainer;
 }

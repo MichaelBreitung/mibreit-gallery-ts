@@ -3,7 +3,19 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools } from 'mibreit-dom-tools';
+import {
+  addClickEventListener,
+  addCssClass,
+  addCssStyle,
+  appendChildElement,
+  createElement,
+  getElement,
+  prependBeforeChild,
+  removeCssStyle,
+  removeElement,
+  setAttribute,
+  setInnerHtml,
+} from 'mibreit-dom-tools';
 import IFullscreen from '../interfaces/IFullscreen';
 import styles from './FullscreenContainer.module.css';
 import fullscreenClose from '../images/close.svg';
@@ -75,95 +87,94 @@ export default class FullscreenContainer implements IFullscreen {
     }
   }
 
-  isFullscreenActive() : boolean {
+  isFullscreenActive(): boolean {
     return this._fullscreenActive;
   }
 
-  setBackgroundColor(color: string): void
-  {
-    DomTools.addCssStyle(this._fullScreenContainer, "background-color", color);
+  setBackgroundColor(color: string): void {
+    addCssStyle(this._fullScreenContainer, 'background-color', color);
   }
 
   private _createFullscreenContainer(): HTMLElement {
-    const fullScreenContainer = DomTools.createElement('div');
-    DomTools.addCssClass(fullScreenContainer, styles.mibreit_Fullscreen);
+    const fullScreenContainer = createElement('div');
+    addCssClass(fullScreenContainer, styles.mibreit_Fullscreen);
     return fullScreenContainer;
   }
 
   private _createFullscreenCloseButton(fullScreenContainer: HTMLElement): HTMLElement {
-    const fullScreenCloseButton = DomTools.createElement('div');
-    DomTools.setInnerHtml(fullScreenCloseButton, fullscreenClose);
-    DomTools.addCssClass(fullScreenCloseButton, styles.mibreit_Fullscreen_exit);
-    DomTools.appendChildElement(fullScreenCloseButton, fullScreenContainer);
+    const fullScreenCloseButton = createElement('div');
+    setInnerHtml(fullScreenCloseButton, fullscreenClose);
+    addCssClass(fullScreenCloseButton, styles.mibreit_Fullscreen_exit);
+    appendChildElement(fullScreenCloseButton, fullScreenContainer);
     return fullScreenCloseButton;
   }
 
   private _createSlideshowContainerPlaceholder(): HTMLElement {
-    const slideshowContainerPlaceholder = DomTools.createElement('div');
-    DomTools.setAttribute(slideshowContainerPlaceholder, 'id', GALLERY_PLACEHOLDER_ID);
+    const slideshowContainerPlaceholder = createElement('div');
+    setAttribute(slideshowContainerPlaceholder, 'id', GALLERY_PLACEHOLDER_ID);
     return slideshowContainerPlaceholder;
   }
 
   private _createThumbContainerPlaceholder(): HTMLElement {
-    const thumbContainerPlaceholder = DomTools.createElement('div');
-    DomTools.setAttribute(thumbContainerPlaceholder, 'id', THUMBS_PLACEHOLDER_ID);
+    const thumbContainerPlaceholder = createElement('div');
+    setAttribute(thumbContainerPlaceholder, 'id', THUMBS_PLACEHOLDER_ID);
     return thumbContainerPlaceholder;
   }
 
   private _addFullscreen() {
-    const body = DomTools.getElement('body');
+    const body = getElement('body');
     if (body != null) {
-      DomTools.appendChildElement(this._fullScreenContainer, body);
+      appendChildElement(this._fullScreenContainer, body);
     }
   }
 
   private _removeFullscreen() {
-    DomTools.removeElement(this._fullScreenContainer);
+    removeElement(this._fullScreenContainer);
   }
 
   private _moveGalleryToFullscreen() {
     if (this._usePlaceholder) {
-      DomTools.prependBeforeChild(this._slideshowContainerPlaceholder, this._slideshowContainer);
+      prependBeforeChild(this._slideshowContainerPlaceholder, this._slideshowContainer);
     }
-    DomTools.appendChildElement(this._slideshowContainer, this._fullScreenContainer);
-    DomTools.addCssStyle(this._slideshowContainer, 'width', '100%');
-    DomTools.addCssStyle(this._slideshowContainer, 'flex-grow', '1');
+    appendChildElement(this._slideshowContainer, this._fullScreenContainer);
+    addCssStyle(this._slideshowContainer, 'width', '100%');
+    addCssStyle(this._slideshowContainer, 'flex-grow', '1');
   }
 
   private _removeGalleryFromFullscreen() {
-    DomTools.removeElement(this._slideshowContainer);
+    removeElement(this._slideshowContainer);
     if (this._usePlaceholder) {
-      DomTools.prependBeforeChild(this._slideshowContainer, this._slideshowContainerPlaceholder);
-      DomTools.removeElement(this._slideshowContainerPlaceholder);
+      prependBeforeChild(this._slideshowContainer, this._slideshowContainerPlaceholder);
+      removeElement(this._slideshowContainerPlaceholder);
     }
-    DomTools.removeCssStyle(this._slideshowContainer, 'width');
-    DomTools.removeCssStyle(this._slideshowContainer, 'flex-grow');
+    removeCssStyle(this._slideshowContainer, 'width');
+    removeCssStyle(this._slideshowContainer, 'flex-grow');
   }
 
   private _moveThumbsToFullscreen() {
     if (this._thumbContainer && this._thumbContainerPlaceholder) {
       if (this._usePlaceholder) {
-        DomTools.prependBeforeChild(this._thumbContainerPlaceholder, this._thumbContainer);
+        prependBeforeChild(this._thumbContainerPlaceholder, this._thumbContainer);
       }
-      DomTools.appendChildElement(this._thumbContainer, this._fullScreenContainer);
-      DomTools.addCssStyle(this._thumbContainer, 'flex-grow', '0');
+      appendChildElement(this._thumbContainer, this._fullScreenContainer);
+      addCssStyle(this._thumbContainer, 'flex-grow', '0');
     }
   }
 
   private _removeThumbsFromFullscreen() {
     if (this._thumbContainer && this._thumbContainerPlaceholder) {
-      DomTools.removeElement(this._thumbContainer);
+      removeElement(this._thumbContainer);
       if (this._usePlaceholder) {
-        DomTools.prependBeforeChild(this._thumbContainer, this._thumbContainerPlaceholder);
-        DomTools.removeElement(this._thumbContainerPlaceholder);
+        prependBeforeChild(this._thumbContainer, this._thumbContainerPlaceholder);
+        removeElement(this._thumbContainerPlaceholder);
       }
-      DomTools.removeCssStyle(this._thumbContainer, 'flex-grow');
+      removeCssStyle(this._thumbContainer, 'flex-grow');
     }
   }
 
   private _setupCloseButtonHandler() {
-    DomTools.addClickEventListener(this._fullScreenCloseButton, (event: MouseEvent) => {
-      event.stopPropagation();
+    addClickEventListener(this._fullScreenCloseButton, (event: MouseEvent | undefined) => {
+      event?.stopPropagation();
       if (this._fullscreenActive) {
         this.deActivate();
       }

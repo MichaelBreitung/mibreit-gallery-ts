@@ -2,6 +2,11 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { GalleryConfig } from '../containers/GalleryContainer';
 import IGalleryContainer from '../interfaces/IGalleryContainer';
-export default function (config: GalleryConfig): IGalleryContainer;
+import { SlideshowConfig } from '../containers/SlideshowContainer';
+import { ThumbScrollerConfig } from '../containers/ThumbScrollerContainer';
+export type GalleryConfig = SlideshowConfig & ThumbScrollerConfig & {
+    thumbContainerSelector?: string;
+    thumbSelector?: string;
+};
+export default function (containerSelector: string, imageSelector: string, config?: GalleryConfig): IGalleryContainer;

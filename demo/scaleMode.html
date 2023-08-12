@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
-    <meta name="copyright" content="Michael Breitung"/>
-    <meta name="author" content="Michael Breitung"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="copyright" content="Michael Breitung" />
+    <meta name="author" content="Michael Breitung" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Landscape Photography by Michael Breitung</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
         display: flex;
@@ -37,51 +36,113 @@
     <div id="container" class="container">
       <div id="none">
         <h2>NONE</h2>
-        <img src="../src/images/image-placeholder-transparent.png" data-src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg" data-title="Stubai Mountains" alt="Stubai Mountains" width="1280" height="853"/>
+        <img
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg"
+          data-title="Stubai Mountains"
+          alt="Stubai Mountains"
+          width="1280"
+          height="853"
+        />
       </div>
       <div id="stretch">
         <h2>STRETCH</h2>
-        <img src="../src/images/image-placeholder-transparent.png" data-src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg" data-title="Stubai Mountains" alt="Stubai Mountains" width="1280" height="853"/>
+        <img
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg"
+          data-title="Stubai Mountains"
+          alt="Stubai Mountains"
+          width="1280"
+          height="853"
+        />
       </div>
       <div id="fitAspect">
         <h2>FIT_ASPECT</h2>
-        <img src="../src/images/image-placeholder-transparent.png" data-src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg" data-title="Stubai Mountains" alt="Stubai Mountains" width="1280" height="853"/>
+        <img
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg"
+          data-title="Stubai Mountains"
+          alt="Stubai Mountains"
+          width="1280"
+          height="853"
+        />
       </div>
       <div id="expand">
         <h2>EXPAND</h2>
-        <img src="../src/images/image-placeholder-transparent.png" data-src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg" data-title="Stubai Mountains" alt="Stubai Mountains" width="1280" height="853"/>
-      </div>     
+        <img
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg"
+          data-title="Stubai Mountains"
+          alt="Stubai Mountains"
+          width="1280"
+          height="853"
+        />
+      </div>
     </div>
     <div id="container2" class="container">
       <div id="none">
         <h2>NONE</h2>
-        <img src="../src/images/image-placeholder-transparent.png" data-title="Secret Beach" data-src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg" title="Cuernos" alt="Cuernos" width="720" height="1080"/>
+        <img
+          data-title="Secret Beach"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg"
+          title="Cuernos"
+          alt="Cuernos"
+          width="720"
+          height="1080"
+        />
       </div>
       <div id="stretch">
         <h2>STRETCH</h2>
-        <img src="../src/images/image-placeholder-transparent.png" data-title="Secret Beach" data-src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg" title="Cuernos" alt="Cuernos" width="720" height="1080"/>
+        <img
+          data-title="Secret Beach"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg"
+          title="Cuernos"
+          alt="Cuernos"
+          width="720"
+          height="1080"
+        />
       </div>
       <div id="fitAspect">
         <h2>FIT_ASPECT</h2>
-        <img src="../src/images/image-placeholder-transparent.png" data-title="Secret Beach" data-src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg" title="Cuernos" alt="Cuernos" width="720" height="1080"/>
+        <img
+          data-title="Secret Beach"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg"
+          title="Cuernos"
+          alt="Cuernos"
+          width="720"
+          height="1080"
+        />
       </div>
       <div id="expand">
         <h2>EXPAND</h2>
-        <img src="../src/images/image-placeholder-transparent.png" data-title="Secret Beach" data-src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg" title="Cuernos" alt="Cuernos" width="720" height="1080"/>
-      </div>     
+        <img
+          data-title="Secret Beach"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg"
+          title="Cuernos"
+          alt="Cuernos"
+          width="720"
+          height="1080"
+        />
+      </div>
     </div>
   </body>
   <script src="../dist/mibreit-gallery/mibreitGalleryTs.min.js" type="text/javascript"></script>
   <script>
-    mibreitGalleryTs.DomTools.documentReady(function () {
-      mibreitGalleryTs.createSlideshow({imageSelector: "#container #none > img", scaleMode: mibreitGalleryTs.EImageScaleMode.NONE});
-      mibreitGalleryTs.createSlideshow({imageSelector: "#container #stretch > img", scaleMode: mibreitGalleryTs.EImageScaleMode.STRETCH});
-      mibreitGalleryTs.createSlideshow({imageSelector: "#container #fitAspect > img", scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT});
-      mibreitGalleryTs.createSlideshow({imageSelector: "#container #expand > img", scaleMode: mibreitGalleryTs.EImageScaleMode.EXPAND});
-      mibreitGalleryTs.createSlideshow({imageSelector: "#container2 #none > img", scaleMode: mibreitGalleryTs.EImageScaleMode.NONE});
-      mibreitGalleryTs.createSlideshow({imageSelector: "#container2 #stretch > img", scaleMode: mibreitGalleryTs.EImageScaleMode.STRETCH});
-      mibreitGalleryTs.createSlideshow({imageSelector: "#container2 #fitAspect > img", scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT});
-      mibreitGalleryTs.createSlideshow({imageSelector: "#container2 #expand > img", scaleMode: mibreitGalleryTs.EImageScaleMode.EXPAND});
+    mibreitGalleryTs.createSlideshow('#container #none > img', { scaleMode: mibreitGalleryTs.EImageScaleMode.NONE });
+    mibreitGalleryTs.createSlideshow('#container #stretch > img', {
+      scaleMode: mibreitGalleryTs.EImageScaleMode.STRETCH,
+    });
+    mibreitGalleryTs.createSlideshow('#container #fitAspect > img', {
+      scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT,
+    });
+    mibreitGalleryTs.createSlideshow('#container #expand > img', {
+      scaleMode: mibreitGalleryTs.EImageScaleMode.EXPAND,
+    });
+    mibreitGalleryTs.createSlideshow('#container2 #none > img', { scaleMode: mibreitGalleryTs.EImageScaleMode.NONE });
+    mibreitGalleryTs.createSlideshow('#container2 #stretch > img', {
+      scaleMode: mibreitGalleryTs.EImageScaleMode.STRETCH,
+    });
+    mibreitGalleryTs.createSlideshow('#container2 #fitAspect > img', {
+      scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT,
+    });
+    mibreitGalleryTs.createSlideshow('#container2 #expand > img', {
+      scaleMode: mibreitGalleryTs.EImageScaleMode.EXPAND,
     });
   </script>
 </html>

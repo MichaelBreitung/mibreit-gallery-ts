@@ -3,7 +3,17 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { DomTools, TElementDimension } from 'mibreit-dom-tools';
+import {
+  TElementDimension,
+  addCssClass,
+  addCssStyle,
+  createElement,
+  getComputedCssStyle,
+  getElementDimension,
+  removeCssClass,
+  removeCssStyle,
+  wrapElements,
+} from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import styles from './ImageStage.module.css';
 import animationStyles from '../tools/animations.module.css';
@@ -37,38 +47,37 @@ export default abstract class ImageStage implements IImageStage {
 
   applyScaleMode(): void {
     console.log('ImageStage#applyScaleMode');
-    const stageDimension: TElementDimension = DomTools.getElementDimension(this._imageStage);
+    const stageDimension: TElementDimension = getElementDimension(this._imageStage);
     this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
     this._centerImage(stageDimension.width, stageDimension.height);
   }
 
   setSize(widthCss: string, heightCss: string) {
-    DomTools.addCssStyle(this._imageStage, 'width', widthCss);
-    DomTools.addCssStyle(this._imageStage, 'height', heightCss);
+    addCssStyle(this._imageStage, 'width', widthCss);
+    addCssStyle(this._imageStage, 'height', heightCss);
     this.applyScaleMode();
   }
 
   setMargin(marginCss: string) {
-    DomTools.addCssStyle(this._imageStage, 'margin', marginCss);
+    addCssStyle(this._imageStage, 'margin', marginCss);
   }
 
-  async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {    
+  async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
     if (this._zoomAnimation) {
       setTimeout(() => {
         this._resetZoom();
       }, ANIMATIONS_RESET_TIMEOUT);
     }
     this._stopSlideAnimation();
-    await sleepTillNextRenderFinished();    
-    if (swipeDirection == ESwipeDirection.RIGHT) {               
-      DomTools.addCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);   
-      DomTools.addCssStyle(this._imageStage, 'left', '-100%'); 
+    await sleepTillNextRenderFinished();
+    if (swipeDirection == ESwipeDirection.RIGHT) {
+      addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      addCssStyle(this._imageStage, 'left', '-100%');
+    } else if (swipeDirection == ESwipeDirection.LEFT) {
+      addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      addCssStyle(this._imageStage, 'left', '100%');
     }
-    else if (swipeDirection == ESwipeDirection.LEFT) {              
-      DomTools.addCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);   
-      DomTools.addCssStyle(this._imageStage, 'left', '100%'); 
-    }
-    DomTools.removeCssStyle(this._imageStage, 'opacity');    
+    removeCssStyle(this._imageStage, 'opacity');
   }
 
   async showImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
@@ -76,58 +85,56 @@ export default abstract class ImageStage implements IImageStage {
     if (this._zoomAnimation) {
       this._startZoomAnimation();
     }
-    this._stopSlideAnimation();  
+    this._stopSlideAnimation();
     await sleepTillNextRenderFinished();
-    if (swipeDirection == ESwipeDirection.RIGHT) {        
-      DomTools.removeCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);             
-      DomTools.addCssStyle(this._imageStage, 'left', '100%'); 
-      await sleepTillNextRenderFinished();      
-      DomTools.addCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);       
-      DomTools.removeCssStyle(this._imageStage, 'left'); 
+    if (swipeDirection == ESwipeDirection.RIGHT) {
+      removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      addCssStyle(this._imageStage, 'left', '100%');
+      await sleepTillNextRenderFinished();
+      addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      removeCssStyle(this._imageStage, 'left');
+    } else if (swipeDirection == ESwipeDirection.LEFT) {
+      removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      addCssStyle(this._imageStage, 'left', '-100%');
+      await sleepTillNextRenderFinished();
+      addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      removeCssStyle(this._imageStage, 'left');
+    } else {
+      removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      removeCssStyle(this._imageStage, 'left');
     }
-    else if (swipeDirection == ESwipeDirection.LEFT) {        
-      DomTools.removeCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);             
-      DomTools.addCssStyle(this._imageStage, 'left', '-100%'); 
-      await sleepTillNextRenderFinished();     
-      DomTools.addCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);       
-      DomTools.removeCssStyle(this._imageStage, 'left');  
-    }
-    else{
-      DomTools.removeCssClass( this._imageStage, animationStyles.mibreit_GalleryTransition);   
-      DomTools.removeCssStyle(this._imageStage, 'left');     
-    }
-    DomTools.addCssStyle(this._imageStage, 'opacity', '1');
+    addCssStyle(this._imageStage, 'opacity', '1');
   }
 
   protected abstract _applyScaleModeImpl(stageWidth: number, stageHeight: number): void;
 
   private _createStage(): HTMLElement {
-    const wrapper = DomTools.createElement('div');
-    DomTools.addCssClass(wrapper, styles.mibreit_ImageStage);
-    DomTools.addCssClass(wrapper, animationStyles.mibreit_GalleryFade);    
-    DomTools.wrapElements([this._imageHandle], wrapper);
+    const wrapper = createElement('div');
+    addCssClass(wrapper, styles.mibreit_ImageStage);
+    addCssClass(wrapper, animationStyles.mibreit_GalleryFade);
+    wrapElements([this._imageHandle], wrapper);
     return wrapper;
   }
 
   private _centerImage(stageWidth: number, stageHeight: number) {
-    const { width, height } = DomTools.getElementDimension(this._imageHandle);
+    const { width, height } = getElementDimension(this._imageHandle);
     const x: number = (width + stageWidth) / 2.0 - width;
     const y: number = (height + stageHeight) / 2.0 - height;
-    DomTools.addCssStyle(this._imageHandle, 'margin-left', `${x}px`);
-    DomTools.addCssStyle(this._imageHandle, 'margin-top', `${y}px`);
+    addCssStyle(this._imageHandle, 'margin-left', `${x}px`);
+    addCssStyle(this._imageHandle, 'margin-top', `${y}px`);
   }
 
   private _startZoomAnimation() {
     console.log('ImageStage#startZoomAnimation');
-    DomTools.addCssClass(this._imageHandle, 'zoom');
+    addCssClass(this._imageHandle, 'zoom');
   }
 
   private _resetZoom() {
     console.log('ImageStage#resetZoom');
-    DomTools.removeCssClass(this._imageHandle, 'zoom');
+    removeCssClass(this._imageHandle, 'zoom');
   }
 
   private _stopSlideAnimation() {
-    DomTools.addCssStyle(this._imageStage, 'margin-left', DomTools.getComputedCssStyle(this._imageStage, 'margin-left'));
+    addCssStyle(this._imageStage, 'margin-left', getComputedCssStyle(this._imageStage, 'margin-left'));
   }
 }
