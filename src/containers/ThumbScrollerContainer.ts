@@ -19,7 +19,6 @@ export type ThumbScrollerConfig = {
 };
 
 export default class ThumbScrollerContainer {
-  private _loader: ILazyLoader;
   private _thumbScroller: IThumbScroller | null = null;
 
   constructor(
@@ -32,7 +31,7 @@ export default class ThumbScrollerContainer {
       ? config.numberOfVisibleThumbs
       : DEFAULT_NUMBER_VISIBLE_THUMBS;
     const thumbs = this._prepareThumbs(thumbElements);
-    this._loader = new LazyLoader(thumbs, numberVisibleThumbs, numberVisibleThumbs);
+    const lazyLoader = new LazyLoader(thumbs, numberVisibleThumbs, numberVisibleThumbs);
 
     const layout: IThumbScrollerLayout = createThumbScrollerLayout(
       thumbContainer,
@@ -41,8 +40,14 @@ export default class ThumbScrollerContainer {
       thumbClickedCallback
     );
     if (numberVisibleThumbs < thumbs.length) {
-      this._thumbScroller = this._prepareThumbScroller(layout, this._loader, config?.initialIndex);
+      this._thumbScroller = this._prepareThumbScroller(layout, lazyLoader, config?.initialIndex);
       this._addThumbScrollerInteraction(this._thumbScroller, layout);
+    }
+    else {
+      setTimeout(() => {
+        lazyLoader.loadElement(0);
+        lazyLoader.setCurrentIndex(0);
+      }, 0);
     }
   }
 

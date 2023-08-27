@@ -75,9 +75,11 @@ export default class GalleryContainerBuilder {
       this._viewer.showImage(index);
     }).getScroller();
 
-    this._viewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-      this._thumbScroller!.scrollTo(index, true);
-    });
+    if (this._thumbScroller) {
+      this._viewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+        this._thumbScroller!.scrollTo(index, true);
+      });
+    }
     return this;
   }
 
