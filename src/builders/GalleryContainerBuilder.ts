@@ -84,7 +84,7 @@ export default class GalleryContainerBuilder {
   }
 
   public build(): IGalleryContainer {
-    this._fullscreenContainer = new FullscreenContainer(this._container, this._thumbContainer);
+    this._fullscreenContainer = new FullscreenContainer(this._container);
     this._fullscreenButton = this._createFullscreenButton(this._container);
     this._setupHoverEvents(this._container, [this._fullscreenButton]);
     this._setupKeyEvents(this._viewer, this._fullscreenContainer);
