@@ -12,6 +12,7 @@ export namespace module {
     const rules: ({
         test: RegExp;
         use: string;
+        exclude: RegExp;
     } | {
         test: RegExp;
         use: ({
@@ -29,6 +30,11 @@ export namespace module {
                 injectType?: undefined;
             };
         })[];
+        exclude?: undefined;
+    } | {
+        test: RegExp;
+        use: string;
+        exclude?: undefined;
     })[];
 }
 export namespace resolve {
