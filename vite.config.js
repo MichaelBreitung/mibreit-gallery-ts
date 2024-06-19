@@ -37,7 +37,7 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: true,
+    sourcemap: false,
     emptyOutDir: true,
     rollupOptions: {
       preserveEntrySignatures: true,
