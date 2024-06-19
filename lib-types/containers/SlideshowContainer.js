@@ -2,7 +2,7 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { createLazyLoader } from 'mibreit-lazy-loader';
+import { LazyLoader } from 'mibreit-lazy-loader';
 // helpers
 import Image from '../components/Image';
 // constants
@@ -47,7 +47,7 @@ export default class SlideshowContainer {
         return images;
     }
     _prepareLoader(images, preloaderBeforeSize = PRELOADER_LEFT_SIZE, preloaderAfterSize = PRELOADER_RIGHT_SIZE) {
-        const lazyLoader = createLazyLoader(images, { preloaderBeforeSize, preloaderAfterSize });
+        const lazyLoader = new LazyLoader(images, preloaderBeforeSize, preloaderAfterSize);
         setTimeout(() => {
             lazyLoader.loadElement(0);
             lazyLoader.setCurrentIndex(0);

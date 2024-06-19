@@ -2,7 +2,7 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { createLazyLoader } from 'mibreit-lazy-loader';
+import { LazyLoader } from 'mibreit-lazy-loader';
 import { addClickEventListener } from 'mibreit-dom-tools';
 import Image from '../components/Image';
 import createThumbScrollerLayout from '../factories/createThumbScrollerLayout';
@@ -20,7 +20,7 @@ export default class ThumbScrollerContainer {
             ? config.numberOfVisibleThumbs
             : DEFAULT_NUMBER_VISIBLE_THUMBS;
         const thumbs = this._prepareThumbs(thumbElements);
-        const lazyLoader = createLazyLoader(thumbs, { preloaderBeforeSize: numberVisibleThumbs, preloaderAfterSize: numberVisibleThumbs });
+        const lazyLoader = new LazyLoader(thumbs, numberVisibleThumbs, numberVisibleThumbs);
         const layout = createThumbScrollerLayout(thumbContainer, thumbs, numberVisibleThumbs, thumbClickedCallback);
         if (numberVisibleThumbs < thumbs.length) {
             this._thumbScroller = this._prepareThumbScroller(layout, lazyLoader, config === null || config === void 0 ? void 0 : config.initialIndex);

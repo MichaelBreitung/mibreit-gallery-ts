@@ -60,7 +60,7 @@ export default defineConfig({
       ],
       plugins: [
         strip({
-          include: 'src/**/*.ts',
+          include: ['src/**/*.ts', 'node_modules/mibreit-lazy-loader/**/*.js'],
           functions: ['console.*'],
         }),
       ],
