@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="copyright" content="Michael Breitung" />
+    <meta name="author" content="Michael Breitung" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Gallery No Thumbs Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      #container {
+        position: relative;
+        height: 40rem;
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;
+      }
+      #title {
+        font-size: 2rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/"><strong>Home</strong></a>
+    <div id="container">
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg"
+        data-title="Stubai Mountains"
+        alt="Stubai Mountains"
+        width="1280"
+        height="853"
+      />
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        data-title="Fantasia"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Fantasia.jpg"
+        alt="Fantasia"
+        width="1280"
+        height="853"
+      />
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Junction.jpg"
+        title="Heidelberg Evening"
+        alt="The old Castle in Heidelberg and Heidelberg Old Town during Sunset."
+        width="864"
+        height="1080"
+      />
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        data-title="Secret Beach"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Secret-Beach-Blues.jpg"
+        alt="Secret Beach"
+        width="1280"
+        height="853"
+      />
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        data-title="Secret Beach"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg"
+        title="Cuernos"
+        alt="Cuernos"
+        width="720"
+        height="1080"
+      />
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        data-title="Revelation"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Revelation.jpg"
+        alt="Revelation"
+        width="1280"
+        height="853"
+      />
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg"
+        data-title="Stubai Mountains"
+        alt="Stubai Mountains"
+        width="1280"
+        height="853"
+      />
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        data-title="Fantasia"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Fantasia.jpg"
+        alt="Fantasia"
+        width="1280"
+        height="853"
+      />
+      <img
+        loading="lazy"
+        class="mibreit-LazyLoader_lazy"
+        data-title="Secret Beach"
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Secret-Beach-Blues.jpg"
+        alt="Secret Beach"
+        width="1280"
+        height="853"
+      />
+    </div>
+    <h2 id="title">Title</h2>
+  </body>
+  <script type="module">
+    import { createGallery, EImageScaleMode } from '/src/index.ts';
+    const gallery = createGallery('#container', '#container > img', {
+      scaleMode: EImageScaleMode.FIT_ASPECT,
+    });
+    const titleElement = document.querySelector('#title');
+    const viewer = gallery.getViewer();
+    const imageInfo = viewer.getImageInfo(viewer.getImageIndex());
+    if (imageInfo) {
+      titleElement.innerHTML = imageInfo.getTitle();
+    }
+    viewer.addImageChangedCallback((index, imageInfo) => {
+      titleElement.innerHTML = imageInfo.getTitle();
+    });
+  </script>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="copyright" content="Michael Breitung" />
+    <meta name="author" content="Michael Breitung" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>One Image Only Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      #container {
+        position: relative;
+        width: 70%;
+        max-width: 60rem;
+        height: 40rem;
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;
+      }
+      #thumbContainer {
+        position: relative;
+        width: 70%;
+        max-width: 60rem;
+        height: 7rem;
+        margin-top: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #title {
+        font-size: 2rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/"><strong>Home</strong></a>
+    <div id="container">
+      <img
+        src="https://www.mibreit-photo.com/galleries/favorites/images/Fallen.jpg"
+        title="Fallen"
+        alt="An ensemble of frost covered autumn leaves, photographed in a local forest."
+        width="1280"
+        height="854"
+      />
+    </div>
+    <div id="thumbContainer">
+      <img
+        src="https://www.mibreit-photo.com/galleries/favorites/small/Fallen.jpg"
+        title="Fallen"
+        alt="An ensemble of frost covered autumn leaves, photographed in a local forest."
+        width="1280"
+        height="854"
+      />
+    </div>
+    <h2 id="title">Title</h2>
+  </body>
+  <script type="module">
+    import { createGallery, EImageScaleMode } from '/src/index.ts';
+    const gallery = createGallery('#container', '#container > img', {
+      scaleMode: EImageScaleMode.FIT_ASPECT,
+      thumbContainerSelector: '#thumbContainer',
+      thumbSelector: '#thumbContainer > img',
+      numberOfVisibleThumbs: 8,
+    });
+
+    const titleElement = document.querySelector('#title');
+    titleElement.innerHTML = gallery.getViewer().getImageInfo(gallery.getViewer().getImageIndex()).getTitle();
+    gallery.getViewer().addImageChangedCallback((index, imageInfo) => {
+      titleElement.innerHTML = imageInfo.getTitle();
+    });
+  </script>
+</html>

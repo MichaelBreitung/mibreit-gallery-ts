@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { ILazyLoader, createLazyLoader } from 'mibreit-lazy-loader';
+import { ILazyLoader, LazyLoader } from 'mibreit-lazy-loader';
 
 // interfaces
 import IImageInfo from '../interfaces/IImageInfo';
@@ -66,7 +66,7 @@ export default class SlideshowContainer implements ISlideshowContainer {
     preloaderBeforeSize: number = PRELOADER_LEFT_SIZE,
     preloaderAfterSize: number = PRELOADER_RIGHT_SIZE
   ): ILazyLoader {
-    const lazyLoader = createLazyLoader(images, {preloaderBeforeSize, preloaderAfterSize});
+    const lazyLoader = new LazyLoader(images, preloaderBeforeSize, preloaderAfterSize);
     setTimeout(() => {
       lazyLoader.loadElement(0);
       lazyLoader.setCurrentIndex(0);

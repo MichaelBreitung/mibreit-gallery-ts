@@ -4,7 +4,7 @@
     <meta name="copyright" content="Michael Breitung" />
     <meta name="author" content="Michael Breitung" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Landscape Photography by Michael Breitung</title>
+    <title>ThumbScroller Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       .content {
@@ -24,6 +24,7 @@
     </style>
   </head>
   <body>
+    <a href="/"><strong>Home</strong></a>
     <div class="content">
       <div id="container">
         <img
@@ -215,14 +216,14 @@
       </div>
     </div>
   </body>
-  <script src="../dist/mibreit-gallery/mibreitGalleryTs.min.js" type="text/javascript"></script>
-  <script>
-    mibreitGalleryTs.createThumbScrollerContainer('#container', '#container > img', { numberOfVisibleThumbs: 8 });
-    mibreitGalleryTs.createThumbScrollerContainer('#container2', '#container2 > img', { numberOfVisibleThumbs: 8 });
-    mibreitGalleryTs.createThumbScrollerContainer('#container3', '#container3 > img', {
+  <script type="module">
+    import { createThumbScrollerContainer } from '/src/index.ts';
+    createThumbScrollerContainer('#container', '#container > img', { numberOfVisibleThumbs: 8 });
+    createThumbScrollerContainer('#container2', '#container2 > img', { numberOfVisibleThumbs: 8 });
+    createThumbScrollerContainer('#container3', '#container3 > img', {
       numberOfVisibleThumbs: 4,
       initialIndex: 5,
     });
-    mibreitGalleryTs.createThumbScrollerContainer('#container4', '#container4 > img', { numberOfVisibleThumbs: 7 });
+    createThumbScrollerContainer('#container4', '#container4 > img', { numberOfVisibleThumbs: 7 });
   </script>
 </html>
