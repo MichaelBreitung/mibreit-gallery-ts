@@ -46,7 +46,6 @@ const RESIZE_DEBOUNCE_TIMER = 500;
 
 export default class GalleryContainerBuilder {
   private _container: HTMLElement;
-  private _thumbContainer: HTMLElement | null = null;
   private _fullscreenButton: HTMLElement | null = null;
   private _viewer: IImageViewer;
   private _loader: ILazyLoader;
@@ -69,7 +68,6 @@ export default class GalleryContainerBuilder {
     thumbs: NodeListOf<HTMLElement>,
     config?: ThumbScrollerConfig
   ): GalleryContainerBuilder {
-    this._thumbContainer = thumbContainer;
     this._thumbScroller = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index: number) => {
       this._loader.setCurrentIndex(index);
       this._viewer.showImage(index);

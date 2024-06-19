@@ -4,6 +4,7 @@
  */
 
 const sleep = async function (ms: number): Promise<void> {
+  // @ts-ignore
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
@@ -12,6 +13,7 @@ const sleep = async function (ms: number): Promise<void> {
 };
 
 const sleepTillNextRenderFinished = async function (): Promise<void> {
+  // @ts-ignore
   return new Promise((resolve, reject) => {
     requestAnimationFrame(() => {
       // fires before next repaint
@@ -24,4 +26,4 @@ const sleepTillNextRenderFinished = async function (): Promise<void> {
   });
 };
 
-export {sleep, sleepTillNextRenderFinished};
+export { sleep, sleepTillNextRenderFinished };
