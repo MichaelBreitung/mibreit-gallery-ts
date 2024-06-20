@@ -8,7 +8,7 @@
   overflow: hidden;
 }
 
-.img_stage > img.zoom {
+.img_stage__zoom {
   -webkit-transition: transform 10000ms linear;
   -moz-transition: transform 10000ms linear;
   -o-transition: transform 10000ms linear;

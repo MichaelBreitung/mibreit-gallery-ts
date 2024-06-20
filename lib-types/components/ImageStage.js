@@ -69,13 +69,6 @@ export default class ImageStage {
     setZoomAnimation(activate) {
         this._zoomAnimation = activate;
     }
-    setSize(widthCss, heightCss) {
-        addCssStyle(this._imageStage, 'width', widthCss);
-        addCssStyle(this._imageStage, 'height', heightCss);
-    }
-    setMargin(marginCss) {
-        addCssStyle(this._imageStage, 'margin', marginCss);
-    }
     hideImage() {
         return __awaiter(this, arguments, void 0, function* (swipeDirection = ESwipeDirection.NONE) {
             if (this._zoomAnimation) {
@@ -140,11 +133,11 @@ export default class ImageStage {
     }
     _startZoomAnimation() {
         console.log('ImageStage#startZoomAnimation');
-        addCssClass(this._imageHandle, 'zoom');
+        addCssClass(this._imageHandle, styles.img_stage__zoom);
     }
     _resetZoom() {
         console.log('ImageStage#resetZoom');
-        removeCssClass(this._imageHandle, 'zoom');
+        removeCssClass(this._imageHandle, styles.img_stage__zoom);
     }
     _stopSlideAnimation() {
         addCssStyle(this._imageStage, 'margin-left', getComputedCssStyle(this._imageStage, 'margin-left'));

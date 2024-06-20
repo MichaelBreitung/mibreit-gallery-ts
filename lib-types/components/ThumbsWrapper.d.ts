@@ -2,16 +2,15 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import IImageStage from '../interfaces/IImageStage';
 import IThumbsWrapper from '../interfaces/IThumbsWrapper';
 export default class ThumbsWrapper implements IThumbsWrapper {
     private _wrapper;
     private _previousButton;
     private _nextButton;
     private _thumbSizeRem;
-    private _thumbStages;
+    private _thumbs;
     private _numberOfVisibleThumbs;
-    constructor(container: HTMLElement, thumbStages: Array<IImageStage>, numberOfVisibleThumbs: number);
+    constructor(container: HTMLElement, numberOfVisibleThumbs: number);
     reinitSize(): void;
     getThumbSizeRem(): number;
     getNumberOfVisibleThumbs(): number;
@@ -24,5 +23,5 @@ export default class ThumbsWrapper implements IThumbsWrapper {
     private _wrapThumbs;
     private _calculateThumbsize;
     private _createScrollerButtons;
-    private _resizeThumbStages;
+    private _resizeThumbs;
 }

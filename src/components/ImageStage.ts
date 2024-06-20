@@ -117,12 +117,12 @@ export default abstract class ImageStage implements IImageStage {
 
   private _startZoomAnimation() {
     console.log('ImageStage#startZoomAnimation');
-    addCssClass(this._imageHandle, 'zoom');
+    addCssClass(this._imageHandle, styles.img_stage__zoom);
   }
 
   private _resetZoom() {
     console.log('ImageStage#resetZoom');
-    removeCssClass(this._imageHandle, 'zoom');
+    removeCssClass(this._imageHandle, styles.img_stage__zoom);
   }
 
   private _stopSlideAnimation() {

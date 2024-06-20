@@ -20,6 +20,6 @@ function prepareThumbStages(thumbs, thumbClickedCallback) {
     return thumbStages;
 }
 export default function (container, thumbs, numberOfVisibleThumbs = NUMBER_OF_VISIBLE_THUMBS, thumbClickedCallback) {
-    const thumbStages = prepareThumbStages(thumbs, thumbClickedCallback);
-    return new ThumbsWrapper(container, thumbStages, numberOfVisibleThumbs);
+    prepareThumbStages(thumbs, thumbClickedCallback);
+    return new ThumbsWrapper(container, numberOfVisibleThumbs);
 }

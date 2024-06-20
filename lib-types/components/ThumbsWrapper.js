@@ -6,7 +6,7 @@ import { addCssClass, addCssStyle, appendChildElement, createElement, getChildNo
 import styles from './ThumbsWrapper.module.css';
 import nextThumbs from '../images/nextThumbs.svg';
 export default class ThumbsWrapper {
-    constructor(container, thumbStages, numberOfVisibleThumbs) {
+    constructor(container, numberOfVisibleThumbs) {
         Object.defineProperty(this, "_wrapper", {
             enumerable: true,
             configurable: true,
@@ -31,7 +31,7 @@ export default class ThumbsWrapper {
             writable: true,
             value: void 0
         });
-        Object.defineProperty(this, "_thumbStages", {
+        Object.defineProperty(this, "_thumbs", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -45,18 +45,18 @@ export default class ThumbsWrapper {
         });
         addCssClass(container, styles.thumbs_wrapper__parent);
         this._numberOfVisibleThumbs = numberOfVisibleThumbs;
-        this._thumbStages = thumbStages;
-        const willThumbsFitContainer = numberOfVisibleThumbs >= thumbStages.length;
+        this._thumbs = Array.from(container.children);
+        const willThumbsFitContainer = numberOfVisibleThumbs >= this._thumbs.length;
         this._wrapper = this._wrapThumbs(getChildNodes(container), willThumbsFitContainer);
         const [previousButton, nextButton] = this._createScrollerButtons(container, willThumbsFitContainer);
         this._previousButton = previousButton;
         this._nextButton = nextButton;
         this._thumbSizeRem = this._calculateThumbsize(this._wrapper, numberOfVisibleThumbs);
-        this._resizeThumbStages(this._thumbSizeRem);
+        this._resizeThumbs(this._thumbSizeRem);
     }
     reinitSize() {
         this._thumbSizeRem = this._calculateThumbsize(this._wrapper, this._numberOfVisibleThumbs);
-        this._resizeThumbStages(this._thumbSizeRem);
+        this._resizeThumbs(this._thumbSizeRem);
     }
     getThumbSizeRem() {
         return this._thumbSizeRem;
@@ -65,7 +65,7 @@ export default class ThumbsWrapper {
         return this._numberOfVisibleThumbs;
     }
     getNumberOfThumbs() {
-        return this._thumbStages.length;
+        return this._thumbs.length;
     }
     getThumbScrollerButtons() {
         return { previousButton: this._previousButton, nextButton: this._nextButton };
@@ -105,12 +105,13 @@ export default class ThumbsWrapper {
         }
         return [previousButton, nextButton];
     }
-    _resizeThumbStages(size) {
+    _resizeThumbs(size) {
         const innerSize = size * 0.9;
         const margin = size * 0.05;
-        this._thumbStages.forEach((thumbStage) => {
-            thumbStage.setSize(`${innerSize}rem`, `${innerSize}rem`);
-            thumbStage.setMargin(`${margin}rem`);
-        });
+        for (let i = 0; i < this._thumbs.length; ++i) {
+            addCssStyle(this._thumbs[i], 'width', `${innerSize}rem`);
+            addCssStyle(this._thumbs[i], 'height', `${innerSize}rem`);
+            addCssStyle(this._thumbs[i], 'margin', `${margin}rem`);
+        }
     }
 }
