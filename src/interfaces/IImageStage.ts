@@ -3,12 +3,10 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { ESwipeDirection } from "../components/SwipeHandler";
+import { ESwipeDirection } from '../components/SwipeHandler';
 
 export default interface IImageStage {
   setZoomAnimation(activate: boolean): void;
-
-  applyScaleMode(): void;
 
   setSize(widthCss: string, heightCss: string): void;
 

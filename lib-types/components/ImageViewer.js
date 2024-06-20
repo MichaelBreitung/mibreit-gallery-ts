@@ -48,11 +48,6 @@ export default class ImageViewer {
     getNumberOfImages() {
         return this._imageStages.length;
     }
-    reinitSize() {
-        if (this._isValidIndex(this._currentIndex)) {
-            this._imageStages[this._currentIndex].applyScaleMode();
-        }
-    }
     setZoomAnimation(active) {
         this._imageStages.forEach((stage) => {
             stage.setZoomAnimation(active);
@@ -110,9 +105,6 @@ export default class ImageViewer {
     _prepareImageStages(images, scaleMode) {
         images.forEach((image) => {
             const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
-            image.addWasLoadedCallback(() => {
-                imageStage.applyScaleMode();
-            });
             this._imageStages.push(imageStage);
         });
     }

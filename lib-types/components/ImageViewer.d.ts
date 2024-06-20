@@ -17,7 +17,6 @@ export default class ImageViewer implements IImageViewer {
     showNextImage(swipeDirection?: ESwipeDirection): boolean;
     showPreviousImage(swipeDirection?: ESwipeDirection): boolean;
     getNumberOfImages(): number;
-    reinitSize(): void;
     setZoomAnimation(active: boolean): void;
     addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void): void;
     getImageIndex(): number;

@@ -46,12 +46,10 @@ export default function (imageSelector: string, config: SlideshowConfig): IGalle
     const galleryContainer = builder.build();
 
     const fullscreen = galleryContainer.getFullscreen();
-    const imageViewer = galleryContainer.getImageViewer();
-    if (fullscreen && imageViewer) {
+    if (fullscreen) {
       fullscreen.addFullscreenChangedCallback((active: boolean) => {
         if (active) {
           removeCssStyle(container, 'display');
-          imageViewer.reinitSize();
         } else {
           addCssStyle(container, 'display', 'none');
         }

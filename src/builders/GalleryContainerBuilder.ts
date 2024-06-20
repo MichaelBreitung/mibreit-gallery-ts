@@ -86,15 +86,10 @@ export default class GalleryContainerBuilder {
     this._fullscreenButton = this._createFullscreenButton(this._container);
     this._setupHoverEvents(this._container, [this._fullscreenButton]);
     this._setupKeyEvents(this._imageViewer, this._fullscreenContainer);
-    this._setupFullscreenClickEvent(this._fullscreenButton, this._fullscreenContainer, this._imageViewer);
-    this._setupResizeHandler(this._imageViewer, this._thumbsViewer);
+    this._setupFullscreenClickEvent(this._fullscreenButton, this._fullscreenContainer);
+    this._setupResizeHandler(this._thumbsViewer);
     if (this._fullscreenContainer && this._fullscreenButton) {
-      this._setupFullscreenChangedHandler(
-        this._fullscreenContainer,
-        this._fullscreenButton,
-        this._imageViewer,
-        this._thumbsViewer
-      );
+      this._setupFullscreenChangedHandler(this._fullscreenContainer, this._fullscreenButton, this._thumbsViewer);
     }
 
     return new GalleryContainer(this._imageViewer, this._loader, this._thumbsViewer, this._fullscreenContainer);
@@ -134,22 +129,16 @@ export default class GalleryContainerBuilder {
     });
   }
 
-  private _setupResizeHandler(imageViewer: IImageViewer, thumbScroller: IThumbsViewer | null) {
+  private _setupResizeHandler(thumbScroller: IThumbsViewer | null) {
     if (thumbScroller) {
-      const debouncedThumbResizer = debounce(
-        () => {
-          thumbScroller.reinitSize();
-        },
-        RESIZE_DEBOUNCE_TIMER,
-        false
-      );
       addResizeEventListener(() => {
-        imageViewer.reinitSize();
-        debouncedThumbResizer();
-      });
-    } else {
-      addResizeEventListener(() => {
-        imageViewer.reinitSize();
+        debounce(
+          () => {
+            thumbScroller.reinitSize();
+          },
+          RESIZE_DEBOUNCE_TIMER,
+          false
+        );
       });
     }
   }
@@ -205,11 +194,7 @@ export default class GalleryContainerBuilder {
     });
   }
 
-  private _setupFullscreenClickEvent(
-    fullscreenButton: HTMLElement,
-    fullScreen: IFullscreen,
-    imageViewer: IImageViewer
-  ) {
+  private _setupFullscreenClickEvent(fullscreenButton: HTMLElement, fullScreen: IFullscreen) {
     addEventListener(fullscreenButton, 'pointerdown', (event: PointerEvent) => {
       event.stopPropagation();
     });
@@ -217,7 +202,6 @@ export default class GalleryContainerBuilder {
       event.stopPropagation();
       if (!fullScreen.isFullscreenActive()) {
         fullScreen.activate();
-        imageViewer.reinitSize();
         addCssStyle(fullscreenButton, 'display', 'none');
       }
     });
@@ -226,14 +210,13 @@ export default class GalleryContainerBuilder {
   private _setupFullscreenChangedHandler(
     FullscreenContainer: IFullscreen,
     fullscreenButton: HTMLElement,
-    imageViewer: IImageViewer,
     thumbScroller: IThumbsViewer | null
   ) {
     FullscreenContainer.addFullscreenChangedCallback((active: boolean) => {
       if (thumbScroller) {
         thumbScroller.reinitSize();
       }
-      imageViewer.reinitSize();
+
       if (active) {
         addCssStyle(fullscreenButton, 'display', 'none');
       } else {

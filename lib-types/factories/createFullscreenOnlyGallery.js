@@ -27,12 +27,10 @@ export default function (imageSelector, config) {
         const builder = new GalleryContainerBuilder(container, clonedElements, config);
         const galleryContainer = builder.build();
         const fullscreen = galleryContainer.getFullscreen();
-        const imageViewer = galleryContainer.getImageViewer();
-        if (fullscreen && imageViewer) {
+        if (fullscreen) {
             fullscreen.addFullscreenChangedCallback((active) => {
                 if (active) {
                     removeCssStyle(container, 'display');
-                    imageViewer.reinitSize();
                 }
                 else {
                     addCssStyle(container, 'display', 'none');

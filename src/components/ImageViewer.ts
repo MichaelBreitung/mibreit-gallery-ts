@@ -43,12 +43,6 @@ export default class ImageViewer implements IImageViewer {
     return this._imageStages.length;
   }
 
-  reinitSize(): void {
-    if (this._isValidIndex(this._currentIndex)) {
-      this._imageStages[this._currentIndex]!.applyScaleMode();
-    }
-  }
-
   setZoomAnimation(active: boolean): void {
     this._imageStages.forEach((stage) => {
       stage.setZoomAnimation(active);
@@ -109,9 +103,6 @@ export default class ImageViewer implements IImageViewer {
   private _prepareImageStages(images: Array<Image>, scaleMode: EImageScaleMode) {
     images.forEach((image) => {
       const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
-      image.addWasLoadedCallback(() => {
-        imageStage.applyScaleMode();
-      });
       this._imageStages.push(imageStage);
     });
   }

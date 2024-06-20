@@ -81,10 +81,10 @@ export default class GalleryContainerBuilder {
         this._fullscreenButton = this._createFullscreenButton(this._container);
         this._setupHoverEvents(this._container, [this._fullscreenButton]);
         this._setupKeyEvents(this._imageViewer, this._fullscreenContainer);
-        this._setupFullscreenClickEvent(this._fullscreenButton, this._fullscreenContainer, this._imageViewer);
-        this._setupResizeHandler(this._imageViewer, this._thumbsViewer);
+        this._setupFullscreenClickEvent(this._fullscreenButton, this._fullscreenContainer);
+        this._setupResizeHandler(this._thumbsViewer);
         if (this._fullscreenContainer && this._fullscreenButton) {
-            this._setupFullscreenChangedHandler(this._fullscreenContainer, this._fullscreenButton, this._imageViewer, this._thumbsViewer);
+            this._setupFullscreenChangedHandler(this._fullscreenContainer, this._fullscreenButton, this._thumbsViewer);
         }
         return new GalleryContainer(this._imageViewer, this._loader, this._thumbsViewer, this._fullscreenContainer);
     }
@@ -122,19 +122,12 @@ export default class GalleryContainerBuilder {
             }
         });
     }
-    _setupResizeHandler(imageViewer, thumbScroller) {
+    _setupResizeHandler(thumbScroller) {
         if (thumbScroller) {
-            const debouncedThumbResizer = debounce(() => {
-                thumbScroller.reinitSize();
-            }, RESIZE_DEBOUNCE_TIMER, false);
             addResizeEventListener(() => {
-                imageViewer.reinitSize();
-                debouncedThumbResizer();
-            });
-        }
-        else {
-            addResizeEventListener(() => {
-                imageViewer.reinitSize();
+                debounce(() => {
+                    thumbScroller.reinitSize();
+                }, RESIZE_DEBOUNCE_TIMER, false);
             });
         }
     }
@@ -187,7 +180,7 @@ export default class GalleryContainerBuilder {
             }
         });
     }
-    _setupFullscreenClickEvent(fullscreenButton, fullScreen, imageViewer) {
+    _setupFullscreenClickEvent(fullscreenButton, fullScreen) {
         addEventListener(fullscreenButton, 'pointerdown', (event) => {
             event.stopPropagation();
         });
@@ -195,17 +188,15 @@ export default class GalleryContainerBuilder {
             event.stopPropagation();
             if (!fullScreen.isFullscreenActive()) {
                 fullScreen.activate();
-                imageViewer.reinitSize();
                 addCssStyle(fullscreenButton, 'display', 'none');
             }
         });
     }
-    _setupFullscreenChangedHandler(FullscreenContainer, fullscreenButton, imageViewer, thumbScroller) {
+    _setupFullscreenChangedHandler(FullscreenContainer, fullscreenButton, thumbScroller) {
         FullscreenContainer.addFullscreenChangedCallback((active) => {
             if (thumbScroller) {
                 thumbScroller.reinitSize();
             }
-            imageViewer.reinitSize();
             if (active) {
                 addCssStyle(fullscreenButton, 'display', 'none');
             }

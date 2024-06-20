@@ -58,20 +58,20 @@ export default class ImageStage {
         this._imageWidth = imageWidth;
         this._imageHeight = imageHeight;
         this._imageStage = this._createStage();
+        const resizeObserver = new ResizeObserver(() => {
+            console.log('ImageStage#ResizeObserver');
+            const stageDimension = getElementDimension(this._imageStage);
+            this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
+            this._centerImage(stageDimension.width, stageDimension.height);
+        });
+        resizeObserver.observe(this._imageStage);
     }
     setZoomAnimation(activate) {
         this._zoomAnimation = activate;
     }
-    applyScaleMode() {
-        console.log('ImageStage#applyScaleMode');
-        const stageDimension = getElementDimension(this._imageStage);
-        this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
-        this._centerImage(stageDimension.width, stageDimension.height);
-    }
     setSize(widthCss, heightCss) {
         addCssStyle(this._imageStage, 'width', widthCss);
         addCssStyle(this._imageStage, 'height', heightCss);
-        this.applyScaleMode();
     }
     setMargin(marginCss) {
         addCssStyle(this._imageStage, 'margin', marginCss);
@@ -98,7 +98,6 @@ export default class ImageStage {
     }
     showImage() {
         return __awaiter(this, arguments, void 0, function* (swipeDirection = ESwipeDirection.NONE) {
-            this.applyScaleMode();
             if (this._zoomAnimation) {
                 this._startZoomAnimation();
             }

@@ -47,7 +47,7 @@ export default class ThumbsWrapper {
         this._numberOfVisibleThumbs = numberOfVisibleThumbs;
         this._thumbStages = thumbStages;
         const willThumbsFitContainer = numberOfVisibleThumbs >= thumbStages.length;
-        this._wrapper = this._wrapThumbs(container, willThumbsFitContainer);
+        this._wrapper = this._wrapThumbs(getChildNodes(container), willThumbsFitContainer);
         const [previousButton, nextButton] = this._createScrollerButtons(container, willThumbsFitContainer);
         this._previousButton = previousButton;
         this._nextButton = nextButton;
@@ -73,8 +73,7 @@ export default class ThumbsWrapper {
     getElements() {
         return getChildNodes(this._wrapper);
     }
-    _wrapThumbs(container, centerThumbs) {
-        const childNodes = getChildNodes(container);
+    _wrapThumbs(thumbs, centerThumbs) {
         const wrapper = createElement('div');
         if (centerThumbs) {
             addCssClass(wrapper, styles.thumbs_wrapper__centered);
@@ -82,7 +81,7 @@ export default class ThumbsWrapper {
         else {
             addCssClass(wrapper, styles.thumbs_wrapper);
         }
-        wrapElements(childNodes, wrapper);
+        wrapElements(thumbs, wrapper);
         return wrapper;
     }
     _calculateThumbsize(container, numberOfVisibleThumbs) {
