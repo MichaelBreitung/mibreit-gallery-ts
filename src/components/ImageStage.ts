@@ -54,15 +54,6 @@ export default abstract class ImageStage implements IImageStage {
     this._zoomAnimation = activate;
   }
 
-  setSize(widthCss: string, heightCss: string) {
-    addCssStyle(this._imageStage, 'width', widthCss);
-    addCssStyle(this._imageStage, 'height', heightCss);
-  }
-
-  setMargin(marginCss: string) {
-    addCssStyle(this._imageStage, 'margin', marginCss);
-  }
-
   async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
     if (this._zoomAnimation) {
       setTimeout(() => {

@@ -30,7 +30,7 @@ export default function (
   numberOfVisibleThumbs: number = NUMBER_OF_VISIBLE_THUMBS,
   thumbClickedCallback?: (index: number) => void
 ): IThumbsWrapper {
-  const thumbStages = prepareThumbStages(thumbs, thumbClickedCallback);
+  prepareThumbStages(thumbs, thumbClickedCallback);
 
-  return new ThumbsWrapper(container, thumbStages, numberOfVisibleThumbs);
+  return new ThumbsWrapper(container, numberOfVisibleThumbs);
 }

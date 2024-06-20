@@ -17,7 +17,7 @@ import {
 } from 'mibreit-dom-tools';
 import styles from './ThumbsWrapper.module.css';
 import nextThumbs from '../images/nextThumbs.svg';
-import IImageStage from '../interfaces/IImageStage';
+
 import IThumbsWrapper from '../interfaces/IThumbsWrapper';
 
 export default class ThumbsWrapper implements IThumbsWrapper {
@@ -25,25 +25,25 @@ export default class ThumbsWrapper implements IThumbsWrapper {
   private _previousButton: HTMLElement;
   private _nextButton: HTMLElement;
   private _thumbSizeRem: number;
-  private _thumbStages: Array<IImageStage>;
+  private _thumbs: Array<HTMLElement>;
   private _numberOfVisibleThumbs: number;
 
-  constructor(container: HTMLElement, thumbStages: Array<IImageStage>, numberOfVisibleThumbs: number) {
+  constructor(container: HTMLElement, numberOfVisibleThumbs: number) {
     addCssClass(container, styles.thumbs_wrapper__parent);
     this._numberOfVisibleThumbs = numberOfVisibleThumbs;
-    this._thumbStages = thumbStages;
-    const willThumbsFitContainer = numberOfVisibleThumbs >= thumbStages.length;
+    this._thumbs = Array.from(container.children) as Array<HTMLElement>;
+    const willThumbsFitContainer = numberOfVisibleThumbs >= this._thumbs.length;
     this._wrapper = this._wrapThumbs(getChildNodes(container), willThumbsFitContainer);
     const [previousButton, nextButton] = this._createScrollerButtons(container, willThumbsFitContainer);
     this._previousButton = previousButton;
     this._nextButton = nextButton;
     this._thumbSizeRem = this._calculateThumbsize(this._wrapper, numberOfVisibleThumbs);
-    this._resizeThumbStages(this._thumbSizeRem);
+    this._resizeThumbs(this._thumbSizeRem);
   }
 
   reinitSize() {
     this._thumbSizeRem = this._calculateThumbsize(this._wrapper, this._numberOfVisibleThumbs);
-    this._resizeThumbStages(this._thumbSizeRem);
+    this._resizeThumbs(this._thumbSizeRem);
   }
 
   getThumbSizeRem(): number {
@@ -55,7 +55,7 @@ export default class ThumbsWrapper implements IThumbsWrapper {
   }
 
   getNumberOfThumbs(): number {
-    return this._thumbStages.length;
+    return this._thumbs.length;
   }
 
   getThumbScrollerButtons(): { previousButton: HTMLElement; nextButton: HTMLElement } {
@@ -103,12 +103,14 @@ export default class ThumbsWrapper implements IThumbsWrapper {
     return [previousButton, nextButton];
   }
 
-  private _resizeThumbStages(size: number) {
+  private _resizeThumbs(size: number) {
     const innerSize: number = size * 0.9;
     const margin: number = size * 0.05;
-    this._thumbStages.forEach((thumbStage: IImageStage) => {
-      thumbStage.setSize(`${innerSize}rem`, `${innerSize}rem`);
-      thumbStage.setMargin(`${margin}rem`);
-    });
+
+    for (let i = 0; i < this._thumbs.length; ++i) {
+      addCssStyle(this._thumbs[i], 'width', `${innerSize}rem`);
+      addCssStyle(this._thumbs[i], 'height', `${innerSize}rem`);
+      addCssStyle(this._thumbs[i], 'margin', `${margin}rem`);
+    }
   }
 }
