@@ -3,12 +3,12 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import IFullscreen from './IFullscreen';
+import IFullscreenContainer from './IFullscreenContainer';
 import ISlideshowContainer from './ISlideshowContainer';
 import IThumbsViewer from './IThumbsViewer';
 
 export default interface IGalleryContainer extends ISlideshowContainer {
-  getFullscreen(): IFullscreen | null;
+  getFullscreenContainer(): IFullscreenContainer | null;
 
   getThumbsViewer(): IThumbsViewer | null;
 }

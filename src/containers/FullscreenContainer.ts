@@ -13,46 +13,46 @@ import {
   prependBeforeChild,
   removeCssStyle,
   removeElement,
-  setAttribute,
   setInnerHtml,
 } from 'mibreit-dom-tools';
-import IFullscreen from '../interfaces/IFullscreen';
-import styles from './FullscreenContainer.module.css';
-import fullscreenClose from '../images/close.svg';
+import IFullscreen from '../interfaces/IFullscreenContainer';
 
-const GALLERY_PLACEHOLDER_ID = 'slideshowContainerPlaceholder';
-const THUMBS_PLACEHOLDER_ID = 'thumbContainerPlaceholder';
+// Styles
+import styles from './FullscreenContainer.module.css';
+
+// SVGs
+import fullscreenClose from '../images/close.svg';
 
 export type FullscreenConfig = {
   slideshowContainerSelector: string;
-  thumbContainerSelector: string;
+  thumbsContainerSelector: string;
 };
 
 export default class FullscreenContainer implements IFullscreen {
   private _fullscreenChangedCallbacks: Array<(active: boolean) => void> = [];
   private _fullscreenActive: boolean;
   private _slideshowContainer: HTMLElement;
-  private _thumbContainer: HTMLElement | null = null;
+  private _thumbsContainer: HTMLElement | null = null;
   private _fullScreenContainer: HTMLElement;
   private _slideshowContainerPlaceholder: HTMLElement;
-  private _thumbContainerPlaceholder: HTMLElement | null = null;
+  private _thumbsContainerPlaceholder: HTMLElement | null = null;
   private _fullScreenCloseButton: HTMLElement;
   private _usePlaceholder: boolean;
 
   constructor(
     slideshowContainer: HTMLElement,
-    thumbContainer: HTMLElement | null = null,
+    thumbsContainer: HTMLElement | null = null,
     usePlaceholder: boolean = true
   ) {
     this._fullscreenActive = false;
     this._slideshowContainer = slideshowContainer;
-    this._thumbContainer = thumbContainer;
+    this._thumbsContainer = thumbsContainer;
     this._usePlaceholder = usePlaceholder;
     this._fullScreenContainer = this._createFullscreenContainer();
     this._fullScreenCloseButton = this._createFullscreenCloseButton(this._fullScreenContainer);
     this._slideshowContainerPlaceholder = this._createSlideshowContainerPlaceholder();
-    if (thumbContainer) {
-      this._thumbContainerPlaceholder = this._createThumbContainerPlaceholder();
+    if (thumbsContainer) {
+      this._thumbsContainerPlaceholder = this._createThumbsContainerPlaceholder();
     }
   }
 
@@ -111,14 +111,12 @@ export default class FullscreenContainer implements IFullscreen {
 
   private _createSlideshowContainerPlaceholder(): HTMLElement {
     const slideshowContainerPlaceholder = createElement('div');
-    setAttribute(slideshowContainerPlaceholder, 'id', GALLERY_PLACEHOLDER_ID);
     return slideshowContainerPlaceholder;
   }
 
-  private _createThumbContainerPlaceholder(): HTMLElement {
-    const thumbContainerPlaceholder = createElement('div');
-    setAttribute(thumbContainerPlaceholder, 'id', THUMBS_PLACEHOLDER_ID);
-    return thumbContainerPlaceholder;
+  private _createThumbsContainerPlaceholder(): HTMLElement {
+    const thumbsContainerPlaceholder = createElement('div');
+    return thumbsContainerPlaceholder;
   }
 
   private _addFullscreen() {
@@ -152,23 +150,23 @@ export default class FullscreenContainer implements IFullscreen {
   }
 
   private _moveThumbsToFullscreen() {
-    if (this._thumbContainer && this._thumbContainerPlaceholder) {
+    if (this._thumbsContainer && this._thumbsContainerPlaceholder) {
       if (this._usePlaceholder) {
-        prependBeforeChild(this._thumbContainerPlaceholder, this._thumbContainer);
+        prependBeforeChild(this._thumbsContainerPlaceholder, this._thumbsContainer);
       }
-      appendChildElement(this._thumbContainer, this._fullScreenContainer);
-      addCssStyle(this._thumbContainer, 'flex-grow', '0');
+      appendChildElement(this._thumbsContainer, this._fullScreenContainer);
+      addCssStyle(this._thumbsContainer, 'flex-grow', '0');
     }
   }
 
   private _removeThumbsFromFullscreen() {
-    if (this._thumbContainer && this._thumbContainerPlaceholder) {
-      removeElement(this._thumbContainer);
+    if (this._thumbsContainer && this._thumbsContainerPlaceholder) {
+      removeElement(this._thumbsContainer);
       if (this._usePlaceholder) {
-        prependBeforeChild(this._thumbContainer, this._thumbContainerPlaceholder);
-        removeElement(this._thumbContainerPlaceholder);
+        prependBeforeChild(this._thumbsContainer, this._thumbsContainerPlaceholder);
+        removeElement(this._thumbsContainerPlaceholder);
       }
-      removeCssStyle(this._thumbContainer, 'flex-grow');
+      removeCssStyle(this._thumbsContainer, 'flex-grow');
     }
   }
 

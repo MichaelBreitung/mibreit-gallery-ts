@@ -42,7 +42,7 @@ export default class GalleryContainer {
     getThumbsViewer() {
         return this._thumbsViewer;
     }
-    getFullscreen() {
+    getFullscreenContainer() {
         return this._fullscreenContainer;
     }
 }

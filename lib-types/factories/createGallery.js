@@ -20,6 +20,7 @@ export default function (containerSelector, imageSelector, config) {
     const container = getElement(containerSelector);
     if (container && (elements === null || elements === void 0 ? void 0 : elements.length) > 0) {
         const builder = new GalleryContainerBuilder(container, elements, config);
+        builder.addFullscreen();
         if (typeof (config === null || config === void 0 ? void 0 : config.thumbSelector) === 'string' && typeof (config === null || config === void 0 ? void 0 : config.thumbContainerSelector) === 'string') {
             checkThumbScrollerConfig(config);
             const thumbContainer = getElement(config.thumbContainerSelector);

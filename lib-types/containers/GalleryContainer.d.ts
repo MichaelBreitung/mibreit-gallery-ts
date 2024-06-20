@@ -5,7 +5,7 @@
 import IGalleryContainer from '../interfaces/IGalleryContainer';
 import IImageViewer from '../interfaces/IImageViewer';
 import IThumbsViewer from '../interfaces/IThumbsViewer';
-import IFullscreen from '../interfaces/IFullscreen';
+import IFullscreen from '../interfaces/IFullscreenContainer';
 import { ILazyLoader } from 'mibreit-lazy-loader';
 export default class GalleryContainer implements IGalleryContainer {
     private _imageViewer;
@@ -16,5 +16,5 @@ export default class GalleryContainer implements IGalleryContainer {
     getImageViewer(): IImageViewer;
     getLoader(): ILazyLoader;
     getThumbsViewer(): IThumbsViewer | null;
-    getFullscreen(): IFullscreen | null;
+    getFullscreenContainer(): IFullscreen | null;
 }

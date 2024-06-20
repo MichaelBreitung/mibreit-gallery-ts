@@ -2,13 +2,13 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { addClickEventListener, addCssClass, addCssStyle, appendChildElement, createElement, getElement, prependBeforeChild, removeCssStyle, removeElement, setAttribute, setInnerHtml, } from 'mibreit-dom-tools';
+import { addClickEventListener, addCssClass, addCssStyle, appendChildElement, createElement, getElement, prependBeforeChild, removeCssStyle, removeElement, setInnerHtml, } from 'mibreit-dom-tools';
+// Styles
 import styles from './FullscreenContainer.module.css';
+// SVGs
 import fullscreenClose from '../images/close.svg';
-const GALLERY_PLACEHOLDER_ID = 'slideshowContainerPlaceholder';
-const THUMBS_PLACEHOLDER_ID = 'thumbContainerPlaceholder';
 export default class FullscreenContainer {
-    constructor(slideshowContainer, thumbContainer = null, usePlaceholder = true) {
+    constructor(slideshowContainer, thumbsContainer = null, usePlaceholder = true) {
         Object.defineProperty(this, "_fullscreenChangedCallbacks", {
             enumerable: true,
             configurable: true,
@@ -27,7 +27,7 @@ export default class FullscreenContainer {
             writable: true,
             value: void 0
         });
-        Object.defineProperty(this, "_thumbContainer", {
+        Object.defineProperty(this, "_thumbsContainer", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -45,7 +45,7 @@ export default class FullscreenContainer {
             writable: true,
             value: void 0
         });
-        Object.defineProperty(this, "_thumbContainerPlaceholder", {
+        Object.defineProperty(this, "_thumbsContainerPlaceholder", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -65,13 +65,13 @@ export default class FullscreenContainer {
         });
         this._fullscreenActive = false;
         this._slideshowContainer = slideshowContainer;
-        this._thumbContainer = thumbContainer;
+        this._thumbsContainer = thumbsContainer;
         this._usePlaceholder = usePlaceholder;
         this._fullScreenContainer = this._createFullscreenContainer();
         this._fullScreenCloseButton = this._createFullscreenCloseButton(this._fullScreenContainer);
         this._slideshowContainerPlaceholder = this._createSlideshowContainerPlaceholder();
-        if (thumbContainer) {
-            this._thumbContainerPlaceholder = this._createThumbContainerPlaceholder();
+        if (thumbsContainer) {
+            this._thumbsContainerPlaceholder = this._createThumbsContainerPlaceholder();
         }
     }
     activate() {
@@ -122,13 +122,11 @@ export default class FullscreenContainer {
     }
     _createSlideshowContainerPlaceholder() {
         const slideshowContainerPlaceholder = createElement('div');
-        setAttribute(slideshowContainerPlaceholder, 'id', GALLERY_PLACEHOLDER_ID);
         return slideshowContainerPlaceholder;
     }
-    _createThumbContainerPlaceholder() {
-        const thumbContainerPlaceholder = createElement('div');
-        setAttribute(thumbContainerPlaceholder, 'id', THUMBS_PLACEHOLDER_ID);
-        return thumbContainerPlaceholder;
+    _createThumbsContainerPlaceholder() {
+        const thumbsContainerPlaceholder = createElement('div');
+        return thumbsContainerPlaceholder;
     }
     _addFullscreen() {
         const body = getElement('body');
@@ -157,22 +155,22 @@ export default class FullscreenContainer {
         removeCssStyle(this._slideshowContainer, 'flex-grow');
     }
     _moveThumbsToFullscreen() {
-        if (this._thumbContainer && this._thumbContainerPlaceholder) {
+        if (this._thumbsContainer && this._thumbsContainerPlaceholder) {
             if (this._usePlaceholder) {
-                prependBeforeChild(this._thumbContainerPlaceholder, this._thumbContainer);
+                prependBeforeChild(this._thumbsContainerPlaceholder, this._thumbsContainer);
             }
-            appendChildElement(this._thumbContainer, this._fullScreenContainer);
-            addCssStyle(this._thumbContainer, 'flex-grow', '0');
+            appendChildElement(this._thumbsContainer, this._fullScreenContainer);
+            addCssStyle(this._thumbsContainer, 'flex-grow', '0');
         }
     }
     _removeThumbsFromFullscreen() {
-        if (this._thumbContainer && this._thumbContainerPlaceholder) {
-            removeElement(this._thumbContainer);
+        if (this._thumbsContainer && this._thumbsContainerPlaceholder) {
+            removeElement(this._thumbsContainer);
             if (this._usePlaceholder) {
-                prependBeforeChild(this._thumbContainer, this._thumbContainerPlaceholder);
-                removeElement(this._thumbContainerPlaceholder);
+                prependBeforeChild(this._thumbsContainer, this._thumbsContainerPlaceholder);
+                removeElement(this._thumbsContainerPlaceholder);
             }
-            removeCssStyle(this._thumbContainer, 'flex-grow');
+            removeCssStyle(this._thumbsContainer, 'flex-grow');
         }
     }
     _setupCloseButtonHandler() {

@@ -43,9 +43,10 @@ export default function (imageSelector: string, config: SlideshowConfig): IGalle
     });
     const clonedElements: NodeListOf<HTMLElement> = container.children as unknown as NodeListOf<HTMLElement>;
     const builder = new GalleryContainerBuilder(container, clonedElements, config);
+    builder.addFullscreen();
     const galleryContainer = builder.build();
 
-    const fullscreen = galleryContainer.getFullscreen();
+    const fullscreen = galleryContainer.getFullscreenContainer();
     if (fullscreen) {
       fullscreen.addFullscreenChangedCallback((active: boolean) => {
         if (active) {

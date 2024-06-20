@@ -25,8 +25,9 @@ export default function (imageSelector, config) {
         });
         const clonedElements = container.children;
         const builder = new GalleryContainerBuilder(container, clonedElements, config);
+        builder.addFullscreen();
         const galleryContainer = builder.build();
-        const fullscreen = galleryContainer.getFullscreen();
+        const fullscreen = galleryContainer.getFullscreenContainer();
         if (fullscreen) {
             fullscreen.addFullscreenChangedCallback((active) => {
                 if (active) {

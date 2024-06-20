@@ -2,22 +2,22 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import IFullscreen from '../interfaces/IFullscreen';
+import IFullscreen from '../interfaces/IFullscreenContainer';
 export type FullscreenConfig = {
     slideshowContainerSelector: string;
-    thumbContainerSelector: string;
+    thumbsContainerSelector: string;
 };
 export default class FullscreenContainer implements IFullscreen {
     private _fullscreenChangedCallbacks;
     private _fullscreenActive;
     private _slideshowContainer;
-    private _thumbContainer;
+    private _thumbsContainer;
     private _fullScreenContainer;
     private _slideshowContainerPlaceholder;
-    private _thumbContainerPlaceholder;
+    private _thumbsContainerPlaceholder;
     private _fullScreenCloseButton;
     private _usePlaceholder;
-    constructor(slideshowContainer: HTMLElement, thumbContainer?: HTMLElement | null, usePlaceholder?: boolean);
+    constructor(slideshowContainer: HTMLElement, thumbsContainer?: HTMLElement | null, usePlaceholder?: boolean);
     activate(): void;
     deActivate(): void;
     addFullscreenChangedCallback(callback: (active: boolean) => void): void;
@@ -26,7 +26,7 @@ export default class FullscreenContainer implements IFullscreen {
     private _createFullscreenContainer;
     private _createFullscreenCloseButton;
     private _createSlideshowContainerPlaceholder;
-    private _createThumbContainerPlaceholder;
+    private _createThumbsContainerPlaceholder;
     private _addFullscreen;
     private _removeFullscreen;
     private _moveGalleryToFullscreen;
