@@ -41,20 +41,24 @@ export default abstract class ImageStage implements IImageStage {
     this._imageStage = this._createStage();
 
     const resizeObserver = new ResizeObserver(() => {
-      console.log('ImageStage#ResizeObserver');
-      const stageDimension: TElementDimension = getElementDimension(this._imageStage);
-      this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
-      this._centerImage(stageDimension.width, stageDimension.height);
+      this.reinitSize();
     });
 
     resizeObserver.observe(this._imageStage);
   }
 
-  setZoomAnimation(activate: boolean): void {
+  public setZoomAnimation(activate: boolean): void {
     this._zoomAnimation = activate;
   }
 
-  async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
+  public reinitSize() {
+    const stageDimension: TElementDimension = getElementDimension(this._imageStage);
+    console.log('ImageStage#reinitSize - stageDimension: ', stageDimension);
+    this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
+    this._centerImage(stageDimension.width, stageDimension.height);
+  }
+
+  public async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
     if (this._zoomAnimation) {
       setTimeout(() => {
         this._resetZoom();
@@ -72,7 +76,7 @@ export default abstract class ImageStage implements IImageStage {
     removeCssStyle(this._imageStage, 'opacity');
   }
 
-  async showImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
+  public async showImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
     if (this._zoomAnimation) {
       this._startZoomAnimation();
     }

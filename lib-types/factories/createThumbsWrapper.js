@@ -9,6 +9,9 @@ function prepareThumbStages(thumbs, thumbClickedCallback) {
     const thumbStages = new Array();
     thumbs.forEach((thumb, index) => {
         const thumbStage = new ThumbStage(thumb.getHtmlElement(), thumb.getWidth(), thumb.getHeight());
+        thumb.addWasLoadedCallback(() => {
+            thumbStage.reinitSize();
+        });
         thumbStage.showImage();
         if (thumbClickedCallback) {
             thumbStage.addStageClickedCallback(() => {

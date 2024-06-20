@@ -59,15 +59,18 @@ export default class ImageStage {
         this._imageHeight = imageHeight;
         this._imageStage = this._createStage();
         const resizeObserver = new ResizeObserver(() => {
-            console.log('ImageStage#ResizeObserver');
-            const stageDimension = getElementDimension(this._imageStage);
-            this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
-            this._centerImage(stageDimension.width, stageDimension.height);
+            this.reinitSize();
         });
         resizeObserver.observe(this._imageStage);
     }
     setZoomAnimation(activate) {
         this._zoomAnimation = activate;
+    }
+    reinitSize() {
+        const stageDimension = getElementDimension(this._imageStage);
+        console.log('ImageStage#reinitSize - stageDimension: ', stageDimension);
+        this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
+        this._centerImage(stageDimension.width, stageDimension.height);
     }
     hideImage() {
         return __awaiter(this, arguments, void 0, function* (swipeDirection = ESwipeDirection.NONE) {

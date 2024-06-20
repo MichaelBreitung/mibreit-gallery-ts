@@ -8,6 +8,8 @@ import { ESwipeDirection } from '../components/SwipeHandler';
 export default interface IImageStage {
   setZoomAnimation(activate: boolean): void;
 
+  reinitSize(): void;
+
   showImage(swipeDirection?: ESwipeDirection): void;
 
   hideImage(swipeDirection?: ESwipeDirection): void;

@@ -13,12 +13,16 @@ function prepareThumbStages(thumbs: Array<Image>, thumbClickedCallback?: (index:
   const thumbStages: Array<ThumbStage> = new Array();
   thumbs.forEach((thumb, index) => {
     const thumbStage = new ThumbStage(thumb.getHtmlElement(), thumb.getWidth(), thumb.getHeight());
+    thumb.addWasLoadedCallback(() => {
+      thumbStage.reinitSize();
+    });
     thumbStage.showImage();
     if (thumbClickedCallback) {
       thumbStage.addStageClickedCallback(() => {
         thumbClickedCallback(index);
       });
     }
+
     thumbStages.push(thumbStage);
   });
   return thumbStages;

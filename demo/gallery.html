@@ -29,6 +29,7 @@
         text-align: center;
       }
       .mibreit-LazyLoader_lazy {
+        display: none !important;
       }
     </style>
   </head>
@@ -192,7 +193,7 @@
         thumbSelector: '#thumbContainer > img',
         numberOfVisibleThumbs: 7,
         preloaderBeforeSize: 1,
-        preloaderAfterSize: 5,
+        preloaderAfterSize: 2,
       });
 
       const titleElement = document.querySelector('#title');

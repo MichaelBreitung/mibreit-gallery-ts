@@ -103,6 +103,9 @@ export default class ImageViewer implements IImageViewer {
   private _prepareImageStages(images: Array<Image>, scaleMode: EImageScaleMode) {
     images.forEach((image) => {
       const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
+      image.addWasLoadedCallback(() => {
+        imageStage.reinitSize();
+      });
       this._imageStages.push(imageStage);
     });
   }

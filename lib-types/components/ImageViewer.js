@@ -105,6 +105,9 @@ export default class ImageViewer {
     _prepareImageStages(images, scaleMode) {
         images.forEach((image) => {
             const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
+            image.addWasLoadedCallback(() => {
+                imageStage.reinitSize();
+            });
             this._imageStages.push(imageStage);
         });
     }
