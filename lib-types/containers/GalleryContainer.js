@@ -3,8 +3,8 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 export default class GalleryContainer {
-    constructor(viewer, loader, thumbScroller, fullscreenContainer) {
-        Object.defineProperty(this, "_viewer", {
+    constructor(imageViewer, loader, thumbsViewer, fullscreenContainer) {
+        Object.defineProperty(this, "_imageViewer", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -22,25 +22,25 @@ export default class GalleryContainer {
             writable: true,
             value: null
         });
-        Object.defineProperty(this, "_thumbScroller", {
+        Object.defineProperty(this, "_thumbsViewer", {
             enumerable: true,
             configurable: true,
             writable: true,
             value: null
         });
-        this._viewer = viewer;
+        this._imageViewer = imageViewer;
         this._loader = loader;
-        this._thumbScroller = thumbScroller;
+        this._thumbsViewer = thumbsViewer;
         this._fullscreenContainer = fullscreenContainer;
     }
-    getViewer() {
-        return this._viewer;
+    getImageViewer() {
+        return this._imageViewer;
     }
     getLoader() {
         return this._loader;
     }
-    getScroller() {
-        return this._thumbScroller;
+    getThumbsViewer() {
+        return this._thumbsViewer;
     }
     getFullscreen() {
         return this._fullscreenContainer;

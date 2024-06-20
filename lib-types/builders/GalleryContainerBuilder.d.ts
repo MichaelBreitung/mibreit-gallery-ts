@@ -8,9 +8,9 @@ import { ThumbScrollerConfig } from '../containers/ThumbScrollerContainer';
 export default class GalleryContainerBuilder {
     private _container;
     private _fullscreenButton;
-    private _viewer;
+    private _imageViewer;
     private _loader;
-    private _thumbScroller;
+    private _thumbsViewer;
     private _fullscreenContainer;
     constructor(container: HTMLElement, images: NodeListOf<HTMLElement>, config?: SlideshowConfig);
     addThumbScroller(thumbContainer: HTMLElement, thumbs: NodeListOf<HTMLElement>, config?: ThumbScrollerConfig): GalleryContainerBuilder;

@@ -217,13 +217,13 @@
     </div>
   </body>
   <script type="module">
-    import { createThumbScrollerContainer } from '/src/index.ts';
-    createThumbScrollerContainer('#container', '#container > img', { numberOfVisibleThumbs: 8 });
-    createThumbScrollerContainer('#container2', '#container2 > img', { numberOfVisibleThumbs: 8 });
-    createThumbScrollerContainer('#container3', '#container3 > img', {
+    import { createThumbsViewer } from '/src/index.ts';
+    createThumbsViewer('#container', '#container > img', { numberOfVisibleThumbs: 8 });
+    createThumbsViewer('#container2', '#container2 > img', { numberOfVisibleThumbs: 8 });
+    createThumbsViewer('#container3', '#container3 > img', {
       numberOfVisibleThumbs: 4,
       initialIndex: 5,
     });
-    createThumbScrollerContainer('#container4', '#container4 > img', { numberOfVisibleThumbs: 7 });
+    createThumbsViewer('#container4', '#container4 > img', { numberOfVisibleThumbs: 7 });
   </script>
 </html>

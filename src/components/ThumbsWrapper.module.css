@@ -1,16 +1,22 @@
-.mibreit_ThumbScrollerParentContainer {
+.thumbs_wrapper__parent {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.mibreit_ThumbScrollerContainer {
+.thumbs_wrapper__parent svg {
+  width: 3rem;
+  height: 3rem;
+  fill: #727f88;
+}
+
+.thumbs_wrapper {
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
 
-.mibreit_ThumbScrollerContainerCentered {
+.thumbs_wrapper__centered {
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -19,18 +25,12 @@
   align-items: center;
 }
 
-.mibreit_ThumbScrollerParentContainer svg {
-  width: 3rem;
-  height: 3rem;
-  fill: #727f88;
-}
-
-.mibreit_ThumbScrollerPrevious,
-.mibreit_ThumbScrollerNext {
+.thumbs_wrapper__previous_btn,
+.thumbs_wrapper__next_btn {
   margin-right: 0.5rem;
   margin-left: 0.5rem;
 }
 
-.mibreit_ThumbScrollerPrevious > svg {
+.thumbs_wrapper__previous_btn > svg {
   transform: scaleX(-1);
 }

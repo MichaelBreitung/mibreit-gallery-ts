@@ -6,37 +6,37 @@
 // interfaces
 import IGalleryContainer from '../interfaces/IGalleryContainer';
 import IImageViewer from '../interfaces/IImageViewer';
-import IThumbScroller from '../interfaces/IThumbScroller';
+import IThumbsViewer from '../interfaces/IThumbsViewer';
 import IFullscreen from '../interfaces/IFullscreen';
 import { ILazyLoader } from 'mibreit-lazy-loader';
 export default class GalleryContainer implements IGalleryContainer {
-  private _viewer: IImageViewer;
+  private _imageViewer: IImageViewer;
   private _loader: ILazyLoader;
   private _fullscreenContainer: IFullscreen | null = null;
-  private _thumbScroller: IThumbScroller | null = null;
+  private _thumbsViewer: IThumbsViewer | null = null;
 
   constructor(
-    viewer: IImageViewer,
+    imageViewer: IImageViewer,
     loader: ILazyLoader,
-    thumbScroller: IThumbScroller | null,
+    thumbsViewer: IThumbsViewer | null,
     fullscreenContainer: IFullscreen | null
   ) {
-    this._viewer = viewer;
+    this._imageViewer = imageViewer;
     this._loader = loader;
-    this._thumbScroller = thumbScroller;
+    this._thumbsViewer = thumbsViewer;
     this._fullscreenContainer = fullscreenContainer;
   }
 
-  getViewer(): IImageViewer {
-    return this._viewer;
+  getImageViewer(): IImageViewer {
+    return this._imageViewer;
   }
 
   getLoader(): ILazyLoader {
     return this._loader;
   }
 
-  getScroller(): IThumbScroller | null {
-    return this._thumbScroller;
+  getThumbsViewer(): IThumbsViewer | null {
+    return this._thumbsViewer;
   }
 
   getFullscreen(): IFullscreen | null {

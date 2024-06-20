@@ -5,12 +5,12 @@
 import { LazyLoader } from 'mibreit-lazy-loader';
 import { addClickEventListener } from 'mibreit-dom-tools';
 import Image from '../components/Image';
-import createThumbScrollerLayout from '../factories/createThumbScrollerLayout';
-import ThumbScroller from '../components/ThumbScroller';
+import createThumbsWrapper from '../factories/createThumbsWrapper';
+import ThumbsViewer from '../components/ThumbsViewer';
 const DEFAULT_NUMBER_VISIBLE_THUMBS = 7;
 export default class ThumbScrollerContainer {
     constructor(thumbContainer, thumbElements, config, thumbClickedCallback) {
-        Object.defineProperty(this, "_thumbScroller", {
+        Object.defineProperty(this, "_thumbsViewer", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -21,10 +21,10 @@ export default class ThumbScrollerContainer {
             : DEFAULT_NUMBER_VISIBLE_THUMBS;
         const thumbs = this._prepareThumbs(thumbElements);
         const lazyLoader = new LazyLoader(thumbs, numberVisibleThumbs, numberVisibleThumbs);
-        const layout = createThumbScrollerLayout(thumbContainer, thumbs, numberVisibleThumbs, thumbClickedCallback);
+        const thumbsWrapper = createThumbsWrapper(thumbContainer, thumbs, numberVisibleThumbs, thumbClickedCallback);
         if (numberVisibleThumbs < thumbs.length) {
-            this._thumbScroller = this._prepareThumbScroller(layout, lazyLoader, config === null || config === void 0 ? void 0 : config.initialIndex);
-            this._addThumbScrollerInteraction(this._thumbScroller, layout);
+            this._thumbsViewer = this._prepareThumbsViewer(thumbsWrapper, lazyLoader, config === null || config === void 0 ? void 0 : config.initialIndex);
+            this._addThumbsViewerInteraction(this._thumbsViewer, thumbsWrapper);
         }
         else {
             setTimeout(() => {
@@ -33,32 +33,32 @@ export default class ThumbScrollerContainer {
             }, 0);
         }
     }
-    getScroller() {
-        return this._thumbScroller;
+    getThumbsViewer() {
+        return this._thumbsViewer;
     }
-    _prepareThumbs(thumbSelector) {
+    _prepareThumbs(thumbElement) {
         const thumbs = new Array();
-        for (let i = 0; i < thumbSelector.length; i++) {
-            const image = new Image(thumbSelector[i]);
+        for (let i = 0; i < thumbElement.length; i++) {
+            const image = new Image(thumbElement[i]);
             thumbs.push(image);
         }
         return thumbs;
     }
-    _prepareThumbScroller(layout, loader, initialIndex = 0) {
-        const thumbScroller = new ThumbScroller(layout);
-        thumbScroller.addScrollIndexChangedCallback((index) => {
+    _prepareThumbsViewer(thumbsWrapper, loader, initialIndex = 0) {
+        const thumbsViewer = new ThumbsViewer(thumbsWrapper);
+        thumbsViewer.addScrollIndexChangedCallback((index) => {
             loader.setCurrentIndex(index);
         });
-        thumbScroller.scrollTo(initialIndex);
-        return thumbScroller;
+        thumbsViewer.setCenterThumb(initialIndex);
+        return thumbsViewer;
     }
-    _addThumbScrollerInteraction(thumbScroller, thumbScrollerLayout) {
-        const { previousButton, nextButton } = thumbScrollerLayout.getThumbScrollerButtons();
+    _addThumbsViewerInteraction(thumbsViewer, thumbsWrapper) {
+        const { previousButton, nextButton } = thumbsWrapper.getThumbScrollerButtons();
         addClickEventListener(nextButton, () => {
-            thumbScroller.scrollNext();
+            thumbsViewer.scrollNext();
         });
         addClickEventListener(previousButton, () => {
-            thumbScroller.scrollPrevious();
+            thumbsViewer.scrollPrevious();
         });
     }
 }

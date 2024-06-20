@@ -2,16 +2,16 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import IThumbScroller from '../interfaces/IThumbScroller';
+import IThumbsViewer from '../interfaces/IThumbsViewer';
 export type ThumbScrollerConfig = {
     numberOfVisibleThumbs?: number;
     initialIndex?: number;
 };
 export default class ThumbScrollerContainer {
-    private _thumbScroller;
+    private _thumbsViewer;
     constructor(thumbContainer: HTMLElement, thumbElements: NodeListOf<HTMLElement>, config?: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void);
-    getScroller(): IThumbScroller | null;
+    getThumbsViewer(): IThumbsViewer | null;
     private _prepareThumbs;
-    private _prepareThumbScroller;
-    private _addThumbScrollerInteraction;
+    private _prepareThumbsViewer;
+    private _addThumbsViewerInteraction;
 }

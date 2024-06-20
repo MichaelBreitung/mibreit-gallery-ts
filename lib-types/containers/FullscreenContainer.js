@@ -110,13 +110,13 @@ export default class FullscreenContainer {
     }
     _createFullscreenContainer() {
         const fullScreenContainer = createElement('div');
-        addCssClass(fullScreenContainer, styles.mibreit_Fullscreen);
+        addCssClass(fullScreenContainer, styles.fullscreen);
         return fullScreenContainer;
     }
     _createFullscreenCloseButton(fullScreenContainer) {
         const fullScreenCloseButton = createElement('div');
         setInnerHtml(fullScreenCloseButton, fullscreenClose);
-        addCssClass(fullScreenCloseButton, styles.mibreit_Fullscreen_exit);
+        addCssClass(fullScreenCloseButton, styles.fullscreen__exit_btn);
         appendChildElement(fullScreenCloseButton, fullScreenContainer);
         return fullScreenCloseButton;
     }

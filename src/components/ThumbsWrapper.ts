@@ -15,13 +15,13 @@ import {
   setInnerHtml,
   wrapElements,
 } from 'mibreit-dom-tools';
-import styles from './ThumbScrollerLayout.module.css';
+import styles from './ThumbsWrapper.module.css';
 import nextThumbs from '../images/nextThumbs.svg';
 import IImageStage from '../interfaces/IImageStage';
-import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
+import IThumbsWrapper from '../interfaces/IThumbsWrapper';
 
-export default class ThumbScrollerLayout implements IThumbScrollerLayout {
-  private _scrollerContainer: HTMLElement;
+export default class ThumbsWrapper implements IThumbsWrapper {
+  private _wrapper: HTMLElement;
   private _previousButton: HTMLElement;
   private _nextButton: HTMLElement;
   private _thumbSizeRem: number;
@@ -29,20 +29,20 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
   private _numberOfVisibleThumbs: number;
 
   constructor(container: HTMLElement, thumbStages: Array<IImageStage>, numberOfVisibleThumbs: number) {
-    addCssClass(container, styles.mibreit_ThumbScrollerParentContainer);
+    addCssClass(container, styles.thumbs_wrapper__parent);
     this._numberOfVisibleThumbs = numberOfVisibleThumbs;
     this._thumbStages = thumbStages;
     const willThumbsFitContainer = numberOfVisibleThumbs >= thumbStages.length;
-    this._scrollerContainer = this._createScrollerContainer(container, willThumbsFitContainer);
+    this._wrapper = this._wrapThumbs(container, willThumbsFitContainer);
     const [previousButton, nextButton] = this._createScrollerButtons(container, willThumbsFitContainer);
     this._previousButton = previousButton;
     this._nextButton = nextButton;
-    this._thumbSizeRem = this._calculateThumbsize(this._scrollerContainer, numberOfVisibleThumbs);
+    this._thumbSizeRem = this._calculateThumbsize(this._wrapper, numberOfVisibleThumbs);
     this._resizeThumbStages(this._thumbSizeRem);
   }
 
   reinitSize() {
-    this._thumbSizeRem = this._calculateThumbsize(this._scrollerContainer, this._numberOfVisibleThumbs);
+    this._thumbSizeRem = this._calculateThumbsize(this._wrapper, this._numberOfVisibleThumbs);
     this._resizeThumbStages(this._thumbSizeRem);
   }
 
@@ -62,20 +62,20 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
     return { previousButton: this._previousButton, nextButton: this._nextButton };
   }
 
-  getScrollerContainer(): HTMLElement {
-    return this._scrollerContainer;
+  getElements(): Array<Node> {
+    return getChildNodes(this._wrapper);
   }
 
-  private _createScrollerContainer(container: HTMLElement, centerThumbs: boolean): HTMLElement {
+  private _wrapThumbs(container: HTMLElement, centerThumbs: boolean): HTMLElement {
     const childNodes: Array<Node> = getChildNodes(container);
-    const scrollerContainer = createElement('div');
+    const wrapper = createElement('div');
     if (centerThumbs) {
-      addCssClass(scrollerContainer, styles.mibreit_ThumbScrollerContainerCentered);
+      addCssClass(wrapper, styles.thumbs_wrapper__centered);
     } else {
-      addCssClass(scrollerContainer, styles.mibreit_ThumbScrollerContainer);
+      addCssClass(wrapper, styles.thumbs_wrapper);
     }
-    wrapElements(childNodes, scrollerContainer);
-    return scrollerContainer;
+    wrapElements(childNodes, wrapper);
+    return wrapper;
   }
 
   private _calculateThumbsize(container: HTMLElement, numberOfVisibleThumbs: number): number {
@@ -88,12 +88,12 @@ export default class ThumbScrollerLayout implements IThumbScrollerLayout {
   private _createScrollerButtons(container: HTMLElement, hidden: boolean): [HTMLElement, HTMLElement] {
     const previousButton = createElement('div');
     setInnerHtml(previousButton, nextThumbs);
-    addCssClass(previousButton, styles.mibreit_ThumbScrollerPrevious);
+    addCssClass(previousButton, styles.thumbs_wrapper__previous_btn);
     prependChildElement(previousButton, container);
 
     const nextButton = createElement('div');
     setInnerHtml(nextButton, nextThumbs);
-    addCssClass(nextButton, styles.mibreit_ThumbScrollerNext);
+    addCssClass(nextButton, styles.thumbs_wrapper__next_btn);
     appendChildElement(nextButton, container);
 
     if (hidden) {

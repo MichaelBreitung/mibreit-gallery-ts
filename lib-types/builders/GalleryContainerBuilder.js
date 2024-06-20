@@ -32,7 +32,7 @@ export default class GalleryContainerBuilder {
             writable: true,
             value: null
         });
-        Object.defineProperty(this, "_viewer", {
+        Object.defineProperty(this, "_imageViewer", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -44,7 +44,7 @@ export default class GalleryContainerBuilder {
             writable: true,
             value: void 0
         });
-        Object.defineProperty(this, "_thumbScroller", {
+        Object.defineProperty(this, "_thumbsViewer", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -58,20 +58,20 @@ export default class GalleryContainerBuilder {
         });
         this._container = container;
         const slideshowContainer = new SlideshowContainer(images, config);
-        this._viewer = slideshowContainer.getViewer();
+        this._imageViewer = slideshowContainer.getImageViewer();
         this._loader = slideshowContainer.getLoader();
         const { previousButton, nextButton } = this._createPreviousNextButtons(container);
         this._setupHoverEvents(container, [previousButton, nextButton]);
-        this._setupSwipeHandler(container, this._viewer);
+        this._setupSwipeHandler(container, this._imageViewer);
     }
     addThumbScroller(thumbContainer, thumbs, config) {
-        this._thumbScroller = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index) => {
+        this._thumbsViewer = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index) => {
             this._loader.setCurrentIndex(index);
-            this._viewer.showImage(index);
-        }).getScroller();
-        if (this._thumbScroller) {
-            this._viewer.addImageChangedCallback((index, _imageInfo) => {
-                this._thumbScroller.scrollTo(index, true);
+            this._imageViewer.showImage(index);
+        }).getThumbsViewer();
+        if (this._thumbsViewer) {
+            this._imageViewer.addImageChangedCallback((index, _imageInfo) => {
+                this._thumbsViewer.setCenterThumb(index, true);
             });
         }
         return this;
@@ -80,24 +80,24 @@ export default class GalleryContainerBuilder {
         this._fullscreenContainer = new FullscreenContainer(this._container);
         this._fullscreenButton = this._createFullscreenButton(this._container);
         this._setupHoverEvents(this._container, [this._fullscreenButton]);
-        this._setupKeyEvents(this._viewer, this._fullscreenContainer);
-        this._setupFullscreenClickEvent(this._fullscreenButton, this._fullscreenContainer, this._viewer);
-        this._setupResizeHandler(this._viewer, this._thumbScroller);
+        this._setupKeyEvents(this._imageViewer, this._fullscreenContainer);
+        this._setupFullscreenClickEvent(this._fullscreenButton, this._fullscreenContainer, this._imageViewer);
+        this._setupResizeHandler(this._imageViewer, this._thumbsViewer);
         if (this._fullscreenContainer && this._fullscreenButton) {
-            this._setupFullscreenChangedHandler(this._fullscreenContainer, this._fullscreenButton, this._viewer, this._thumbScroller);
+            this._setupFullscreenChangedHandler(this._fullscreenContainer, this._fullscreenButton, this._imageViewer, this._thumbsViewer);
         }
-        return new GalleryContainer(this._viewer, this._loader, this._thumbScroller, this._fullscreenContainer);
+        return new GalleryContainer(this._imageViewer, this._loader, this._thumbsViewer, this._fullscreenContainer);
     }
     _createPreviousNextButtons(container) {
         const previousButton = createElement('div');
         setInnerHtml(previousButton, nextImageSvg);
-        addCssClass(previousButton, styles.mibreit_GalleryPrevious);
-        addCssClass(previousButton, animationStyles.mibreit_GalleryFade);
+        addCssClass(previousButton, styles.gallery__previous_btn);
+        addCssClass(previousButton, animationStyles.fade);
         prependChildElement(previousButton, container);
         const nextButton = createElement('div');
         setInnerHtml(nextButton, nextImageSvg);
-        addCssClass(nextButton, styles.mibreit_GalleryNext);
-        addCssClass(nextButton, animationStyles.mibreit_GalleryFade);
+        addCssClass(nextButton, styles.gallery__next_btn);
+        addCssClass(nextButton, animationStyles.fade);
         appendChildElement(nextButton, container);
         return { previousButton, nextButton };
     }
@@ -141,8 +141,8 @@ export default class GalleryContainerBuilder {
     _createFullscreenButton(container) {
         const fullscreenButton = createElement('div');
         setInnerHtml(fullscreenButton, fullscreenSvg);
-        addCssClass(fullscreenButton, styles.mibreit_GalleryFullscreenButton);
-        addCssClass(fullscreenButton, animationStyles.mibreit_GalleryFade);
+        addCssClass(fullscreenButton, styles.gallery__fullscreen_btn);
+        addCssClass(fullscreenButton, animationStyles.fade);
         appendChildElement(fullscreenButton, container);
         return fullscreenButton;
     }

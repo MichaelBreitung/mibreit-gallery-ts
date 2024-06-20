@@ -1,14 +1,14 @@
-.mibreit_ImageStage {
+.img_stage {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0; 
+  opacity: 0;
   overflow: hidden;
 }
 
-.mibreit_ImageStage > img.zoom {
+.img_stage > img.zoom {
   -webkit-transition: transform 10000ms linear;
   -moz-transition: transform 10000ms linear;
   -o-transition: transform 10000ms linear;

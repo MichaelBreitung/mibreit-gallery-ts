@@ -63,8 +63,8 @@
     });
 
     const titleElement = document.querySelector('#title');
-    titleElement.innerHTML = gallery.getViewer().getImageInfo(gallery.getViewer().getImageIndex()).getTitle();
-    gallery.getViewer().addImageChangedCallback((index, imageInfo) => {
+    titleElement.innerHTML = gallery.getImageViewer().getImageInfo(gallery.getImageViewer().getImageIndex()).getTitle();
+    gallery.getImageViewer().addImageChangedCallback((index, imageInfo) => {
       titleElement.innerHTML = imageInfo.getTitle();
     });
   </script>

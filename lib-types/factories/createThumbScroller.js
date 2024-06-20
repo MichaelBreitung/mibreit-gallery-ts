@@ -18,7 +18,7 @@ export default function (containerSelector, thumbSelector, config, thumbClickedC
     const elements = getElements(thumbSelector);
     const container = getElement(containerSelector);
     if (container && (elements === null || elements === void 0 ? void 0 : elements.length) > 0) {
-        return new ThumbScrollerContainer(container, elements, config, thumbClickedCallback).getScroller();
+        return new ThumbScrollerContainer(container, elements, config, thumbClickedCallback).getThumbsViewer();
     }
     else {
         throw new Error('createThumbScroller - no images selected');

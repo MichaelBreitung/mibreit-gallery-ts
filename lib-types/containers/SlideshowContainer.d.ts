@@ -17,7 +17,7 @@ export default class SlideshowContainer implements ISlideshowContainer {
     private _imageViewer;
     private _loader;
     constructor(elements: NodeListOf<HTMLElement>, config?: SlideshowConfig);
-    getViewer(): IImageViewer;
+    getImageViewer(): IImageViewer;
     getLoader(): ILazyLoader;
     private _prepareImages;
     private _prepareLoader;

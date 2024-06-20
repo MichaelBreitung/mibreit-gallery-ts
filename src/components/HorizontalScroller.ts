@@ -3,14 +3,14 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { addCssClass, addCssStyle, createElement, getChildNodes, wrapElements } from 'mibreit-dom-tools';
+import { addCssClass, addCssStyle, createElement, wrapElements } from 'mibreit-dom-tools';
 import styles from './HorizontalScroller.module.css';
 
 export default class HorizontalScroller {
   private _scroller: HTMLElement;
 
-  constructor(container: HTMLElement) {
-    this._scroller = this._createScroller(container);
+  constructor(elements: Array<Node>) {
+    this._scroller = this._createScroller(elements);
   }
 
   scrollTo(position: number, useRem: boolean = false): boolean {
@@ -24,11 +24,10 @@ export default class HorizontalScroller {
     return true;
   }
 
-  private _createScroller(container: HTMLElement): HTMLElement {
-    const childNodes: Array<Node> = getChildNodes(container);
+  private _createScroller(elements: Array<Node>): HTMLElement {
     const scroller = createElement('div');
-    addCssClass(scroller, styles.mibreit_HorizontalScroller);
-    wrapElements(childNodes, scroller);
+    addCssClass(scroller, styles.hscroller);
+    wrapElements(elements, scroller);
 
     return scroller;
   }

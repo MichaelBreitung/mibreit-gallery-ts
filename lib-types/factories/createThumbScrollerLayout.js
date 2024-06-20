@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 import ThumbStage from '../components/ThumbStage';
-import ThumbScrollerLayout from '../components/ThumbScrollerLayout';
+import ThumbScrollerLayout from '../components/ThumbsWrapper';
 import { NUMBER_OF_VISIBLE_THUMBS } from '../constants';
 function prepareThumbStages(thumbs, thumbClickedCallback) {
     const thumbStages = new Array();

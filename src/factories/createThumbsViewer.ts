@@ -5,7 +5,7 @@
 
 import { getElement, getElements } from 'mibreit-dom-tools';
 import ThumbScrollerContainer, { ThumbScrollerConfig } from '../containers/ThumbScrollerContainer';
-import IThumbScroller from '../interfaces/IThumbScroller';
+import IThumbsViewer from '../interfaces/IThumbsViewer';
 import checkConfig from '../tools/checkThumbScrollerConfig';
 
 export default function (
@@ -13,12 +13,12 @@ export default function (
   thumbSelector: string,
   config?: ThumbScrollerConfig,
   thumbClickedCallback?: (index: number) => void
-): IThumbScroller | null {
+): IThumbsViewer | null {
   if (typeof containerSelector !== 'string') {
-    throw new Error('createThumbScroller - first parameter must be containerSelector string');
+    throw new Error('createThumbsViewer - first parameter must be containerSelector string');
   }
   if (typeof thumbSelector !== 'string') {
-    throw new Error('createThumbScroller - second parameter must be imageSelector string');
+    throw new Error('createThumbsViewer - second parameter must be imageSelector string');
   }
   if (config) {
     checkConfig(config);
@@ -28,8 +28,8 @@ export default function (
   const container = getElement(containerSelector);
 
   if (container && elements?.length > 0) {
-    return new ThumbScrollerContainer(container, elements, config, thumbClickedCallback).getScroller();
+    return new ThumbScrollerContainer(container, elements, config, thumbClickedCallback).getThumbsViewer();
   } else {
-    throw new Error('createThumbScroller - no images selected');
+    throw new Error('createThumbsViewer - no images selected');
   }
 }

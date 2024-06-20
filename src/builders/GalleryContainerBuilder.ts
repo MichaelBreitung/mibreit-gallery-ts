@@ -7,7 +7,7 @@ import GalleryContainer from '../containers/GalleryContainer';
 import SlideshowContainer, { SlideshowConfig } from '../containers/SlideshowContainer';
 import IGalleryContainer from '../interfaces/IGalleryContainer';
 import IImageViewer from '../interfaces/IImageViewer';
-import IThumbScroller from '../interfaces/IThumbScroller';
+import IThumbsViewer from '../interfaces/IThumbsViewer';
 import ThumbScrollerContainer, { ThumbScrollerConfig } from '../containers/ThumbScrollerContainer';
 import IImageInfo from '../interfaces/IImageInfo';
 import FullscreenContainer from '../containers/FullscreenContainer';
@@ -47,20 +47,20 @@ const RESIZE_DEBOUNCE_TIMER = 500;
 export default class GalleryContainerBuilder {
   private _container: HTMLElement;
   private _fullscreenButton: HTMLElement | null = null;
-  private _viewer: IImageViewer;
+  private _imageViewer: IImageViewer;
   private _loader: ILazyLoader;
-  private _thumbScroller: IThumbScroller | null = null;
+  private _thumbsViewer: IThumbsViewer | null = null;
   private _fullscreenContainer: IFullscreen | null = null;
 
   constructor(container: HTMLElement, images: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
     this._container = container;
 
     const slideshowContainer = new SlideshowContainer(images, config);
-    this._viewer = slideshowContainer.getViewer();
+    this._imageViewer = slideshowContainer.getImageViewer();
     this._loader = slideshowContainer.getLoader();
     const { previousButton, nextButton } = this._createPreviousNextButtons(container);
     this._setupHoverEvents(container, [previousButton, nextButton]);
-    this._setupSwipeHandler(container, this._viewer);
+    this._setupSwipeHandler(container, this._imageViewer);
   }
 
   public addThumbScroller(
@@ -68,14 +68,14 @@ export default class GalleryContainerBuilder {
     thumbs: NodeListOf<HTMLElement>,
     config?: ThumbScrollerConfig
   ): GalleryContainerBuilder {
-    this._thumbScroller = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index: number) => {
+    this._thumbsViewer = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index: number) => {
       this._loader.setCurrentIndex(index);
-      this._viewer.showImage(index);
-    }).getScroller();
+      this._imageViewer.showImage(index);
+    }).getThumbsViewer();
 
-    if (this._thumbScroller) {
-      this._viewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-        this._thumbScroller!.scrollTo(index, true);
+    if (this._thumbsViewer) {
+      this._imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+        this._thumbsViewer!.setCenterThumb(index, true);
       });
     }
     return this;
@@ -85,31 +85,31 @@ export default class GalleryContainerBuilder {
     this._fullscreenContainer = new FullscreenContainer(this._container);
     this._fullscreenButton = this._createFullscreenButton(this._container);
     this._setupHoverEvents(this._container, [this._fullscreenButton]);
-    this._setupKeyEvents(this._viewer, this._fullscreenContainer);
-    this._setupFullscreenClickEvent(this._fullscreenButton, this._fullscreenContainer, this._viewer);
-    this._setupResizeHandler(this._viewer, this._thumbScroller);
+    this._setupKeyEvents(this._imageViewer, this._fullscreenContainer);
+    this._setupFullscreenClickEvent(this._fullscreenButton, this._fullscreenContainer, this._imageViewer);
+    this._setupResizeHandler(this._imageViewer, this._thumbsViewer);
     if (this._fullscreenContainer && this._fullscreenButton) {
       this._setupFullscreenChangedHandler(
         this._fullscreenContainer,
         this._fullscreenButton,
-        this._viewer,
-        this._thumbScroller
+        this._imageViewer,
+        this._thumbsViewer
       );
     }
 
-    return new GalleryContainer(this._viewer, this._loader, this._thumbScroller, this._fullscreenContainer);
+    return new GalleryContainer(this._imageViewer, this._loader, this._thumbsViewer, this._fullscreenContainer);
   }
 
   private _createPreviousNextButtons(container: HTMLElement): { previousButton: HTMLElement; nextButton: HTMLElement } {
     const previousButton = createElement('div');
     setInnerHtml(previousButton, nextImageSvg);
-    addCssClass(previousButton, styles.mibreit_GalleryPrevious);
-    addCssClass(previousButton, animationStyles.mibreit_GalleryFade);
+    addCssClass(previousButton, styles.gallery__previous_btn);
+    addCssClass(previousButton, animationStyles.fade);
     prependChildElement(previousButton, container);
     const nextButton = createElement('div');
     setInnerHtml(nextButton, nextImageSvg);
-    addCssClass(nextButton, styles.mibreit_GalleryNext);
-    addCssClass(nextButton, animationStyles.mibreit_GalleryFade);
+    addCssClass(nextButton, styles.gallery__next_btn);
+    addCssClass(nextButton, animationStyles.fade);
     appendChildElement(nextButton, container);
     return { previousButton, nextButton };
   }
@@ -134,7 +134,7 @@ export default class GalleryContainerBuilder {
     });
   }
 
-  private _setupResizeHandler(imageViewer: IImageViewer, thumbScroller: IThumbScroller | null) {
+  private _setupResizeHandler(imageViewer: IImageViewer, thumbScroller: IThumbsViewer | null) {
     if (thumbScroller) {
       const debouncedThumbResizer = debounce(
         () => {
@@ -157,8 +157,8 @@ export default class GalleryContainerBuilder {
   private _createFullscreenButton(container: HTMLElement): HTMLElement {
     const fullscreenButton = createElement('div');
     setInnerHtml(fullscreenButton, fullscreenSvg);
-    addCssClass(fullscreenButton, styles.mibreit_GalleryFullscreenButton);
-    addCssClass(fullscreenButton, animationStyles.mibreit_GalleryFade);
+    addCssClass(fullscreenButton, styles.gallery__fullscreen_btn);
+    addCssClass(fullscreenButton, animationStyles.fade);
     appendChildElement(fullscreenButton, container);
     return fullscreenButton;
   }
@@ -227,7 +227,7 @@ export default class GalleryContainerBuilder {
     FullscreenContainer: IFullscreen,
     fullscreenButton: HTMLElement,
     imageViewer: IImageViewer,
-    thumbScroller: IThumbScroller | null
+    thumbScroller: IThumbsViewer | null
   ) {
     FullscreenContainer.addFullscreenChangedCallback((active: boolean) => {
       if (thumbScroller) {

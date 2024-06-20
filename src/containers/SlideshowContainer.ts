@@ -44,7 +44,7 @@ export default class SlideshowContainer implements ISlideshowContainer {
     this._imageViewer.showImage(0);
   }
 
-  public getViewer(): IImageViewer {
+  public getImageViewer(): IImageViewer {
     return this._imageViewer;
   }
 

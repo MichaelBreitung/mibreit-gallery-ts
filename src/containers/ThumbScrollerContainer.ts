@@ -6,10 +6,10 @@
 import { ILazyLoader, LazyLoader } from 'mibreit-lazy-loader';
 import { addClickEventListener } from 'mibreit-dom-tools';
 import Image from '../components/Image';
-import createThumbScrollerLayout from '../factories/createThumbScrollerLayout';
-import IThumbScroller from '../interfaces/IThumbScroller';
-import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
-import ThumbScroller from '../components/ThumbScroller';
+import createThumbsWrapper from '../factories/createThumbsWrapper';
+import IThumbsViewer from '../interfaces/IThumbsViewer';
+import IThumbsWrapper from '../interfaces/IThumbsWrapper';
+import ThumbsViewer from '../components/ThumbsViewer';
 
 const DEFAULT_NUMBER_VISIBLE_THUMBS = 7;
 
@@ -19,7 +19,7 @@ export type ThumbScrollerConfig = {
 };
 
 export default class ThumbScrollerContainer {
-  private _thumbScroller: IThumbScroller | null = null;
+  private _thumbsViewer: IThumbsViewer | null = null;
 
   constructor(
     thumbContainer: HTMLElement,
@@ -33,15 +33,15 @@ export default class ThumbScrollerContainer {
     const thumbs = this._prepareThumbs(thumbElements);
     const lazyLoader = new LazyLoader(thumbs, numberVisibleThumbs, numberVisibleThumbs);
 
-    const layout: IThumbScrollerLayout = createThumbScrollerLayout(
+    const thumbsWrapper: IThumbsWrapper = createThumbsWrapper(
       thumbContainer,
       thumbs,
       numberVisibleThumbs,
       thumbClickedCallback
     );
     if (numberVisibleThumbs < thumbs.length) {
-      this._thumbScroller = this._prepareThumbScroller(layout, lazyLoader, config?.initialIndex);
-      this._addThumbScrollerInteraction(this._thumbScroller, layout);
+      this._thumbsViewer = this._prepareThumbsViewer(thumbsWrapper, lazyLoader, config?.initialIndex);
+      this._addThumbsViewerInteraction(this._thumbsViewer, thumbsWrapper);
     } else {
       setTimeout(() => {
         lazyLoader.loadElement(0);
@@ -50,39 +50,39 @@ export default class ThumbScrollerContainer {
     }
   }
 
-  getScroller(): IThumbScroller | null {
-    return this._thumbScroller;
+  getThumbsViewer(): IThumbsViewer | null {
+    return this._thumbsViewer;
   }
 
-  private _prepareThumbs(thumbSelector: NodeListOf<HTMLElement>): Array<Image> {
+  private _prepareThumbs(thumbElement: NodeListOf<HTMLElement>): Array<Image> {
     const thumbs: Array<Image> = new Array();
-    for (let i = 0; i < thumbSelector.length; i++) {
-      const image: Image = new Image(thumbSelector[i]!);
+    for (let i = 0; i < thumbElement.length; i++) {
+      const image: Image = new Image(thumbElement[i]!);
       thumbs.push(image);
     }
     return thumbs;
   }
 
-  private _prepareThumbScroller(
-    layout: IThumbScrollerLayout,
+  private _prepareThumbsViewer(
+    thumbsWrapper: IThumbsWrapper,
     loader: ILazyLoader,
     initialIndex: number = 0
-  ): IThumbScroller {
-    const thumbScroller = new ThumbScroller(layout);
-    thumbScroller.addScrollIndexChangedCallback((index: number) => {
+  ): IThumbsViewer {
+    const thumbsViewer = new ThumbsViewer(thumbsWrapper);
+    thumbsViewer.addScrollIndexChangedCallback((index: number) => {
       loader.setCurrentIndex(index);
     });
-    thumbScroller.scrollTo(initialIndex);
-    return thumbScroller;
+    thumbsViewer.setCenterThumb(initialIndex);
+    return thumbsViewer;
   }
 
-  private _addThumbScrollerInteraction(thumbScroller: IThumbScroller, thumbScrollerLayout: IThumbScrollerLayout) {
-    const { previousButton, nextButton } = thumbScrollerLayout.getThumbScrollerButtons();
+  private _addThumbsViewerInteraction(thumbsViewer: IThumbsViewer, thumbsWrapper: IThumbsWrapper) {
+    const { previousButton, nextButton } = thumbsWrapper.getThumbScrollerButtons();
     addClickEventListener(nextButton, () => {
-      thumbScroller.scrollNext();
+      thumbsViewer.scrollNext();
     });
     addClickEventListener(previousButton, () => {
-      thumbScroller.scrollPrevious();
+      thumbsViewer.scrollPrevious();
     });
   }
 }

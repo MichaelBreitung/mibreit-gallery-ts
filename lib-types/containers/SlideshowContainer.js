@@ -32,7 +32,7 @@ export default class SlideshowContainer {
         }
         this._imageViewer.showImage(0);
     }
-    getViewer() {
+    getImageViewer() {
         return this._imageViewer;
     }
     getLoader() {

@@ -5,10 +5,10 @@
 
 import IFullscreen from './IFullscreen';
 import ISlideshowContainer from './ISlideshowContainer';
-import IThumbScroller from './IThumbScroller';
+import IThumbsViewer from './IThumbsViewer';
 
-export default interface IGalleryContainer extends ISlideshowContainer { 
+export default interface IGalleryContainer extends ISlideshowContainer {
   getFullscreen(): IFullscreen | null;
 
-  getScroller(): IThumbScroller | null;
+  getThumbsViewer(): IThumbsViewer | null;
 }

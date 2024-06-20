@@ -4,7 +4,7 @@
  */
 export default class HorizontalScroller {
     private _scroller;
-    constructor(container: HTMLElement);
+    constructor(elements: Array<Node>);
     scrollTo(position: number, useRem?: boolean): boolean;
     private _createScroller;
 }

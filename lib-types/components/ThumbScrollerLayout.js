@@ -43,7 +43,7 @@ export default class ThumbScrollerLayout {
             writable: true,
             value: void 0
         });
-        addCssClass(container, styles.mibreit_ThumbScrollerParentContainer);
+        addCssClass(container, styles.tscroller__parent);
         this._numberOfVisibleThumbs = numberOfVisibleThumbs;
         this._thumbStages = thumbStages;
         const willThumbsFitContainer = numberOfVisibleThumbs >= thumbStages.length;
@@ -73,14 +73,14 @@ export default class ThumbScrollerLayout {
     getScrollerContainer() {
         return this._scrollerContainer;
     }
-    _createScrollerContainer(container, centerThumbs) {
-        const childNodes = getChildNodes(container);
+    _createScrollerContainer(parent, centerThumbs) {
+        const childNodes = getChildNodes(parent);
         const scrollerContainer = createElement('div');
         if (centerThumbs) {
-            addCssClass(scrollerContainer, styles.mibreit_ThumbScrollerContainerCentered);
+            addCssClass(scrollerContainer, styles.ThumbScrollerContainerCentered);
         }
         else {
-            addCssClass(scrollerContainer, styles.mibreit_ThumbScrollerContainer);
+            addCssClass(scrollerContainer, styles.ThumbScrollerContainer);
         }
         wrapElements(childNodes, scrollerContainer);
         return scrollerContainer;
@@ -94,11 +94,11 @@ export default class ThumbScrollerLayout {
     _createScrollerButtons(container, hidden) {
         const previousButton = createElement('div');
         setInnerHtml(previousButton, nextThumbs);
-        addCssClass(previousButton, styles.mibreit_ThumbScrollerPrevious);
+        addCssClass(previousButton, styles.ThumbScrollerPrevious);
         prependChildElement(previousButton, container);
         const nextButton = createElement('div');
         setInnerHtml(nextButton, nextThumbs);
-        addCssClass(nextButton, styles.mibreit_ThumbScrollerNext);
+        addCssClass(nextButton, styles.ThumbScrollerNext);
         appendChildElement(nextButton, container);
         if (hidden) {
             addCssStyle(previousButton, 'opacity', '0');

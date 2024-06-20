@@ -4,7 +4,6 @@
  */
 
 import {
-  addCssClass,
   addCssStyle,
   appendChildElement,
   cloneElement,
@@ -22,12 +21,9 @@ import GalleryContainerBuilder from '../builders/GalleryContainerBuilder';
 import IGalleryContainer from '../interfaces/IGalleryContainer';
 import { SlideshowConfig } from '../containers/SlideshowContainer';
 
-const IMAGES_CONTAINER_CLASS = 'mibreit_gallery_fullscreen_only_container';
-
 function createImagesContainer(): HTMLElement {
   const container = createElement('div');
   addCssStyle(container, 'display', 'none');
-  addCssClass(container, IMAGES_CONTAINER_CLASS);
   const body = getElement('body');
   appendChildElement(container, body!);
   return container;
@@ -45,17 +41,17 @@ export default function (imageSelector: string, config: SlideshowConfig): IGalle
     elements.forEach((image: HTMLElement) => {
       appendChildElement(cloneElement(image), container);
     });
-    const clonedElements: NodeListOf<HTMLElement> = getElements(`.${IMAGES_CONTAINER_CLASS} > img`);
+    const clonedElements: NodeListOf<HTMLElement> = container.children as unknown as NodeListOf<HTMLElement>;
     const builder = new GalleryContainerBuilder(container, clonedElements, config);
     const galleryContainer = builder.build();
 
     const fullscreen = galleryContainer.getFullscreen();
-    const viewer = galleryContainer.getViewer();
-    if (fullscreen && viewer) {
+    const imageViewer = galleryContainer.getImageViewer();
+    if (fullscreen && imageViewer) {
       fullscreen.addFullscreenChangedCallback((active: boolean) => {
         if (active) {
           removeCssStyle(container, 'display');
-          viewer.reinitSize();
+          imageViewer.reinitSize();
         } else {
           addCssStyle(container, 'display', 'none');
         }

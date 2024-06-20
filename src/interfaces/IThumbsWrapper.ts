@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-export default interface IThumbScrollerLayout {
+export default interface IThumbsWrapper {
   getThumbSizeRem(): number;
 
   getNumberOfVisibleThumbs(): number;
@@ -12,7 +12,7 @@ export default interface IThumbScrollerLayout {
 
   getThumbScrollerButtons(): { previousButton: HTMLElement; nextButton: HTMLElement };
 
-  getScrollerContainer(): HTMLElement;
+  getElements(): Array<Node>;
 
   reinitSize(): void;
 }

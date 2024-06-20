@@ -5,8 +5,8 @@
 
 import Image from '../components/Image';
 import ThumbStage from '../components/ThumbStage';
-import ThumbScrollerLayout from '../components/ThumbScrollerLayout';
-import IThumbScrollerLayout from '../interfaces/IThumbScrollerLayout';
+import ThumbsWrapper from '../components/ThumbsWrapper';
+import IThumbsWrapper from '../interfaces/IThumbsWrapper';
 import { NUMBER_OF_VISIBLE_THUMBS } from '../constants';
 
 function prepareThumbStages(thumbs: Array<Image>, thumbClickedCallback?: (index: number) => void): Array<ThumbStage> {
@@ -17,12 +17,11 @@ function prepareThumbStages(thumbs: Array<Image>, thumbClickedCallback?: (index:
       thumbStage.applyScaleMode();
     });
     thumbStage.showImage();
-    if (thumbClickedCallback)
-    {
+    if (thumbClickedCallback) {
       thumbStage.addStageClickedCallback(() => {
         thumbClickedCallback(index);
       });
-    }    
+    }
     thumbStages.push(thumbStage);
   });
   return thumbStages;
@@ -33,12 +32,8 @@ export default function (
   thumbs: Array<Image>,
   numberOfVisibleThumbs: number = NUMBER_OF_VISIBLE_THUMBS,
   thumbClickedCallback?: (index: number) => void
-): IThumbScrollerLayout {
+): IThumbsWrapper {
   const thumbStages = prepareThumbStages(thumbs, thumbClickedCallback);
 
-  return new ThumbScrollerLayout(
-    container,
-    thumbStages,
-    numberOfVisibleThumbs
-  );
+  return new ThumbsWrapper(container, thumbStages, numberOfVisibleThumbs);
 }
