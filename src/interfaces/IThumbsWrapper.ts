@@ -10,8 +10,6 @@ export default interface IThumbsWrapper {
 
   getNumberOfThumbs(): number;
 
-  getThumbScrollerButtons(): { previousButton: HTMLElement; nextButton: HTMLElement };
-
   getElements(): Array<Node>;
 
   reinitSize(): void;

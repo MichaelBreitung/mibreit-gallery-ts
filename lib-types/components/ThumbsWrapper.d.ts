@@ -5,8 +5,6 @@
 import IThumbsWrapper from '../interfaces/IThumbsWrapper';
 export default class ThumbsWrapper implements IThumbsWrapper {
     private _wrapper;
-    private _previousButton;
-    private _nextButton;
     private _thumbSizeRem;
     private _thumbs;
     private _numberOfVisibleThumbs;
@@ -15,13 +13,8 @@ export default class ThumbsWrapper implements IThumbsWrapper {
     getThumbSizeRem(): number;
     getNumberOfVisibleThumbs(): number;
     getNumberOfThumbs(): number;
-    getThumbScrollerButtons(): {
-        previousButton: HTMLElement;
-        nextButton: HTMLElement;
-    };
     getElements(): Array<Node>;
     private _wrapThumbs;
     private _calculateThumbsize;
-    private _createScrollerButtons;
     private _resizeThumbs;
 }

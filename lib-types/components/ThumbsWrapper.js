@@ -2,24 +2,11 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { addCssClass, addCssStyle, appendChildElement, createElement, getChildNodes, getElementDimension, getRootFontSize, prependChildElement, setInnerHtml, wrapElements, } from 'mibreit-dom-tools';
+import { addCssClass, addCssStyle, createElement, getChildNodes, getElementDimension, getRootFontSize, wrapElements, } from 'mibreit-dom-tools';
 import styles from './ThumbsWrapper.module.css';
-import nextThumbs from '../images/nextThumbs.svg';
 export default class ThumbsWrapper {
     constructor(container, numberOfVisibleThumbs) {
         Object.defineProperty(this, "_wrapper", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "_previousButton", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "_nextButton", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -48,11 +35,9 @@ export default class ThumbsWrapper {
         this._thumbs = Array.from(container.children);
         const willThumbsFitContainer = numberOfVisibleThumbs >= this._thumbs.length;
         this._wrapper = this._wrapThumbs(getChildNodes(container), willThumbsFitContainer);
-        const [previousButton, nextButton] = this._createScrollerButtons(container, willThumbsFitContainer);
-        this._previousButton = previousButton;
-        this._nextButton = nextButton;
         this._thumbSizeRem = this._calculateThumbsize(this._wrapper, numberOfVisibleThumbs);
         this._resizeThumbs(this._thumbSizeRem);
+        console.log('ThumbsWrapper#constructor - thumbSizeRem = ', this.getThumbSizeRem(), ', numberOfThumbs = ', this.getNumberOfThumbs(), ', numberOfVisibleThumbs = ', this.getNumberOfVisibleThumbs());
     }
     reinitSize() {
         this._thumbSizeRem = this._calculateThumbsize(this._wrapper, this._numberOfVisibleThumbs);
@@ -66,9 +51,6 @@ export default class ThumbsWrapper {
     }
     getNumberOfThumbs() {
         return this._thumbs.length;
-    }
-    getThumbScrollerButtons() {
-        return { previousButton: this._previousButton, nextButton: this._nextButton };
     }
     getElements() {
         return getChildNodes(this._wrapper);
@@ -88,22 +70,8 @@ export default class ThumbsWrapper {
         const oneRemSize = getRootFontSize();
         const containerWidthRem = getElementDimension(container).width / oneRemSize;
         const thumbsize = containerWidthRem / numberOfVisibleThumbs;
+        console.log('ThumbsWrapper#_calculateThumbsize - containerWidthRem: ', containerWidthRem);
         return thumbsize;
-    }
-    _createScrollerButtons(container, hidden) {
-        const previousButton = createElement('div');
-        setInnerHtml(previousButton, nextThumbs);
-        addCssClass(previousButton, styles.thumbs_wrapper__previous_btn);
-        prependChildElement(previousButton, container);
-        const nextButton = createElement('div');
-        setInnerHtml(nextButton, nextThumbs);
-        addCssClass(nextButton, styles.thumbs_wrapper__next_btn);
-        appendChildElement(nextButton, container);
-        if (hidden) {
-            addCssStyle(previousButton, 'opacity', '0');
-            addCssStyle(nextButton, 'opacity', '0');
-        }
-        return [previousButton, nextButton];
     }
     _resizeThumbs(size) {
         const innerSize = size * 0.9;

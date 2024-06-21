@@ -24,13 +24,3 @@
   justify-content: center;
   align-items: center;
 }
-
-.thumbs_wrapper__previous_btn,
-.thumbs_wrapper__next_btn {
-  margin-right: 0.5rem;
-  margin-left: 0.5rem;
-}
-
-.thumbs_wrapper__previous_btn > svg {
-  transform: scaleX(-1);
-}

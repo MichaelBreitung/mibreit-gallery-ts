@@ -3,9 +3,10 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 import { addCssClass, addCssStyle, appendChildElement, createElement, prependChildElement, setInnerHtml, addEventListener, getElementDimension, getElementPosition, addKeyEventListener, getKeyFromEvent, addResizeEventListener, removeCssStyle, getElement, cloneElement, } from 'mibreit-dom-tools';
+import SlideshowBuilder from './SlideshowBuilder';
+import ThumbScrollerBuilder from './ThumbsScrollerBuilder';
 import Gallery from '../containers/Gallery';
 import Fullscreen from '../containers/Fullscreen';
-import ThumbScrollerContainer from '../containers/ThumbScrollerContainer';
 import SwipeHander, { ESwipeDirection } from '../components/SwipeHandler';
 // tools
 import debounce from '../tools/debounce';
@@ -17,7 +18,6 @@ import styles from './GalleryBuilder.module.css';
 import animationStyles from '../tools/animations.module.css';
 // constants
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
-import SlideshowBuilder from './SlideshowBuilder';
 const RESIZE_DEBOUNCE_TIMER = 500;
 export default class GalleryContainerBuilder {
     constructor(slideshowContainerElement, slideshow, fullscreenOnly = false) {
@@ -96,10 +96,12 @@ export default class GalleryContainerBuilder {
         return this;
     }
     addThumbScroller(thumbContainer, thumbs, config) {
-        this._thumbsViewer = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index) => {
+        this._thumbsViewer = new ThumbScrollerBuilder(thumbContainer, thumbs, config, (index) => {
             this._slideshow.getLoader().setCurrentIndex(index);
             this._slideshow.getImageViewer().showImage(index);
-        }).getThumbsViewer();
+        })
+            .addPreviousNextButtons()
+            .build();
         if (this._thumbsViewer) {
             this._setupThumbsViewerResizeHandler(this._thumbsViewer);
             this._slideshow.getImageViewer().addImageChangedCallback((index, _imageInfo) => {

@@ -16,15 +16,6 @@ export default class ThumbsViewer implements IThumbsViewer {
   constructor(thumbsWrapper: IThumbsWrapper) {
     this._thumbsWrapper = thumbsWrapper;
     this._scroller = new HorizontalScroller(thumbsWrapper.getElements());
-
-    console.log(
-      'ThumbsViewer#constructor - thumbSizeRem = ',
-      this._thumbsWrapper.getThumbSizeRem(),
-      ', numberOfThumbs = ',
-      this._thumbsWrapper.getNumberOfThumbs(),
-      ', numberOfVisibleThumbs = ',
-      this._thumbsWrapper.getNumberOfVisibleThumbs()
-    );
   }
 
   reinitSize() {

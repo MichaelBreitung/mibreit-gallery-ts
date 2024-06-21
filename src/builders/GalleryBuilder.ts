@@ -21,9 +21,11 @@ import {
   cloneElement,
 } from 'mibreit-dom-tools';
 
+import SlideshowBuilder from './SlideshowBuilder';
+import ThumbScrollerBuilder from './ThumbsScrollerBuilder';
+
 import Gallery from '../containers/Gallery';
 import Fullscreen from '../containers/Fullscreen';
-import ThumbScrollerContainer from '../containers/ThumbScrollerContainer';
 
 import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
 
@@ -51,7 +53,6 @@ import animationStyles from '../tools/animations.module.css';
 
 // constants
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
-import SlideshowBuilder from './SlideshowBuilder';
 const RESIZE_DEBOUNCE_TIMER = 500;
 
 export default class GalleryContainerBuilder {
@@ -122,10 +123,12 @@ export default class GalleryContainerBuilder {
     thumbs: NodeListOf<HTMLElement>,
     config?: ThumbScrollerConfig
   ): GalleryContainerBuilder {
-    this._thumbsViewer = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index: number) => {
+    this._thumbsViewer = new ThumbScrollerBuilder(thumbContainer, thumbs, config, (index: number) => {
       this._slideshow.getLoader().setCurrentIndex(index);
       this._slideshow.getImageViewer().showImage(index);
-    }).getThumbsViewer();
+    })
+      .addPreviousNextButtons()
+      .build();
 
     if (this._thumbsViewer) {
       this._setupThumbsViewerResizeHandler(this._thumbsViewer);

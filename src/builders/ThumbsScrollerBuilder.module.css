@@ -1,0 +1,9 @@
+.thumbs_scroller__previous_btn,
+.thumbs_scroller__next_btn {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.thumbs_scroller__previous_btn > svg {
+  transform: scaleX(-1);
+}

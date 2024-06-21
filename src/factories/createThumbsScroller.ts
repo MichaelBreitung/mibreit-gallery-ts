@@ -5,7 +5,7 @@
 
 import { getElement, getElements } from 'mibreit-dom-tools';
 
-import ThumbScrollerContainer from '../containers/ThumbScrollerContainer';
+import ThumbScrollerBuilder from '../builders/ThumbsScrollerBuilder';
 
 // Interfaces
 import IThumbsViewer from '../interfaces/IThumbsViewer';
@@ -33,7 +33,7 @@ export default function (
   const container = getElement(containerSelector);
 
   if (container && elements?.length > 0) {
-    return new ThumbScrollerContainer(container, elements, config, thumbClickedCallback).getThumbsViewer();
+    return new ThumbScrollerBuilder(container, elements, config, thumbClickedCallback).addPreviousNextButtons().build();
   } else {
     throw new Error('createThumbsViewer - no images selected');
   }
