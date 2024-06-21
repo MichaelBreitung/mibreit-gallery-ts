@@ -3,33 +3,17 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import {
-  addCssStyle,
-  appendChildElement,
-  cloneElement,
-  createElement,
-  getElement,
-  getElements,
-  removeCssStyle,
-} from 'mibreit-dom-tools';
+import { getElements } from 'mibreit-dom-tools';
 
-import checkSlideshowConfig from '../tools/checkSlideshowConfig';
-
-import GalleryContainerBuilder from '../builders/GalleryContainerBuilder';
+import GalleryContainerBuilder from '../builders/GalleryBuilder';
 
 // Interfaces
-import IGalleryContainer from '../interfaces/IGalleryContainer';
-import { SlideshowConfig } from '../containers/SlideshowContainer';
+import IGallery from '../interfaces/IGallery';
 
-function createImagesContainer(): HTMLElement {
-  const container = createElement('div');
-  addCssStyle(container, 'display', 'none');
-  const body = getElement('body');
-  appendChildElement(container, body!);
-  return container;
-}
+// Types
+import { SlideshowConfig, checkSlideshowConfig } from '../types';
 
-export default function (imageSelector: string, config: SlideshowConfig): IGalleryContainer {
+export default function (imageSelector: string, config: SlideshowConfig): IGallery {
   if (typeof imageSelector !== 'string') {
     throw new Error('createFullscreenOnlyGallery - first parameter must be imageSelector string');
   }
@@ -37,26 +21,7 @@ export default function (imageSelector: string, config: SlideshowConfig): IGalle
 
   const elements = getElements(imageSelector);
   if (elements?.length > 0) {
-    const container = createImagesContainer();
-    elements.forEach((image: HTMLElement) => {
-      appendChildElement(cloneElement(image), container);
-    });
-    const clonedElements: NodeListOf<HTMLElement> = container.children as unknown as NodeListOf<HTMLElement>;
-    const builder = new GalleryContainerBuilder(container, clonedElements, config);
-    builder.addFullscreen();
-    const galleryContainer = builder.build();
-
-    const fullscreen = galleryContainer.getFullscreenContainer();
-    if (fullscreen) {
-      fullscreen.addFullscreenChangedCallback((active: boolean) => {
-        if (active) {
-          removeCssStyle(container, 'display');
-        } else {
-          addCssStyle(container, 'display', 'none');
-        }
-      });
-    }
-    return galleryContainer;
+    return GalleryContainerBuilder.fromImages(elements, config).addPreviousNextButtons().addFullscreen().build();
   } else {
     throw new Error('createFullscreenOnlyGallery - no images selected');
   }

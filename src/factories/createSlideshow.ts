@@ -4,11 +4,16 @@
  */
 
 import { getElements } from 'mibreit-dom-tools';
-import SlideshowContainer, { SlideshowConfig } from '../containers/SlideshowContainer';
-import ISlideshowContainer from '../interfaces/ISlideshowContainer';
-import checkSlideshowConfig from '../tools/checkSlideshowConfig';
 
-export default function (imageSelector: string, config?: SlideshowConfig): ISlideshowContainer {
+import SlideshowBuilder from '../builders/SlideshowBuilder';
+
+// Types
+import { checkSlideshowConfig, SlideshowConfig } from '../types';
+
+// Interfaces
+import ISlideshow from '../interfaces/ISlideshow';
+
+export default function (imageSelector: string, config?: SlideshowConfig): ISlideshow {
   if (typeof imageSelector !== 'string') {
     throw new Error('createSlideshow - second parameter must be imageSelector string');
   }
@@ -17,7 +22,7 @@ export default function (imageSelector: string, config?: SlideshowConfig): ISlid
     if (config) {
       checkSlideshowConfig(config);
     }
-    return new SlideshowContainer(elements, config);
+    return new SlideshowBuilder(elements, config).build();
   } else {
     throw new Error('createSlideshow - no images selected');
   }

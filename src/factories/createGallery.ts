@@ -4,23 +4,16 @@
  */
 
 import { addCssStyle, getElement, getElements } from 'mibreit-dom-tools';
-import checkSlideshowConfig from '../tools/checkSlideshowConfig';
 
-import GalleryContainerBuilder from '../builders/GalleryContainerBuilder';
+import GalleryBuilder from '../builders/GalleryBuilder';
 
-// Interfaces and types
-import IGalleryContainer from '../interfaces/IGalleryContainer';
-import { SlideshowConfig } from '../containers/SlideshowContainer';
-import { ThumbScrollerConfig } from '../containers/ThumbScrollerContainer';
-import checkThumbScrollerConfig from '../tools/checkThumbScrollerConfig';
+// Interfaces
+import IGallery from '../interfaces/IGallery';
 
-export type GalleryConfig = SlideshowConfig &
-  ThumbScrollerConfig & {
-    thumbContainerSelector?: string;
-    thumbSelector?: string;
-  };
+// Types
+import { checkGalleryConfig, GalleryConfig } from '../types';
 
-export default function (containerSelector: string, imageSelector: string, config?: GalleryConfig): IGalleryContainer {
+export default function (containerSelector: string, imageSelector: string, config?: GalleryConfig): IGallery {
   if (typeof containerSelector !== 'string') {
     throw new Error('createGallery - first parameter must be containerSelector string');
   }
@@ -28,15 +21,17 @@ export default function (containerSelector: string, imageSelector: string, confi
     throw new Error('createGallery - second parameter must be imageSelector string');
   }
   if (config) {
-    checkSlideshowConfig(config);
+    checkGalleryConfig(config);
   }
+
   const elements = getElements(imageSelector);
   const container = getElement(containerSelector);
   if (container && elements?.length > 0) {
-    const builder = new GalleryContainerBuilder(container, elements, config);
-    builder.addFullscreen();
-    if (typeof config?.thumbSelector === 'string' && typeof config?.thumbContainerSelector === 'string') {
-      checkThumbScrollerConfig(config);
+    const builder = GalleryBuilder.fromContainerAndImages(container, elements, config)
+      .addPreviousNextButtons()
+      .addFullscreen();
+
+    if (config?.thumbSelector && config?.thumbContainerSelector) {
       const thumbContainer = getElement(config.thumbContainerSelector);
       const thumbs = getElements(config.thumbSelector);
       if (thumbContainer && thumbs) {

@@ -9,7 +9,7 @@ export default class ThumbsViewer implements IThumbsViewer {
     private _thumbsWrapper;
     private _scrollIndexChangedCallbacks;
     private _currentScrollIndex;
-    constructor(layout: IThumbsWrapper);
+    constructor(thumbsWrapper: IThumbsWrapper);
     reinitSize(): void;
     setCenterThumb(index: number, useCenterIndex?: boolean): void;
     scrollNext(): void;

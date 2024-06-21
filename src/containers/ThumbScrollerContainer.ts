@@ -5,18 +5,20 @@
 
 import { ILazyLoader, LazyLoader } from 'mibreit-lazy-loader';
 import { addClickEventListener } from 'mibreit-dom-tools';
-import Image from '../components/Image';
+
 import createThumbsWrapper from '../factories/createThumbsWrapper';
-import IThumbsViewer from '../interfaces/IThumbsViewer';
-import IThumbsWrapper from '../interfaces/IThumbsWrapper';
+
+import Image from '../components/Image';
 import ThumbsViewer from '../components/ThumbsViewer';
 
-const DEFAULT_NUMBER_VISIBLE_THUMBS = 7;
+// Interfaces
+import IThumbsViewer from '../interfaces/IThumbsViewer';
+import IThumbsWrapper from '../interfaces/IThumbsWrapper';
 
-export type ThumbScrollerConfig = {
-  numberOfVisibleThumbs?: number;
-  initialIndex?: number;
-};
+// Types
+import { ThumbScrollerConfig } from '../types';
+
+const DEFAULT_NUMBER_VISIBLE_THUMBS = 7;
 
 export default class ThumbScrollerContainer {
   private _thumbsViewer: IThumbsViewer | null = null;

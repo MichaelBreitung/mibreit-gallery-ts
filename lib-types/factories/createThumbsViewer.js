@@ -4,7 +4,8 @@
  */
 import { getElement, getElements } from 'mibreit-dom-tools';
 import ThumbScrollerContainer from '../containers/ThumbScrollerContainer';
-import checkConfig from '../tools/checkThumbScrollerConfig';
+// Types
+import { checkThumbScrollerConfig } from '../types';
 export default function (containerSelector, thumbSelector, config, thumbClickedCallback) {
     if (typeof containerSelector !== 'string') {
         throw new Error('createThumbsViewer - first parameter must be containerSelector string');
@@ -13,7 +14,7 @@ export default function (containerSelector, thumbSelector, config, thumbClickedC
         throw new Error('createThumbsViewer - second parameter must be imageSelector string');
     }
     if (config) {
-        checkConfig(config);
+        checkThumbScrollerConfig(config);
     }
     const elements = getElements(thumbSelector);
     const container = getElement(containerSelector);

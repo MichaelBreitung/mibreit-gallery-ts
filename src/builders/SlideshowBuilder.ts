@@ -5,35 +5,31 @@
 
 import { ILazyLoader, LazyLoader } from 'mibreit-lazy-loader';
 
+import ImageViewer from '../components/ImageViewer';
+import Slideshow from '../containers/Slideshow';
+
 // interfaces
 import IImageInfo from '../interfaces/IImageInfo';
 import IImageViewer from '../interfaces/IImageViewer';
-import ISlideshowContainer from '../interfaces/ISlideshowContainer';
+import ISlideshow from '../interfaces/ISlideshow';
+
+// Types
+import { EImageScaleMode, SlideshowConfig } from '../types';
 
 // helpers
 import Image from '../components/Image';
-import { EImageScaleMode } from '../factories/createImageStage';
 
 // constants
 import { PRELOADER_LEFT_SIZE, PRELOADER_RIGHT_SIZE } from '../constants';
-import ImageViewer from '../components/ImageViewer';
 
-export type SlideshowConfig = {
-  scaleMode?: EImageScaleMode;
-  interval?: number;
-  zoom?: boolean;
-  preloaderBeforeSize?: number;
-  preloaderAfterSize?: number;
-};
-
-export default class SlideshowContainer implements ISlideshowContainer {
+export default class SlideshowBuilder {
   private _imageViewer: IImageViewer;
-  private _loader: ILazyLoader;
+  private _lazyLoader: ILazyLoader;
 
-  constructor(elements: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
-    const images = this._prepareImages(elements);
-    this._loader = this._prepareLoader(images, config?.preloaderBeforeSize, config?.preloaderAfterSize);
-    this._imageViewer = this._prepareImageViewer(images, this._loader, config?.scaleMode, config?.zoom);
+  constructor(imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
+    const images = this._createImagesArray(imageElements);
+    this._lazyLoader = this._createLoader(images, config?.preloaderBeforeSize, config?.preloaderAfterSize);
+    this._imageViewer = this._createImageViewer(images, this._lazyLoader, config?.scaleMode, config?.zoom);
 
     if (config?.interval) {
       setInterval(() => {
@@ -44,15 +40,11 @@ export default class SlideshowContainer implements ISlideshowContainer {
     this._imageViewer.showImage(0);
   }
 
-  public getImageViewer(): IImageViewer {
-    return this._imageViewer;
+  public build(): ISlideshow {
+    return new Slideshow(this._imageViewer, this._lazyLoader);
   }
 
-  public getLoader(): ILazyLoader {
-    return this._loader;
-  }
-
-  private _prepareImages(imagesSelector: NodeListOf<HTMLElement>): Array<Image> {
+  private _createImagesArray(imagesSelector: NodeListOf<HTMLElement>): Array<Image> {
     const images: Array<Image> = new Array();
     for (let i = 0; i < imagesSelector.length; i++) {
       const image = new Image(imagesSelector[i]!);
@@ -61,7 +53,7 @@ export default class SlideshowContainer implements ISlideshowContainer {
     return images;
   }
 
-  private _prepareLoader(
+  private _createLoader(
     images: Array<Image>,
     preloaderBeforeSize: number = PRELOADER_LEFT_SIZE,
     preloaderAfterSize: number = PRELOADER_RIGHT_SIZE
@@ -74,7 +66,7 @@ export default class SlideshowContainer implements ISlideshowContainer {
     return lazyLoader;
   }
 
-  private _prepareImageViewer(
+  private _createImageViewer(
     images: Array<Image>,
     loader: ILazyLoader,
     scaleMode?: EImageScaleMode,

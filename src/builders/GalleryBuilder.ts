@@ -3,7 +3,6 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { ILazyLoader } from 'mibreit-lazy-loader';
 import {
   addCssClass,
   addCssStyle,
@@ -18,63 +17,104 @@ import {
   getKeyFromEvent,
   addResizeEventListener,
   removeCssStyle,
+  getElement,
+  cloneElement,
 } from 'mibreit-dom-tools';
 
-import IImageViewer from '../interfaces/IImageViewer';
-import IThumbsViewer from '../interfaces/IThumbsViewer';
-import IFullscreenContainer from '../interfaces/IFullscreenContainer';
-import IImageInfo from '../interfaces/IImageInfo';
-
-import GalleryContainer from '../containers/GalleryContainer';
-import FullscreenContainer from '../containers/FullscreenContainer';
-import SlideshowContainer, { SlideshowConfig } from '../containers/SlideshowContainer';
-import ThumbScrollerContainer, { ThumbScrollerConfig } from '../containers/ThumbScrollerContainer';
-import IGalleryContainer from '../interfaces/IGalleryContainer';
+import Gallery from '../containers/Gallery';
+import Fullscreen from '../containers/Fullscreen';
+import ThumbScrollerContainer from '../containers/ThumbScrollerContainer';
 
 import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
 
+// tools
 import debounce from '../tools/debounce';
+
+// interfaces
+import ISlideshow from '../interfaces/ISlideshow';
+import IGallery from '../interfaces/IGallery';
+import IImageViewer from '../interfaces/IImageViewer';
+import IThumbsViewer from '../interfaces/IThumbsViewer';
+import IFullscreen from '../interfaces/IFullscreen';
+import IImageInfo from '../interfaces/IImageInfo';
+
+// types
+import { SlideshowConfig, ThumbScrollerConfig } from '../types';
 
 // images
 import nextImageSvg from '../images/nextImage.svg';
 import fullscreenSvg from '../images/fullscreen.svg';
 
 // styles
-import styles from './GalleryContainerBuilder.module.css';
+import styles from './GalleryBuilder.module.css';
 import animationStyles from '../tools/animations.module.css';
 
 // constants
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
+import SlideshowBuilder from './SlideshowBuilder';
 const RESIZE_DEBOUNCE_TIMER = 500;
 
 export default class GalleryContainerBuilder {
   private _slideshowContainerElement: HTMLElement;
-  private _imageViewer: IImageViewer;
-  private _lazyLoader: ILazyLoader;
+  private _fullScreenOnly: boolean;
+  private _slideshow: ISlideshow;
   private _thumbsViewer: IThumbsViewer | null = null;
-  private _fullscreenContainer: IFullscreenContainer | null = null;
+  private _fullscreen: IFullscreen | null = null;
 
-  constructor(slideshowContainerElement: HTMLElement, images: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
+  private constructor(slideshowContainerElement: HTMLElement, slideshow: ISlideshow, fullscreenOnly: boolean = false) {
     this._slideshowContainerElement = slideshowContainerElement;
-
-    const slideshowContainer = new SlideshowContainer(images, config);
-    this._imageViewer = slideshowContainer.getImageViewer();
-    this._lazyLoader = slideshowContainer.getLoader();
-    const { previousButton, nextButton } = this._createPreviousNextButtons(slideshowContainerElement);
-    this._setupHoverEvents(slideshowContainerElement, [previousButton, nextButton]);
-    this._setupSwipeHandler(slideshowContainerElement, this._imageViewer);
-    this._setupKeyEvents(this._imageViewer);
+    this._slideshow = slideshow;
+    this._fullScreenOnly = fullscreenOnly;
   }
 
-  public addFullscreen() {
-    this._fullscreenContainer = new FullscreenContainer(this._slideshowContainerElement);
+  public static fromContainerAndImages(
+    slideshowContainerElement: HTMLElement,
+    imageElements: NodeListOf<HTMLElement>,
+    config?: SlideshowConfig
+  ): GalleryContainerBuilder {
+    const slideshow = new SlideshowBuilder(imageElements, config).build();
+    return new GalleryContainerBuilder(slideshowContainerElement, slideshow);
+  }
+
+  public static fromImages(imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig): GalleryContainerBuilder {
+    const slideshowContainerElement = createElement('div');
+    addCssStyle(slideshowContainerElement, 'display', 'none');
+    imageElements.forEach((image: HTMLElement) => {
+      appendChildElement(cloneElement(image), slideshowContainerElement);
+    });
+    const body = getElement('body');
+    appendChildElement(slideshowContainerElement, body!);
+    const clonedImageElements = slideshowContainerElement.children as unknown as NodeListOf<HTMLElement>;
+
+    const slideshow = new SlideshowBuilder(clonedImageElements, config).build();
+
+    return new GalleryContainerBuilder(slideshowContainerElement, slideshow, true);
+  }
+
+  public addPreviousNextButtons(): GalleryContainerBuilder {
+    const { previousButton, nextButton } = this._createPreviousNextButtons(this._slideshowContainerElement);
+    this._setupHoverEvents(this._slideshowContainerElement, [previousButton, nextButton]);
+    return this;
+  }
+
+  public addFullscreen(): GalleryContainerBuilder {
+    this._fullscreen = new Fullscreen(this._slideshowContainerElement);
     const fullscreenButton = this._createFullscreenButton(this._slideshowContainerElement);
     this._setupHoverEvents(this._slideshowContainerElement, [fullscreenButton]);
-    this._setupFullscreenKeyEvents(this._fullscreenContainer);
-    this._setupFullscreenClickEvent(fullscreenButton, this._fullscreenContainer);
-    if (this._fullscreenContainer && fullscreenButton) {
-      this._setupFullscreenChangedHandler(this._fullscreenContainer, fullscreenButton, this._thumbsViewer);
+    this._setupFullscreenKeyEvents(this._fullscreen);
+    this._setupFullscreenClickEvent(fullscreenButton, this._fullscreen);
+    this._setupFullscreenChangedHandler(this._fullscreen, fullscreenButton);
+
+    if (this._fullScreenOnly) {
+      this._fullscreen.addChangedCallback((active: boolean) => {
+        if (active) {
+          removeCssStyle(this._slideshowContainerElement, 'display');
+        } else {
+          addCssStyle(this._slideshowContainerElement, 'display', 'none');
+        }
+      });
     }
+    return this;
   }
 
   public addThumbScroller(
@@ -83,21 +123,28 @@ export default class GalleryContainerBuilder {
     config?: ThumbScrollerConfig
   ): GalleryContainerBuilder {
     this._thumbsViewer = new ThumbScrollerContainer(thumbContainer, thumbs, config, (index: number) => {
-      this._lazyLoader.setCurrentIndex(index);
-      this._imageViewer.showImage(index);
+      this._slideshow.getLoader().setCurrentIndex(index);
+      this._slideshow.getImageViewer().showImage(index);
     }).getThumbsViewer();
 
     if (this._thumbsViewer) {
       this._setupThumbsViewerResizeHandler(this._thumbsViewer);
-      this._imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+      this._slideshow.getImageViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
         this._thumbsViewer!.setCenterThumb(index, true);
       });
     }
     return this;
   }
 
-  public build(): IGalleryContainer {
-    return new GalleryContainer(this._imageViewer, this._lazyLoader, this._thumbsViewer, this._fullscreenContainer);
+  public build(): IGallery {
+    this._setupSwipeHandler(this._slideshowContainerElement, this._slideshow.getImageViewer());
+    this._setupKeyEvents(this._slideshow.getImageViewer());
+    return new Gallery(
+      this._slideshow.getImageViewer(),
+      this._slideshow.getLoader(),
+      this._thumbsViewer,
+      this._fullscreen
+    );
   }
 
   private _createPreviousNextButtons(container: HTMLElement): { previousButton: HTMLElement; nextButton: HTMLElement } {
@@ -175,7 +222,7 @@ export default class GalleryContainerBuilder {
     });
   }
 
-  private _setupFullscreenKeyEvents(fullScreen: IFullscreenContainer) {
+  private _setupFullscreenKeyEvents(fullScreen: IFullscreen) {
     addKeyEventListener((event: KeyboardEvent) => {
       const key: string = getKeyFromEvent(event);
       switch (key) {
@@ -183,7 +230,7 @@ export default class GalleryContainerBuilder {
           fullScreen.deActivate();
           break;
         case 'f':
-          if (fullScreen.isFullscreenActive()) {
+          if (fullScreen.isActive()) {
             fullScreen.deActivate();
           } else {
             fullScreen.activate();
@@ -204,33 +251,25 @@ export default class GalleryContainerBuilder {
     return fullscreenButton;
   }
 
-  private _setupFullscreenClickEvent(fullscreenButton: HTMLElement, fullScreen: IFullscreenContainer) {
+  private _setupFullscreenClickEvent(fullscreenButton: HTMLElement, fullScreen: IFullscreen) {
     addEventListener(fullscreenButton, 'pointerdown', (event: PointerEvent) => {
       event.stopPropagation();
     });
     addEventListener(fullscreenButton, 'pointerup', (event: PointerEvent) => {
       event.stopPropagation();
-      if (!fullScreen.isFullscreenActive()) {
+      if (!fullScreen.isActive()) {
         fullScreen.activate();
         addCssStyle(fullscreenButton, 'display', 'none');
       }
     });
   }
 
-  private _setupFullscreenChangedHandler(
-    FullscreenContainer: IFullscreenContainer,
-    fullscreenButton: HTMLElement,
-    thumbScroller: IThumbsViewer | null
-  ) {
-    FullscreenContainer.addFullscreenChangedCallback((active: boolean) => {
-      if (thumbScroller) {
-        thumbScroller.reinitSize();
-      }
-
+  private _setupFullscreenChangedHandler(fullScreen: IFullscreen, fullscreenButtonElement: HTMLElement) {
+    fullScreen.addChangedCallback((active: boolean) => {
       if (active) {
-        addCssStyle(fullscreenButton, 'display', 'none');
+        addCssStyle(fullscreenButtonElement, 'display', 'none');
       } else {
-        removeCssStyle(fullscreenButton, 'display');
+        removeCssStyle(fullscreenButtonElement, 'display');
       }
     });
   }

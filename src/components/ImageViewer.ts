@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import createImageStage, { EImageScaleMode } from '../factories/createImageStage';
+import createImageStage from '../factories/createImageStage';
 import Image from './Image';
 
 // interfaces
@@ -13,6 +13,7 @@ import IImageInfo from '../interfaces/IImageInfo';
 
 // types
 import { ESwipeDirection } from './SwipeHandler';
+import { EImageScaleMode } from '../types';
 
 export default class ImageViewer implements IImageViewer {
   private _currentIndex: number = -1;

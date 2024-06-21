@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-export { EImageScaleMode } from './factories/createImageStage';
+export { EImageScaleMode } from './types';
 export { default as createSlideshow } from './factories/createSlideshow';
 export { default as createThumbsViewer } from './factories/createThumbsViewer';
 export { default as createGallery } from './factories/createGallery';

@@ -2,9 +2,10 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import createImageStage, { EImageScaleMode } from '../factories/createImageStage';
+import createImageStage from '../factories/createImageStage';
 // types
 import { ESwipeDirection } from './SwipeHandler';
+import { EImageScaleMode } from '../types';
 export default class ImageViewer {
     constructor(images, scaleMode = EImageScaleMode.FIT_ASPECT) {
         Object.defineProperty(this, "_currentIndex", {

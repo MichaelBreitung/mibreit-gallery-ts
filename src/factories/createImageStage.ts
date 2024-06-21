@@ -9,17 +9,13 @@ import ImageStageExpand from '../components/ImageStageExpand';
 import ImageStageStretch from '../components/ImageStageStretch';
 import ImageStageNoScale from '../components/ImageStageNoScale';
 
-export enum EImageScaleMode {
-  NONE,
-  FIT_ASPECT,
-  STRETCH,
-  EXPAND,
-}
+// Types
+import { EImageScaleMode } from '../types';
 
 export default function (
   imageHandle: HTMLElement,
   imageWidth: number,
-  imageHeight: number,  
+  imageHeight: number,
   scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT
 ): IImageStage {
   switch (scaleMode) {
@@ -33,4 +29,4 @@ export default function (
     default:
       return new ImageStageNoScale(imageHandle, imageWidth, imageHeight);
   }
-};
+}

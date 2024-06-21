@@ -35,12 +35,6 @@ export default defineConfig({
     },
   },
   plugins: [svgImportPlugin()],
-  server: {
-    watch: {
-      // Watch for changes in the 'src' directory
-      ignored: ['!**/node_modules/your-package-name/**'],
-    },
-  },
   build: {
     sourcemap: false,
     emptyOutDir: true,

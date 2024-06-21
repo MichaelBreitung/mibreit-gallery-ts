@@ -4,8 +4,8 @@
  */
 import { LazyLoader } from 'mibreit-lazy-loader';
 import { addClickEventListener } from 'mibreit-dom-tools';
-import Image from '../components/Image';
 import createThumbsWrapper from '../factories/createThumbsWrapper';
+import Image from '../components/Image';
 import ThumbsViewer from '../components/ThumbsViewer';
 const DEFAULT_NUMBER_VISIBLE_THUMBS = 7;
 export default class ThumbScrollerContainer {

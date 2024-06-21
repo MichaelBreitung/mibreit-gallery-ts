@@ -3,14 +3,14 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-export default interface IFullscreenContainer {
+export default interface IFullscreen {
   activate(): void;
 
   deActivate(): void;
 
-  addFullscreenChangedCallback(callback: (active: boolean) => void): void;
+  addChangedCallback(callback: (active: boolean) => void): void;
 
-  isFullscreenActive(): boolean;
+  isActive(): boolean;
 
   setBackgroundColor(color: string): void;
 }

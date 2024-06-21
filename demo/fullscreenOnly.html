@@ -95,7 +95,7 @@
     var images = document.querySelectorAll(imageSelector);
     images.forEach(function (image, index) {
       image.addEventListener('dblclick', function (e) {
-        if (!gallery.getFullscreen().isFullscreenActive()) {
+        if (!gallery.getFullscreen().isActive()) {
           gallery.getImageViewer().showImage(index);
           gallery.getFullscreen().activate();
         }
