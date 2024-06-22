@@ -29,6 +29,7 @@
         text-align: center;
       }
       .mibreit-LazyLoader_lazy {
+        display: none !important;
       }
     </style>
   </head>
@@ -192,11 +193,14 @@
         thumbSelector: '#thumbContainer > img',
         numberOfVisibleThumbs: 7,
         preloaderBeforeSize: 1,
-        preloaderAfterSize: 5,
+        preloaderAfterSize: 2,
       });
 
+      gallery.getImageViewer().showImage(4);
+      gallery.getLoader().setCurrentIndex(4);
+
       const titleElement = document.querySelector('#title');
-      const viewer = gallery.getViewer();
+      const viewer = gallery.getImageViewer();
       const imageInfo = viewer.getImageInfo(viewer.getImageIndex());
       if (imageInfo) {
         titleElement.innerHTML = imageInfo.getTitle();

@@ -58,23 +58,19 @@ export default class ImageStage {
         this._imageWidth = imageWidth;
         this._imageHeight = imageHeight;
         this._imageStage = this._createStage();
+        const resizeObserver = new ResizeObserver(() => {
+            this.reinitSize();
+        });
+        resizeObserver.observe(this._imageStage);
     }
     setZoomAnimation(activate) {
         this._zoomAnimation = activate;
     }
-    applyScaleMode() {
-        console.log('ImageStage#applyScaleMode');
+    reinitSize() {
         const stageDimension = getElementDimension(this._imageStage);
+        console.log('ImageStage#reinitSize - stageDimension: ', stageDimension);
         this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
         this._centerImage(stageDimension.width, stageDimension.height);
-    }
-    setSize(widthCss, heightCss) {
-        addCssStyle(this._imageStage, 'width', widthCss);
-        addCssStyle(this._imageStage, 'height', heightCss);
-        this.applyScaleMode();
-    }
-    setMargin(marginCss) {
-        addCssStyle(this._imageStage, 'margin', marginCss);
     }
     hideImage() {
         return __awaiter(this, arguments, void 0, function* (swipeDirection = ESwipeDirection.NONE) {
@@ -86,11 +82,11 @@ export default class ImageStage {
             this._stopSlideAnimation();
             yield sleepTillNextRenderFinished();
             if (swipeDirection == ESwipeDirection.RIGHT) {
-                addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+                addCssClass(this._imageStage, animationStyles.transition);
                 addCssStyle(this._imageStage, 'left', '-100%');
             }
             else if (swipeDirection == ESwipeDirection.LEFT) {
-                addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+                addCssClass(this._imageStage, animationStyles.transition);
                 addCssStyle(this._imageStage, 'left', '100%');
             }
             removeCssStyle(this._imageStage, 'opacity');
@@ -98,28 +94,27 @@ export default class ImageStage {
     }
     showImage() {
         return __awaiter(this, arguments, void 0, function* (swipeDirection = ESwipeDirection.NONE) {
-            this.applyScaleMode();
             if (this._zoomAnimation) {
                 this._startZoomAnimation();
             }
             this._stopSlideAnimation();
             yield sleepTillNextRenderFinished();
             if (swipeDirection == ESwipeDirection.RIGHT) {
-                removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+                removeCssClass(this._imageStage, animationStyles.transition);
                 addCssStyle(this._imageStage, 'left', '100%');
                 yield sleepTillNextRenderFinished();
-                addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+                addCssClass(this._imageStage, animationStyles.transition);
                 removeCssStyle(this._imageStage, 'left');
             }
             else if (swipeDirection == ESwipeDirection.LEFT) {
-                removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+                removeCssClass(this._imageStage, animationStyles.transition);
                 addCssStyle(this._imageStage, 'left', '-100%');
                 yield sleepTillNextRenderFinished();
-                addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+                addCssClass(this._imageStage, animationStyles.transition);
                 removeCssStyle(this._imageStage, 'left');
             }
             else {
-                removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+                removeCssClass(this._imageStage, animationStyles.transition);
                 removeCssStyle(this._imageStage, 'left');
             }
             addCssStyle(this._imageStage, 'opacity', '1');
@@ -127,8 +122,8 @@ export default class ImageStage {
     }
     _createStage() {
         const wrapper = createElement('div');
-        addCssClass(wrapper, styles.mibreit_ImageStage);
-        addCssClass(wrapper, animationStyles.mibreit_GalleryFade);
+        addCssClass(wrapper, styles.img_stage);
+        addCssClass(wrapper, animationStyles.fade);
         wrapElements([this._imageHandle], wrapper);
         return wrapper;
     }
@@ -141,11 +136,11 @@ export default class ImageStage {
     }
     _startZoomAnimation() {
         console.log('ImageStage#startZoomAnimation');
-        addCssClass(this._imageHandle, 'zoom');
+        addCssClass(this._imageHandle, styles.img_stage__zoom);
     }
     _resetZoom() {
         console.log('ImageStage#resetZoom');
-        removeCssClass(this._imageHandle, 'zoom');
+        removeCssClass(this._imageHandle, styles.img_stage__zoom);
     }
     _stopSlideAnimation() {
         addCssStyle(this._imageStage, 'margin-left', getComputedCssStyle(this._imageStage, 'margin-left'));

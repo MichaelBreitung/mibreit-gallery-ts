@@ -15,8 +15,6 @@ export default interface IImageViewer {
 
   getNumberOfImages(): number;
 
-  reinitSize(): void;
-
   setZoomAnimation(active: boolean): void;
 
   addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void): void;
@@ -25,5 +23,5 @@ export default interface IImageViewer {
 
   getImageInfo(index: number): IImageInfo | null;
 
-  getImageElement(index:number): HTMLElement | null;
+  getImageElement(index: number): HTMLElement | null;
 }

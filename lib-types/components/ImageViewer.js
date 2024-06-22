@@ -2,12 +2,19 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import createImageStage, { EImageScaleMode } from '../factories/createImageStage';
+import createImageStage from '../factories/createImageStage';
 // types
 import { ESwipeDirection } from './SwipeHandler';
+import { EImageScaleMode } from '../types';
 export default class ImageViewer {
     constructor(images, scaleMode = EImageScaleMode.FIT_ASPECT) {
         Object.defineProperty(this, "_currentIndex", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: -1
+        });
+        Object.defineProperty(this, "_delayedNewIndex", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -48,11 +55,6 @@ export default class ImageViewer {
     getNumberOfImages() {
         return this._imageStages.length;
     }
-    reinitSize() {
-        if (this._isValidIndex(this._currentIndex)) {
-            this._imageStages[this._currentIndex].applyScaleMode();
-        }
-    }
     setZoomAnimation(active) {
         this._imageStages.forEach((stage) => {
             stage.setZoomAnimation(active);
@@ -83,12 +85,18 @@ export default class ImageViewer {
         }
     }
     _showImage(index, swipeDirection = ESwipeDirection.NONE) {
+        console.log('ImageViewer#_showImage', index);
         if (this._isValidIndex(index)) {
             if (index != this._currentIndex) {
                 if (!this._images[index].wasLoaded()) {
+                    console.log('ImageViewer#_showImage - not yet loaded');
+                    this._delayedNewIndex = index;
                     this._images[index].addWasLoadedCallback(() => {
-                        this._hideImage(this._currentIndex, swipeDirection);
-                        this._changeCurrentImage(index, swipeDirection);
+                        console.log(`ImageViewer#_showImage#wasLoadedCallback - currentIndex=${this._currentIndex}, imageIndex=${index}, delayedIndex=${this._delayedNewIndex}`);
+                        if (index === this._delayedNewIndex) {
+                            this._hideImage(this._currentIndex, swipeDirection);
+                            this._changeCurrentImage(this._delayedNewIndex, swipeDirection);
+                        }
                     });
                 }
                 else {
@@ -111,7 +119,7 @@ export default class ImageViewer {
         images.forEach((image) => {
             const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
             image.addWasLoadedCallback(() => {
-                imageStage.applyScaleMode();
+                imageStage.reinitSize();
             });
             this._imageStages.push(imageStage);
         });

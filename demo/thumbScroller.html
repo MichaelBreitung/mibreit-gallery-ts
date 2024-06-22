@@ -21,6 +21,9 @@
         height: 12rem;
         margin-top: 1rem;
       }
+      .mibreit-LazyLoader_lazy {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
@@ -217,13 +220,13 @@
     </div>
   </body>
   <script type="module">
-    import { createThumbScrollerContainer } from '/src/index.ts';
-    createThumbScrollerContainer('#container', '#container > img', { numberOfVisibleThumbs: 8 });
-    createThumbScrollerContainer('#container2', '#container2 > img', { numberOfVisibleThumbs: 8 });
-    createThumbScrollerContainer('#container3', '#container3 > img', {
+    import { createThumbsScroller } from '/src/index.ts';
+    createThumbsScroller('#container', '#container > img', { numberOfVisibleThumbs: 8 });
+    createThumbsScroller('#container2', '#container2 > img', { numberOfVisibleThumbs: 8 });
+    createThumbsScroller('#container3', '#container3 > img', {
       numberOfVisibleThumbs: 4,
       initialIndex: 5,
     });
-    createThumbScrollerContainer('#container4', '#container4 > img', { numberOfVisibleThumbs: 7 });
+    createThumbsScroller('#container4', '#container4 > img', { numberOfVisibleThumbs: 7 });
   </script>
 </html>

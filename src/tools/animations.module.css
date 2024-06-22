@@ -1,12 +1,10 @@
-.mibreit_GalleryFade
-{
+.fade {
   -webkit-transition: opacity 750ms ease-out;
   -moz-transition: opacity 750ms ease-out;
   -o-transition: opacity 750ms ease-out;
   transition: opacity 750ms ease-out;
 }
-.mibreit_GalleryTransition
-{
+.transition {
   -webkit-transition: all 750ms ease-out;
   -moz-transition: all 750ms ease-out;
   -o-transition: all 750ms ease-out;

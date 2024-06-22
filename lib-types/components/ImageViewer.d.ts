@@ -2,13 +2,14 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { EImageScaleMode } from '../factories/createImageStage';
 import Image from './Image';
 import IImageViewer from '../interfaces/IImageViewer';
 import IImageInfo from '../interfaces/IImageInfo';
 import { ESwipeDirection } from './SwipeHandler';
+import { EImageScaleMode } from '../types';
 export default class ImageViewer implements IImageViewer {
     private _currentIndex;
+    private _delayedNewIndex;
     private _imageStages;
     private _images;
     private _imageChangedCallbacks;
@@ -17,7 +18,6 @@ export default class ImageViewer implements IImageViewer {
     showNextImage(swipeDirection?: ESwipeDirection): boolean;
     showPreviousImage(swipeDirection?: ESwipeDirection): boolean;
     getNumberOfImages(): number;
-    reinitSize(): void;
     setZoomAnimation(active: boolean): void;
     addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void): void;
     getImageIndex(): number;

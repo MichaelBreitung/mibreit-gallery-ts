@@ -29,13 +29,12 @@ const svgImportPlugin = function () {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [svgImportPlugin()],
-  server: {
-    watch: {
-      // Watch for changes in the 'src' directory
-      ignored: ['!**/node_modules/your-package-name/**'],
+  css: {
+    modules: {
+      generateScopedName: 'mbg__[local]', // mbg prefix for mibreit gallery
     },
   },
+  plugins: [svgImportPlugin()],
   build: {
     sourcemap: false,
     emptyOutDir: true,

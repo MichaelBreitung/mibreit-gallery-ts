@@ -75,7 +75,7 @@ The gallery exposes three _create_ methods.
     - **preloaderBeforeSize?**: number - _optional_ specifies the number of elements to lazy load before the current index (_default is 3_)
     - **preloaderAfterSize?**: number - _optional_ specifies the number of elements to lazy load after the current index (_default is 7_)
 
-- **createThumbScrollerContainer(containerSelector: string, thumbSelector: string, config?: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void)** - Creates a thumb scroller for a set of images.
+- **createThumbsViewer(containerSelector: string, thumbSelector: string, config?: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void)** - Creates a thumb scroller for a set of images.
 
   - **containerSelector**: string - css selector for container of thumbs
   - **thumbSelector**: string - css selector for thumbs inside container

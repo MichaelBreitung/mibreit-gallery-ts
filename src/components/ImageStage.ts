@@ -39,30 +39,26 @@ export default abstract class ImageStage implements IImageStage {
     this._imageWidth = imageWidth;
     this._imageHeight = imageHeight;
     this._imageStage = this._createStage();
+
+    const resizeObserver = new ResizeObserver(() => {
+      this.reinitSize();
+    });
+
+    resizeObserver.observe(this._imageStage);
   }
 
-  setZoomAnimation(activate: boolean): void {
+  public setZoomAnimation(activate: boolean): void {
     this._zoomAnimation = activate;
   }
 
-  applyScaleMode(): void {
-    console.log('ImageStage#applyScaleMode');
+  public reinitSize() {
     const stageDimension: TElementDimension = getElementDimension(this._imageStage);
+    console.log('ImageStage#reinitSize - stageDimension: ', stageDimension);
     this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
     this._centerImage(stageDimension.width, stageDimension.height);
   }
 
-  setSize(widthCss: string, heightCss: string) {
-    addCssStyle(this._imageStage, 'width', widthCss);
-    addCssStyle(this._imageStage, 'height', heightCss);
-    this.applyScaleMode();
-  }
-
-  setMargin(marginCss: string) {
-    addCssStyle(this._imageStage, 'margin', marginCss);
-  }
-
-  async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
+  public async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
     if (this._zoomAnimation) {
       setTimeout(() => {
         this._resetZoom();
@@ -71,36 +67,35 @@ export default abstract class ImageStage implements IImageStage {
     this._stopSlideAnimation();
     await sleepTillNextRenderFinished();
     if (swipeDirection == ESwipeDirection.RIGHT) {
-      addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      addCssClass(this._imageStage, animationStyles.transition);
       addCssStyle(this._imageStage, 'left', '-100%');
     } else if (swipeDirection == ESwipeDirection.LEFT) {
-      addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      addCssClass(this._imageStage, animationStyles.transition);
       addCssStyle(this._imageStage, 'left', '100%');
     }
     removeCssStyle(this._imageStage, 'opacity');
   }
 
-  async showImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
-    this.applyScaleMode();
+  public async showImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
     if (this._zoomAnimation) {
       this._startZoomAnimation();
     }
     this._stopSlideAnimation();
     await sleepTillNextRenderFinished();
     if (swipeDirection == ESwipeDirection.RIGHT) {
-      removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      removeCssClass(this._imageStage, animationStyles.transition);
       addCssStyle(this._imageStage, 'left', '100%');
       await sleepTillNextRenderFinished();
-      addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      addCssClass(this._imageStage, animationStyles.transition);
       removeCssStyle(this._imageStage, 'left');
     } else if (swipeDirection == ESwipeDirection.LEFT) {
-      removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      removeCssClass(this._imageStage, animationStyles.transition);
       addCssStyle(this._imageStage, 'left', '-100%');
       await sleepTillNextRenderFinished();
-      addCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      addCssClass(this._imageStage, animationStyles.transition);
       removeCssStyle(this._imageStage, 'left');
     } else {
-      removeCssClass(this._imageStage, animationStyles.mibreit_GalleryTransition);
+      removeCssClass(this._imageStage, animationStyles.transition);
       removeCssStyle(this._imageStage, 'left');
     }
     addCssStyle(this._imageStage, 'opacity', '1');
@@ -110,8 +105,8 @@ export default abstract class ImageStage implements IImageStage {
 
   private _createStage(): HTMLElement {
     const wrapper = createElement('div');
-    addCssClass(wrapper, styles.mibreit_ImageStage);
-    addCssClass(wrapper, animationStyles.mibreit_GalleryFade);
+    addCssClass(wrapper, styles.img_stage);
+    addCssClass(wrapper, animationStyles.fade);
     wrapElements([this._imageHandle], wrapper);
     return wrapper;
   }
@@ -126,12 +121,12 @@ export default abstract class ImageStage implements IImageStage {
 
   private _startZoomAnimation() {
     console.log('ImageStage#startZoomAnimation');
-    addCssClass(this._imageHandle, 'zoom');
+    addCssClass(this._imageHandle, styles.img_stage__zoom);
   }
 
   private _resetZoom() {
     console.log('ImageStage#resetZoom');
-    removeCssClass(this._imageHandle, 'zoom');
+    removeCssClass(this._imageHandle, styles.img_stage__zoom);
   }
 
   private _stopSlideAnimation() {

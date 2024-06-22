@@ -1,11 +1,11 @@
-.mibreit_ThumbStage {
+.thumb_stage {
   margin: 0.25rem;
   position: relative;
   flex-shrink: 0;
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5); 
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
-.mibreit_ThumbStage:hover {
+.thumb_stage:hover {
   transform: scale(1.1);
 }

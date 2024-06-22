@@ -6,13 +6,8 @@ import ImageStageFitAspect from '../components/ImageStageFitAspect';
 import ImageStageExpand from '../components/ImageStageExpand';
 import ImageStageStretch from '../components/ImageStageStretch';
 import ImageStageNoScale from '../components/ImageStageNoScale';
-export var EImageScaleMode;
-(function (EImageScaleMode) {
-    EImageScaleMode[EImageScaleMode["NONE"] = 0] = "NONE";
-    EImageScaleMode[EImageScaleMode["FIT_ASPECT"] = 1] = "FIT_ASPECT";
-    EImageScaleMode[EImageScaleMode["STRETCH"] = 2] = "STRETCH";
-    EImageScaleMode[EImageScaleMode["EXPAND"] = 3] = "EXPAND";
-})(EImageScaleMode || (EImageScaleMode = {}));
+// Types
+import { EImageScaleMode } from '../types';
 export default function (imageHandle, imageWidth, imageHeight, scaleMode = EImageScaleMode.FIT_ASPECT) {
     switch (scaleMode) {
         case EImageScaleMode.EXPAND:
@@ -26,4 +21,3 @@ export default function (imageHandle, imageWidth, imageHeight, scaleMode = EImag
             return new ImageStageNoScale(imageHandle, imageWidth, imageHeight);
     }
 }
-;

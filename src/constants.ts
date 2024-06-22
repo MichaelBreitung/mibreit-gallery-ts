@@ -20,3 +20,6 @@ export const NUMBER_OF_VISIBLE_THUMBS = 7;
 
 // Opacities
 export const GALLERY_BUTTONS_SHOW_OPACITY = 0.5;
+
+// Other
+export const RESIZE_DEBOUNCE_TIMER = 500;

@@ -2,6 +2,6 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import IGalleryContainer from '../interfaces/IGalleryContainer';
-import { SlideshowConfig } from '../containers/SlideshowContainer';
-export default function (imageSelector: string, config: SlideshowConfig): IGalleryContainer;
+import IGallery from '../interfaces/IGallery';
+import { SlideshowConfig } from '../types';
+export default function (imageSelector: string, config: SlideshowConfig): IGallery;

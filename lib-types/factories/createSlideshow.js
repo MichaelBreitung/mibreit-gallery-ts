@@ -3,8 +3,9 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 import { getElements } from 'mibreit-dom-tools';
-import SlideshowContainer from '../containers/SlideshowContainer';
-import checkSlideshowConfig from '../tools/checkSlideshowConfig';
+import SlideshowBuilder from '../builders/SlideshowBuilder';
+// Types
+import { checkSlideshowConfig } from '../types';
 export default function (imageSelector, config) {
     if (typeof imageSelector !== 'string') {
         throw new Error('createSlideshow - second parameter must be imageSelector string');
@@ -14,7 +15,7 @@ export default function (imageSelector, config) {
         if (config) {
             checkSlideshowConfig(config);
         }
-        return new SlideshowContainer(elements, config);
+        return new SlideshowBuilder(elements, config).build();
     }
     else {
         throw new Error('createSlideshow - no images selected');

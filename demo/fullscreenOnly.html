@@ -89,14 +89,14 @@
     </div>
   </body>
   <script type="module">
-    import { createGallery, EImageScaleMode } from '/src/index.ts';
+    import { createGallery, EImageScaleMode, createFullscreenOnlyGallery } from '/src/index.ts';
     var imageSelector = '#container > img';
     const gallery = createFullscreenOnlyGallery(imageSelector, { scaleMode: EImageScaleMode.FIT_ASPECT });
     var images = document.querySelectorAll(imageSelector);
     images.forEach(function (image, index) {
       image.addEventListener('dblclick', function (e) {
-        if (!gallery.getFullscreen().isFullscreenActive()) {
-          gallery.getViewer().showImage(index);
+        if (!gallery.getFullscreen().isActive()) {
+          gallery.getImageViewer().showImage(index);
           gallery.getFullscreen().activate();
         }
       });

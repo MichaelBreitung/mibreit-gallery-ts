@@ -114,7 +114,7 @@
       scaleMode: EImageScaleMode.FIT_ASPECT,
     });
     const titleElement = document.querySelector('#title');
-    const viewer = gallery.getViewer();
+    const viewer = gallery.getImageViewer();
     const imageInfo = viewer.getImageInfo(viewer.getImageIndex());
     if (imageInfo) {
       titleElement.innerHTML = imageInfo.getTitle();
