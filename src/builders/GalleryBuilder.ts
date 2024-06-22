@@ -15,7 +15,6 @@ import {
   getElementPosition,
   addKeyEventListener,
   getKeyFromEvent,
-  addResizeEventListener,
   removeCssStyle,
   getElement,
   cloneElement,
@@ -28,9 +27,6 @@ import Gallery from '../containers/Gallery';
 import Fullscreen from '../containers/Fullscreen';
 
 import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
-
-// tools
-import debounce from '../tools/debounce';
 
 // interfaces
 import ISlideshow from '../interfaces/ISlideshow';
@@ -53,7 +49,6 @@ import animationStyles from '../tools/animations.module.css';
 
 // constants
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
-const RESIZE_DEBOUNCE_TIMER = 500;
 
 export default class GalleryContainerBuilder {
   private _slideshowContainerElement: HTMLElement;
@@ -130,12 +125,10 @@ export default class GalleryContainerBuilder {
       .addPreviousNextButtons()
       .build();
 
-    if (this._thumbsViewer) {
-      this._setupThumbsViewerResizeHandler(this._thumbsViewer);
-      this._slideshow.getImageViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-        this._thumbsViewer!.setCenterThumb(index, true);
-      });
-    }
+    this._slideshow.getImageViewer().addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+      this._thumbsViewer!.setCenterThumb(index, true);
+    });
+
     return this;
   }
 
@@ -181,18 +174,6 @@ export default class GalleryContainerBuilder {
           imageViewer.showPreviousImage();
         }
       }
-    });
-  }
-
-  private _setupThumbsViewerResizeHandler(thumbsViewer: IThumbsViewer) {
-    addResizeEventListener(() => {
-      debounce(
-        () => {
-          thumbsViewer.reinitSize();
-        },
-        RESIZE_DEBOUNCE_TIMER,
-        false
-      );
     });
   }
 

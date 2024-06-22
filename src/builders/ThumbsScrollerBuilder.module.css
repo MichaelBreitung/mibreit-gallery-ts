@@ -7,3 +7,15 @@
 .thumbs_scroller__previous_btn > svg {
   transform: scaleX(-1);
 }
+
+.thumbs_scroller__parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.thumbs_scroller__parent svg {
+  width: 3rem;
+  height: 3rem;
+  fill: #727f88;
+}

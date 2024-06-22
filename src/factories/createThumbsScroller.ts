@@ -7,18 +7,16 @@ import { getElement, getElements } from 'mibreit-dom-tools';
 
 import ThumbScrollerBuilder from '../builders/ThumbsScrollerBuilder';
 
-// Interfaces
-import IThumbsViewer from '../interfaces/IThumbsViewer';
-
 // Types
 import { ThumbScrollerConfig, checkThumbScrollerConfig } from '../types';
+import IThumbsViewer from '../interfaces/IThumbsViewer';
 
 export default function (
   containerSelector: string,
   thumbSelector: string,
   config?: ThumbScrollerConfig,
   thumbClickedCallback?: (index: number) => void
-): IThumbsViewer | null {
+): IThumbsViewer {
   if (typeof containerSelector !== 'string') {
     throw new Error('createThumbsViewer - first parameter must be containerSelector string');
   }

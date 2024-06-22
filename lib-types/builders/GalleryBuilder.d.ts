@@ -19,7 +19,6 @@ export default class GalleryContainerBuilder {
     build(): IGallery;
     private _createPreviousNextButtons;
     private _setupSwipeHandler;
-    private _setupThumbsViewerResizeHandler;
     private _setupHoverEvents;
     private _setupKeyEvents;
     private _setupFullscreenKeyEvents;

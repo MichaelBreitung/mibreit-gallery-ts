@@ -2,14 +2,12 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { addCssClass, addCssStyle, appendChildElement, createElement, prependChildElement, setInnerHtml, addEventListener, getElementDimension, getElementPosition, addKeyEventListener, getKeyFromEvent, addResizeEventListener, removeCssStyle, getElement, cloneElement, } from 'mibreit-dom-tools';
+import { addCssClass, addCssStyle, appendChildElement, createElement, prependChildElement, setInnerHtml, addEventListener, getElementDimension, getElementPosition, addKeyEventListener, getKeyFromEvent, removeCssStyle, getElement, cloneElement, } from 'mibreit-dom-tools';
 import SlideshowBuilder from './SlideshowBuilder';
 import ThumbScrollerBuilder from './ThumbsScrollerBuilder';
 import Gallery from '../containers/Gallery';
 import Fullscreen from '../containers/Fullscreen';
 import SwipeHander, { ESwipeDirection } from '../components/SwipeHandler';
-// tools
-import debounce from '../tools/debounce';
 // images
 import nextImageSvg from '../images/nextImage.svg';
 import fullscreenSvg from '../images/fullscreen.svg';
@@ -18,7 +16,6 @@ import styles from './GalleryBuilder.module.css';
 import animationStyles from '../tools/animations.module.css';
 // constants
 import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
-const RESIZE_DEBOUNCE_TIMER = 500;
 export default class GalleryContainerBuilder {
     constructor(slideshowContainerElement, slideshow, fullscreenOnly = false) {
         Object.defineProperty(this, "_slideshowContainerElement", {
@@ -102,12 +99,9 @@ export default class GalleryContainerBuilder {
         })
             .addPreviousNextButtons()
             .build();
-        if (this._thumbsViewer) {
-            this._setupThumbsViewerResizeHandler(this._thumbsViewer);
-            this._slideshow.getImageViewer().addImageChangedCallback((index, _imageInfo) => {
-                this._thumbsViewer.setCenterThumb(index, true);
-            });
-        }
+        this._slideshow.getImageViewer().addImageChangedCallback((index, _imageInfo) => {
+            this._thumbsViewer.setCenterThumb(index, true);
+        });
         return this;
     }
     build() {
@@ -147,13 +141,6 @@ export default class GalleryContainerBuilder {
                     imageViewer.showPreviousImage();
                 }
             }
-        });
-    }
-    _setupThumbsViewerResizeHandler(thumbsViewer) {
-        addResizeEventListener(() => {
-            debounce(() => {
-                thumbsViewer.reinitSize();
-            }, RESIZE_DEBOUNCE_TIMER, false);
         });
     }
     _setupHoverEvents(container, buttons) {
