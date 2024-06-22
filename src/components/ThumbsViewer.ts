@@ -31,7 +31,9 @@ export default class ThumbsViewer implements IThumbsViewer {
 
     const normalizedIndex = this._normalizeIndex(newIndex);
 
-    console.log('ThumbsViewer#setCenterThumb', newIndex, normalizedIndex);
+    console.log(
+      `ThumbsViewer#setCenterThumb - index: ${index}, newIndex: ${newIndex}, normalizedIndex: ${normalizedIndex}`
+    );
 
     this._currentScrollIndex = normalizedIndex;
     const currentScrollPosition = -normalizedIndex * this._thumbsWrapper.getThumbSizeRem();

@@ -54,6 +54,7 @@ export default class ThumbsScrollerBuilder {
             ? config.numberOfVisibleThumbs
             : DEFAULT_NUMBER_VISIBLE_THUMBS;
         this._initialIndex = config === null || config === void 0 ? void 0 : config.initialIndex;
+        console.log('ThumbScrollerBuilder - initialIndex: ', this._initialIndex);
         const thumbs = this._createThumbsArray(thumbElements);
         this._lazyLoader = new LazyLoader(thumbs, numberVisibleThumbs, numberVisibleThumbs);
         this._thumbsWrapper = createThumbsWrapper(thumbContainerElement, thumbs, numberVisibleThumbs, thumbClickedCallback);

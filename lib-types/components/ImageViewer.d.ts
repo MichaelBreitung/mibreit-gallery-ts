@@ -9,6 +9,7 @@ import { ESwipeDirection } from './SwipeHandler';
 import { EImageScaleMode } from '../types';
 export default class ImageViewer implements IImageViewer {
     private _currentIndex;
+    private _delayedNewIndex;
     private _imageStages;
     private _images;
     private _imageChangedCallbacks;

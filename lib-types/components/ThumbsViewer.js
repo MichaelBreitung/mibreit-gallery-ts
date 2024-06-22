@@ -42,7 +42,7 @@ export default class ThumbsViewer {
             newIndex -= Math.floor(this._thumbsWrapper.getNumberOfVisibleThumbs() / 2);
         }
         const normalizedIndex = this._normalizeIndex(newIndex);
-        console.log('ThumbsViewer#setCenterThumb', newIndex, normalizedIndex);
+        console.log(`ThumbsViewer#setCenterThumb - index: ${index}, newIndex: ${newIndex}, normalizedIndex: ${normalizedIndex}`);
         this._currentScrollIndex = normalizedIndex;
         const currentScrollPosition = -normalizedIndex * this._thumbsWrapper.getThumbSizeRem();
         this._scroller.scrollTo(currentScrollPosition, true);

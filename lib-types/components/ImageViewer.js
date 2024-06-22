@@ -14,6 +14,12 @@ export default class ImageViewer {
             writable: true,
             value: -1
         });
+        Object.defineProperty(this, "_delayedNewIndex", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: -1
+        });
         Object.defineProperty(this, "_imageStages", {
             enumerable: true,
             configurable: true,
@@ -79,12 +85,18 @@ export default class ImageViewer {
         }
     }
     _showImage(index, swipeDirection = ESwipeDirection.NONE) {
+        console.log('ImageViewer#_showImage', index);
         if (this._isValidIndex(index)) {
             if (index != this._currentIndex) {
                 if (!this._images[index].wasLoaded()) {
+                    console.log('ImageViewer#_showImage - not yet loaded');
+                    this._delayedNewIndex = index;
                     this._images[index].addWasLoadedCallback(() => {
-                        this._hideImage(this._currentIndex, swipeDirection);
-                        this._changeCurrentImage(index, swipeDirection);
+                        console.log(`ImageViewer#_showImage#wasLoadedCallback - currentIndex=${this._currentIndex}, imageIndex=${index}, delayedIndex=${this._delayedNewIndex}`);
+                        if (index === this._delayedNewIndex) {
+                            this._hideImage(this._currentIndex, swipeDirection);
+                            this._changeCurrentImage(this._delayedNewIndex, swipeDirection);
+                        }
                     });
                 }
                 else {

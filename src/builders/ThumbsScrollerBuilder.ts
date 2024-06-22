@@ -51,6 +51,7 @@ export default class ThumbsScrollerBuilder {
       : DEFAULT_NUMBER_VISIBLE_THUMBS;
 
     this._initialIndex = config?.initialIndex;
+    console.log('ThumbScrollerBuilder - initialIndex: ', this._initialIndex);
 
     const thumbs = this._createThumbsArray(thumbElements);
 

@@ -17,6 +17,7 @@ import { EImageScaleMode } from '../types';
 
 export default class ImageViewer implements IImageViewer {
   private _currentIndex: number = -1;
+  private _delayedNewIndex: number = -1;
   private _imageStages: Array<IImageStage> = [];
   private _images: Array<Image>;
   private _imageChangedCallbacks: Array<(index: number, imageInfo: IImageInfo) => void> = new Array();
@@ -77,12 +78,20 @@ export default class ImageViewer implements IImageViewer {
   }
 
   private _showImage(index: number, swipeDirection: ESwipeDirection = ESwipeDirection.NONE): boolean {
+    console.log('ImageViewer#_showImage', index);
     if (this._isValidIndex(index)) {
       if (index != this._currentIndex) {
         if (!this._images[index]!.wasLoaded()) {
+          console.log('ImageViewer#_showImage - not yet loaded');
+          this._delayedNewIndex = index;
           this._images[index]!.addWasLoadedCallback(() => {
-            this._hideImage(this._currentIndex, swipeDirection);
-            this._changeCurrentImage(index, swipeDirection);
+            console.log(
+              `ImageViewer#_showImage#wasLoadedCallback - currentIndex=${this._currentIndex}, imageIndex=${index}, delayedIndex=${this._delayedNewIndex}`
+            );
+            if (index === this._delayedNewIndex) {
+              this._hideImage(this._currentIndex, swipeDirection);
+              this._changeCurrentImage(this._delayedNewIndex, swipeDirection);
+            }
           });
         } else {
           this._hideImage(this._currentIndex, swipeDirection);

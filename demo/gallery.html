@@ -196,6 +196,9 @@
         preloaderAfterSize: 2,
       });
 
+      gallery.getImageViewer().showImage(4);
+      gallery.getLoader().setCurrentIndex(4);
+
       const titleElement = document.querySelector('#title');
       const viewer = gallery.getImageViewer();
       const imageInfo = viewer.getImageInfo(viewer.getImageIndex());
