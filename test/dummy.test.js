@@ -14,7 +14,7 @@ afterAll(async () => {
 });
 
 describe('POC DOM Manipulation Test Suite', () => {
-  it('should create children and apply CSS correctly', async () => {
+  it('Creates children and applies CSS correctly', async () => {
     await page.setContent('<div id="container"></div>');
 
     await page.evaluate(() => {
@@ -31,5 +31,22 @@ describe('POC DOM Manipulation Test Suite', () => {
 
     expect(text).toBe('Child Element');
     expect(color).toBe('rgb(255, 0, 0)'); // CSS color 'red' in RGB
+  });
+
+  it('Creates children and applies size correctly', async () => {
+    await page.setContent('<div id="container"></div>');
+
+    await page.evaluate(() => {
+      const container = document.getElementById('container');
+      container.style.width = '10rem';
+      const child = document.createElement('div');
+      child.style.width = '100%';
+      container.appendChild(child);
+    });
+
+    const child = await page.$('#container > div');
+    const width = await page.evaluate((el) => getComputedStyle(el).width, child);
+
+    expect(width).toBe('160px');
   });
 });
