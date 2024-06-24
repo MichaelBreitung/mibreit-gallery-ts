@@ -3,9 +3,11 @@ import path from 'path';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import puppeteer from 'puppeteer';
 
-let galleryPageMarkup;
-let iifeGalleryScript;
-let gallerySetupCode = `
+const galleryPageMarkup = fs.readFileSync(path.join(__dirname, 'gallery.withSingleImage.html'), { encoding: 'utf8' });
+const iifeGalleryScript = fs.readFileSync(path.join(__dirname, '../lib-iife/mibreitGalleryTs.min.js'), {
+  encoding: 'utf8',
+});
+const gallerySetupCode = `
   const gallery = mibreitGalleryTs.createGallery('#slideshowContainer', '#slideshowContainer > img', {
     thumbContainerSelector: '#thumbContainer',
     thumbSelector: '#thumbContainer > img',
@@ -14,16 +16,13 @@ let gallerySetupCode = `
     preloaderAfterSize: 2,
   });
   `;
+
 let browser;
 let page;
 
 beforeAll(async () => {
   browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   page = await browser.newPage();
-  galleryPageMarkup = fs.readFileSync(path.join(__dirname, 'gallery.withSingleImage.html'), { encoding: 'utf8' });
-  iifeGalleryScript = fs.readFileSync(path.join(__dirname, '../lib-iife/mibreitGalleryTs.min.js'), {
-    encoding: 'utf8',
-  });
 });
 
 afterAll(async () => {
