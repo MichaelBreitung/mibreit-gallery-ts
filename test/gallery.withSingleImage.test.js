@@ -23,6 +23,19 @@ let page;
 beforeAll(async () => {
   browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   page = await browser.newPage();
+  await page.setContent(galleryPageMarkup);
+
+  await page.evaluate((code) => {
+    const script = document.createElement('script');
+    script.textContent = code;
+    document.head.appendChild(script);
+  }, iifeGalleryScript);
+
+  await page.evaluate((code) => {
+    const script = document.createElement('script');
+    script.textContent = code;
+    document.head.appendChild(script);
+  }, gallerySetupCode);
 });
 
 afterAll(async () => {
@@ -31,25 +44,8 @@ afterAll(async () => {
 
 describe('Gallery with Single Image Test Suite', () => {
   it('thumbContainer display set to none', async () => {
-    await page.setContent(galleryPageMarkup);
-
-    await page.evaluate((code) => {
-      const script = document.createElement('script');
-      script.textContent = code;
-      document.head.appendChild(script);
-    }, iifeGalleryScript);
-
-    await page.evaluate((code) => {
-      const script = document.createElement('script');
-      script.textContent = code;
-      document.head.appendChild(script);
-    }, gallerySetupCode);
-
-    const content = await page.content();
-    console.log('->', content);
     const thumbContainer = await page.$('#thumbContainer');
     const display = await page.evaluate((el) => getComputedStyle(el).display, thumbContainer);
-
     expect(display).toBe('none');
   });
 });
