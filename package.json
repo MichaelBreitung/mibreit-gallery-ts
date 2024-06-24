@@ -7,7 +7,7 @@
   "types": "lib-types",
   "scripts": {
     "dev": "vite",
-    "test": "vitest",
+    "test": "vitest run",
     "build": "tsc --build --clean && tsc && vite build"
   },
   "devDependencies": {
