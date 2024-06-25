@@ -32,6 +32,11 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
+    poolOptions: {
+      threads: {
+        singleThread: true, // because we are interacting with the browser
+      },
+    },
   },
   css: {
     modules: {

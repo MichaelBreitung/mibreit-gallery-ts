@@ -1,8 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import puppeteer from 'puppeteer';
 import { sleep } from '../src/tools/AsyncSleep';
+
+// Globals
 
 const galleryPageMarkup = fs.readFileSync(path.join(__dirname, 'gallery.withSingleImage.html'), { encoding: 'utf8' });
 const iifeGalleryScript = fs.readFileSync(path.join(__dirname, '../lib-iife/mibreitGalleryTs.min.js'), {
@@ -19,13 +21,20 @@ const gallerySetupCode = `
   `;
 const containerWidthPx = 40 * 16;
 const containerHeightPx = 30 * 16;
+const testTile = 'Test Title';
+const imageWidth = 1200;
+const imageHeight = 600;
 
-let browser;
-let page;
+// helpers
 
 function round3Decimal(floatIn) {
   return Math.round(floatIn * 1000) / 1000;
 }
+
+// Puppeteer Setup
+
+let browser;
+let page;
 
 beforeAll(async () => {
   browser = await puppeteer.launch({ headless: true });
@@ -43,13 +52,13 @@ beforeAll(async () => {
     script.textContent = code;
     document.head.appendChild(script);
   }, gallerySetupCode);
-
-  await page.waitForNetworkIdle();
 });
 
 afterAll(async () => {
   await browser.close();
 });
+
+// Tests
 
 describe('Gallery with Single Image Test Suite', () => {
   it('thumbContainer display set to none', async () => {
@@ -125,5 +134,21 @@ describe('Gallery with Single Image Test Suite', () => {
     );
     expect(imageProps.computedStyle.maxWidth).toBe(`${imageProps.width}px`);
     expect(imageProps.computedStyle.maxHeight).toBe(`${imageProps.height}px`);
+  });
+
+  it('ImageInfo is Correct', async () => {
+    const imageInfo = await page.evaluate(() => {
+      const viewer = gallery.getImageViewer();
+      const imageInfo = viewer.getImageInfo(viewer.getImageIndex());
+      return {
+        title: imageInfo.getTitle(),
+        width: imageInfo.getWidth(),
+        height: imageInfo.getHeight(),
+      };
+    });
+
+    expect(imageInfo.title).toBe(testTile);
+    expect(imageInfo.width).toBe(imageWidth);
+    expect(imageInfo.height).toBe(imageHeight);
   });
 });
