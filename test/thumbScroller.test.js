@@ -10,7 +10,7 @@ const iifeGalleryScript = fs.readFileSync(path.join(__dirname, '../lib-iife/mibr
   encoding: 'utf8',
 });
 const thumbScrollerSetupCode = `
-  mibreitGalleryTs.createThumbsScroller('#thumbContainer', '#thumbContainer > img', { numberOfVisibleThumbs: 7 });
+  mibreitGalleryTs.createThumbsScroller('#thumbContainer', '#thumbContainer > img', { numberOfVisibleThumbs: 6 });
   `;
 
 function round3Decimal(floatIn) {
@@ -52,5 +52,51 @@ describe('ThumbScroller with 8 Images Test Suite', () => {
     const thumbContainer = await page.$('#thumbContainer');
     const display = await page.evaluate((el) => getComputedStyle(el).display, thumbContainer);
     expect(display).toBe('flex');
+  });
+
+  it('ThumbStages are set up correctly', async () => {
+    const thumbsViewer = await page.$('.mbg__thumbs_viewer');
+    const container = await page.$('#container');
+    const thumbStages = await page.$$('.mbg__img_stage');
+
+    expect(thumbStages.length).toBe(8);
+
+    let thumbsViewerStyle = await page.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return {
+        width: style.width,
+        height: style.height,
+      };
+    }, thumbsViewer);
+
+    let firstThumbStageStyle = await page.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return {
+        width: style.width,
+      };
+    }, thumbStages[0]);
+
+    expect(firstThumbStageStyle.width).toBe(`${(parseInt(thumbsViewerStyle.width) * 9) / 60}px`);
+
+    await page.evaluate((el) => {
+      container.style.width = '30.5rem';
+    }, container);
+
+    thumbsViewerStyle = await page.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return {
+        width: style.width,
+        height: style.height,
+      };
+    }, thumbsViewer);
+
+    firstThumbStageStyle = await page.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return {
+        width: style.width,
+      };
+    }, thumbStages[0]);
+
+    expect(firstThumbStageStyle.width).toBe(`${(parseInt(thumbsViewerStyle.width) * 9) / 60}px`);
   });
 });
