@@ -60,6 +60,11 @@ export default defineConfig({
           entryFileNames: 'mibreitGalleryTs.min.js',
           exports: 'named',
         },
+        {
+          dir: 'lib-cjs',
+          format: 'cjs',
+          entryFileNames: `index.cjs`,
+        },
       ],
       plugins: [
         strip({
