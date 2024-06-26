@@ -61,7 +61,7 @@ afterAll(async () => {
 // Tests
 
 describe('Gallery with Single Image Test Suite', () => {
-  it('thumbContainer display set to none', async () => {
+  it('ThumbContainer display set to none', async () => {
     const thumbContainer = await page.$('#thumbContainer');
     const display = await page.evaluate((el) => getComputedStyle(el).display, thumbContainer);
     expect(display).toBe('none');
