@@ -54,6 +54,12 @@ export default class ThumbsViewer implements IThumbsViewer {
     if (this._numberOfVisibleThumbs < this._thumbElements.length) {
       this._scroller = new HorizontalScroller(this._thumbElements);
     }
+
+    const resizeObserver = new ResizeObserver(() => {
+      this.reinitSize();
+    });
+
+    resizeObserver.observe(this._wrapperElement);
   }
 
   reinitSize() {
@@ -125,10 +131,9 @@ export default class ThumbsViewer implements IThumbsViewer {
 
   private _wrapThumbs(thumbs: Array<Node>, numberOfVisibleThumbs: number, numberOfThumbs: number): HTMLElement {
     const wrapper = createElement('div');
+    addCssClass(wrapper, styles.thumbs_viewer);
     if (numberOfVisibleThumbs >= numberOfThumbs) {
       addCssClass(wrapper, styles.thumbs_viewer__centered);
-    } else {
-      addCssClass(wrapper, styles.thumbs_viewer);
     }
     wrapElements(thumbs, wrapper);
     return wrapper;

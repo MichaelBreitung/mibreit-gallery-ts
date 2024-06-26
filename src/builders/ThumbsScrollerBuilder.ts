@@ -7,7 +7,6 @@ import { ILazyLoader, LazyLoader } from 'mibreit-lazy-loader';
 import {
   addClickEventListener,
   addCssClass,
-  addResizeEventListener,
   appendChildElement,
   createElement,
   prependChildElement,
@@ -17,9 +16,6 @@ import {
 import Image from '../components/Image';
 import ThumbsViewer from '../components/ThumbsViewer';
 import ThumbStage from '../components/ThumbStage';
-
-// Tools
-import debounce from '../tools/debounce';
 
 // Interfaces
 import IThumbsViewer from '../interfaces/IThumbsViewer';
@@ -34,7 +30,7 @@ import styles from './ThumbsScrollerBuilder.module.css';
 import nextThumbs from '../images/nextThumbs.svg';
 
 // constants
-import { NUMBER_OF_VISIBLE_THUMBS, RESIZE_DEBOUNCE_TIMER } from '../constants';
+import { NUMBER_OF_VISIBLE_THUMBS } from '../constants';
 
 export default class ThumbsScrollerBuilder {
   private _thumbContainerElement: HTMLElement;
@@ -128,15 +124,6 @@ export default class ThumbsScrollerBuilder {
       loader.setCurrentIndex(index);
     });
     thumbsViewer.setCenterThumb(initialIndex);
-    addResizeEventListener(() => {
-      debounce(
-        () => {
-          thumbsViewer.reinitSize();
-        },
-        RESIZE_DEBOUNCE_TIMER,
-        false
-      );
-    });
     return thumbsViewer;
   }
 
