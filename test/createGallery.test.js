@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { createGallery } from '../lib-cjs/index.cjs';
+import { createGallery } from '../src/index';
 
 describe('Gallery Creation Test Suite', () => {
   test('create fails for invalid selectors', async () => {

@@ -49,7 +49,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       preserveEntrySignatures: true,
-      input: 'src/index.ts',
+      input: 'src/index.wc.ts',
       output: [
         {
           format: 'esm',
@@ -64,11 +64,6 @@ export default defineConfig({
           name: 'mibreitGalleryTs',
           entryFileNames: 'mibreitGalleryTs.min.js',
           exports: 'named',
-        },
-        {
-          dir: 'lib-cjs',
-          format: 'cjs',
-          entryFileNames: `index.cjs`,
         },
       ],
       plugins: [
