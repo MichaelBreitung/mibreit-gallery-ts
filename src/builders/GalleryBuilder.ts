@@ -88,8 +88,10 @@ export default class GalleryContainerBuilder {
   }
 
   public addPreviousNextButtons(): GalleryContainerBuilder {
-    const { previousButton, nextButton } = this._createPreviousNextButtons();
-    this._setupHoverEvents([previousButton, nextButton]);
+    if (this._slideshow.getImageViewer().getNumberOfImages() > 1) {
+      const { previousButton, nextButton } = this._createPreviousNextButtons();
+      this._setupHoverEvents([previousButton, nextButton]);
+    }
     return this;
   }
 

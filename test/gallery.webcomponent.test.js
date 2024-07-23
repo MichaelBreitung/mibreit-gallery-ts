@@ -38,6 +38,14 @@ afterAll(async () => {
 // Tests
 
 describe('Web Component Gallery Test Suite', () => {
+  it('Previous Next Buttons set up correctly', async () => {
+    const previousBtn = await page.$('.mbg__gallery__previous_btn');
+    const nextBtn = await page.$('.mbg__gallery__next_btn');
+
+    expect(previousBtn).toBeDefined();
+    expect(nextBtn).toBeDefined();
+  });
+
   it('ImageStages are set up correctly', async () => {
     const imageStages = await page.$$('mbg-slideshow .mbg__img_stage');
     expect(imageStages.length).toBe(7);

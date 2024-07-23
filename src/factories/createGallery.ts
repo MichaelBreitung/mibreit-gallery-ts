@@ -26,7 +26,7 @@ export default function (containerSelector: string, imageSelector: string, confi
 
   const elements = getElements(imageSelector);
   const container = getElement(containerSelector);
-  if (container && elements?.length > 0) {
+  if (container && elements.length > 0) {
     const builder = GalleryBuilder.fromContainerAndImages(container, elements, config)
       .addPreviousNextButtons()
       .addFullscreen();

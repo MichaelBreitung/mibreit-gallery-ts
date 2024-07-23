@@ -67,6 +67,14 @@ describe('Gallery with Single Image Test Suite', () => {
     expect(display).toBe('none');
   });
 
+  it('No Previous Next Buttons', async () => {
+    const previousBtn = await page.$('.mbg__gallery__previous_btn');
+    const nextBtn = await page.$('.mbg__gallery__next_btn');
+
+    expect(previousBtn).toBeNull();
+    expect(nextBtn).toBeNull();
+  });
+
   it('ImageStage is set up correctly', async () => {
     const imageStages = await page.$$('.mbg__img_stage');
     expect(imageStages.length).toBe(1);
