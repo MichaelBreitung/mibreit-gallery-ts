@@ -135,8 +135,10 @@ export default class GalleryContainerBuilder {
   }
 
   public build(): IGallery {
-    this._setupSwipeHandler(this._slideshow.getImageViewer());
-    this._setupKeyEvents(this._slideshow.getImageViewer());
+    if (this._slideshow.getImageViewer().getNumberOfImages() > 1) {
+      this._setupSwipeHandler(this._slideshow.getImageViewer());
+      this._setupKeyEvents(this._slideshow.getImageViewer());
+    }
     return new Gallery(
       this._slideshow.getImageViewer(),
       this._slideshow.getLoader(),

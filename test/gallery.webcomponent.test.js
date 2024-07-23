@@ -47,7 +47,7 @@ describe('Web Component Gallery Test Suite', () => {
   });
 
   it('ImageStages are set up correctly', async () => {
-    const imageStages = await page.$$('mbg-slideshow .mbg__img_stage');
+    const imageStages = await page.$$('mbg-images .mbg__img_stage');
     expect(imageStages.length).toBe(7);
 
     for (let i = 0; i < imageStages.length; i++) {

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="copyright" content="Michael Breitung" />
+    <meta name="author" content="Michael Breitung" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Gallery Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      mbg-slideshow {
+        width: 60rem;
+        max-width: 60rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      mbg-images {
+        height: 40rem;
+      }
+      .mibreit-LazyLoader_lazy {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/"><strong>Home</strong></a>
+    <mbg-slideshow preloaderBeforeSize="1" preloaderAfterSize="2" interval="4000" zoom>
+      <mbg-images>
+        <img
+          loading="lazy"
+          class="mibreit-LazyLoader_lazy"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Fallen.jpg"
+          title="Fallen"
+          alt="An ensemble of frost covered autumn leaves, photographed in a local forest."
+          width="1280"
+          height="854"
+        />
+        <img
+          loading="lazy"
+          class="mibreit-LazyLoader_lazy"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Enchanted.jpg"
+          title="Enchanted"
+          alt="Magical light bathes an old beech forest into golden light."
+          width="1280"
+          height="853"
+        />
+        <img
+          loading="lazy"
+          class="mibreit-LazyLoader_lazy"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Marina-di-Gairo.jpg"
+          title="Eden - Sardegna"
+          alt="Red rocks, deep blue water, lush vegetation on Italy's costline"
+          width="1280"
+          height="853"
+        />
+        <img
+          loading="lazy"
+          class="mibreit-LazyLoader_lazy"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Essaouira-Surf.jpg"
+          title="Essaouira Surf - Morocco"
+          alt="Waves crashing at the short in front of the Essaouira ramparts"
+          width="1280"
+          height="853"
+        />
+        <img
+          loading="lazy"
+          class="mibreit-LazyLoader_lazy"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Fishermans-Bastion.jpg"
+          title="Fisherman's Bastion - Budapest Hungary"
+          alt="The morning sun lights up the ramparts of Fisherman's Bastion in Budapest"
+          width="1280"
+          height="853"
+        />
+        <img
+          loading="lazy"
+          class="mibreit-LazyLoader_lazy"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Rain-Forest.jpg"
+          title="Cloud Forest - Colombia"
+          alt="Mist and Rain drifts through the cloud forest in the hills of Santa Marta."
+          width="1280"
+          height="853"
+        />
+        <img
+          loading="lazy"
+          class="mibreit-LazyLoader_lazy"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Desert-Nights.jpg"
+          title="Desert Nights - Morocco"
+          alt="The Milky Way over the Erg Chigaga in Morocco on a beautiful night."
+          width="1280"
+          height="853"
+        />
+        <img
+          loading="lazy"
+          class="mibreit-LazyLoader_lazy"
+          src="https://www.mibreit-photo.com/galleries/favorites/images/Junction.jpg"
+          title="Hongkong Junction - Hongkong"
+          alt="Connaught Road and The international Finance Center in Hong Kong during Blue hour."
+          width="864"
+          height="1080"
+        />
+      </mbg-images>
+    </mbg-slideshow>
+  </body>
+  <script type="module" src="/src/index.wc.ts"></script>
+</html>
