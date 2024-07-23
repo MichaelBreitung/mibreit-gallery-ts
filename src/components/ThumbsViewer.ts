@@ -34,13 +34,9 @@ export default class ThumbsViewer implements IThumbsViewer {
     this._numberOfVisibleThumbs = numberOfVisibleThumbs;
     this._thumbElements = Array.from(container.children) as Array<HTMLElement>;
 
-    this._wrapperElement = this._wrapThumbs(
-      getChildNodes(container),
-      numberOfVisibleThumbs,
-      this._thumbElements.length
-    );
-    this._thumbSizeRem = this._calculateThumbsize(this._wrapperElement, numberOfVisibleThumbs);
-    this._resizeThumbs(this._thumbElements, this._thumbSizeRem);
+    this._wrapperElement = this._wrapThumbs(getChildNodes(container));
+    this._thumbSizeRem = this._calculateThumbsize();
+    this._resizeThumbs();
 
     console.log(
       'ThumbsViewer#constructor - thumbSizeRem = ',
@@ -63,8 +59,8 @@ export default class ThumbsViewer implements IThumbsViewer {
   }
 
   reinitSize() {
-    this._thumbSizeRem = this._calculateThumbsize(this._wrapperElement, this._numberOfVisibleThumbs);
-    this._resizeThumbs(this._thumbElements, this._thumbSizeRem);
+    this._thumbSizeRem = this._calculateThumbsize();
+    this._resizeThumbs();
     this.setCenterThumb(this._currentScrollIndex, false);
   }
 
@@ -129,33 +125,33 @@ export default class ThumbsViewer implements IThumbsViewer {
     }
   }
 
-  private _wrapThumbs(thumbs: Array<Node>, numberOfVisibleThumbs: number, numberOfThumbs: number): HTMLElement {
+  private _wrapThumbs(thumbs: Array<Node>): HTMLElement {
     const wrapper = createElement('div');
     addCssClass(wrapper, styles.thumbs_viewer);
-    if (numberOfVisibleThumbs >= numberOfThumbs) {
+    if (this._numberOfVisibleThumbs >= this._thumbElements.length) {
       addCssClass(wrapper, styles.thumbs_viewer__centered);
     }
     wrapElements(thumbs, wrapper);
     return wrapper;
   }
 
-  private _calculateThumbsize(container: HTMLElement, numberOfVisibleThumbs: number): number {
+  private _calculateThumbsize(): number {
     const oneRemSize = getRootFontSize();
-    const containerWidthRem = getElementDimension(container).width / oneRemSize;
-    const thumbsize = containerWidthRem / numberOfVisibleThumbs;
+    const containerWidthRem = getElementDimension(this._wrapperElement).width / oneRemSize;
+    const thumbsize = containerWidthRem / this._numberOfVisibleThumbs;
 
     console.log('ThumbsWrapper#_calculateThumbsize - containerWidthRem: ', containerWidthRem);
     return thumbsize;
   }
 
-  private _resizeThumbs(thumbElements: Array<HTMLElement>, size: number) {
-    const innerSize: number = size * 0.9;
-    const margin: number = size * 0.05;
+  private _resizeThumbs() {
+    const innerSize: number = this._thumbSizeRem * 0.9;
+    const margin: number = this._thumbSizeRem * 0.05;
 
-    for (let i = 0; i < thumbElements.length; ++i) {
-      addCssStyle(thumbElements[i], 'width', `${innerSize}rem`);
-      addCssStyle(thumbElements[i], 'height', `${innerSize}rem`);
-      addCssStyle(thumbElements[i], 'margin', `${margin}rem`);
+    for (let i = 0; i < this._thumbElements.length; ++i) {
+      addCssStyle(this._thumbElements[i], 'width', `${innerSize}rem`);
+      addCssStyle(this._thumbElements[i], 'height', `${innerSize}rem`);
+      addCssStyle(this._thumbElements[i], 'margin', `${margin}rem`);
     }
   }
 }

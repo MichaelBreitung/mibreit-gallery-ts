@@ -29,7 +29,8 @@ export default class SlideshowBuilder {
   constructor(imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
     const images = this._createImagesArray(imageElements);
     this._lazyLoader = this._createLoader(images, config?.preloaderBeforeSize, config?.preloaderAfterSize);
-    this._imageViewer = this._createImageViewer(images, this._lazyLoader, config?.scaleMode, config?.zoom);
+    this._lazyLoader.setCurrentIndex(0);
+    this._imageViewer = this._createImageViewer(images, config?.scaleMode, config?.zoom);
 
     if (config?.interval) {
       setInterval(() => {
@@ -66,22 +67,16 @@ export default class SlideshowBuilder {
     return lazyLoader;
   }
 
-  private _createImageViewer(
-    images: Array<Image>,
-    loader: ILazyLoader,
-    scaleMode?: EImageScaleMode,
-    zoom?: boolean
-  ): IImageViewer {
+  private _createImageViewer(images: Array<Image>, scaleMode?: EImageScaleMode, zoom?: boolean): IImageViewer {
     const imageViewer = new ImageViewer(images, scaleMode);
     if (zoom !== undefined) {
       imageViewer.setZoomAnimation(zoom);
     }
-    if (loader) {
-      imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-        loader.setCurrentIndex(index);
-      });
-      loader.setCurrentIndex(0);
-    }
+
+    imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+      this._lazyLoader.setCurrentIndex(index);
+    });
+
     return imageViewer;
   }
 }

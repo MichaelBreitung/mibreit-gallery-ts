@@ -62,14 +62,12 @@ export default class ThumbsScrollerBuilder {
     this._createThumbStages(thumbs, thumbClickedCallback);
 
     this._lazyLoader = new LazyLoader(thumbs, this._numberOfVisibleThumbs, this._numberOfVisibleThumbs);
-    this._thumbsViewer = this._createThumbsViewer(this._thumbContainerElement, this._lazyLoader, this._initialIndex);
+    this._thumbsViewer = this._createThumbsViewer(this._initialIndex);
   }
 
   public addPreviousNextButtons(): ThumbsScrollerBuilder {
     if (this._numberOfVisibleThumbs < this._numberOfThumbs) {
-      [this._previousButtonElement, this._nextButtonElement] = this._createPreviousNextButtons(
-        this._thumbContainerElement
-      );
+      [this._previousButtonElement, this._nextButtonElement] = this._createPreviousNextButtons();
     }
     return this;
   }
@@ -77,7 +75,7 @@ export default class ThumbsScrollerBuilder {
   public build(): IThumbsViewer {
     this._thumbsViewer.reinitSize();
     if (this._previousButtonElement && this._nextButtonElement) {
-      this._addThumbsViewerInteraction(this._thumbsViewer, this._previousButtonElement, this._nextButtonElement);
+      this._addThumbsViewerInteraction(this._previousButtonElement, this._nextButtonElement);
     }
 
     if (this._numberOfVisibleThumbs >= this._numberOfThumbs) {
@@ -114,43 +112,35 @@ export default class ThumbsScrollerBuilder {
     });
   }
 
-  private _createThumbsViewer(
-    thumbContainerElement: HTMLElement,
-    loader: ILazyLoader,
-    initialIndex: number = 0
-  ): IThumbsViewer {
-    const thumbsViewer = new ThumbsViewer(thumbContainerElement, this._numberOfVisibleThumbs);
+  private _createThumbsViewer(initialIndex: number = 0): IThumbsViewer {
+    const thumbsViewer = new ThumbsViewer(this._thumbContainerElement, this._numberOfVisibleThumbs);
     thumbsViewer.addScrollIndexChangedCallback((index: number) => {
-      loader.setCurrentIndex(index);
+      this._lazyLoader.setCurrentIndex(index);
     });
     thumbsViewer.setCenterThumb(initialIndex);
     return thumbsViewer;
   }
 
-  private _createPreviousNextButtons(container: HTMLElement): [HTMLElement, HTMLElement] {
+  private _createPreviousNextButtons(): [HTMLElement, HTMLElement] {
     const previousButton = createElement('div');
     setInnerHtml(previousButton, nextThumbs);
     addCssClass(previousButton, styles.thumbs_scroller__previous_btn);
-    prependChildElement(previousButton, container);
+    prependChildElement(previousButton, this._thumbContainerElement);
 
     const nextButton = createElement('div');
     setInnerHtml(nextButton, nextThumbs);
     addCssClass(nextButton, styles.thumbs_scroller__next_btn);
-    appendChildElement(nextButton, container);
+    appendChildElement(nextButton, this._thumbContainerElement);
 
     return [previousButton, nextButton];
   }
 
-  private _addThumbsViewerInteraction(
-    thumbsViewer: IThumbsViewer,
-    previousButton: HTMLElement,
-    nextButton: HTMLElement
-  ) {
+  private _addThumbsViewerInteraction(previousButton: HTMLElement, nextButton: HTMLElement) {
     addClickEventListener(nextButton, () => {
-      thumbsViewer.scrollNext();
+      this._thumbsViewer.scrollNext();
     });
     addClickEventListener(previousButton, () => {
-      thumbsViewer.scrollPrevious();
+      this._thumbsViewer.scrollPrevious();
     });
   }
 }

@@ -24,7 +24,7 @@ import SlideshowBuilder from './SlideshowBuilder';
 import ThumbScrollerBuilder from './ThumbsScrollerBuilder';
 
 import Gallery from '../containers/Gallery';
-import Fullscreen from '../containers/Fullscreen';
+import Fullscreen from '../components/Fullscreen';
 
 import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
 
@@ -88,17 +88,17 @@ export default class GalleryContainerBuilder {
   }
 
   public addPreviousNextButtons(): GalleryContainerBuilder {
-    const { previousButton, nextButton } = this._createPreviousNextButtons(this._slideshowContainerElement);
-    this._setupHoverEvents(this._slideshowContainerElement, [previousButton, nextButton]);
+    const { previousButton, nextButton } = this._createPreviousNextButtons();
+    this._setupHoverEvents([previousButton, nextButton]);
     return this;
   }
 
   public addFullscreen(): GalleryContainerBuilder {
     this._fullscreen = new Fullscreen(this._slideshowContainerElement);
-    const fullscreenButton = this._createFullscreenButton(this._slideshowContainerElement);
-    this._setupHoverEvents(this._slideshowContainerElement, [fullscreenButton]);
+    const fullscreenButton = this._createFullscreenButton();
+    this._setupHoverEvents([fullscreenButton]);
     this._setupFullscreenKeyEvents(this._fullscreen);
-    this._setupFullscreenClickEvent(fullscreenButton, this._fullscreen);
+    this._setupFullscreenClickEvent(this._fullscreen, fullscreenButton);
     this._setupFullscreenChangedHandler(this._fullscreen, fullscreenButton);
 
     if (this._fullScreenOnly) {
@@ -133,7 +133,7 @@ export default class GalleryContainerBuilder {
   }
 
   public build(): IGallery {
-    this._setupSwipeHandler(this._slideshowContainerElement, this._slideshow.getImageViewer());
+    this._setupSwipeHandler(this._slideshow.getImageViewer());
     this._setupKeyEvents(this._slideshow.getImageViewer());
     return new Gallery(
       this._slideshow.getImageViewer(),
@@ -143,26 +143,26 @@ export default class GalleryContainerBuilder {
     );
   }
 
-  private _createPreviousNextButtons(container: HTMLElement): { previousButton: HTMLElement; nextButton: HTMLElement } {
+  private _createPreviousNextButtons(): { previousButton: HTMLElement; nextButton: HTMLElement } {
     const previousButton = createElement('div');
     setInnerHtml(previousButton, nextImageSvg);
     addCssClass(previousButton, styles.gallery__previous_btn);
     addCssClass(previousButton, animationStyles.fade);
-    prependChildElement(previousButton, container);
+    prependChildElement(previousButton, this._slideshowContainerElement);
     const nextButton = createElement('div');
     setInnerHtml(nextButton, nextImageSvg);
     addCssClass(nextButton, styles.gallery__next_btn);
     addCssClass(nextButton, animationStyles.fade);
-    appendChildElement(nextButton, container);
+    appendChildElement(nextButton, this._slideshowContainerElement);
     return { previousButton, nextButton };
   }
 
-  private _setupSwipeHandler(container: HTMLElement, imageViewer: IImageViewer) {
-    addCssStyle(container, 'touch-action', 'pinch-zoom pan-y');
+  private _setupSwipeHandler(imageViewer: IImageViewer) {
+    addCssStyle(this._slideshowContainerElement, 'touch-action', 'pinch-zoom pan-y');
 
-    new SwipeHander(container, (direction: ESwipeDirection, position: TPosition) => {
-      const containerWidth: number = getElementDimension(container).width;
-      const containerPosX: number = getElementPosition(container).x;
+    new SwipeHander(this._slideshowContainerElement, (direction: ESwipeDirection, position: TPosition) => {
+      const containerWidth: number = getElementDimension(this._slideshowContainerElement).width;
+      const containerPosX: number = getElementPosition(this._slideshowContainerElement).x;
       if (direction === ESwipeDirection.LEFT) {
         imageViewer.showPreviousImage(direction);
       } else if (direction === ESwipeDirection.RIGHT) {
@@ -177,13 +177,13 @@ export default class GalleryContainerBuilder {
     });
   }
 
-  private _setupHoverEvents(container: HTMLElement, buttons: Array<HTMLElement>) {
-    addEventListener(container, 'mouseenter', () => {
+  private _setupHoverEvents(buttons: Array<HTMLElement>) {
+    addEventListener(this._slideshowContainerElement, 'mouseenter', () => {
       buttons.forEach((button: HTMLElement) => {
         addCssStyle(button, 'opacity', `${GALLERY_BUTTONS_SHOW_OPACITY}`);
       });
     });
-    addEventListener(container, 'mouseleave', () => {
+    addEventListener(this._slideshowContainerElement, 'mouseleave', () => {
       buttons.forEach((button: HTMLElement) => {
         addCssStyle(button, 'opacity', '0');
       });
@@ -226,16 +226,16 @@ export default class GalleryContainerBuilder {
     });
   }
 
-  private _createFullscreenButton(container: HTMLElement): HTMLElement {
+  private _createFullscreenButton(): HTMLElement {
     const fullscreenButton = createElement('div');
     setInnerHtml(fullscreenButton, fullscreenSvg);
     addCssClass(fullscreenButton, styles.gallery__fullscreen_btn);
     addCssClass(fullscreenButton, animationStyles.fade);
-    appendChildElement(fullscreenButton, container);
+    appendChildElement(fullscreenButton, this._slideshowContainerElement);
     return fullscreenButton;
   }
 
-  private _setupFullscreenClickEvent(fullscreenButton: HTMLElement, fullScreen: IFullscreen) {
+  private _setupFullscreenClickEvent(fullScreen: IFullscreen, fullscreenButton: HTMLElement) {
     addEventListener(fullscreenButton, 'pointerdown', (event: PointerEvent) => {
       event.stopPropagation();
     });

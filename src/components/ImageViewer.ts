@@ -3,8 +3,11 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import createImageStage from '../factories/createImageStage';
 import Image from './Image';
+import ImageStageFitAspect from '../components/ImageStageFitAspect';
+import ImageStageExpand from '../components/ImageStageExpand';
+import ImageStageStretch from '../components/ImageStageStretch';
+import ImageStageNoScale from '../components/ImageStageNoScale';
 
 // interfaces
 import IImageViewer from '../interfaces/IImageViewer';
@@ -112,12 +115,31 @@ export default class ImageViewer implements IImageViewer {
 
   private _prepareImageStages(images: Array<Image>, scaleMode: EImageScaleMode) {
     images.forEach((image) => {
-      const imageStage = createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
+      const imageStage = this._createImageStage(image.getHtmlElement(), image.getWidth(), image.getHeight(), scaleMode);
       image.addWasLoadedCallback(() => {
         imageStage.reinitSize();
       });
       this._imageStages.push(imageStage);
     });
+  }
+
+  private _createImageStage(
+    imageHandle: HTMLElement,
+    imageWidth: number,
+    imageHeight: number,
+    scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT
+  ): IImageStage {
+    switch (scaleMode) {
+      case EImageScaleMode.EXPAND:
+        return new ImageStageExpand(imageHandle, imageWidth, imageHeight);
+      case EImageScaleMode.FIT_ASPECT:
+        return new ImageStageFitAspect(imageHandle, imageWidth, imageHeight);
+      case EImageScaleMode.STRETCH:
+        return new ImageStageStretch(imageHandle);
+      case EImageScaleMode.NONE:
+      default:
+        return new ImageStageNoScale(imageHandle);
+    }
   }
 
   private _isValidIndex(index: number) {

@@ -7,8 +7,8 @@ import { removeCssStyle } from 'mibreit-dom-tools';
 import ImageStage from './ImageStage';
 
 export default class ImageStageNoScale extends ImageStage {
-  constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number) {
-    super(imageHandle, imageWidth, imageHeight);
+  constructor(imageHandle: HTMLElement) {
+    super(imageHandle);
   }
 
   protected _applyScaleModeImpl(_stageWidth: number, _stageHeight: number) {

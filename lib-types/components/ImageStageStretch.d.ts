@@ -4,6 +4,6 @@
  */
 import ImageStage from './ImageStage';
 export default class ImageStageStretch extends ImageStage {
-    constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number);
+    constructor(imageHandle: HTMLElement);
     protected _applyScaleModeImpl(_stageWidth: number, _stageHeight: number): void;
 }

@@ -26,6 +26,7 @@ export default class ImageViewer implements IImageViewer {
     private _showImage;
     private _hideImage;
     private _prepareImageStages;
+    private _createImageStage;
     private _isValidIndex;
     private _changeCurrentImage;
 }

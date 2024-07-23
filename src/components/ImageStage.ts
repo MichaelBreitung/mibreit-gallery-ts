@@ -31,13 +31,10 @@ export default abstract class ImageStage implements IImageStage {
   private _zoomAnimation: boolean = false;
   protected _imageStage: HTMLElement;
   protected _imageHandle: HTMLElement;
-  protected _imageWidth: number;
-  protected _imageHeight: number;
 
-  constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number) {
+  constructor(imageHandle: HTMLElement) {
     this._imageHandle = imageHandle;
-    this._imageWidth = imageWidth;
-    this._imageHeight = imageHeight;
+
     this._imageStage = this._createStage();
 
     const resizeObserver = new ResizeObserver(() => {

@@ -12,9 +12,7 @@ export default abstract class ImageStage implements IImageStage {
     private _zoomAnimation;
     protected _imageStage: HTMLElement;
     protected _imageHandle: HTMLElement;
-    protected _imageWidth: number;
-    protected _imageHeight: number;
-    constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number);
+    constructor(imageHandle: HTMLElement);
     setZoomAnimation(activate: boolean): void;
     reinitSize(): void;
     hideImage(swipeDirection?: ESwipeDirection): Promise<void>;
