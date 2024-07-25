@@ -21,10 +21,22 @@ export default function (imageSelector: string, config: SlideshowConfig): IGalle
 
   const elements = getElements(imageSelector);
   if (elements?.length > 0) {
-    return GalleryContainerBuilder.fromImages(elements, config)
+    const gallery = GalleryContainerBuilder.fromImages(elements, config)
       .addPreviousNextButtons()
       .addFullscreen({ useAverageBackgroundColor: true })
       .build();
+
+    elements.forEach(function (image, index) {
+      image.style.setProperty('cursor', 'pointer');
+      image.addEventListener('click', function () {
+        const fullScreen = gallery.getFullscreen();
+        if (fullScreen && !fullScreen.isActive()) {
+          gallery.getImageViewer().showImage(index);
+          fullScreen.activate();
+        }
+      });
+    });
+    return gallery;
   } else {
     throw new Error('createFullscreenOnlyGallery - no images selected');
   }
