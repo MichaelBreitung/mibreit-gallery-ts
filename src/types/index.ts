@@ -83,3 +83,27 @@ export function checkGalleryConfig(config: GalleryConfig) {
     throw new Error('checkGalleryConfig - invalid thumbSelector');
   }
 }
+
+export type FullscreenConfig = {
+  backgroundColor?: string;
+  useAverageBackgroundColor?: boolean;
+};
+
+const colorCheckerRegex = new RegExp('^#([A-Fa-f0-9]{8})$');
+
+export function checkFullscreenConfig(config: FullscreenConfig) {
+  if (typeof config.backgroundColor !== 'undefined' && typeof config.backgroundColor !== 'string') {
+    throw new Error('checkFullscreenConfig - invalid backgroundColor');
+  }
+  if (typeof config.backgroundColor === 'string') {
+    if (!colorCheckerRegex.test(config.backgroundColor)) {
+      throw new Error('checkFullscreenConfig - invalid backgroundColor - only RGBA hex allowed');
+    }
+  }
+  if (
+    typeof config.useAverageBackgroundColor !== 'undefined' &&
+    typeof config.useAverageBackgroundColor !== 'boolean'
+  ) {
+    throw new Error('checkFullscreenConfig - invalid useAverageBackgroundColor');
+  }
+}

@@ -26,3 +26,8 @@ export type GalleryConfig = SlideshowConfig & ThumbScrollerConfig & {
     thumbSelector?: string;
 };
 export declare function checkGalleryConfig(config: GalleryConfig): void;
+export type FullscreenConfig = {
+    backgroundColor?: string;
+    useAverageBackgroundColor?: boolean;
+};
+export declare function checkFullscreenConfig(config: FullscreenConfig): void;

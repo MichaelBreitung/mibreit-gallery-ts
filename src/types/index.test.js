@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkThumbScrollerConfig, checkSlideshowConfig, checkGalleryConfig } from '../../lib/types';
+import { checkThumbScrollerConfig, checkSlideshowConfig, checkGalleryConfig, checkFullscreenConfig } from './index';
 
 describe('Config Test Test Suite', () => {
   it('checkThumbScrollerConfig fails for invalid numberOfVisibleThumbs input', async () => {
@@ -97,5 +97,17 @@ describe('Config Test Test Suite', () => {
 
   it('checkGalleryConfig succeeds for valid thumbSelector', async () => {
     expect(() => checkGalleryConfig({ thumbSelector: 'test' })).not.toThrowError();
+  });
+
+  it('checkFullscreenConfig fails for invalid thumbSelector', async () => {
+    expect(() => checkFullscreenConfig({ backgroundColor: 'invalid color' })).toThrowError();
+
+    expect(() => checkFullscreenConfig({ useAverageBackgroundColor: 'yes' })).toThrowError();
+  });
+
+  it('checkFullscreenConfig succeeds for valid thumbSelector', async () => {
+    expect(() =>
+      checkFullscreenConfig({ backgroundColor: '#fffff0ff', useAverageBackgroundColor: true })
+    ).not.toThrowError();
   });
 });

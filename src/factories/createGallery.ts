@@ -29,7 +29,7 @@ export default function (containerSelector: string, imageSelector: string, confi
   if (container && elements.length > 0) {
     const builder = GalleryBuilder.fromContainerAndImages(container, elements, config)
       .addPreviousNextButtons()
-      .addFullscreen();
+      .addFullscreen({ useAverageBackgroundColor: true });
 
     if (config?.thumbSelector && config?.thumbContainerSelector) {
       const thumbContainer = getElement(config.thumbContainerSelector);

@@ -21,7 +21,10 @@ export default function (imageSelector: string, config: SlideshowConfig): IGalle
 
   const elements = getElements(imageSelector);
   if (elements?.length > 0) {
-    return GalleryContainerBuilder.fromImages(elements, config).addPreviousNextButtons().addFullscreen().build();
+    return GalleryContainerBuilder.fromImages(elements, config)
+      .addPreviousNextButtons()
+      .addFullscreen({ useAverageBackgroundColor: true })
+      .build();
   } else {
     throw new Error('createFullscreenOnlyGallery - no images selected');
   }

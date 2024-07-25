@@ -3,6 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
+import { FastAverageColor } from 'fast-average-color';
 import {
   addCssClass,
   addCssStyle,
@@ -37,7 +38,7 @@ import IFullscreen from '../interfaces/IFullscreen';
 import IImageInfo from '../interfaces/IImageInfo';
 
 // types
-import { SlideshowConfig, ThumbScrollerConfig } from '../types';
+import { checkFullscreenConfig, FullscreenConfig, SlideshowConfig, ThumbScrollerConfig } from '../types';
 
 // images
 import nextImageSvg from '../images/nextImage.svg';
@@ -95,8 +96,27 @@ export default class GalleryContainerBuilder {
     return this;
   }
 
-  public addFullscreen(): GalleryContainerBuilder {
+  public addFullscreen(config?: FullscreenConfig): GalleryContainerBuilder {
     this._fullscreen = new Fullscreen(this._slideshowContainerElement);
+    if (config) {
+      checkFullscreenConfig(config);
+      if (config.backgroundColor) {
+        this._fullscreen.setBackgroundColor(config.backgroundColor);
+      }
+      if (config.useAverageBackgroundColor) {
+        const fastAverageColor = new FastAverageColor();
+        const imageViewer = this._slideshow.getImageViewer();
+        imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
+          if (this._fullscreen?.isActive()) {
+            const color = fastAverageColor.getColor(imageViewer.getImageElement(index) as HTMLImageElement, {
+              algorithm: 'sqrt',
+            });
+            this._fullscreen.setBackgroundColor(color.rgb);
+          }
+        });
+      }
+    }
+
     const fullscreenButton = this._createFullscreenButton();
     this._setupHoverEvents([fullscreenButton]);
     this._setupFullscreenKeyEvents(this._fullscreen);
