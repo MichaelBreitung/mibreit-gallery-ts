@@ -85,6 +85,7 @@ export default class ThumbsScrollerBuilder {
         this._thumbsViewer.setCenterThumb(0);
       }, 0);
     }
+
     return this._thumbsViewer;
   }
 
@@ -100,10 +101,15 @@ export default class ThumbsScrollerBuilder {
   private _createThumbStages(thumbs: Array<Image>, thumbClickedCallback?: (index: number) => void) {
     thumbs.forEach((thumb, index) => {
       const thumbStage = new ThumbStage(thumb.getHtmlElement(), thumb.getWidth(), thumb.getHeight());
+
       thumb.addWasLoadedCallback(() => {
+        thumbStage.showImage();
         thumbStage.reinitSize();
       });
-      thumbStage.showImage();
+      if (thumb.wasLoaded()) {
+        thumbStage.showImage();
+      }
+
       if (thumbClickedCallback) {
         thumbStage.addStageClickedCallback(() => {
           thumbClickedCallback(index);

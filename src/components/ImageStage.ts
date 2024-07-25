@@ -8,7 +8,6 @@ import {
   addCssClass,
   addCssStyle,
   createElement,
-  getComputedCssStyle,
   getElementDimension,
   removeCssClass,
   removeCssStyle,
@@ -28,7 +27,7 @@ const ANIMATIONS_RESET_TIMEOUT = 1000;
  * of images on the stage
  */
 export default abstract class ImageStage implements IImageStage {
-  private _zoomAnimation: boolean = false;
+  private _zoomAnimationActive: boolean = false;
   protected _imageStage: HTMLElement;
   protected _imageHandle: HTMLElement;
 
@@ -45,7 +44,7 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   public setZoomAnimation(activate: boolean): void {
-    this._zoomAnimation = activate;
+    this._zoomAnimationActive = activate;
   }
 
   public reinitSize() {
@@ -56,12 +55,11 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   public async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
-    if (this._zoomAnimation) {
+    if (this._zoomAnimationActive) {
       setTimeout(() => {
         this._resetZoom();
       }, ANIMATIONS_RESET_TIMEOUT);
     }
-    this._stopSlideAnimation();
     await sleepTillNextRenderFinished();
     if (swipeDirection == ESwipeDirection.RIGHT) {
       addCssClass(this._imageStage, animationStyles.transition);
@@ -74,10 +72,9 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   public async showImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
-    if (this._zoomAnimation) {
+    if (this._zoomAnimationActive) {
       this._startZoomAnimation();
     }
-    this._stopSlideAnimation();
     await sleepTillNextRenderFinished();
     if (swipeDirection == ESwipeDirection.RIGHT) {
       removeCssClass(this._imageStage, animationStyles.transition);
@@ -124,9 +121,5 @@ export default abstract class ImageStage implements IImageStage {
   private _resetZoom() {
     console.log('ImageStage#resetZoom');
     removeCssClass(this._imageHandle, styles.img_stage__zoom);
-  }
-
-  private _stopSlideAnimation() {
-    addCssStyle(this._imageStage, 'margin-left', getComputedCssStyle(this._imageStage, 'margin-left'));
   }
 }

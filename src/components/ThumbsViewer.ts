@@ -140,7 +140,7 @@ export default class ThumbsViewer implements IThumbsViewer {
     const containerWidthRem = getElementDimension(this._wrapperElement).width / oneRemSize;
     const thumbsize = containerWidthRem / this._numberOfVisibleThumbs;
 
-    console.log('ThumbsWrapper#_calculateThumbsize - containerWidthRem: ', containerWidthRem);
+    console.log('ThumbsWrapper#_calculateThumbsize - containerWidthRem: ', containerWidthRem, thumbsize);
     return thumbsize;
   }
 
@@ -148,10 +148,13 @@ export default class ThumbsViewer implements IThumbsViewer {
     const innerSize: number = this._thumbSizeRem * 0.9;
     const margin: number = this._thumbSizeRem * 0.05;
 
+    console.log(`ThumbsViewer#_resizeThumbs - innerSize: ${innerSize}, margin: ${margin}`);
+
     for (let i = 0; i < this._thumbElements.length; ++i) {
       addCssStyle(this._thumbElements[i], 'width', `${innerSize}rem`);
       addCssStyle(this._thumbElements[i], 'height', `${innerSize}rem`);
-      addCssStyle(this._thumbElements[i], 'margin', `${margin}rem`);
+      addCssStyle(this._thumbElements[i], 'margin-left', `${margin}rem`);
+      addCssStyle(this._thumbElements[i], 'margin-right', `${margin}rem`);
     }
   }
 }

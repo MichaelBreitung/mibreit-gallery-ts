@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="copyright" content="Michael Breitung" />
+    <meta name="author" content="Michael Breitung" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ThumbScroller Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .content {
+        width: 60rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      mbg-thumbs {
+        opacity: 0;
+        height: 10rem;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/"><strong>Home</strong></a>
+    <div class="content">
+      <mbg-thumbscroller numberOfVisibleThumbs="5">
+        <mbg-thumbs>
+          <img
+            loading="lazy"
+            class="mibreit-LazyLoader_lazy"
+            src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg"
+            width="1280"
+            height="854"
+            alt="thumbnail"
+          />
+          <img
+            loading="lazy"
+            class="mibreit-LazyLoader_lazy"
+            src="https://www.mibreit-photo.com/galleries/favorites/images/Fantasia.jpg"
+            width="1280"
+            height="854"
+            alt="thumbnail"
+          />
+          <img
+            loading="lazy"
+            class="mibreit-LazyLoader_lazy"
+            src="https://www.mibreit-photo.com/galleries/favorites/images/Secret-Beach-Blues.jpg"
+            width="1280"
+            height="854"
+            alt="thumbnail"
+          />
+          <img
+            loading="lazy"
+            class="mibreit-LazyLoader_lazy"
+            src="https://www.mibreit-photo.com/galleries/favorites/images/Cuernos.jpg"
+            width="854"
+            height="1280"
+            alt="thumbnail"
+          />
+          <img
+            loading="lazy"
+            class="mibreit-LazyLoader_lazy"
+            src="https://www.mibreit-photo.com/galleries/favorites/images/Revelation.jpg"
+            width="1280"
+            height="854"
+            alt="thumbnail"
+          />
+          <img
+            loading="lazy"
+            class="mibreit-LazyLoader_lazy"
+            src="https://www.mibreit-photo.com/galleries/favorites/images/Stubai-Mountains.jpg"
+            width="1280"
+            height="854"
+            alt="thumbnail"
+          />
+        </mbg-thumbs>
+      </mbg-thumbscroller>
+    </div>
+  </body>
+
+  <script type="module" src="/src/index.wc.ts"></script>
+</html>

@@ -29,6 +29,8 @@ beforeAll(async () => {
     script.textContent = code;
     document.head.appendChild(script);
   }, iifeGalleryScript);
+
+  page.on('console', (message) => console.log('Console: ', message.text()));
 });
 
 afterAll(async () => {
@@ -104,6 +106,9 @@ describe('Web Component Gallery Test Suite', () => {
       })
     );
     const thumbSize = thumbsViewerWidth / numberOfVisibleThumbs / 16;
+
+    // we wait for fade animation to complete
+    await sleep(1000);
 
     const imageStagesStyles = await page.evaluate(() => {
       let styles = new Array();

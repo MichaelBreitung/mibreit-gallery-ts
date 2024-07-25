@@ -7,6 +7,10 @@ mbg-title {
   overflow: hidden;
   display: block;
 }
+mbg-images,
+mbg-thumbs {
+  opacity: 0;
+}
 mbg-title {
   text-align: center;
 }

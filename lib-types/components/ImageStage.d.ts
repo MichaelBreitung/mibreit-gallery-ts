@@ -9,7 +9,7 @@ import { ESwipeDirection } from './SwipeHandler';
  * of images on the stage
  */
 export default abstract class ImageStage implements IImageStage {
-    private _zoomAnimation;
+    private _zoomAnimationActive;
     protected _imageStage: HTMLElement;
     protected _imageHandle: HTMLElement;
     constructor(imageHandle: HTMLElement);
@@ -22,5 +22,4 @@ export default abstract class ImageStage implements IImageStage {
     private _centerImage;
     private _startZoomAnimation;
     private _resetZoom;
-    private _stopSlideAnimation;
 }

@@ -29,7 +29,6 @@ export default class SlideshowBuilder {
   constructor(imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
     const images = this._createImagesArray(imageElements);
     this._lazyLoader = this._createLoader(images, config?.preloaderBeforeSize, config?.preloaderAfterSize);
-    this._lazyLoader.setCurrentIndex(0);
     this._imageViewer = this._createImageViewer(images, config?.scaleMode, config?.zoom);
 
     if (config?.interval) {
