@@ -62,7 +62,7 @@ class MibreitSlideshowElement extends HTMLElement {
       scaleMode: EImageScaleMode.FIT_ASPECT,
       preloaderBeforeSize: preloaderBeforeSize ? +preloaderBeforeSize : undefined,
       preloaderAfterSize: preloaderAfterSize ? +preloaderAfterSize : undefined,
-      interval: interval ? +interval : undefined,
+      interval: interval ? +interval : 4000,
       zoom: zoom ? true : undefined,
     });
   }
