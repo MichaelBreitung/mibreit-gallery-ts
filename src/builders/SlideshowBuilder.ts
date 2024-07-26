@@ -28,7 +28,7 @@ export default class SlideshowBuilder {
 
   constructor(imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
     const images = this._createImagesArray(imageElements);
-    this._lazyLoader = this._createLoader(images, config?.preloaderBeforeSize, config?.preloaderAfterSize);
+    this._lazyLoader = this._createLoader(images, config?.loaderWindowLeft, config?.loaderWindowRight);
     this._imageViewer = this._createImageViewer(images, config?.scaleMode, config?.zoom);
 
     if (config?.interval) {
@@ -55,10 +55,10 @@ export default class SlideshowBuilder {
 
   private _createLoader(
     images: Array<Image>,
-    preloaderBeforeSize: number = PRELOADER_LEFT_SIZE,
-    preloaderAfterSize: number = PRELOADER_RIGHT_SIZE
+    loaderWindowLeft: number = PRELOADER_LEFT_SIZE,
+    loaderWindowRight: number = PRELOADER_RIGHT_SIZE
   ): ILazyLoader {
-    const lazyLoader = new LazyLoader(images, preloaderBeforeSize, preloaderAfterSize);
+    const lazyLoader = new LazyLoader(images, loaderWindowLeft, loaderWindowRight);
     setTimeout(() => {
       lazyLoader.loadElement(0);
       lazyLoader.setCurrentIndex(0);

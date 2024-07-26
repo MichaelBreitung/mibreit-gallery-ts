@@ -73,7 +73,6 @@ export default class ThumbsScrollerBuilder {
   }
 
   public build(): IThumbsViewer {
-    this._thumbsViewer.reinitSize();
     if (this._previousButtonElement && this._nextButtonElement) {
       this._addThumbsViewerInteraction(this._previousButtonElement, this._nextButtonElement);
     }

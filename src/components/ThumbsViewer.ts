@@ -37,6 +37,7 @@ export default class ThumbsViewer implements IThumbsViewer {
     this._wrapperElement = this._wrapThumbs(getChildNodes(container));
     this._thumbSizeRem = this._calculateThumbsize();
     this._resizeThumbs();
+    
 
     console.log(
       'ThumbsViewer#constructor - thumbSizeRem = ',
@@ -52,16 +53,10 @@ export default class ThumbsViewer implements IThumbsViewer {
     }
 
     const resizeObserver = new ResizeObserver(() => {
-      this.reinitSize();
+      this._reinitSize();
     });
 
     resizeObserver.observe(this._wrapperElement);
-  }
-
-  reinitSize() {
-    this._thumbSizeRem = this._calculateThumbsize();
-    this._resizeThumbs();
-    this.setCenterThumb(this._currentScrollIndex, false);
   }
 
   setCenterThumb(index: number, useCenterIndex: boolean = true): void {
@@ -114,6 +109,12 @@ export default class ThumbsViewer implements IThumbsViewer {
     }
   }
 
+  private _reinitSize() {
+    this._thumbSizeRem = this._calculateThumbsize();
+    this._resizeThumbs();
+    this.setCenterThumb(this._currentScrollIndex, false);
+  }
+
   private _normalizeIndex(index: number): number {
     const maxPos = this._thumbElements.length - this._numberOfVisibleThumbs;
     if (index >= maxPos) {
@@ -156,5 +157,7 @@ export default class ThumbsViewer implements IThumbsViewer {
       addCssStyle(this._thumbElements[i], 'margin-left', `${margin}rem`);
       addCssStyle(this._thumbElements[i], 'margin-right', `${margin}rem`);
     }
+
+    addCssStyle(this._wrapperElement, 'height', `${this._thumbSizeRem * 1.1}rem`);
   }
 }

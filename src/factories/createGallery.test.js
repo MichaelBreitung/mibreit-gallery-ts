@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { createGallery } from '../src/index';
+import { createGallery } from './createGallery';
 
 describe('Gallery Creation Test Suite', () => {
   test('create fails for invalid selectors', async () => {

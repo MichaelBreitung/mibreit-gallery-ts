@@ -17,8 +17,8 @@ export type SlideshowConfig = {
     scaleMode?: EImageScaleMode;
     interval?: number;
     zoom?: boolean;
-    preloaderBeforeSize?: number;
-    preloaderAfterSize?: number;
+    loaderWindowLeft?: number;
+    loaderWindowRight?: number;
 };
 export declare function checkSlideshowConfig(config: SlideshowConfig): void;
 export type GalleryConfig = SlideshowConfig & ThumbScrollerConfig & {

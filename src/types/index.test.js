@@ -59,24 +59,24 @@ describe('Config Test Test Suite', () => {
     expect(() => checkSlideshowConfig({ zoom: true })).not.toThrowError();
   });
 
-  it('checkSlideshowConfig fails for invalid preloaderAfterSize', async () => {
-    expect(() => checkSlideshowConfig({ preloaderAfterSize: 'invalid' })).toThrowError();
+  it('checkSlideshowConfig fails for invalid loaderWindowRight', async () => {
+    expect(() => checkSlideshowConfig({ loaderWindowRight: 'invalid' })).toThrowError();
 
-    expect(() => checkSlideshowConfig({ preloaderAfterSize: -1 })).toThrowError();
+    expect(() => checkSlideshowConfig({ loaderWindowRight: -1 })).toThrowError();
   });
 
-  it('checkSlideshowConfig succeeds for valid preloaderAfterSize', async () => {
-    expect(() => checkSlideshowConfig({ preloaderAfterSize: 0 })).not.toThrowError();
+  it('checkSlideshowConfig succeeds for valid loaderWindowRight', async () => {
+    expect(() => checkSlideshowConfig({ loaderWindowRight: 0 })).not.toThrowError();
   });
 
-  it('checkSlideshowConfig fails for invalid preloaderBeforeSize', async () => {
-    expect(() => checkSlideshowConfig({ preloaderBeforeSize: 'invalid' })).toThrowError();
+  it('checkSlideshowConfig fails for invalid loaderWindowLeft', async () => {
+    expect(() => checkSlideshowConfig({ loaderWindowLeft: 'invalid' })).toThrowError();
 
-    expect(() => checkSlideshowConfig({ preloaderBeforeSize: -1 })).toThrowError();
+    expect(() => checkSlideshowConfig({ loaderWindowLeft: -1 })).toThrowError();
   });
 
-  it('checkSlideshowConfig succeeds for valid preloaderBeforeSize', async () => {
-    expect(() => checkSlideshowConfig({ preloaderBeforeSize: 0 })).not.toThrowError();
+  it('checkSlideshowConfig succeeds for valid loaderWindowLeft', async () => {
+    expect(() => checkSlideshowConfig({ loaderWindowLeft: 0 })).not.toThrowError();
   });
 
   it('checkGalleryConfig fails for invalid thumbContainerSelector', async () => {

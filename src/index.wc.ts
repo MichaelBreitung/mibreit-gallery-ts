@@ -33,8 +33,8 @@ class MibreitGalleryElement extends HTMLElement {
     const customClass = `mbg__custom-gallery-${MibreitGalleryElement.classCounter++}`;
     this.classList.add(customClass);
     const numberOfVisibleThumbs = this.getAttribute('numberOfVisibleThumbs');
-    const preloaderBeforeSize = this.getAttribute('preloaderBeforeSize');
-    const preloaderAfterSize = this.getAttribute('preloaderAfterSize');
+    const loaderWindowLeft = this.getAttribute('loaderWindowLeft');
+    const loaderWindowRight = this.getAttribute('loaderWindowRight');
     const interval = this.getAttribute('interval');
     const zoom = this.hasAttribute('zoom');
     const containerSelector = `.${customClass} mbg-images`;
@@ -44,8 +44,8 @@ class MibreitGalleryElement extends HTMLElement {
       thumbContainerSelector,
       thumbSelector: `${thumbContainerSelector} img`,
       numberOfVisibleThumbs: numberOfVisibleThumbs ? +numberOfVisibleThumbs : undefined,
-      preloaderBeforeSize: preloaderBeforeSize ? +preloaderBeforeSize : undefined,
-      preloaderAfterSize: preloaderAfterSize ? +preloaderAfterSize : undefined,
+      loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
+      loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
       interval: interval ? +interval : undefined,
       zoom: zoom ? true : undefined,
     });
@@ -71,15 +71,15 @@ class MibreitSlideshowElement extends HTMLElement {
   connectedCallback() {
     const customClass = `mbg__custom-slideshow-${MibreitGalleryElement.classCounter++}`;
     this.classList.add(customClass);
-    const preloaderBeforeSize = this.getAttribute('preloaderBeforeSize');
-    const preloaderAfterSize = this.getAttribute('preloaderAfterSize');
+    const loaderWindowLeft = this.getAttribute('loaderWindowLeft');
+    const loaderWindowRight = this.getAttribute('loaderWindowRight');
     const interval = this.getAttribute('interval');
     const zoom = this.hasAttribute('zoom');
     const containerSelector = `.${customClass} mbg-images`;
     createSlideshow(`${containerSelector} img`, {
       scaleMode: EImageScaleMode.FIT_ASPECT,
-      preloaderBeforeSize: preloaderBeforeSize ? +preloaderBeforeSize : undefined,
-      preloaderAfterSize: preloaderAfterSize ? +preloaderAfterSize : undefined,
+      loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
+      loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
       interval: interval ? +interval : 4000,
       zoom: zoom ? true : undefined,
     });

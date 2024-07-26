@@ -15,8 +15,8 @@ const gallerySetupCode = `
     thumbContainerSelector: '#thumbContainer',
     thumbSelector: '#thumbContainer > img',
     numberOfVisibleThumbs: 7,
-    preloaderBeforeSize: 1,
-    preloaderAfterSize: 2,
+    loaderWindowLeft: 1,
+    loaderWindowRight: 2,
   });
   `;
 const containerWidthPx = 40 * 16;
