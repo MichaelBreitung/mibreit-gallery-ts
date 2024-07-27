@@ -18,7 +18,7 @@ export type ThumbScrollerConfig = {
 export function checkThumbScrollerConfig(config: ThumbScrollerConfig) {
   if (
     typeof config.numberOfVisibleThumbs !== 'undefined' &&
-    (typeof config.numberOfVisibleThumbs !== 'number' || config.numberOfVisibleThumbs < 0)
+    (typeof config.numberOfVisibleThumbs !== 'number' || config.numberOfVisibleThumbs < 1)
   ) {
     throw new Error('checkThumbScrollerConfig - numberOfVisibleThumbs is invalid number');
   }
