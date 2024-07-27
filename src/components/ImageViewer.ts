@@ -17,16 +17,19 @@ import IImageInfo from '../interfaces/IImageInfo';
 // types
 import { ESwipeDirection } from './SwipeHandler';
 import { EImageScaleMode } from '../types';
+import { ILazyLoader } from 'mibreit-lazy-loader/lib-types';
 
 export default class ImageViewer implements IImageViewer {
   private _currentIndex: number = -1;
   private _delayedNewIndex: number = -1;
   private _imageStages: Array<IImageStage> = [];
   private _images: Array<Image>;
+  private _lazyLoader: ILazyLoader;
   private _imageChangedCallbacks: Array<(index: number, imageInfo: IImageInfo) => void> = new Array();
 
-  constructor(images: Array<Image>, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {
+  constructor(images: Array<Image>, loader: ILazyLoader, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {
     this._images = images;
+    this._lazyLoader = loader;
     this._prepareImageStages(images, scaleMode);
   }
 
@@ -84,6 +87,7 @@ export default class ImageViewer implements IImageViewer {
     console.log('ImageViewer#_showImage', index);
     if (this._isValidIndex(index)) {
       if (index != this._currentIndex) {
+        this._lazyLoader.setCurrentIndex(index);
         if (!this._images[index]!.wasLoaded()) {
           console.log('ImageViewer#_showImage - not yet loaded');
           this._delayedNewIndex = index;

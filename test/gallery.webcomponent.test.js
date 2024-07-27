@@ -132,14 +132,16 @@ describe('Web Component Gallery Test Suite', () => {
 
     expect(imageStagesStyles.length).toBe(7);
 
-    imageStagesStyles.forEach((style) => {
+    imageStagesStyles.forEach((style, index) => {
       expect(style.width).toBe(`${thumbSize * 0.9}rem`);
       expect(style.height).toBe(`${thumbSize * 0.9}rem`);
       expect(style.marginLeft).toBe(`${thumbSize * 0.05}rem`);
       expect(style.marginRight).toBe(`${thumbSize * 0.05}rem`);
       expect(style.overflow).toBe('hidden');
       expect(style.position).toBe('relative');
-      expect(Number(style.opacity)).toBe(1);
+      if (index < numberOfVisibleThumbs) {
+        expect(Number(style.opacity)).toBe(1);
+      }
     });
   });
 });

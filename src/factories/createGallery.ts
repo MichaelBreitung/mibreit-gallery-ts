@@ -14,6 +14,7 @@ import IGallery from '../interfaces/IGallery';
 import { checkGalleryConfig, GalleryConfig } from '../types';
 
 export default function (containerSelector: string, imageSelector: string, config?: GalleryConfig): IGallery {
+  console.log('createGallery', config);
   if (typeof containerSelector !== 'string') {
     throw new Error('createGallery - first parameter must be containerSelector string');
   }

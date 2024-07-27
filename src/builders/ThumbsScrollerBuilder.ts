@@ -61,7 +61,7 @@ export default class ThumbsScrollerBuilder {
     this._numberOfThumbs = thumbs.length;
     this._createThumbStages(thumbs, thumbClickedCallback);
 
-    this._lazyLoader = new LazyLoader(thumbs, this._numberOfVisibleThumbs, this._numberOfVisibleThumbs);
+    this._lazyLoader = new LazyLoader(thumbs, 0, this._numberOfVisibleThumbs - 1);
     this._thumbsViewer = this._createThumbsViewer(this._initialIndex);
   }
 
@@ -73,7 +73,6 @@ export default class ThumbsScrollerBuilder {
   }
 
   public build(): IThumbsViewer {
-    this._thumbsViewer.reinitSize();
     if (this._previousButtonElement && this._nextButtonElement) {
       this._addThumbsViewerInteraction(this._previousButtonElement, this._nextButtonElement);
     }

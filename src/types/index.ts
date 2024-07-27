@@ -18,7 +18,7 @@ export type ThumbScrollerConfig = {
 export function checkThumbScrollerConfig(config: ThumbScrollerConfig) {
   if (
     typeof config.numberOfVisibleThumbs !== 'undefined' &&
-    (typeof config.numberOfVisibleThumbs !== 'number' || config.numberOfVisibleThumbs < 0)
+    (typeof config.numberOfVisibleThumbs !== 'number' || config.numberOfVisibleThumbs < 1)
   ) {
     throw new Error('checkThumbScrollerConfig - numberOfVisibleThumbs is invalid number');
   }
@@ -34,8 +34,8 @@ export type SlideshowConfig = {
   scaleMode?: EImageScaleMode;
   interval?: number;
   zoom?: boolean;
-  preloaderBeforeSize?: number;
-  preloaderAfterSize?: number;
+  loaderWindowLeft?: number;
+  loaderWindowRight?: number;
 };
 
 export function checkSlideshowConfig(config: SlideshowConfig) {
@@ -52,16 +52,16 @@ export function checkSlideshowConfig(config: SlideshowConfig) {
     throw new Error('checkSlideshowConfig - config zoom should be of type boolean');
   }
   if (
-    typeof config.preloaderAfterSize !== 'undefined' &&
-    (typeof config.preloaderAfterSize !== 'number' || config.preloaderAfterSize < 0)
+    typeof config.loaderWindowRight !== 'undefined' &&
+    (typeof config.loaderWindowRight !== 'number' || config.loaderWindowRight < 0)
   ) {
-    throw new Error('checkSlideshowConfig - config preloaderAfterSize should be of type number');
+    throw new Error('checkSlideshowConfig - config loaderWindowRight should be of type number');
   }
   if (
-    typeof config.preloaderBeforeSize !== 'undefined' &&
-    (typeof config.preloaderBeforeSize !== 'number' || config.preloaderBeforeSize < 0)
+    typeof config.loaderWindowLeft !== 'undefined' &&
+    (typeof config.loaderWindowLeft !== 'number' || config.loaderWindowLeft < 0)
   ) {
-    throw new Error('checkSlideshowConfig - config preloaderBeforeSize should be of type number');
+    throw new Error('checkSlideshowConfig - config loaderWindowLeft should be of type number');
   }
 }
 

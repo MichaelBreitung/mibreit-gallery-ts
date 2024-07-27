@@ -72,8 +72,8 @@ The gallery exposes three _create_ methods.
     ```
     - **interval?**: number - _optional_ interval for automatic image change in milliseconds
     - **zoom?**: boolean - _optional_ boolean to activate zoom effect
-    - **preloaderBeforeSize?**: number - _optional_ specifies the number of elements to lazy load before the current index (_default is 3_)
-    - **preloaderAfterSize?**: number - _optional_ specifies the number of elements to lazy load after the current index (_default is 7_)
+    - **loaderWindowLeft?**: number - _optional_ specifies the number of elements to lazy load before the current index (_default is 3_)
+    - **loaderWindowRight?**: number - _optional_ specifies the number of elements to lazy load after the current index (_default is 7_)
 
 - **createThumbsViewer(containerSelector: string, thumbSelector: string, config?: ThumbScrollerConfig, thumbClickedCallback?: (index: number) => void)** - Creates a thumb scroller for a set of images.
 

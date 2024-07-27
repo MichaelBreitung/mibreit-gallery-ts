@@ -10,7 +10,5 @@ export default interface IThumbsViewer {
 
   scrollNext(): void;
 
-  reinitSize(): void;
-
   addScrollIndexChangedCallback(callback: (index: number) => void): void;
 }

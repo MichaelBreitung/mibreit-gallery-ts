@@ -16,8 +16,17 @@ import {
   EImageScaleMode,
 } from './index';
 import { addCssClass, addCssStyle, getElement } from 'mibreit-dom-tools';
+import IGallery from './interfaces/IGallery';
 
 export { createGallery, createFullscreenOnlyGallery, createThumbsScroller, createSlideshow, EImageScaleMode };
+
+declare global {
+  interface Window {
+    mbgGalleryObjects: Array<IGallery>;
+  }
+}
+
+window.mbgGalleryObjects = new Array();
 
 function showDiv(divSelector: string) {
   const div = getElement(divSelector);
@@ -26,15 +35,15 @@ function showDiv(divSelector: string) {
     addCssStyle(div, 'opacity', '1');
   }
 }
-
 class MibreitGalleryElement extends HTMLElement {
   static classCounter = 0;
+
   connectedCallback() {
     const customClass = `mbg__custom-gallery-${MibreitGalleryElement.classCounter++}`;
     this.classList.add(customClass);
     const numberOfVisibleThumbs = this.getAttribute('numberOfVisibleThumbs');
-    const preloaderBeforeSize = this.getAttribute('preloaderBeforeSize');
-    const preloaderAfterSize = this.getAttribute('preloaderAfterSize');
+    const loaderWindowLeft = this.getAttribute('loaderWindowLeft');
+    const loaderWindowRight = this.getAttribute('loaderWindowRight');
     const interval = this.getAttribute('interval');
     const zoom = this.hasAttribute('zoom');
     const containerSelector = `.${customClass} mbg-images`;
@@ -44,11 +53,13 @@ class MibreitGalleryElement extends HTMLElement {
       thumbContainerSelector,
       thumbSelector: `${thumbContainerSelector} img`,
       numberOfVisibleThumbs: numberOfVisibleThumbs ? +numberOfVisibleThumbs : undefined,
-      preloaderBeforeSize: preloaderBeforeSize ? +preloaderBeforeSize : undefined,
-      preloaderAfterSize: preloaderAfterSize ? +preloaderAfterSize : undefined,
+      loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
+      loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
       interval: interval ? +interval : undefined,
       zoom: zoom ? true : undefined,
     });
+
+    window.mbgGalleryObjects.push(gallery);
 
     const titleElement = document.querySelector('mbg-title');
     if (titleElement) {
@@ -71,15 +82,16 @@ class MibreitSlideshowElement extends HTMLElement {
   connectedCallback() {
     const customClass = `mbg__custom-slideshow-${MibreitGalleryElement.classCounter++}`;
     this.classList.add(customClass);
-    const preloaderBeforeSize = this.getAttribute('preloaderBeforeSize');
-    const preloaderAfterSize = this.getAttribute('preloaderAfterSize');
+    const loaderWindowLeft = this.getAttribute('loaderWindowLeft');
+    const loaderWindowRight = this.getAttribute('loaderWindowRight');
     const interval = this.getAttribute('interval');
     const zoom = this.hasAttribute('zoom');
+    const expand = this.hasAttribute('expand');
     const containerSelector = `.${customClass} mbg-images`;
     createSlideshow(`${containerSelector} img`, {
-      scaleMode: EImageScaleMode.FIT_ASPECT,
-      preloaderBeforeSize: preloaderBeforeSize ? +preloaderBeforeSize : undefined,
-      preloaderAfterSize: preloaderAfterSize ? +preloaderAfterSize : undefined,
+      scaleMode: expand ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
+      loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
+      loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
       interval: interval ? +interval : 4000,
       zoom: zoom ? true : undefined,
     });

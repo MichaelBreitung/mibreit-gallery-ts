@@ -12,11 +12,11 @@ export default class ThumbsViewer implements IThumbsViewer {
     private _scrollIndexChangedCallbacks;
     private _currentScrollIndex;
     constructor(container: HTMLElement, numberOfVisibleThumbs: number);
-    reinitSize(): void;
     setCenterThumb(index: number, useCenterIndex?: boolean): void;
     scrollNext(): void;
     scrollPrevious(): void;
     addScrollIndexChangedCallback(callback: (index: number) => void): void;
+    private _reinitSize;
     private _normalizeIndex;
     private _wrapThumbs;
     private _calculateThumbsize;
