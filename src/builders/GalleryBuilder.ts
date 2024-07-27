@@ -114,6 +114,18 @@ export default class GalleryContainerBuilder {
             this._fullscreen.setBackgroundColor(color.rgb);
           }
         });
+
+        this._fullscreen.addChangedCallback((active: boolean) => {
+          if (active) {
+            const color = fastAverageColor.getColor(
+              imageViewer.getImageElement(imageViewer.getImageIndex()) as HTMLImageElement,
+              {
+                algorithm: 'sqrt',
+              }
+            );
+            this._fullscreen?.setBackgroundColor(color.rgb);
+          }
+        });
       }
     }
 
