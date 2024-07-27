@@ -16,8 +16,17 @@ import {
   EImageScaleMode,
 } from './index';
 import { addCssClass, addCssStyle, getElement } from 'mibreit-dom-tools';
+import IGallery from './interfaces/IGallery';
 
 export { createGallery, createFullscreenOnlyGallery, createThumbsScroller, createSlideshow, EImageScaleMode };
+
+declare global {
+  interface Window {
+    mbgGalleryObjects: Array<IGallery>;
+  }
+}
+
+window.mbgGalleryObjects = new Array();
 
 function showDiv(divSelector: string) {
   const div = getElement(divSelector);
@@ -26,9 +35,9 @@ function showDiv(divSelector: string) {
     addCssStyle(div, 'opacity', '1');
   }
 }
-
 class MibreitGalleryElement extends HTMLElement {
   static classCounter = 0;
+
   connectedCallback() {
     const customClass = `mbg__custom-gallery-${MibreitGalleryElement.classCounter++}`;
     this.classList.add(customClass);
@@ -49,6 +58,8 @@ class MibreitGalleryElement extends HTMLElement {
       interval: interval ? +interval : undefined,
       zoom: zoom ? true : undefined,
     });
+
+    window.mbgGalleryObjects.push(gallery);
 
     const titleElement = document.querySelector('mbg-title');
     if (titleElement) {
@@ -75,9 +86,10 @@ class MibreitSlideshowElement extends HTMLElement {
     const loaderWindowRight = this.getAttribute('loaderWindowRight');
     const interval = this.getAttribute('interval');
     const zoom = this.hasAttribute('zoom');
+    const expand = this.hasAttribute('expand');
     const containerSelector = `.${customClass} mbg-images`;
     createSlideshow(`${containerSelector} img`, {
-      scaleMode: EImageScaleMode.FIT_ASPECT,
+      scaleMode: expand ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
       loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
       loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
       interval: interval ? +interval : 4000,

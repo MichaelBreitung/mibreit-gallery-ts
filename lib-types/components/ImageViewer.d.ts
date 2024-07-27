@@ -7,13 +7,15 @@ import IImageViewer from '../interfaces/IImageViewer';
 import IImageInfo from '../interfaces/IImageInfo';
 import { ESwipeDirection } from './SwipeHandler';
 import { EImageScaleMode } from '../types';
+import { ILazyLoader } from 'mibreit-lazy-loader/lib-types';
 export default class ImageViewer implements IImageViewer {
     private _currentIndex;
     private _delayedNewIndex;
     private _imageStages;
     private _images;
+    private _lazyLoader;
     private _imageChangedCallbacks;
-    constructor(images: Array<Image>, scaleMode?: EImageScaleMode);
+    constructor(images: Array<Image>, loader: ILazyLoader, scaleMode?: EImageScaleMode);
     showImage(index: number): boolean;
     showNextImage(swipeDirection?: ESwipeDirection): boolean;
     showPreviousImage(swipeDirection?: ESwipeDirection): boolean;

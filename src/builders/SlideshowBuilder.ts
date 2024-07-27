@@ -9,7 +9,6 @@ import ImageViewer from '../components/ImageViewer';
 import Slideshow from '../containers/Slideshow';
 
 // interfaces
-import IImageInfo from '../interfaces/IImageInfo';
 import IImageViewer from '../interfaces/IImageViewer';
 import ISlideshow from '../interfaces/ISlideshow';
 
@@ -67,14 +66,10 @@ export default class SlideshowBuilder {
   }
 
   private _createImageViewer(images: Array<Image>, scaleMode?: EImageScaleMode, zoom?: boolean): IImageViewer {
-    const imageViewer = new ImageViewer(images, scaleMode);
+    const imageViewer = new ImageViewer(images, this._lazyLoader, scaleMode);
     if (zoom !== undefined) {
       imageViewer.setZoomAnimation(zoom);
     }
-
-    imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-      this._lazyLoader.setCurrentIndex(index);
-    });
 
     return imageViewer;
   }
