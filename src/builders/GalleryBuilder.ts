@@ -110,6 +110,7 @@ export default class GalleryContainerBuilder {
           if (this._fullscreen?.isActive()) {
             const color = fastAverageColor.getColor(imageViewer.getImageElement(index) as HTMLImageElement, {
               algorithm: 'sqrt',
+              silent: true,
             });
             this._fullscreen.setBackgroundColor(color.rgb);
           }
