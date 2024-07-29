@@ -2,6 +2,8 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
+import { addCssClass, removeCssClass } from 'mibreit-dom-tools';
+import { ILazyLoader } from 'mibreit-lazy-loader';
 
 import Image from './Image';
 import ImageStageFitAspect from '../components/ImageStageFitAspect';
@@ -17,7 +19,9 @@ import IImageInfo from '../interfaces/IImageInfo';
 // types
 import { ESwipeDirection } from './SwipeHandler';
 import { EImageScaleMode } from '../types';
-import { ILazyLoader } from 'mibreit-lazy-loader/lib-types';
+
+// styles
+import styles from './ImageViewer.module.css';
 
 export default class ImageViewer implements IImageViewer {
   private _currentIndex: number = -1;
@@ -29,6 +33,9 @@ export default class ImageViewer implements IImageViewer {
 
   constructor(images: Array<Image>, loader: ILazyLoader, scaleMode: EImageScaleMode = EImageScaleMode.FIT_ASPECT) {
     this._images = images;
+    images.forEach((image) => {
+      addCssClass(image.getHtmlElement(), styles.hidden);
+    });
     this._lazyLoader = loader;
     this._prepareImageStages(images, scaleMode);
   }
@@ -87,6 +94,7 @@ export default class ImageViewer implements IImageViewer {
     console.log('ImageViewer#_showImage', index);
     if (this._isValidIndex(index)) {
       if (index != this._currentIndex) {
+        removeCssClass(this._images[index].getHtmlElement(), styles.hidden);
         this._lazyLoader.setCurrentIndex(index);
         if (!this._images[index]!.wasLoaded()) {
           console.log('ImageViewer#_showImage - not yet loaded');

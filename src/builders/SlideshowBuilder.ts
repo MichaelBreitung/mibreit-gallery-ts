@@ -30,13 +30,14 @@ export default class SlideshowBuilder {
     this._lazyLoader = this._createLoader(images, config?.loaderWindowLeft, config?.loaderWindowRight);
     this._imageViewer = this._createImageViewer(images, config?.scaleMode, config?.zoom);
 
+    this._loadInitialImages();
+    this._imageViewer.showImage(0);
+
     if (config?.interval) {
       setInterval(() => {
         this._imageViewer.showNextImage();
       }, config.interval);
     }
-
-    this._imageViewer.showImage(0);
   }
 
   public build(): ISlideshow {
@@ -58,11 +59,15 @@ export default class SlideshowBuilder {
     loaderWindowRight: number = PRELOADER_RIGHT_SIZE
   ): ILazyLoader {
     const lazyLoader = new LazyLoader(images, loaderWindowLeft, loaderWindowRight);
-    setTimeout(() => {
-      lazyLoader.loadElement(0);
-      lazyLoader.setCurrentIndex(0);
-    }, 0);
+
     return lazyLoader;
+  }
+
+  private _loadInitialImages() {
+    setTimeout(() => {
+      this._lazyLoader.loadElement(0);
+      this._lazyLoader.setCurrentIndex(0);
+    }, 0);
   }
 
   private _createImageViewer(images: Array<Image>, scaleMode?: EImageScaleMode, zoom?: boolean): IImageViewer {

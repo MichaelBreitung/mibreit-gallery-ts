@@ -1,13 +1,9 @@
-/**
- * @author Michael Breitung
- * @copyright Michael Breitung Photography (www.mibreit-photo.com)
- */
+import { ILazyLoader } from 'mibreit-lazy-loader';
 import Image from './Image';
 import IImageViewer from '../interfaces/IImageViewer';
 import IImageInfo from '../interfaces/IImageInfo';
 import { ESwipeDirection } from './SwipeHandler';
 import { EImageScaleMode } from '../types';
-import { ILazyLoader } from 'mibreit-lazy-loader/lib-types';
 export default class ImageViewer implements IImageViewer {
     private _currentIndex;
     private _delayedNewIndex;
