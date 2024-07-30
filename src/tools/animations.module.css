@@ -1,8 +1,8 @@
 .fade {
-  -webkit-transition: opacity 750ms ease-out;
-  -moz-transition: opacity 750ms ease-out;
-  -o-transition: opacity 750ms ease-out;
-  transition: opacity 750ms ease-out;
+  -webkit-transition: opacity 500ms ease-out;
+  -moz-transition: opacity 500ms ease-out;
+  -o-transition: opacity 500ms ease-out;
+  transition: opacity 500ms ease-out;
 }
 .transition {
   -webkit-transition: all 750ms ease-out;

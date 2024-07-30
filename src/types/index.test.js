@@ -89,6 +89,16 @@ describe('Config Test Test Suite', () => {
     expect(() => checkGalleryConfig({ thumbContainerSelector: 'test' })).not.toThrowError();
   });
 
+  it('checkGalleryConfig fails for invalid initialImageNr', async () => {
+    expect(() => checkGalleryConfig({ initialImageNr: '1' })).toThrowError();
+
+    expect(() => checkGalleryConfig({ initialImageNr: -1 })).toThrowError();
+  });
+
+  it('checkGalleryConfig succeeds for valid initialImageNr', async () => {
+    expect(() => checkGalleryConfig({ initialImageNr: 0 })).not.toThrowError();
+  });
+
   it('checkGalleryConfig fails for invalid thumbSelector', async () => {
     expect(() => checkGalleryConfig({ thumbSelector: true })).toThrowError();
 

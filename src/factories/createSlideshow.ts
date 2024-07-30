@@ -22,7 +22,11 @@ export default function (imageSelector: string, config?: SlideshowConfig): ISlid
     if (config) {
       checkSlideshowConfig(config);
     }
-    return new SlideshowBuilder(elements, config).build();
+    const slideshow = new SlideshowBuilder(elements, config).build();
+
+    slideshow.getImageViewer().showImage(0);
+
+    return slideshow;
   } else {
     throw new Error('createSlideshow - no images selected');
   }

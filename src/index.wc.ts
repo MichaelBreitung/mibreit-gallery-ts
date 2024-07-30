@@ -44,6 +44,7 @@ class MibreitGalleryElement extends HTMLElement {
     const numberOfVisibleThumbs = this.getAttribute('numberOfVisibleThumbs');
     const loaderWindowLeft = this.getAttribute('loaderWindowLeft');
     const loaderWindowRight = this.getAttribute('loaderWindowRight');
+    const initialImageNr = this.getAttribute('initialImageNr');
     const interval = this.getAttribute('interval');
     const zoom = this.hasAttribute('zoom');
     const containerSelector = `.${customClass} mbg-images`;
@@ -55,6 +56,7 @@ class MibreitGalleryElement extends HTMLElement {
       numberOfVisibleThumbs: numberOfVisibleThumbs ? +numberOfVisibleThumbs : undefined,
       loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
       loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
+      initialImageNr: initialImageNr ? +initialImageNr : undefined,
       interval: interval ? +interval : undefined,
       zoom: zoom ? true : undefined,
     });

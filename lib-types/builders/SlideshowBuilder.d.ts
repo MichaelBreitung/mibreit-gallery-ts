@@ -11,6 +11,5 @@ export default class SlideshowBuilder {
     build(): ISlideshow;
     private _createImagesArray;
     private _createLoader;
-    private _loadInitialImages;
     private _createImageViewer;
 }

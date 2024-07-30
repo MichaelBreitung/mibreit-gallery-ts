@@ -44,7 +44,15 @@ export default function (containerSelector: string, imageSelector: string, confi
       }
     }
 
-    return builder.build();
+    const gallery = builder.build();
+
+    if (config?.initialImageNr) {
+      gallery.getImageViewer().showImage(config.initialImageNr);
+    } else {
+      gallery.getImageViewer().showImage(0);
+    }
+
+    return gallery;
   } else {
     throw new Error('createGallery - no images selected');
   }

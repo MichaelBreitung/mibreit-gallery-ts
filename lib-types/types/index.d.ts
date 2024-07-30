@@ -24,6 +24,7 @@ export declare function checkSlideshowConfig(config: SlideshowConfig): void;
 export type GalleryConfig = SlideshowConfig & ThumbScrollerConfig & {
     thumbContainerSelector?: string;
     thumbSelector?: string;
+    initialImageNr?: number;
 };
 export declare function checkGalleryConfig(config: GalleryConfig): void;
 export type FullscreenConfig = {

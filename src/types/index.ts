@@ -69,6 +69,7 @@ export type GalleryConfig = SlideshowConfig &
   ThumbScrollerConfig & {
     thumbContainerSelector?: string;
     thumbSelector?: string;
+    initialImageNr?: number;
   };
 
 export function checkGalleryConfig(config: GalleryConfig) {
@@ -81,6 +82,12 @@ export function checkGalleryConfig(config: GalleryConfig) {
   }
   if (typeof config.thumbSelector !== 'undefined' && typeof config.thumbSelector !== 'string') {
     throw new Error('checkGalleryConfig - invalid thumbSelector');
+  }
+  if (
+    typeof config.initialImageNr !== 'undefined' &&
+    (typeof config.initialImageNr !== 'number' || config.initialImageNr < 0)
+  ) {
+    throw new Error('checkGalleryConfig - invalid initialImageNr');
   }
 }
 
