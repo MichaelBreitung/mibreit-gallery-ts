@@ -198,13 +198,11 @@ export default class GalleryContainerBuilder {
     addCssStyle(this._slideshowContainerElement, 'touch-action', 'pinch-zoom pan-y');
 
     new SwipeHander(this._slideshowContainerElement, (direction: ESwipeDirection, position: TPosition) => {
-      const containerWidth: number = getElementDimension(this._slideshowContainerElement).width;
-      const containerPosX: number = getElementPosition(this._slideshowContainerElement).x;
-      if (direction === ESwipeDirection.LEFT) {
-        imageViewer.showPreviousImage(direction);
-      } else if (direction === ESwipeDirection.RIGHT) {
+      if (direction === ESwipeDirection.LEFT || direction === ESwipeDirection.RIGHT) {
         imageViewer.showNextImage(direction);
       } else {
+        const containerWidth: number = getElementDimension(this._slideshowContainerElement).width;
+        const containerPosX: number = getElementPosition(this._slideshowContainerElement).x;
         if (position.x - containerPosX > containerWidth / 2) {
           imageViewer.showNextImage();
         } else {

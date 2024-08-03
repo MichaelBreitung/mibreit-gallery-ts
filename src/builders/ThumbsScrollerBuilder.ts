@@ -16,6 +16,7 @@ import {
 import Image from '../components/Image';
 import ThumbsViewer from '../components/ThumbsViewer';
 import ThumbStage from '../components/ThumbStage';
+import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
 
 // Interfaces
 import IThumbsViewer from '../interfaces/IThumbsViewer';
@@ -83,6 +84,8 @@ export default class ThumbsScrollerBuilder {
         this._lazyLoader.setCurrentIndex(0);
         this._thumbsViewer.setCenterThumb(0);
       }, 0);
+    } else {
+      this._setupSwipeHandler();
     }
 
     return this._thumbsViewer;
@@ -146,6 +149,16 @@ export default class ThumbsScrollerBuilder {
     });
     addClickEventListener(previousButton, () => {
       this._thumbsViewer.scrollPrevious();
+    });
+  }
+
+  private _setupSwipeHandler() {
+    new SwipeHander(this._thumbContainerElement, (direction: ESwipeDirection, _position: TPosition) => {
+      if (direction === ESwipeDirection.RIGHT) {
+        this._thumbsViewer.scrollNext();
+      } else if (direction === ESwipeDirection.LEFT) {
+        this._thumbsViewer.scrollPrevious();
+      }
     });
   }
 }

@@ -21,4 +21,5 @@ export default class ThumbsScrollerBuilder {
     private _createThumbsViewer;
     private _createPreviousNextButtons;
     private _addThumbsViewerInteraction;
+    private _setupSwipeHandler;
 }
