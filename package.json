@@ -3,12 +3,12 @@
   "private": true,
   "version": "2.2.0",
   "type": "module",
-  "module": "lib/index.wc.js",
+  "module": "lib/index.js",
   "types": "lib-types",
   "scripts": {
     "dev": "vite",
     "test": "vitest run",
-    "build": "tsc --build --clean && tsc && vite build"
+    "build": "tsc --build --clean && tsc && node build/buildLib.js && node build/buildIffe.js"
   },
   "devDependencies": {
     "@rollup/plugin-strip": "^3.0.4",
