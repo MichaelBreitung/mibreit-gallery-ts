@@ -11,14 +11,13 @@ import animationStyles from './tools/animations.module.css';
 import {
   createGallery,
   createThumbsScroller,
-  createFullscreenOnlyGallery,
   createSlideshow,
   EImageScaleMode,
 } from './index';
 import { addCssClass, addCssStyle, getElement } from 'mibreit-dom-tools';
 import IGallery from './interfaces/IGallery';
 
-export { createGallery, createFullscreenOnlyGallery, createThumbsScroller, createSlideshow, EImageScaleMode };
+export *  from "./index";
 
 declare global {
   interface Window {
