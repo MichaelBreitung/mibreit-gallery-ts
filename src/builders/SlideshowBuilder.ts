@@ -5,8 +5,8 @@
 
 import { ILazyLoader, LazyLoader } from 'mibreit-lazy-loader';
 
-import ImageViewer from '../components/ImageViewer';
-import Slideshow from '../containers/Slideshow';
+import { ImageViewer } from '../components';
+import { Slideshow } from '../containers';
 
 // interfaces
 import IImageViewer from '../interfaces/IImageViewer';
@@ -15,8 +15,8 @@ import ISlideshow from '../interfaces/ISlideshow';
 // Types
 import { EImageScaleMode, SlideshowConfig } from '../types';
 
-// helpers
-import Image from '../components/Image';
+// components
+import { Image } from '../components';
 
 // constants
 import { PRELOADER_LEFT_SIZE, PRELOADER_RIGHT_SIZE } from '../constants';

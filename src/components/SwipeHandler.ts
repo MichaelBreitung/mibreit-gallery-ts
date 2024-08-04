@@ -4,14 +4,10 @@
  */
 
 import { addEventListener } from 'mibreit-dom-tools';
+import { TPosition } from '../types';
 
 const TRESHHOLD = 50;
 const MAXTIME = 700;
-
-export type TPosition = {
-  x: number;
-  y: number;
-};
 
 export enum ESwipeDirection {
   NONE,

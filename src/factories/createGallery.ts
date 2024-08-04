@@ -5,7 +5,7 @@
 
 import { addCssStyle, getElement, getElements } from 'mibreit-dom-tools';
 
-import GalleryBuilder from '../builders/GalleryBuilder';
+import { GalleryBuilder } from '../builders';
 
 // Interfaces
 import IGallery from '../interfaces/IGallery';

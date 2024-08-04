@@ -5,7 +5,7 @@
 
 import { getElements } from 'mibreit-dom-tools';
 
-import SlideshowBuilder from '../builders/SlideshowBuilder';
+import { SlideshowBuilder } from '../builders';
 
 // Types
 import { checkSlideshowConfig, SlideshowConfig } from '../types';

@@ -5,7 +5,7 @@
 
 import { getElement, getElements } from 'mibreit-dom-tools';
 
-import ThumbScrollerBuilder from '../builders/ThumbsScrollerBuilder';
+import { ThumbsScrollerBuilder } from '../builders';
 
 // Types
 import { ThumbScrollerConfig, checkThumbScrollerConfig } from '../types';
@@ -31,7 +31,9 @@ export default function (
   const container = getElement(containerSelector);
 
   if (container && elements?.length > 0) {
-    return new ThumbScrollerBuilder(container, elements, config, thumbClickedCallback).addPreviousNextButtons().build();
+    return new ThumbsScrollerBuilder(container, elements, config, thumbClickedCallback)
+      .addPreviousNextButtons()
+      .build();
   } else {
     throw new Error('createThumbsViewer - no images selected');
   }

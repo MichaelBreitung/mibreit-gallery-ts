@@ -3,6 +3,11 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
+export type TPosition = {
+  x: number;
+  y: number;
+};
+
 export enum EImageScaleMode {
   NONE,
   FIT_ASPECT,

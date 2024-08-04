@@ -13,10 +13,8 @@ import {
   setInnerHtml,
 } from 'mibreit-dom-tools';
 
-import Image from '../components/Image';
-import ThumbsViewer from '../components/ThumbsViewer';
-import ThumbStage from '../components/ThumbStage';
-import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
+import { Image, ThumbsViewer, ThumbStage, SwipeHandler, ESwipeDirection } from '../components';
+import { TPosition } from '../types';
 
 // Interfaces
 import IThumbsViewer from '../interfaces/IThumbsViewer';
@@ -153,7 +151,7 @@ export default class ThumbsScrollerBuilder {
   }
 
   private _setupSwipeHandler() {
-    new SwipeHander(this._thumbContainerElement, (direction: ESwipeDirection, _position: TPosition) => {
+    new SwipeHandler(this._thumbContainerElement, (direction: ESwipeDirection, _position: TPosition) => {
       if (direction === ESwipeDirection.RIGHT) {
         this._thumbsViewer.scrollNext();
       } else if (direction === ESwipeDirection.LEFT) {

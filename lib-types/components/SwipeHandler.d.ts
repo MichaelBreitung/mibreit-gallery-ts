@@ -2,10 +2,7 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-export type TPosition = {
-    x: number;
-    y: number;
-};
+import { TPosition } from '../types';
 export declare enum ESwipeDirection {
     NONE = 0,
     LEFT = 1,

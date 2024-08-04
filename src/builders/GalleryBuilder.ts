@@ -24,10 +24,10 @@ import {
 import SlideshowBuilder from './SlideshowBuilder';
 import ThumbScrollerBuilder from './ThumbsScrollerBuilder';
 
-import Gallery from '../containers/Gallery';
-import Fullscreen from '../components/Fullscreen';
+import { Gallery } from '../containers';
+import { Fullscreen } from '../components';
 
-import SwipeHander, { ESwipeDirection, TPosition } from '../components/SwipeHandler';
+import SwipeHander, { ESwipeDirection } from '../components/SwipeHandler';
 
 // interfaces
 import ISlideshow from '../interfaces/ISlideshow';
@@ -38,7 +38,7 @@ import IFullscreen from '../interfaces/IFullscreen';
 import IImageInfo from '../interfaces/IImageInfo';
 
 // types
-import { checkFullscreenConfig, FullscreenConfig, SlideshowConfig, ThumbScrollerConfig } from '../types';
+import { checkFullscreenConfig, FullscreenConfig, SlideshowConfig, ThumbScrollerConfig, TPosition } from '../types';
 
 // images
 import nextImageSvg from '../images/nextImage.svg';
