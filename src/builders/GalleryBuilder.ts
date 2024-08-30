@@ -198,7 +198,9 @@ export default class GalleryContainerBuilder {
     addCssStyle(this._slideshowContainerElement, 'touch-action', 'pinch-zoom pan-y');
 
     new SwipeHander(this._slideshowContainerElement, (direction: ESwipeDirection, position: TPosition) => {
-      if (direction === ESwipeDirection.LEFT || direction === ESwipeDirection.RIGHT) {
+      if (direction === ESwipeDirection.LEFT) {
+        imageViewer.showPreviousImage(direction);
+      } else if (direction === ESwipeDirection.RIGHT) {
         imageViewer.showNextImage(direction);
       } else {
         const containerWidth: number = getElementDimension(this._slideshowContainerElement).width;
