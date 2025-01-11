@@ -39,6 +39,7 @@ export type SlideshowConfig = {
   scaleMode?: EImageScaleMode;
   interval?: number;
   zoom?: boolean;
+  skew?: boolean;
   loaderWindowLeft?: number;
   loaderWindowRight?: number;
 };
@@ -55,6 +56,9 @@ export function checkSlideshowConfig(config: SlideshowConfig) {
   }
   if (typeof config.zoom !== 'undefined' && typeof config.zoom !== 'boolean') {
     throw new Error('checkSlideshowConfig - config zoom should be of type boolean');
+  }
+  if (typeof config.skew !== 'undefined' && typeof config.skew !== 'boolean') {
+    throw new Error('checkSlideshowConfig - config skew should be of type boolean');
   }
   if (
     typeof config.loaderWindowRight !== 'undefined' &&

@@ -64,6 +64,12 @@ export default class ImageViewer implements IImageViewer {
     });
   }
 
+  setSkewAnimation(active: boolean): void {
+    this._imageStages.forEach((stage) => {
+      stage.setSkewAnimation(active);
+    });
+  }
+
   addImageChangedCallback(callback: (index: number, imageInfo: IImageInfo) => void) {
     if (!this._imageChangedCallbacks.includes(callback)) {
       this._imageChangedCallbacks.push(callback);

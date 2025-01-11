@@ -18,3 +18,89 @@
   -o-transform: scale(1.125);
   transform: scale(1.125);
 }
+
+.img_stage__skew {
+  -webkit-animation: skewAnimation 10s linear;
+  -moz-animation: skewAnimation 10s linear;
+  -o-animation: skewAnimation 10s linear;
+  animation: skewAnimation 10s linear;
+}
+
+.img_stage__zoom_skew {
+  -webkit-animation: zoomSkewAnimation 10s linear;
+  -moz-animation: zoomSkewAnimation 10s linear;
+  -o-animation: zoomSkewAnimation 10s linear;
+  animation: zoomSkewAnimation 10s linear;
+}
+
+@-webkit-keyframes skewAnimation {
+  0% {
+    -webkit-transform: skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    -webkit-transform: skewX(3.5deg) scale(1.05);
+  }
+}
+
+@-moz-keyframes skewAnimation {
+  0% {
+    -moz-transform: skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    -moz-transform: skewX(3.5deg) scale(1.05);
+  }
+}
+
+@-o-keyframes skewAnimation {
+  0% {
+    -o-transform: skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    -o-transform: skewX(3.5deg) scale(1.05);
+  }
+}
+
+@keyframes skewAnimation {
+  0% {
+    transform: skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    transform: skewX(3.5deg) scale(1.05);
+  }
+}
+
+@-webkit-keyframes zoomSkewAnimation {
+  0% {
+    -webkit-transform: skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    -webkit-transform: skewX(3.5deg) scale(1.25);
+  }
+}
+
+@-moz-keyframes zoomSkewAnimation {
+  0% {
+    -moz-transform: skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    -moz-transform: skewX(3.5deg) scale(1.25);
+  }
+}
+
+@-o-keyframes zoomSkewAnimation {
+  0% {
+    -o-transform: skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    -o-transform: skewX(3.5deg) scale(1.25);
+  }
+}
+
+@keyframes zoomSkewAnimation {
+  0% {
+    transform: skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    transform: skewX(3.5deg) scale(1.25);
+  }
+}

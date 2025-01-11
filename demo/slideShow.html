@@ -9,7 +9,7 @@
     <style>
       #container {
         position: relative;
-        width: 960px;
+        width: 900px;
         height: 600px;
         margin-left: auto;
         margin-right: auto;
@@ -73,10 +73,30 @@
   </body>
   <script type="module">
     import { createSlideshow, EImageScaleMode } from '/src/index.ts';
-    createSlideshow('#container > img', {
+    let zoom = true;
+    let skew = true;
+    const slideShow = createSlideshow('#container > img', {
       scaleMode: EImageScaleMode.FIT_ASPECT,
       interval: 4000,
-      zoom: true,
+      zoom: zoom,
+      skew: skew,
     });
+    function toggleZoom() {
+      zoom = !zoom;
+      slideShow.getImageViewer().setZoomAnimation(zoom);
+    }
+    function toggleSkew() {
+      skew = !skew;
+      slideShow.getImageViewer().setSkewAnimation(skew);
+    }
+    const zoomButton = document.createElement('button');
+    zoomButton.textContent = 'Zoom';
+    zoomButton.addEventListener('click', toggleZoom);
+    document.body.appendChild(zoomButton);
+
+    const skewButton = document.createElement('button');
+    skewButton.textContent = 'Skew';
+    skewButton.addEventListener('click', toggleSkew);
+    document.body.appendChild(skewButton);
   </script>
 </html>

@@ -28,6 +28,7 @@ const ANIMATIONS_RESET_TIMEOUT = 1000;
  */
 export default abstract class ImageStage implements IImageStage {
   private _zoomAnimationActive: boolean = false;
+  private _skewAnimationActive: boolean = false;
   protected _imageStage: HTMLElement;
   protected _imageHandle: HTMLElement;
 
@@ -47,6 +48,10 @@ export default abstract class ImageStage implements IImageStage {
     this._zoomAnimationActive = activate;
   }
 
+  public setSkewAnimation(activate: boolean): void {
+    this._skewAnimationActive = activate;
+  }
+
   public reinitSize() {
     const stageDimension: TElementDimension = getElementDimension(this._imageStage);
     console.log('ImageStage#reinitSize - stageDimension: ', stageDimension);
@@ -55,11 +60,11 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   public async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
-    if (this._zoomAnimationActive) {
-      setTimeout(() => {
-        this._resetZoom();
-      }, ANIMATIONS_RESET_TIMEOUT);
-    }
+    setTimeout(() => {
+      this._resetZoom();
+      this._resetSkew();
+      this._resetZoomSkew();
+    }, ANIMATIONS_RESET_TIMEOUT);
     await sleepTillNextRenderFinished();
     if (swipeDirection == ESwipeDirection.RIGHT) {
       addCssClass(this._imageStage, animationStyles.transition);
@@ -72,17 +77,27 @@ export default abstract class ImageStage implements IImageStage {
   }
 
   public async showImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
-    if (this._zoomAnimationActive) {
-      this._startZoomAnimation();
+    if (swipeDirection === ESwipeDirection.NONE) {
+      if (this._zoomAnimationActive && this._skewAnimationActive) {
+        this._startZoomSkewAnimation();
+      } else {
+        if (this._zoomAnimationActive) {
+          this._startZoomAnimation();
+        }
+        if (this._skewAnimationActive) {
+          this._startSkewAnimation();
+        }
+      }
     }
+
     await sleepTillNextRenderFinished();
-    if (swipeDirection == ESwipeDirection.RIGHT) {
+    if (swipeDirection === ESwipeDirection.RIGHT) {
       removeCssClass(this._imageStage, animationStyles.transition);
       addCssStyle(this._imageStage, 'left', '100%');
       await sleepTillNextRenderFinished();
       addCssClass(this._imageStage, animationStyles.transition);
       removeCssStyle(this._imageStage, 'left');
-    } else if (swipeDirection == ESwipeDirection.LEFT) {
+    } else if (swipeDirection === ESwipeDirection.LEFT) {
       removeCssClass(this._imageStage, animationStyles.transition);
       addCssStyle(this._imageStage, 'left', '-100%');
       await sleepTillNextRenderFinished();
@@ -107,19 +122,41 @@ export default abstract class ImageStage implements IImageStage {
 
   private _centerImage(stageWidth: number, stageHeight: number) {
     const { width, height } = getElementDimension(this._imageHandle);
+
     const x: number = (width + stageWidth) / 2.0 - width;
     const y: number = (height + stageHeight) / 2.0 - height;
     addCssStyle(this._imageHandle, 'margin-left', `${x}px`);
     addCssStyle(this._imageHandle, 'margin-top', `${y}px`);
+    console.log('width', width, 'height', height, 'x', x, 'y', y);
   }
 
   private _startZoomAnimation() {
-    console.log('ImageStage#startZoomAnimation');
+    console.log('ImageStage#_startZoomAnimation');
     addCssClass(this._imageHandle, styles.img_stage__zoom);
   }
 
   private _resetZoom() {
-    console.log('ImageStage#resetZoom');
+    console.log('ImageStage#_resetZoom');
     removeCssClass(this._imageHandle, styles.img_stage__zoom);
+  }
+
+  private _startSkewAnimation() {
+    console.log('ImageStage#_startSkewAnimation');
+    addCssClass(this._imageHandle, styles.img_stage__skew);
+  }
+
+  private _resetSkew() {
+    console.log('ImageStage#_resetSkew');
+    removeCssClass(this._imageHandle, styles.img_stage__skew);
+  }
+
+  private _startZoomSkewAnimation() {
+    console.log('ImageStage#_startZoomSkewAnimation');
+    addCssClass(this._imageHandle, styles.img_stage__zoom_skew);
+  }
+
+  private _resetZoomSkew() {
+    console.log('ImageStage#_resetZoomSkew');
+    removeCssClass(this._imageHandle, styles.img_stage__zoom_skew);
   }
 }
