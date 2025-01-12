@@ -21,7 +21,6 @@ export default abstract class ImageStage implements IImageStage {
     showImage(swipeDirection?: ESwipeDirection): Promise<void>;
     protected abstract _applyScaleModeImpl(stageWidth: number, stageHeight: number): void;
     private _createStage;
-    private _centerImage;
     private _startZoomAnimation;
     private _resetZoom;
     private _startSkewAnimation;

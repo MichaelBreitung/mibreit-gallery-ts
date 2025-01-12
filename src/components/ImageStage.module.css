@@ -8,15 +8,21 @@
   overflow: hidden;
 }
 
+.img_stage img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 .img_stage__zoom {
-  -webkit-transition: transform 10000ms linear;
-  -moz-transition: transform 10000ms linear;
-  -o-transition: transform 10000ms linear;
-  transition: transform 10000ms linear;
-  -webkit-transform: scale(1.125);
-  -moz-transform: scale(1.125);
-  -o-transform: scale(1.125);
-  transform: scale(1.125);
+  -webkit-animation: zoomAnimation 10s linear;
+  -moz-animation: zoomAnimation 10s linear;
+  -o-animation: zoomAnimation 10s linear;
+  animation: zoomAnimation 10s linear;
 }
 
 .img_stage__skew {
@@ -33,74 +39,110 @@
   animation: zoomSkewAnimation 10s linear;
 }
 
-@-webkit-keyframes skewAnimation {
+@-webkit-keyframes zoomAnimation {
   0% {
-    -webkit-transform: skewX(-3.5deg) scale(1.05);
+    -webkit-transform: translate(-50%, -50%) scale(1);
   }
   100% {
-    -webkit-transform: skewX(3.5deg) scale(1.05);
+    -webkit-transform: translate(-50%, -50%) scale(1.25);
+  }
+}
+
+@-moz-keyframes zoomAnimation {
+  0% {
+    -moz-transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    -moz-transform: translate(-50%, -50%) scale(1.25);
+  }
+}
+
+@-o-keyframes zoomAnimation {
+  0% {
+    -o-transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    -o-transform: translate(-50%, -50%) scale(1.25);
+  }
+}
+
+@keyframes zoomAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+}
+
+@-webkit-keyframes skewAnimation {
+  0% {
+    -webkit-transform: translate(-50%, -50%) skewX(-3.5deg) scale(1.05);
+  }
+  100% {
+    -webkit-transform: translate(-50%, -50%) skewX(3.5deg) scale(1.05);
   }
 }
 
 @-moz-keyframes skewAnimation {
   0% {
-    -moz-transform: skewX(-3.5deg) scale(1.05);
+    -moz-transform: translate(-50%, -50%) skewX(-3.5deg) scale(1.05);
   }
   100% {
-    -moz-transform: skewX(3.5deg) scale(1.05);
+    -moz-transform: translate(-50%, -50%) skewX(3.5deg) scale(1.05);
   }
 }
 
 @-o-keyframes skewAnimation {
   0% {
-    -o-transform: skewX(-3.5deg) scale(1.05);
+    -o-transform: translate(-50%, -50%) skewX(-3.5deg) scale(1.05);
   }
   100% {
-    -o-transform: skewX(3.5deg) scale(1.05);
+    -o-transform: translate(-50%, -50%) skewX(3.5deg) scale(1.05);
   }
 }
 
 @keyframes skewAnimation {
   0% {
-    transform: skewX(-3.5deg) scale(1.05);
+    transform: translate(-50%, -50%) skewX(-3.5deg) scale(1.05);
   }
   100% {
-    transform: skewX(3.5deg) scale(1.05);
+    transform: translate(-50%, -50%) skewX(3.5deg) scale(1.05);
   }
 }
 
 @-webkit-keyframes zoomSkewAnimation {
   0% {
-    -webkit-transform: skewX(-3.5deg) scale(1.05);
+    -webkit-transform: translate(-50%, -50%) skewX(-3.5deg) scale(1.05);
   }
   100% {
-    -webkit-transform: skewX(3.5deg) scale(1.25);
+    -webkit-transform: translate(-50%, -50%) skewX(3.5deg) scale(1.25);
   }
 }
 
 @-moz-keyframes zoomSkewAnimation {
   0% {
-    -moz-transform: skewX(-3.5deg) scale(1.05);
+    -moz-transform: translate(-50%, -50%) skewX(-3.5deg) scale(1.05);
   }
   100% {
-    -moz-transform: skewX(3.5deg) scale(1.25);
+    -moz-transform: translate(-50%, -50%) skewX(3.5deg) scale(1.25);
   }
 }
 
 @-o-keyframes zoomSkewAnimation {
   0% {
-    -o-transform: skewX(-3.5deg) scale(1.05);
+    -o-transform: translate(-50%, -50%) skewX(-3.5deg) scale(1.05);
   }
   100% {
-    -o-transform: skewX(3.5deg) scale(1.25);
+    -o-transform: translate(-50%, -50%) skewX(3.5deg) scale(1.25);
   }
 }
 
 @keyframes zoomSkewAnimation {
   0% {
-    transform: skewX(-3.5deg) scale(1.05);
+    transform: translate(-50%, -50%) skewX(-3.5deg) scale(1.05);
   }
   100% {
-    transform: skewX(3.5deg) scale(1.25);
+    transform: translate(-50%, -50%) skewX(3.5deg) scale(1.25);
   }
 }

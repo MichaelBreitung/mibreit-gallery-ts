@@ -56,7 +56,6 @@ export default abstract class ImageStage implements IImageStage {
     const stageDimension: TElementDimension = getElementDimension(this._imageStage);
     console.log('ImageStage#reinitSize - stageDimension: ', stageDimension);
     this._applyScaleModeImpl(stageDimension.width, stageDimension.height);
-    this._centerImage(stageDimension.width, stageDimension.height);
   }
 
   public async hideImage(swipeDirection: ESwipeDirection = ESwipeDirection.NONE): Promise<void> {
@@ -118,16 +117,6 @@ export default abstract class ImageStage implements IImageStage {
     addCssClass(wrapper, animationStyles.fade);
     wrapElements([this._imageHandle], wrapper);
     return wrapper;
-  }
-
-  private _centerImage(stageWidth: number, stageHeight: number) {
-    const { width, height } = getElementDimension(this._imageHandle);
-
-    const x: number = (width + stageWidth) / 2.0 - width;
-    const y: number = (height + stageHeight) / 2.0 - height;
-    addCssStyle(this._imageHandle, 'margin-left', `${x}px`);
-    addCssStyle(this._imageHandle, 'margin-top', `${y}px`);
-    console.log('width', width, 'height', height, 'x', x, 'y', y);
   }
 
   private _startZoomAnimation() {
