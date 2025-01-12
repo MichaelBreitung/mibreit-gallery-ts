@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import svgImportPlugin from "./build/svgImportPluginVite";
+import svgImportPlugin from './build/svgImportPluginVite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,4 +18,8 @@ export default defineConfig({
     },
   },
   plugins: [svgImportPlugin()],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
 });
