@@ -108,23 +108,34 @@ export default class GalleryContainerBuilder {
         const imageViewer = this._slideshow.getImageViewer();
         imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
           if (this._fullscreen?.isActive()) {
-            const color = fastAverageColor.getColor(imageViewer.getImageElement(index) as HTMLImageElement, {
-              algorithm: 'sqrt',
-              silent: true,
-            });
-            this._fullscreen.setBackgroundColor(color.rgb);
+            try {
+              const color = fastAverageColor.getColor(imageViewer.getImageElement(index) as HTMLImageElement, {
+                algorithm: 'sqrt',
+                silent: true,
+              });
+              this._fullscreen.setBackgroundColor(color.rgb);
+            } catch (_e) {
+              // If the image is not loaded yet, we cannot get the average color
+              // This doesn't concern us though, so we ignore the error
+            }
           }
         });
 
         this._fullscreen.addChangedCallback((active: boolean) => {
           if (active) {
-            const color = fastAverageColor.getColor(
-              imageViewer.getImageElement(imageViewer.getImageIndex()) as HTMLImageElement,
-              {
-                algorithm: 'sqrt',
-              }
-            );
-            this._fullscreen?.setBackgroundColor(color.rgb);
+            try {
+              const color = fastAverageColor.getColor(
+                imageViewer.getImageElement(imageViewer.getImageIndex()) as HTMLImageElement,
+                {
+                  algorithm: 'sqrt',
+                  silent: true,
+                }
+              );
+              this._fullscreen?.setBackgroundColor(color.rgb);
+            } catch (_e) {
+              // If the image is not loaded yet, we cannot get the average color
+              // This doesn't concern us though, so we ignore the error
+            }
           }
         });
       }
