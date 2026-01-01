@@ -21,7 +21,7 @@ let page;
 
 beforeAll(async () => {
   console.log('thumbscroller beforeAll');
-  browser = await puppeteer.launch({ headless: true });
+  browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 });
 
 beforeEach(async () => {
