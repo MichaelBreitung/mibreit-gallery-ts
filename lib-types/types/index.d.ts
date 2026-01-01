@@ -21,7 +21,6 @@ export type SlideshowConfig = {
     scaleMode?: EImageScaleMode;
     interval?: number;
     zoom?: boolean;
-    skew?: boolean;
     loaderWindowLeft?: number;
     loaderWindowRight?: number;
 };

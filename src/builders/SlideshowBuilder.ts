@@ -28,7 +28,7 @@ export default class SlideshowBuilder {
   constructor(imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
     const images = this._createImagesArray(imageElements);
     this._lazyLoader = this._createLoader(images, config?.loaderWindowLeft, config?.loaderWindowRight);
-    this._imageViewer = this._createImageViewer(images, config?.scaleMode, config?.zoom, config?.skew);
+    this._imageViewer = this._createImageViewer(images, config?.scaleMode, config?.zoom);
 
     if (config?.interval) {
       setInterval(() => {
@@ -60,19 +60,11 @@ export default class SlideshowBuilder {
     return lazyLoader;
   }
 
-  private _createImageViewer(
-    images: Array<Image>,
-    scaleMode?: EImageScaleMode,
-    zoom?: boolean,
-    skew?: boolean
-  ): IImageViewer {
+  private _createImageViewer(images: Array<Image>, scaleMode?: EImageScaleMode, zoom?: boolean): IImageViewer {
     const imageViewer = new ImageViewer(images, this._lazyLoader, scaleMode);
 
     if (zoom !== undefined) {
       imageViewer.setZoomAnimation(zoom);
-    }
-    if (skew !== undefined) {
-      imageViewer.setSkewAnimation(skew);
     }
 
     return imageViewer;

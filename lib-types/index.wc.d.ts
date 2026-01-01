@@ -4,7 +4,7 @@
  */
 import './index.css';
 import IGallery from './interfaces/IGallery';
-export * from "./index";
+export * from './index';
 declare global {
     interface Window {
         mbgGalleryObjects: Array<IGallery>;

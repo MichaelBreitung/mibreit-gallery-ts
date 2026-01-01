@@ -13,11 +13,13 @@ import {
   createThumbsScroller,
   createSlideshow,
   EImageScaleMode,
+  createImagesWall,
+  createFullscreenOnlyGallery,
 } from './index';
 import { addCssClass, addCssStyle, getElement } from 'mibreit-dom-tools';
 import IGallery from './interfaces/IGallery';
 
-export *  from "./index";
+export * from './index';
 
 declare global {
   interface Window {
@@ -81,7 +83,7 @@ class MibreitGalleryElement extends HTMLElement {
 class MibreitSlideshowElement extends HTMLElement {
   static classCounter = 0;
   connectedCallback() {
-    const customClass = `mbg__custom-slideshow-${MibreitGalleryElement.classCounter++}`;
+    const customClass = `mbg__custom-slideshow-${MibreitSlideshowElement.classCounter++}`;
     this.classList.add(customClass);
     const loaderWindowLeft = this.getAttribute('loaderWindowLeft');
     const loaderWindowRight = this.getAttribute('loaderWindowRight');
@@ -104,7 +106,7 @@ class MibreitSlideshowElement extends HTMLElement {
 class MibreitThumbScrollerElement extends HTMLElement {
   static classCounter = 0;
   connectedCallback() {
-    const customClass = `mbg__custom-thumbscroller-${MibreitGalleryElement.classCounter++}`;
+    const customClass = `mbg__custom-thumbscroller-${MibreitThumbScrollerElement.classCounter++}`;
     this.classList.add(customClass);
     const numberOfVisibleThumbs = this.getAttribute('numberOfVisibleThumbs');
     const initialIndex = this.getAttribute('initialIndex');
@@ -113,6 +115,21 @@ class MibreitThumbScrollerElement extends HTMLElement {
       numberOfVisibleThumbs: numberOfVisibleThumbs ? +numberOfVisibleThumbs : undefined,
       initialIndex: initialIndex ? +initialIndex : undefined,
     });
+
+    showDiv(containerSelector);
+  }
+}
+
+class MibreitImagesWallElement extends HTMLElement {
+  static classCounter = 0;
+  connectedCallback() {
+    const customClass = `mbg__custom-imageswall-${MibreitImagesWallElement.classCounter++}`;
+    this.classList.add(customClass);
+    const columns = this.getAttribute('columns');
+    const containerSelector = `.${customClass} mbg-images`;
+    createImagesWall(containerSelector, `${containerSelector} img`, columns ? +columns : undefined);
+
+    createFullscreenOnlyGallery(`${containerSelector} img`, {});
 
     showDiv(containerSelector);
   }
@@ -127,6 +144,7 @@ class MibreitTitleElement extends HTMLElement {}
 customElements.define('mbg-gallery', MibreitGalleryElement);
 customElements.define('mbg-slideshow', MibreitSlideshowElement);
 customElements.define('mbg-thumbscroller', MibreitThumbScrollerElement);
+customElements.define('mbg-imageswall', MibreitImagesWallElement);
 customElements.define('mbg-images', MibreitImagesElement);
 customElements.define('mbg-thumbs', MibreitThumbsElement);
 customElements.define('mbg-title', MibreitTitleElement);

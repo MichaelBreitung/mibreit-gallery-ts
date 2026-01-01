@@ -10,12 +10,10 @@ import { ESwipeDirection } from './SwipeHandler';
  */
 export default abstract class ImageStage implements IImageStage {
     private _zoomAnimationActive;
-    private _skewAnimationActive;
     protected _imageStage: HTMLElement;
     protected _imageHandle: HTMLElement;
     constructor(imageHandle: HTMLElement);
     setZoomAnimation(activate: boolean): void;
-    setSkewAnimation(activate: boolean): void;
     reinitSize(): void;
     hideImage(swipeDirection?: ESwipeDirection): Promise<void>;
     showImage(swipeDirection?: ESwipeDirection): Promise<void>;
@@ -23,8 +21,4 @@ export default abstract class ImageStage implements IImageStage {
     private _createStage;
     private _startZoomAnimation;
     private _resetZoom;
-    private _startSkewAnimation;
-    private _resetSkew;
-    private _startZoomSkewAnimation;
-    private _resetZoomSkew;
 }

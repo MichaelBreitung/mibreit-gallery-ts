@@ -1,0 +1,3 @@
+.images_wall__parent {
+  position: relative; /* ensures absolute wall can span it if needed */
+}

@@ -10,3 +10,4 @@ export { default as ImageViewer } from './ImageViewer';
 export { default as SwipeHandler, ESwipeDirection } from './SwipeHandler';
 export { default as ThumbStage } from './ThumbStage';
 export { default as ThumbsViewer } from './ThumbsViewer';
+export { default as ImagesWall } from './ImagesWall';
