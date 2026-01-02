@@ -19,8 +19,8 @@ const gallerySetupCode = `
     loaderWindowRight: 2,
   });
   `;
-const containerWidthPx = 40 * 16;
-const containerHeightPx = 30 * 16;
+const containerWidthPx = 600;
+const containerHeightPx = 500;
 const testTile = 'Test Title';
 const imageWidth = 1200;
 const imageHeight = 600;
@@ -126,8 +126,9 @@ describe('Gallery with Single Image Test Suite', () => {
           height: style.height,
           maxWidth: style.maxWidth,
           maxHeight: style.maxHeight,
-          marginLeft: style.marginLeft,
-          marginTop: style.marginTop,
+          left: style.left,
+          top: style.top,
+          transform: style.transform,
         },
       };
     }, images[0]);
@@ -136,12 +137,13 @@ describe('Gallery with Single Image Test Suite', () => {
 
     expect(imageProps.computedStyle.width).toBe(`${containerWidthPx}px`);
     expect(imageProps.computedStyle.height).toBe(`${round3Decimal(containerWidthPx / imageAspectRatio)}px`);
-    expect(imageProps.computedStyle.marginLeft).toBe('0px');
-    expect(imageProps.computedStyle.marginTop).toBe(
-      `${round3Decimal((containerHeightPx - containerWidthPx / imageAspectRatio) / 2)}px`
-    );
+    expect(imageProps.computedStyle.left).toBe(`${containerWidthPx / 2}px`); // This value results from the left 50%
+    expect(imageProps.computedStyle.top).toBe(`${round3Decimal(containerHeightPx / 2)}px`);
     expect(imageProps.computedStyle.maxWidth).toBe(`${imageProps.width}px`);
     expect(imageProps.computedStyle.maxHeight).toBe(`${imageProps.height}px`);
+    expect(imageProps.computedStyle.transform).toBe(
+      `matrix(1, 0, 0, 1, -${containerWidthPx / 2}, -${round3Decimal(containerWidthPx / imageAspectRatio) / 2})`
+    );
   });
 
   it('ImageInfo is Correct', async () => {
