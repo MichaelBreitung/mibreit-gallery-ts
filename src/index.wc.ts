@@ -5,21 +5,22 @@
 
 import './index.css';
 
-// Styles
-import animationStyles from './tools/animations.module.css';
+import { addCssClass, addCssStyle, getElement } from 'mibreit-dom-tools';
 
 import {
   createGallery,
   createThumbsScroller,
   createSlideshow,
-  EImageScaleMode,
   createImagesWall,
   createFullscreenOnlyGallery,
-} from './index';
-import { addCssClass, addCssStyle, getElement } from 'mibreit-dom-tools';
+} from './factories';
+import { EImageScaleMode } from './types';
 import IGallery from './interfaces/IGallery';
 
 export * from './index';
+
+// Styles
+import animationStyles from './tools/animations.module.css';
 
 declare global {
   interface Window {
@@ -74,7 +75,6 @@ class MibreitGalleryElement extends HTMLElement {
         titleElement.innerHTML = imageInfo.getTitle();
       });
     }
-
     showDiv(containerSelector);
     showDiv(thumbContainerSelector);
   }
@@ -92,13 +92,12 @@ class MibreitSlideshowElement extends HTMLElement {
     const expand = this.hasAttribute('expand');
     const containerSelector = `.${customClass} mbg-images`;
     createSlideshow(`${containerSelector} img`, {
-      scaleMode: expand ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
+      scaleMode: expand !== null ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
       loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
       loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
       interval: interval ? +interval : 4000,
       zoom: zoom ? true : undefined,
     });
-
     showDiv(containerSelector);
   }
 }
@@ -115,7 +114,6 @@ class MibreitThumbScrollerElement extends HTMLElement {
       numberOfVisibleThumbs: numberOfVisibleThumbs ? +numberOfVisibleThumbs : undefined,
       initialIndex: initialIndex ? +initialIndex : undefined,
     });
-
     showDiv(containerSelector);
   }
 }
@@ -127,10 +125,8 @@ class MibreitImagesWallElement extends HTMLElement {
     this.classList.add(customClass);
     const columns = this.getAttribute('columns');
     const containerSelector = `.${customClass} mbg-images`;
-    createImagesWall(containerSelector, `${containerSelector} img`, columns ? +columns : undefined);
-
     createFullscreenOnlyGallery(`${containerSelector} img`, {});
-
+    createImagesWall(containerSelector, `${containerSelector} img`, columns ? +columns : undefined);
     showDiv(containerSelector);
   }
 }

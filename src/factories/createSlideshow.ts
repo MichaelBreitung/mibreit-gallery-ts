@@ -15,7 +15,7 @@ import ISlideshow from '../interfaces/ISlideshow';
 
 export default function (imageSelector: string, config?: SlideshowConfig): ISlideshow {
   if (typeof imageSelector !== 'string') {
-    throw new Error('createSlideshow - second parameter must be imageSelector string');
+    throw new Error('createSlideshow - first parameter must be imageSelector string');
   }
   const elements = getElements(imageSelector);
   if (elements?.length > 0) {
