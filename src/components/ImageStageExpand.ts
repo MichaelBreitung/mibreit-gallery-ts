@@ -17,16 +17,16 @@ export default class ImageStageExpand extends ImageStage {
 
   protected _applyScaleModeImpl(stageWidth: number, stageHeight: number) {
     const aspect = this._imageWidth / this._imageHeight;
-    const stageAspect = stageWidth / stageHeight;
-
-    if (stageAspect > aspect) {
+    let newWidth: string = 'auto';
+    let newHeight: string = 'auto';
+    if (stageWidth / stageHeight > aspect) {
       // fit based on width
-      addCssStyle(this._imageHandle, 'width', `100%`);
-      addCssStyle(this._imageHandle, 'height', `${(100 / aspect) * stageAspect}%`);
+      newWidth = `100%`;
     } else {
       // fit based on height
-      addCssStyle(this._imageHandle, 'width', `${(aspect * 100) / stageAspect}%`);
-      addCssStyle(this._imageHandle, 'height', `100%`);
+      newHeight = `100%`;
     }
+    addCssStyle(this._imageHandle, 'width', newWidth);
+    addCssStyle(this._imageHandle, 'height', newHeight);
   }
 }
