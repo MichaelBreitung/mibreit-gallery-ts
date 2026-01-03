@@ -10,14 +10,16 @@ import { Element } from 'mibreit-lazy-loader';
 import IImageInfo from '../interfaces/IImageInfo';
 
 // constants
-import { IMAGE_TITLE_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from '../constants';
+import { IMAGE_TITLE_ATTRIBUTE, IMAGE_DESCRIPTION_ATTRIBUTE, IMAGE_DATA_TITLE_ATTRIBUTE } from '../constants';
 
 export default class Image extends Element implements IImageInfo {
   private _title: string = '';
+  private _description: string = '';
 
   constructor(imageHandle: HTMLElement) {
     super(imageHandle);
     this._prepareTitle(imageHandle);
+    this._prepareDescription(imageHandle);
     this._limitMaxSizeTo(imageHandle, this.getWidth(), this.getHeight());
     disableContextMenu(imageHandle);
     disableDragging(imageHandle);
@@ -25,6 +27,10 @@ export default class Image extends Element implements IImageInfo {
 
   getTitle(): string {
     return this._title;
+  }
+
+  getDescription(): string {
+    return this._description;
   }
 
   getUrl() {
@@ -45,6 +51,11 @@ export default class Image extends Element implements IImageInfo {
     } else {
       title = imageHandle.getAttribute(IMAGE_DATA_TITLE_ATTRIBUTE);
     }
-    this._title = title ? title : '';
+    this._title = title ?? '';
+  }
+
+  private _prepareDescription(imageHandle: HTMLElement) {
+    let description = imageHandle.getAttribute(IMAGE_DESCRIPTION_ATTRIBUTE);
+    this._description = description ?? '';
   }
 }

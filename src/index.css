@@ -1,11 +1,15 @@
 mbg-gallery,
 mbg-slideshow,
+mbg-imageswall,
 mbg-images,
 mbg-thumbs,
 mbg-title {
   position: relative;
   overflow: hidden;
   display: block;
+}
+mbg-imageswall {
+  min-height: 100vh;
 }
 mbg-images,
 mbg-thumbs {

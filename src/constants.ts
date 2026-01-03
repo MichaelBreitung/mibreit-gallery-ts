@@ -7,6 +7,7 @@
 export const IMAGE_DATA_SRC_ATTRIBUTE = 'data-src';
 export const IMAGE_SRC_ATTRIBUTE = 'src';
 export const IMAGE_TITLE_ATTRIBUTE = 'title';
+export const IMAGE_DESCRIPTION_ATTRIBUTE = 'alt';
 export const IMAGE_DATA_TITLE_ATTRIBUTE = 'data-title';
 
 // Css classes
