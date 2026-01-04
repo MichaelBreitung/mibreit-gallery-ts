@@ -20,6 +20,7 @@
   position: absolute;
   inset: 0;
   background-color: var(--background-color);
+  transition: background-color 750ms ease-in-out;
   opacity: 0.5;
   z-index: -1;
 }
