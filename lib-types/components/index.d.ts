@@ -11,3 +11,5 @@ export { default as SwipeHandler, ESwipeDirection } from './SwipeHandler';
 export { default as ThumbStage } from './ThumbStage';
 export { default as ThumbsViewer } from './ThumbsViewer';
 export { default as ImagesWall } from './ImagesWall';
+export { default as AverageColor } from './AverageColor';
+export { default as ImageDescription } from './ImageDescription';

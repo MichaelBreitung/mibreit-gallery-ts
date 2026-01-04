@@ -27,34 +27,21 @@ export default class Fullscreen implements IFullscreen {
   private _changedCallbacks: Array<(active: boolean) => void> = [];
   private _active: boolean;
   private _slideshowContainerElement: HTMLElement;
-  private _thumbsContainerElement: HTMLElement | null = null;
   private _fullScreenContainerElement: HTMLElement;
   private _slideshowContainerPlaceholderElement: HTMLElement;
-  private _thumbsContainerPlaceholderElement: HTMLElement | null = null;
   private _closeButtonElement: HTMLElement;
-  private _usePlaceholder: boolean;
 
-  constructor(
-    slideshowContainer: HTMLElement,
-    thumbsContainer: HTMLElement | null = null,
-    usePlaceholder: boolean = true
-  ) {
+  constructor(slideshowContainer: HTMLElement) {
     this._active = false;
     this._slideshowContainerElement = slideshowContainer;
-    this._thumbsContainerElement = thumbsContainer;
-    this._usePlaceholder = usePlaceholder;
     this._fullScreenContainerElement = this._createFullscreenContainer();
     this._closeButtonElement = this._createFullscreenCloseButton(this._fullScreenContainerElement);
     this._slideshowContainerPlaceholderElement = this._createSlideshowContainerPlaceholder();
-    if (thumbsContainer) {
-      this._thumbsContainerPlaceholderElement = this._createThumbsContainerPlaceholder();
-    }
   }
 
   activate() {
     if (!this._active) {
       this._moveGalleryToFullscreen();
-      this._moveThumbsToFullscreen();
       this._addFullscreen();
       this._setupCloseButtonHandler();
       this._active = true;
@@ -67,7 +54,6 @@ export default class Fullscreen implements IFullscreen {
   deActivate() {
     if (this._active) {
       this._removeGalleryFromFullscreen();
-      this._removeThumbsFromFullscreen();
       this._removeFullscreen();
       this._active = false;
       this._changedCallbacks.forEach((callback) => {
@@ -90,6 +76,10 @@ export default class Fullscreen implements IFullscreen {
     addCssStyle(this._fullScreenContainerElement, 'background-color', color);
   }
 
+  setAverageBackgroundColor(): void {
+    addCssClass(this._fullScreenContainerElement, styles.average_background);
+  }
+
   private _createFullscreenContainer(): HTMLElement {
     const fullScreenContainer = createElement('div');
     addCssClass(fullScreenContainer, styles.fullscreen);
@@ -109,11 +99,6 @@ export default class Fullscreen implements IFullscreen {
     return slideshowContainerPlaceholder;
   }
 
-  private _createThumbsContainerPlaceholder(): HTMLElement {
-    const thumbsContainerPlaceholder = createElement('div');
-    return thumbsContainerPlaceholder;
-  }
-
   private _addFullscreen() {
     const body = getElement('body');
     if (body != null) {
@@ -126,9 +111,7 @@ export default class Fullscreen implements IFullscreen {
   }
 
   private _moveGalleryToFullscreen() {
-    if (this._usePlaceholder) {
-      prependBeforeChild(this._slideshowContainerPlaceholderElement, this._slideshowContainerElement);
-    }
+    prependBeforeChild(this._slideshowContainerPlaceholderElement, this._slideshowContainerElement);
     appendChildElement(this._slideshowContainerElement, this._fullScreenContainerElement);
     addCssStyle(this._slideshowContainerElement, 'width', '100%');
     addCssStyle(this._slideshowContainerElement, 'flex-grow', '1');
@@ -136,33 +119,10 @@ export default class Fullscreen implements IFullscreen {
 
   private _removeGalleryFromFullscreen() {
     removeElement(this._slideshowContainerElement);
-    if (this._usePlaceholder) {
-      prependBeforeChild(this._slideshowContainerElement, this._slideshowContainerPlaceholderElement);
-      removeElement(this._slideshowContainerPlaceholderElement);
-    }
+    prependBeforeChild(this._slideshowContainerElement, this._slideshowContainerPlaceholderElement);
+    removeElement(this._slideshowContainerPlaceholderElement);
     removeCssStyle(this._slideshowContainerElement, 'width');
     removeCssStyle(this._slideshowContainerElement, 'flex-grow');
-  }
-
-  private _moveThumbsToFullscreen() {
-    if (this._thumbsContainerElement && this._thumbsContainerPlaceholderElement) {
-      if (this._usePlaceholder) {
-        prependBeforeChild(this._thumbsContainerPlaceholderElement, this._thumbsContainerElement);
-      }
-      appendChildElement(this._thumbsContainerElement, this._fullScreenContainerElement);
-      addCssStyle(this._thumbsContainerElement, 'flex-grow', '0');
-    }
-  }
-
-  private _removeThumbsFromFullscreen() {
-    if (this._thumbsContainerElement && this._thumbsContainerPlaceholderElement) {
-      removeElement(this._thumbsContainerElement);
-      if (this._usePlaceholder) {
-        prependBeforeChild(this._thumbsContainerElement, this._thumbsContainerPlaceholderElement);
-        removeElement(this._thumbsContainerPlaceholderElement);
-      }
-      removeCssStyle(this._thumbsContainerElement, 'flex-grow');
-    }
   }
 
   private _setupCloseButtonHandler() {

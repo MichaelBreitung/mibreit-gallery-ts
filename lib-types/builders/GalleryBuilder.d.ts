@@ -10,12 +10,14 @@ export default class GalleryContainerBuilder {
     private _slideshow;
     private _thumbsViewer;
     private _fullscreen;
+    private _imageDescriptions;
     private constructor();
     static fromContainerAndImages(slideshowContainerElement: HTMLElement, imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig): GalleryContainerBuilder;
     static fromImages(imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig): GalleryContainerBuilder;
     addPreviousNextButtons(): GalleryContainerBuilder;
     addFullscreen(config?: FullscreenConfig): GalleryContainerBuilder;
     addThumbScroller(thumbContainer: HTMLElement, thumbs: NodeListOf<HTMLElement>, config?: ThumbScrollerConfig): GalleryContainerBuilder;
+    addDescriptions(descriptions: NodeListOf<HTMLElement>): GalleryContainerBuilder;
     build(): IGallery;
     private _createPreviousNextButtons;
     private _setupSwipeHandler;
@@ -25,4 +27,6 @@ export default class GalleryContainerBuilder {
     private _createFullscreenButton;
     private _setupFullscreenClickEvent;
     private _setupFullscreenChangedHandler;
+    private _createInfoButton;
+    private _setupInfoClickEvent;
 }

@@ -13,4 +13,6 @@ export default interface IFullscreen {
   isActive(): boolean;
 
   setBackgroundColor(color: string): void;
+
+  setAverageBackgroundColor(): void;
 }

@@ -1,0 +1,40 @@
+.img_description {
+  position: absolute;
+  z-index: 1;
+  color: var(--foreground-color);
+  min-height: 3rem;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  width: 100%;
+  transition: opacity 1s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.img_description::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--background-color);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.img_description p {
+  padding: 0rem;
+  padding-right: 3rem;
+  padding-left: 3rem;
+}
+
+.img_description.visible {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
+
+.img_description__exit_btn {
+  position: absolute;
+  right: 0;
+}

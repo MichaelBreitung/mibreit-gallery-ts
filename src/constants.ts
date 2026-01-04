@@ -13,14 +13,15 @@ export const IMAGE_DATA_TITLE_ATTRIBUTE = 'data-title';
 // Css classes
 export const CSS_IMAGE_STATE_CLASS = 'mibreit-image-stage';
 
+// Css variables
+export const BACKGROUND_COLOR_VARIABLE = '--background-color';
+export const FOREGROUND_COLOR_VARIABLE = '--foreground-color';
+
 // Gallery Configuration
 export const PRELOADER_RIGHT_SIZE = 1;
 export const PRELOADER_LEFT_SIZE = 0;
 export const SLIDESHOW_INTERVAL = 5000;
 export const NUMBER_OF_VISIBLE_THUMBS = 7;
-
-// Opacities
-export const GALLERY_BUTTONS_SHOW_OPACITY = 0.5;
 
 // Other
 export const RESIZE_DEBOUNCE_TIMER = 500;

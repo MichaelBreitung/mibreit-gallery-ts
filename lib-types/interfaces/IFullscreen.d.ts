@@ -8,4 +8,5 @@ export default interface IFullscreen {
     addChangedCallback(callback: (active: boolean) => void): void;
     isActive(): boolean;
     setBackgroundColor(color: string): void;
+    setAverageBackgroundColor(): void;
 }

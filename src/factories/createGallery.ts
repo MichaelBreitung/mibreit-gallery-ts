@@ -43,6 +43,10 @@ export default function (containerSelector: string, imageSelector: string, confi
         }
       }
     }
+    const descriptionElements = getElements(`${containerSelector} figcaption`);
+    if (descriptionElements.length) {
+      builder.addDescriptions(descriptionElements);
+    }
 
     const gallery = builder.build();
 

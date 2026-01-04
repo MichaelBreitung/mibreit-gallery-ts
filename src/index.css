@@ -1,3 +1,7 @@
+:root {
+  --background-color: rgb(25, 25, 25);
+  --foreground-color: rgb(225, 225, 225);
+}
 mbg-gallery,
 mbg-slideshow,
 mbg-imageswall,
@@ -8,6 +12,22 @@ mbg-title {
   overflow: hidden;
   display: block;
 }
+mbg-gallery svg,
+.mbg__fullscreen svg {
+  opacity: 0.6;
+  transition: fill 0.5s ease;
+  fill: var(--foreground-color);
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+}
+.mbg__fullscreen .mbg__gallery__info_btn {
+  right: 0rem;
+  bottom: 0rem;
+}
+mbg-slideshow mbg-images figcaption {
+  display: none;
+}
 mbg-imageswall {
   min-height: 100vh;
 }
@@ -17,6 +37,7 @@ mbg-thumbs {
   width: 100%;
 }
 mbg-thumbs {
+  min-height: 6rem;
   margin-top: 0.5rem;
 }
 mbg-title {

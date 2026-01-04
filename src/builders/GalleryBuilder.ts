@@ -3,7 +3,6 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { FastAverageColor } from 'fast-average-color';
 import {
   addCssClass,
   addCssStyle,
@@ -25,7 +24,7 @@ import SlideshowBuilder from './SlideshowBuilder';
 import ThumbScrollerBuilder from './ThumbsScrollerBuilder';
 
 import { Gallery } from '../containers';
-import { Fullscreen } from '../components';
+import { Fullscreen, ImageDescription, AverageColor } from '../components';
 
 import SwipeHander, { ESwipeDirection } from '../components/SwipeHandler';
 
@@ -36,20 +35,19 @@ import IImageViewer from '../interfaces/IImageViewer';
 import IThumbsViewer from '../interfaces/IThumbsViewer';
 import IFullscreen from '../interfaces/IFullscreen';
 import IImageInfo from '../interfaces/IImageInfo';
+import IImageDescription from '../interfaces/IImageDescription';
 
 // types
-import { checkFullscreenConfig, FullscreenConfig, SlideshowConfig, ThumbScrollerConfig, TPosition } from '../types';
+import { FullscreenConfig, SlideshowConfig, ThumbScrollerConfig, TPosition } from '../types';
 
 // images
 import nextImageSvg from '../images/nextImage.svg';
 import fullscreenSvg from '../images/fullscreen.svg';
+import infoSvg from '../images/info.svg';
 
 // styles
 import styles from './GalleryBuilder.module.css';
 import animationStyles from '../tools/animations.module.css';
-
-// constants
-import { GALLERY_BUTTONS_SHOW_OPACITY } from '../constants';
 
 export default class GalleryContainerBuilder {
   private _slideshowContainerElement: HTMLElement;
@@ -57,6 +55,7 @@ export default class GalleryContainerBuilder {
   private _slideshow: ISlideshow;
   private _thumbsViewer: IThumbsViewer | null = null;
   private _fullscreen: IFullscreen | null = null;
+  private _imageDescriptions: Array<IImageDescription> | null = null;
 
   private constructor(slideshowContainerElement: HTMLElement, slideshow: ISlideshow, fullscreenOnly: boolean = false) {
     this._slideshowContainerElement = slideshowContainerElement;
@@ -99,45 +98,15 @@ export default class GalleryContainerBuilder {
   public addFullscreen(config?: FullscreenConfig): GalleryContainerBuilder {
     this._fullscreen = new Fullscreen(this._slideshowContainerElement);
     if (config) {
-      checkFullscreenConfig(config);
-      if (config.backgroundColor) {
-        this._fullscreen.setBackgroundColor(config.backgroundColor);
-      }
       if (config.useAverageBackgroundColor) {
-        const fastAverageColor = new FastAverageColor();
         const imageViewer = this._slideshow.getImageViewer();
-        imageViewer.addImageChangedCallback((index: number, _imageInfo: IImageInfo) => {
-          if (this._fullscreen?.isActive()) {
-            try {
-              const color = fastAverageColor.getColor(imageViewer.getImageElement(index) as HTMLImageElement, {
-                algorithm: 'sqrt',
-                silent: true,
-              });
-              this._fullscreen.setBackgroundColor(color.rgb);
-            } catch (_e) {
-              // If the image is not loaded yet, we cannot get the average color
-              // This doesn't concern us though, so we ignore the error
-            }
-          }
+        const averageColor = new AverageColor();
+        imageViewer.addImageChangedCallback((idx) => {
+          averageColor.updateColors(imageViewer.getImageElement(idx) as HTMLImageElement);
         });
-
-        this._fullscreen.addChangedCallback((active: boolean) => {
-          if (active) {
-            try {
-              const color = fastAverageColor.getColor(
-                imageViewer.getImageElement(imageViewer.getImageIndex()) as HTMLImageElement,
-                {
-                  algorithm: 'sqrt',
-                  silent: true,
-                }
-              );
-              this._fullscreen?.setBackgroundColor(color.rgb);
-            } catch (_e) {
-              // If the image is not loaded yet, we cannot get the average color
-              // This doesn't concern us though, so we ignore the error
-            }
-          }
-        });
+        this._fullscreen.setAverageBackgroundColor();
+      } else if (config.backgroundColor) {
+        this._fullscreen.setBackgroundColor(config.backgroundColor);
       }
     }
 
@@ -178,6 +147,17 @@ export default class GalleryContainerBuilder {
     return this;
   }
 
+  public addDescriptions(descriptions: NodeListOf<HTMLElement>): GalleryContainerBuilder {
+    this._imageDescriptions = [];
+    for (let i = 0; i < descriptions.length; i++) {
+      this._imageDescriptions.push(new ImageDescription(descriptions[i]));
+    }
+    const infoButton = this._createInfoButton();
+    this._setupHoverEvents([infoButton]);
+    this._setupInfoClickEvent(infoButton, this._imageDescriptions);
+    return this;
+  }
+
   public build(): IGallery {
     if (this._slideshow.getImageViewer().getNumberOfImages() > 1) {
       this._setupSwipeHandler(this._slideshow.getImageViewer());
@@ -187,7 +167,8 @@ export default class GalleryContainerBuilder {
       this._slideshow.getImageViewer(),
       this._slideshow.getLoader(),
       this._thumbsViewer,
-      this._fullscreen
+      this._fullscreen,
+      this._imageDescriptions
     );
   }
 
@@ -228,7 +209,7 @@ export default class GalleryContainerBuilder {
   private _setupHoverEvents(buttons: Array<HTMLElement>) {
     addEventListener(this._slideshowContainerElement, 'mouseenter', () => {
       buttons.forEach((button: HTMLElement) => {
-        addCssStyle(button, 'opacity', `${GALLERY_BUTTONS_SHOW_OPACITY}`);
+        removeCssStyle(button, 'opacity');
       });
     });
     addEventListener(this._slideshowContainerElement, 'mouseleave', () => {
@@ -284,6 +265,8 @@ export default class GalleryContainerBuilder {
   }
 
   private _setupFullscreenClickEvent(fullScreen: IFullscreen, fullscreenButton: HTMLElement) {
+    // we handle it with pointerdown and up, so properly stop propagation and avoid swipres on the
+    // underlying element
     addEventListener(fullscreenButton, 'pointerdown', (event: PointerEvent) => {
       event.stopPropagation();
     });
@@ -302,6 +285,61 @@ export default class GalleryContainerBuilder {
         addCssStyle(fullscreenButtonElement, 'display', 'none');
       } else {
         removeCssStyle(fullscreenButtonElement, 'display');
+      }
+    });
+  }
+
+  private _createInfoButton(): HTMLElement {
+    const infoButton = createElement('div');
+    setInnerHtml(infoButton, infoSvg);
+    addCssClass(infoButton, styles.gallery__info_btn);
+    addCssClass(infoButton, animationStyles.fade);
+    appendChildElement(infoButton, this._slideshowContainerElement);
+    return infoButton;
+  }
+
+  private _setupInfoClickEvent(infoButton: HTMLElement, imageDescriptions: Array<IImageDescription>) {
+    let currentImageDescription: number | null = null;
+
+    const imageDescriptionVisibilityChanged = (visible: boolean) => {
+      if (!visible) {
+        currentImageDescription = null;
+        removeCssStyle(infoButton, 'display');
+      } else {
+        addCssStyle(infoButton, 'display', 'none');
+      }
+    };
+
+    imageDescriptions.forEach((description: IImageDescription) => {
+      description.addChangedCallback(imageDescriptionVisibilityChanged);
+    });
+
+    const showImageDescription = (idx: number) => {
+      hideImageDescription();
+      if (idx >= 0 && idx < this._imageDescriptions!.length) {
+        currentImageDescription = idx;
+        imageDescriptions[currentImageDescription].show();
+      }
+    };
+
+    const hideImageDescription = () => {
+      if (currentImageDescription !== null) {
+        imageDescriptions[currentImageDescription].hide();
+        currentImageDescription = null;
+      }
+    };
+
+    addEventListener(infoButton, 'pointerdown', (event: PointerEvent) => {
+      event.stopPropagation();
+    });
+    addEventListener(infoButton, 'pointerup', (event: PointerEvent) => {
+      event.stopPropagation();
+      showImageDescription(this._slideshow.getImageViewer().getImageIndex());
+    });
+
+    this._slideshow.getImageViewer().addImageChangedCallback((idx: number) => {
+      if (currentImageDescription !== null) {
+        showImageDescription(idx);
       }
     });
   }
