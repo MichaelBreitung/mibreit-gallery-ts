@@ -24,11 +24,27 @@ import styles from './ImageDescription.module.css';
 export default class ImageDescription implements IImageDescription {
   private _changedCallbacks: Array<(active: boolean) => void> = [];
   private _descriptionHandle: HTMLElement;
+  private _descriptionTextHandle: HTMLElement;
 
-  constructor(descriptionHandle: HTMLElement) {
-    this._descriptionHandle = descriptionHandle;
+  constructor(descriptionHandle?: HTMLElement) {
+    if (descriptionHandle) {
+      this._descriptionHandle = descriptionHandle;
+      let pHandle = descriptionHandle.querySelector('p') as HTMLElement;
+      if (!pHandle) {
+        const text = descriptionHandle.textContent?.trim() ?? '';
+        pHandle = createElement('p');
+        pHandle.textContent = text;
+        descriptionHandle.innerHTML = '';
+        appendChildElement(pHandle, this._descriptionHandle);
+      }
+      this._descriptionTextHandle = pHandle;
+    } else {
+      this._descriptionHandle = createElement('div');
+      this._descriptionTextHandle = createElement('p');
+      appendChildElement(this._descriptionTextHandle, this._descriptionHandle);
+    }
     addCssClass(this._descriptionHandle, styles.img_description);
-    const closeButton = this._createCloseButton(descriptionHandle);
+    const closeButton = this._createCloseButton(this._descriptionHandle);
     this._setupCloseButtonHandler(closeButton);
   }
 
@@ -44,6 +60,14 @@ export default class ImageDescription implements IImageDescription {
     this._changedCallbacks.forEach((callback) => {
       callback(false);
     });
+  }
+
+  public getDescriptionHandle(): HTMLElement {
+    return this._descriptionHandle;
+  }
+
+  public updateDescription(description: string) {
+    setInnerHtml(this._descriptionTextHandle, description);
   }
 
   addChangedCallback(callback: (visible: boolean) => void) {

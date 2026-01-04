@@ -13,7 +13,7 @@ import IGallery from '../interfaces/IGallery';
 // Types
 import { SlideshowConfig, checkSlideshowConfig } from '../types';
 
-export default function (imageSelector: string, config: SlideshowConfig): IGallery {
+export default function (imageSelector: string, config: SlideshowConfig, showDescriptions: boolean = false): IGallery {
   if (typeof imageSelector !== 'string') {
     throw new Error('createFullscreenOnlyGallery - first parameter must be imageSelector string');
   }
@@ -21,10 +21,14 @@ export default function (imageSelector: string, config: SlideshowConfig): IGalle
 
   const elements = getElements(imageSelector);
   if (elements?.length > 0) {
-    const gallery = GalleryContainerBuilder.fromImages(elements, config)
+    const builder = GalleryContainerBuilder.fromImages(elements, config)
       .addPreviousNextButtons()
-      .addFullscreen({ useAverageBackgroundColor: true })
-      .build();
+      .addFullscreen({ useAverageBackgroundColor: true });
+
+    if (showDescriptions) {
+      builder.addDescriptions();
+    }
+    const gallery = builder.build();
 
     elements.forEach(function (image, index) {
       image.style.setProperty('cursor', 'pointer');

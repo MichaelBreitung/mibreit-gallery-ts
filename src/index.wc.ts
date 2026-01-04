@@ -125,7 +125,7 @@ class MibreitImagesWallElement extends HTMLElement {
     this.classList.add(customClass);
     const columns = this.getAttribute('columns');
     const containerSelector = `.${customClass} mbg-images`;
-    createFullscreenOnlyGallery(`${containerSelector} img`, {});
+    createFullscreenOnlyGallery(`${containerSelector} img`, {}, true);
     createImagesWall(containerSelector, `${containerSelector} img`, columns ? +columns : undefined);
     showDiv(containerSelector);
   }

@@ -8,5 +8,9 @@ export default interface IImageDescription {
 
   hide(): void;
 
+  getDescriptionHandle(): HTMLElement;
+
+  updateDescription(description: string): void;
+
   addChangedCallback(callback: (active: boolean) => void): void;
 }

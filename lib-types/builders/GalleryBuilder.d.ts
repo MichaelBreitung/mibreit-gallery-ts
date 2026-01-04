@@ -17,7 +17,7 @@ export default class GalleryContainerBuilder {
     addPreviousNextButtons(): GalleryContainerBuilder;
     addFullscreen(config?: FullscreenConfig): GalleryContainerBuilder;
     addThumbScroller(thumbContainer: HTMLElement, thumbs: NodeListOf<HTMLElement>, config?: ThumbScrollerConfig): GalleryContainerBuilder;
-    addDescriptions(descriptions: NodeListOf<HTMLElement>): GalleryContainerBuilder;
+    addDescriptions(descriptions?: NodeListOf<HTMLElement>): GalleryContainerBuilder;
     build(): IGallery;
     private _createPreviousNextButtons;
     private _setupSwipeHandler;

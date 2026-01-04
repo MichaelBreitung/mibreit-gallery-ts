@@ -147,10 +147,21 @@ export default class GalleryContainerBuilder {
     return this;
   }
 
-  public addDescriptions(descriptions: NodeListOf<HTMLElement>): GalleryContainerBuilder {
+  public addDescriptions(descriptions?: NodeListOf<HTMLElement>): GalleryContainerBuilder {
     this._imageDescriptions = [];
-    for (let i = 0; i < descriptions.length; i++) {
-      this._imageDescriptions.push(new ImageDescription(descriptions[i]));
+    if (descriptions) {
+      for (let i = 0; i < descriptions.length; i++) {
+        this._imageDescriptions.push(new ImageDescription(descriptions[i]));
+      }
+    } else {
+      const viewer = this._slideshow.getImageViewer();
+      const numberOfImages = viewer.getNumberOfImages();
+      for (let i = 0; i < numberOfImages; i++) {
+        const description = new ImageDescription();
+        description.updateDescription(viewer.getImageInfo(i)!.getDescription());
+        appendChildElement(description.getDescriptionHandle(), this._slideshowContainerElement);
+        this._imageDescriptions.push(description);
+      }
     }
     const infoButton = this._createInfoButton();
     this._setupHoverEvents([infoButton]);
