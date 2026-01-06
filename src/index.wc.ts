@@ -120,12 +120,28 @@ class MibreitThumbScrollerElement extends HTMLElement {
 
 class MibreitImagesWallElement extends HTMLElement {
   static classCounter = 0;
+
   connectedCallback() {
     const customClass = `mbg__custom-imageswall-${MibreitImagesWallElement.classCounter++}`;
     this.classList.add(customClass);
     const columns = this.getAttribute('columns');
     const containerSelector = `.${customClass} mbg-images`;
-    createFullscreenOnlyGallery(`${containerSelector} img`, {}, true);
+
+    const addBuyButton = this.hasAttribute('addBuyButton');
+    let onBuyClicked = null;
+    if (addBuyButton) {
+      onBuyClicked = (idx: number) => {
+        this.dispatchEvent(
+          new CustomEvent('buy-clicked', {
+            detail: { idx },
+            bubbles: true,
+            composed: true,
+          })
+        );
+      };
+    }
+
+    createFullscreenOnlyGallery(`${containerSelector} img`, {}, true, onBuyClicked);
     createImagesWall(containerSelector, `${containerSelector} img`, columns ? +columns : undefined);
     showDiv(containerSelector);
   }

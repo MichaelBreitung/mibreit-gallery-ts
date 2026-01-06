@@ -13,7 +13,12 @@ import IGallery from '../interfaces/IGallery';
 // Types
 import { checkGalleryConfig, GalleryConfig } from '../types';
 
-export default function (containerSelector: string, imageSelector: string, config?: GalleryConfig): IGallery {
+export default function (
+  containerSelector: string,
+  imageSelector: string,
+  config?: GalleryConfig,
+  buyImageCb: ((idx: number) => void) | null = null
+): IGallery {
   console.log('createGallery', config);
   if (typeof containerSelector !== 'string') {
     throw new Error('createGallery - first parameter must be containerSelector string');
@@ -46,6 +51,9 @@ export default function (containerSelector: string, imageSelector: string, confi
     const descriptionElements = getElements(`${containerSelector} figcaption`);
     if (descriptionElements.length) {
       builder.addDescriptions(descriptionElements);
+    }
+    if (buyImageCb) {
+      builder.addBuyImageCallback(buyImageCb);
     }
 
     const gallery = builder.build();

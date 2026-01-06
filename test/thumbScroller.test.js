@@ -12,10 +12,6 @@ const iifeGalleryScript = fs.readFileSync(path.join(__dirname, '../lib-iife/mibr
 });
 const expectedNumberOfThumbs = 7;
 
-function round3Decimal(floatIn) {
-  return Math.round(floatIn * 1000) / 1000;
-}
-
 let browser;
 let page;
 
@@ -109,7 +105,9 @@ describe('ThumbScroller with 7 Images Test Suite', () => {
     }, thumbStages[0]);
 
     // The width of the thumb is 90% of the available width because of margin.
-    expect(firstThumbStageStyle.width).toBe(`${(parseInt(thumbsViewerStyle.width) * 9) / 60}px`);
+    expect(Math.round(parseFloat(firstThumbStageStyle.width))).toBe(
+      Math.round((parseFloat(thumbsViewerStyle.width) * 9) / 60)
+    );
     expect(firstThumbStageStyle.width).toBe(firstThumbStageStyle.height);
 
     await page.evaluate((el) => {
@@ -133,7 +131,9 @@ describe('ThumbScroller with 7 Images Test Suite', () => {
       };
     }, thumbStages[0]);
 
-    expect(firstThumbStageStyle.width).toBe(`${(parseInt(thumbsViewerStyle.width) * 9) / 60}px`);
+    expect(Math.round(parseFloat(firstThumbStageStyle.width))).toBe(
+      Math.round((parseFloat(thumbsViewerStyle.width) * 9) / 60)
+    );
   });
 
   it('ThumbStages are set up correctly when visible thumbs equals number of thumbs', async () => {

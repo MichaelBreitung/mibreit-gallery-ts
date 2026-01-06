@@ -44,6 +44,7 @@ import { FullscreenConfig, SlideshowConfig, ThumbScrollerConfig, TPosition } fro
 import nextImageSvg from '../images/nextImage.svg';
 import fullscreenSvg from '../images/fullscreen.svg';
 import infoSvg from '../images/info.svg';
+import shopSvg from '../images/shop.svg';
 
 // styles
 import styles from './GalleryBuilder.module.css';
@@ -149,7 +150,7 @@ export default class GalleryContainerBuilder {
 
   public addDescriptions(descriptions?: NodeListOf<HTMLElement>): GalleryContainerBuilder {
     this._imageDescriptions = [];
-    if (descriptions) {
+    if (descriptions && descriptions.length === this._slideshow.getImageViewer().getNumberOfImages()) {
       for (let i = 0; i < descriptions.length; i++) {
         this._imageDescriptions.push(new ImageDescription(descriptions[i]));
       }
@@ -169,6 +170,19 @@ export default class GalleryContainerBuilder {
     return this;
   }
 
+  public addBuyImageCallback(callback: (idx: number) => void) {
+    const viewer = this._slideshow.getImageViewer();
+
+    const shopButton = this._createShopButton();
+    this._setupShopButtonVisibility(shopButton);
+    this._setupShopButtonClickEvent(shopButton, () => {
+      const imageNr = viewer.getImageIndex();
+      if (viewer.getImageInfo(imageNr)?.hasPrintMeta()) {
+        callback(imageNr);
+      }
+    });
+  }
+
   public build(): IGallery {
     if (this._slideshow.getImageViewer().getNumberOfImages() > 1) {
       this._setupSwipeHandler(this._slideshow.getImageViewer());
@@ -181,6 +195,52 @@ export default class GalleryContainerBuilder {
       this._fullscreen,
       this._imageDescriptions
     );
+  }
+
+  private _createShopButton(): HTMLElement {
+    const shopButton = createElement('div');
+    setInnerHtml(shopButton, shopSvg);
+    addCssClass(shopButton, styles.gallery__shop_btn);
+    addCssClass(shopButton, animationStyles.fade);
+    appendChildElement(shopButton, this._slideshowContainerElement);
+    return shopButton;
+  }
+
+  private _setupShopButtonVisibility(shopButton: HTMLElement) {
+    const viewer = this._slideshow.getImageViewer();
+    let isHover = false;
+
+    viewer.addImageChangedCallback((idx: number) => {
+      if (viewer.getImageInfo(idx)?.hasPrintMeta()) {
+        if (isHover) {
+          removeCssStyle(shopButton, 'opacity');
+        }
+      } else {
+        addCssStyle(shopButton, 'opacity', '0');
+      }
+    });
+
+    addEventListener(this._slideshowContainerElement, 'mouseenter', () => {
+      const imageNr = viewer.getImageIndex();
+      isHover = true;
+      if (viewer.getImageInfo(imageNr)?.hasPrintMeta()) {
+        removeCssStyle(shopButton, 'opacity');
+      }
+    });
+    addEventListener(this._slideshowContainerElement, 'mouseleave', () => {
+      isHover = false;
+      addCssStyle(shopButton, 'opacity', '0');
+    });
+  }
+
+  private _setupShopButtonClickEvent(shopButton: HTMLElement, clickCallback: () => void) {
+    addEventListener(shopButton, 'pointerdown', (event: PointerEvent) => {
+      event.stopPropagation();
+    });
+    addEventListener(shopButton, 'pointerup', (event: PointerEvent) => {
+      event.stopPropagation();
+      clickCallback();
+    });
   }
 
   private _createPreviousNextButtons(): { previousButton: HTMLElement; nextButton: HTMLElement } {

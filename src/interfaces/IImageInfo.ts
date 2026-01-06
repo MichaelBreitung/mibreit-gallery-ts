@@ -10,4 +10,8 @@ export default interface IImageInfo extends IElementInfo {
   getDescription(): string;
 
   getUrl(): void;
+
+  getMetadata(): { [key: string]: string } | null;
+
+  hasPrintMeta(): boolean;
 }

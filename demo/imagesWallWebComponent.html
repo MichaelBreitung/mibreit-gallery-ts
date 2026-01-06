@@ -21,7 +21,7 @@
   <body>
     <a href="/"><strong>Home</strong></a>
     <div class="content">
-      <mbg-imageswall columns="3">
+      <mbg-imageswall columns="3" addBuyButton>
         <mbg-images>
           <img
             class="mbll__marker"
@@ -51,6 +51,7 @@
             style="cursor: pointer"
             width="1280"
             height="854"
+            data-print-size="l"
             srcset="
               https://www.mibreit-photo.com/galleries/africa/Morocco-Essaouira/images/Essaouira-Evening-Alley-480.jpg   480w,
               https://www.mibreit-photo.com/galleries/africa/Morocco-Essaouira/images/Essaouira-Evening-Alley-720.jpg   720w,
@@ -345,4 +346,12 @@
   </body>
 
   <script type="module" src="/src/index.wc.ts"></script>
+  <script>
+    window.addEventListener('load', function (event) {
+      const wall = document.querySelector('mbg-imageswall');
+      wall.addEventListener('buy-clicked', function (event) {
+        console.log('Buy clicked:', event.detail);
+      });
+    });
+  </script>
 </html>

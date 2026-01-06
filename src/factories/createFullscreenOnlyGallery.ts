@@ -13,7 +13,12 @@ import IGallery from '../interfaces/IGallery';
 // Types
 import { SlideshowConfig, checkSlideshowConfig } from '../types';
 
-export default function (imageSelector: string, config: SlideshowConfig, showDescriptions: boolean = false): IGallery {
+export default function (
+  imageSelector: string,
+  config: SlideshowConfig,
+  showDescriptions: boolean = false,
+  buyImageCb: ((idx: number) => void) | null = null
+): IGallery {
   if (typeof imageSelector !== 'string') {
     throw new Error('createFullscreenOnlyGallery - first parameter must be imageSelector string');
   }
@@ -27,6 +32,9 @@ export default function (imageSelector: string, config: SlideshowConfig, showDes
 
     if (showDescriptions) {
       builder.addDescriptions();
+    }
+    if (buyImageCb) {
+      builder.addBuyImageCallback(buyImageCb);
     }
     const gallery = builder.build();
 

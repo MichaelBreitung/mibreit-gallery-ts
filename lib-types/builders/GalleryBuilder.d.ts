@@ -18,7 +18,11 @@ export default class GalleryContainerBuilder {
     addFullscreen(config?: FullscreenConfig): GalleryContainerBuilder;
     addThumbScroller(thumbContainer: HTMLElement, thumbs: NodeListOf<HTMLElement>, config?: ThumbScrollerConfig): GalleryContainerBuilder;
     addDescriptions(descriptions?: NodeListOf<HTMLElement>): GalleryContainerBuilder;
+    addBuyImageCallback(callback: (idx: number) => void): void;
     build(): IGallery;
+    private _createShopButton;
+    private _setupShopButtonVisibility;
+    private _setupShopButtonClickEvent;
     private _createPreviousNextButtons;
     private _setupSwipeHandler;
     private _setupHoverEvents;

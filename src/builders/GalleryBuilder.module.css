@@ -5,6 +5,13 @@
   top: 0rem;
 }
 
+.gallery__shop_btn {
+  position: absolute;
+  z-index: 2;
+  left: 0rem;
+  top: 0rem;
+}
+
 .gallery__info_btn {
   position: absolute;
   z-index: 2;
