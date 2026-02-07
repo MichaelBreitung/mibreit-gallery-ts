@@ -39,6 +39,7 @@ function showDiv(divSelector: string) {
 }
 class MibreitGalleryElement extends HTMLElement {
   static classCounter = 0;
+  public gallery: IGallery | null = null;
 
   connectedCallback() {
     const customClass = `mbg__custom-gallery-${MibreitGalleryElement.classCounter++}`;
@@ -51,7 +52,7 @@ class MibreitGalleryElement extends HTMLElement {
     const zoom = this.hasAttribute('zoom');
     const containerSelector = `.${customClass} mbg-images`;
     const thumbContainerSelector = `.${customClass} mbg-thumbs`;
-    const gallery = createGallery(containerSelector, `${containerSelector} img`, {
+    this.gallery = createGallery(containerSelector, `${containerSelector} img`, {
       scaleMode: EImageScaleMode.FIT_ASPECT,
       thumbContainerSelector,
       thumbSelector: `${thumbContainerSelector} img`,
@@ -63,15 +64,15 @@ class MibreitGalleryElement extends HTMLElement {
       zoom: zoom ? true : undefined,
     });
 
-    window.mbgGalleryObjects.push(gallery);
+    window.mbgGalleryObjects.push(this.gallery);
 
     const titleElement = document.querySelector('mbg-title');
     if (titleElement) {
-      const imageInfo = gallery.getImageViewer().getImageInfo(gallery.getImageViewer().getImageIndex());
+      const imageInfo = this.gallery.getImageViewer().getImageInfo(this.gallery.getImageViewer().getImageIndex());
       if (imageInfo) {
         titleElement.innerHTML = imageInfo.getTitle();
       }
-      gallery.getImageViewer().addImageChangedCallback((_index, imageInfo) => {
+      this.gallery.getImageViewer().addImageChangedCallback((_index, imageInfo) => {
         titleElement.innerHTML = imageInfo.getTitle();
       });
     }
@@ -92,7 +93,7 @@ class MibreitSlideshowElement extends HTMLElement {
     const expand = this.hasAttribute('expand');
     const containerSelector = `.${customClass} mbg-images`;
     createSlideshow(`${containerSelector} img`, {
-      scaleMode: expand !== null ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
+      scaleMode: expand ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
       loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
       loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
       interval: interval ? +interval : 4000,
@@ -120,6 +121,7 @@ class MibreitThumbScrollerElement extends HTMLElement {
 
 class MibreitImagesWallElement extends HTMLElement {
   static classCounter = 0;
+  public gallery: IGallery | null = null;
 
   connectedCallback() {
     const customClass = `mbg__custom-imageswall-${MibreitImagesWallElement.classCounter++}`;
@@ -141,7 +143,7 @@ class MibreitImagesWallElement extends HTMLElement {
       };
     }
 
-    createFullscreenOnlyGallery(`${containerSelector} img`, {}, true, onBuyClicked);
+    this.gallery = createFullscreenOnlyGallery(`${containerSelector} img`, {}, true, onBuyClicked);
     createImagesWall(containerSelector, `${containerSelector} img`, columns ? +columns : undefined);
     showDiv(containerSelector);
   }
