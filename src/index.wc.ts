@@ -128,6 +128,7 @@ class MibreitImagesWallElement extends HTMLElement {
     this.classList.add(customClass);
     const columns = this.getAttribute('columns');
     const containerSelector = `.${customClass} mbg-images`;
+    const scrollLoaderDelay = this.getAttribute('scrollLoaderDelay');
 
     const addBuyButton = this.hasAttribute('addBuyButton');
     let onBuyClicked = null;
@@ -144,7 +145,13 @@ class MibreitImagesWallElement extends HTMLElement {
     }
 
     this.gallery = createFullscreenOnlyGallery(`${containerSelector} img`, {}, true, onBuyClicked);
-    createImagesWall(containerSelector, `${containerSelector} img`, columns ? +columns : undefined);
+    createImagesWall(
+      containerSelector,
+      `${containerSelector} img`,
+      columns ? +columns : undefined,
+      undefined,
+      scrollLoaderDelay ? +scrollLoaderDelay : undefined
+    );
     showDiv(containerSelector);
   }
 }

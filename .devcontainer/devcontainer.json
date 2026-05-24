@@ -1,7 +1,7 @@
 {
     "name": "mibreit_web_tooling",
     "dockerComposeFile": "./docker-compose.yml",
-    "service": "mibreit-web-dev",
+    "service": "mibreit-gallery-dev",
     "workspaceFolder": "/home/developer/develop",
     "shutdownAction": "stopCompose",
     "containerUser": "developer",

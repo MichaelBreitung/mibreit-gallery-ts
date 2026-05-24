@@ -10,7 +10,8 @@ export default function (
   containerSelector: string,
   imagesSelector: string,
   columns?: number,
-  imageClickedCallback?: (index: number) => void
+  imageClickedCallback?: (index: number) => void,
+  scrollLoaderDelay?: number
 ): ImagesWall {
   if (typeof containerSelector !== 'string') {
     throw new Error('createImagesWall - first parameter must be containerSelector string');
@@ -28,7 +29,13 @@ export default function (
     throw new Error('createImagesWall - no images found inside the container');
   }
 
-  const builder = new ImagesWallBuilder(container, images, columns ?? 3, imageClickedCallback);
+  const builder = new ImagesWallBuilder(container, images, columns ?? 3);
+  if (imageClickedCallback) {
+    builder.addImageClickedCallback(imageClickedCallback);
+  }
+  if (scrollLoaderDelay) {
+    builder.setScrollLoaderDelay(scrollLoaderDelay);
+  }
   const wall = builder.build();
 
   return wall;

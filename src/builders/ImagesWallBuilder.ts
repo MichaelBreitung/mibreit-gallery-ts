@@ -9,34 +9,20 @@ import Image from '../components/Image';
 
 import styles from './ImagesWallBuilder.module.css';
 
+const DEFAULT_SCROLL_LOADER_DELAY = 300;
+
 export default class ImagesWallBuilder {
   private _containerElement: HTMLElement;
+  private _scrollLoaderDelay: number = DEFAULT_SCROLL_LOADER_DELAY;
   private _images: Array<Image>;
   private _imagesWall: ImagesWall;
 
-  constructor(
-    containerElement: HTMLElement,
-    imageElements: NodeListOf<HTMLElement>,
-    columns?: number,
-    imageClickedCallback?: (index: number) => void
-  ) {
+  constructor(containerElement: HTMLElement, imageElements: NodeListOf<HTMLElement>, columns?: number) {
     this._containerElement = containerElement;
     addCssClass(this._containerElement, styles.images_wall__parent);
 
     this._images = this._createImagesArray(imageElements);
     this._imagesWall = new ImagesWall(this._images, columns);
-
-    if (imageClickedCallback) {
-      this._addImageClickCallbacks(imageClickedCallback);
-    }
-
-    createLazyLoaderFromElements(this._images, {
-      mode: ELazyMode.WINDOWED_SCROLL,
-      useSurrogate: true,
-    });
-
-    // Append the wall to the container
-    this._containerElement.appendChild(this._imagesWall.element);
   }
 
   public addImageClickedCallback(cb: (index: number) => void): ImagesWallBuilder {
@@ -44,7 +30,20 @@ export default class ImagesWallBuilder {
     return this;
   }
 
+  public setScrollLoaderDelay(delay: number): ImagesWallBuilder {
+    this._scrollLoaderDelay = delay;
+    return this;
+  }
+
   public build(): ImagesWall {
+    createLazyLoaderFromElements(this._images, {
+      mode: ELazyMode.WINDOWED_SCROLL,
+      useSurrogate: true,
+      scrollLoaderDelay: this._scrollLoaderDelay,
+    });
+
+    // Append the wall to the container
+    this._containerElement.appendChild(this._imagesWall.element);
     return this._imagesWall;
   }
 
