@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import { sleep } from '../src/tools/AsyncSleep';
 
 // Globals
@@ -17,7 +17,7 @@ let page;
 
 beforeAll(async () => {
   console.log('thumbscroller beforeAll');
-  browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  browser = await puppeteer.launch({ channel: 'chrome', headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 });
 
 beforeEach(async () => {

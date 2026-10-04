@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { describe, it, expect, beforeAll } from 'vitest';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import { sleep } from '../src/tools/AsyncSleep';
 
 // Globals
@@ -20,7 +20,7 @@ let browser;
 let page;
 
 beforeAll(async () => {
-  browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  browser = await puppeteer.launch({ channel: 'chrome', headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   page = await browser.newPage();
   await page.setContent(galleryPageMarkup);
 

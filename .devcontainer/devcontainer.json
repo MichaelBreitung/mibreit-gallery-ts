@@ -1,44 +1,36 @@
 {
-    "name": "mibreit_web_tooling",
-    "dockerComposeFile": "./docker-compose.yml",
-    "service": "mibreit-gallery-dev",
-    "workspaceFolder": "/home/developer/develop",
-    "shutdownAction": "stopCompose",
-    "containerUser": "developer",
-    "updateRemoteUserUID": true,
-    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && sudo chmod a+w /home/developer/develop/node_modules && sudo chown 1000:1000 /var/run/docker.sock",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "dbaeumer.vscode-eslint",
-                "asciidoctor.asciidoctor-vscode",
-                "redhat.vscode-yaml",
-                "ms-azuretools.vscode-docker",
-                "eamodio.gitlens",
-                "esbenp.prettier-vscode",
-                "yoavbls.pretty-ts-errors",
-                "ms-python.python",
-                "ms-python.mypy-type-checker",
-                "ms-python.pylint",
-                "ms-python.black-formatter",
-                "bmewburn.vscode-intelephense-client",
-                "douglaszaltron.nunjucks-vscode-extensionpack",
-                "okitavera.vscode-nunjucks-formatter",
-                "eiminsasete.apacheconf-snippets"
-            ],
-            "settings": {
-                "editor.tabSize": 2,
-                "editor.formatOnSave": true,
-                "editor.codeActionsOnSave": {},
-                "editor.trimAutoWhitespace": true,
-                "editor.defaultFormatter": "esbenp.prettier-vscode",        
-                "[php]": {
-                  "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-                },
-                "typescript.updateImportsOnFileMove.enabled": "always",
-                "javascript.updateImportsOnFileMove.enabled": "always",
-                "html.suggest.html5": true
-            }
-        }
+  "name": "mibreit_web_tooling",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "mibreit-gallery-dev",
+  "workspaceFolder": "/home/developer/develop",
+  "shutdownAction": "stopCompose",
+  "containerUser": "developer",
+  "updateRemoteUserUID": true,
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}&& sudo chmod a+w /home/developer/develop/node_modules ",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "yoavbls.pretty-ts-errors",
+        "openai.chatgpt"
+      ],
+      "settings": {
+        "editor.tabSize": 2,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {},
+        "editor.trimAutoWhitespace": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[php]": {
+          "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+        },
+        "typescript.updateImportsOnFileMove.enabled": "always",
+        "javascript.updateImportsOnFileMove.enabled": "always",
+        "html.suggest.html5": true
+      }
     }
+  }
 }
