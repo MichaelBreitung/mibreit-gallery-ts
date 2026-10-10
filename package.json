@@ -1,14 +1,11 @@
 {
   "name": "mibreit-gallery-ts",
-  "private": true,
   "version": "2.2.0",
   "type": "module",
-  "module": "lib/index.js",
-  "types": "lib-types",
   "scripts": {
     "dev": "vite",
-    "test": "vitest run",
-    "build": "tsc --build --clean && tsc && node build/buildLib.js && node build/buildIffe.js"
+    "test": "npm run build && vitest run",
+    "build": "tsc --noEmit && vite build"
   },
   "devDependencies": {
     "@rollup/plugin-strip": "^3.0.4",

@@ -26,7 +26,7 @@ Add the minified script bundle `mibreitGalleryTs.min.js` to your page. It regist
 <script src="/scripts/mibreitGalleryTs.min.js"></script>
 ```
 
-The bundle is part of this repository. You can also create it yourself (see [Development](#development)).
+Download `mibreitGalleryTs.min.js` from a [GitHub Release](https://github.com/MichaelBreitung/mibreit-gallery-ts/releases) and host it on your own website. Loading it from a CDN or another external host is not supported or recommended.
 
 ### 2. Mark your images for lazy loading
 
@@ -149,7 +149,7 @@ document.querySelector('mbg-imageswall').addEventListener('buy-clicked', (event)
 
 ### Using the JavaScript functions
 
-If you prefer code over markup, or want a fullscreen-only gallery, use the factory functions. They take CSS selectors for your images. They are available on the global `mibreitGalleryTs` (script bundle) or as named exports (ES module). Invalid parameters or selectors that match no images throw an error with a descriptive message.
+If you prefer code over markup, or want a fullscreen-only gallery, use the factory functions. They take CSS selectors for your images and are available on the global `mibreitGalleryTs`. Invalid parameters or selectors that match no images throw an error with a descriptive message.
 
 ```js
 const gallery = mibreitGalleryTs.createGallery('#container', '#container > img', {
@@ -198,15 +198,9 @@ The returned gallery object gives access to the image viewer (navigation, curren
 - Colors are controlled by the CSS variables `--background-color` and `--foreground-color` on the document root. With average-color fullscreen backgrounds, the gallery updates them on every image change.
 - Gallery and thumbnail containers start transparent and are faded in once the gallery is ready. If the script is blocked or fails, the images stay invisible.
 
-### Using it as a dependency
+### Updating the script
 
-The library is also available as an ES module with TypeScript type declarations. It is installed from GitHub:
-
-```sh
-npm install github:MichaelBreitung/mibreit-gallery-ts
-```
-
-The module exports the factory functions and the components. Default colors and the layout of the HTML elements come from a stylesheet that is only part of the script bundle, so you need to provide these styles yourself when you use the module.
+Download the new `mibreitGalleryTs.min.js` from the relevant [GitHub Release](https://github.com/MichaelBreitung/mibreit-gallery-ts/releases) and replace your hosted copy. The script is not published to npm, and no ES module build is provided.
 
 ### Browser support
 
@@ -264,8 +258,18 @@ Helpful video tutorials:
 | Command         | Purpose                                                                                        |
 | --------------- | ---------------------------------------------------------------------------------------------- |
 | `npm run dev`   | Starts the Vite development server (port 5173) with an index of demo pages for manual testing. |
-| `npm run build` | Builds the ES module library, the type declarations and the minified script bundle.            |
-| `npm test`      | Runs the tests. The browser tests run against the built script bundle, so run a build first.   |
+| `npm run build` | Type-checks the source and builds the minified script bundle.                                  |
+| `npm test`      | Builds the bundle and runs the tests.                                                          |
+
+### Releasing the script bundle
+
+Create the release and tag on GitHub first, then upload the bundle:
+
+```sh
+./scripts/release-iife.sh <release-tag>
+```
+
+The script requires the [GitHub CLI](https://cli.github.com/) and an authenticated `gh` account. It runs the build and uploads `lib-iife/mibreitGalleryTs.min.js` to the specified release.
 
 With the development server running, press `r` + `Enter` in its console to restart it and reload the page. Automatic reloading only works if your host system is Linux. On Windows, file changes are not propagated to the Dev Container and Vite does not detect them.
 
