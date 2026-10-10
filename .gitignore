@@ -2,6 +2,9 @@
 
 /node_modules
 lib-cjs
+lib/
+lib-types/
+lib-iife/
 
 temp/
 

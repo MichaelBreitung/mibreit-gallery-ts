@@ -3,18 +3,16 @@
     "target": "ES6",
     "useDefineForClassFields": true,
     "module": "ES6",
-    "lib": ["ES2016", "DOM", "DOM.Iterable"],
+    "lib": ["ES2017", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "outDir": "lib-types",
+    "noEmit": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
 
-    /* Linting */
+    /* Type checking */
     "strict": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,

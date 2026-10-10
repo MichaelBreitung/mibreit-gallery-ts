@@ -7,8 +7,8 @@ re-installed; this file is preserved.
 Owned by the `onboarding` skill. Read it before the first task of a session.
 
 Minimalistic TypeScript image gallery (`mibreit-gallery-ts`) with lazy loading for a fast viewing
-experience. It is built as an ES module library, a browser IIFE bundle, and web components, and
-ships with demo pages.
+experience. It is built as a browser IIFE bundle that registers web components and exposes factory
+functions, and ships with demo pages.
 
 ## Documentation Map
 
@@ -47,5 +47,5 @@ so swapping the backend means changing the line above — no skill is touched.
 | Command         | Purpose                                                                           | Notes                                                               |
 | --------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | `npm run dev`   | Vite dev server for the demo pages                                                | Long-running; do not run unattended                                 |
-| `npm test`      | `vitest run` (puppeteer browser tests in `test/`)                                 | Needs Chrome/Chromium for puppeteer                                 |
-| `npm run build` | `tsc --build --clean && tsc && node build/buildLib.js && node build/buildIffe.js` | Overwrites `lib/`, `lib-types/`, `lib-iife/`; no lint script exists |
+| `npm test`      | `npm run build && vitest run` (puppeteer browser tests in `test/`)                | Needs Chrome/Chromium for puppeteer                                 |
+| `npm run build` | `tsc --noEmit && vite build`                                                       | Overwrites `lib-iife/`; no lint script exists                       |
