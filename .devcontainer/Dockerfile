@@ -1,5 +1,5 @@
 # Dockerfile.base in this 
-FROM mibreit/mibreit-homepage-builder:0.4.0 
+FROM mibreit/mibreit-homepage-builder:0.5.0 
 
 ARG UID=${UID:-1000}
 ARG GID=${GID:-1000}
