@@ -18,7 +18,7 @@ never duplicated across files.
 | File                  | Scope                                                                                    |
 | --------------------- | ---------------------------------------------------------------------------------------- |
 | `doc/architecture.md` | Full arc42 architecture of the library: design, decisions, quality goals, Technical Debt |
-| `README.md`           | Developer-facing overview and usage of the library                                       |
+| `README.md`           | Entry point: usage on a website (web components, factories), overview and dev setup      |
 
 ## Conventions
 

@@ -19,7 +19,6 @@ export default function (
   config?: GalleryConfig,
   buyImageCb: ((idx: number) => void) | null = null
 ): IGallery {
-  console.log('createGallery', config);
   if (typeof containerSelector !== 'string') {
     throw new Error('createGallery - first parameter must be containerSelector string');
   }
