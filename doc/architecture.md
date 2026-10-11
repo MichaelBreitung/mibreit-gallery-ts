@@ -39,8 +39,8 @@ The library offers these building blocks, which can be used on their own or comb
 
 The library is consumed in two ways:
 
-- As a script bundle that declares custom HTML elements (the main way for galleries, slideshows, thumbnail scrollers and images walls).
-- As the same script bundle whose global object exposes the factory functions. This is still in use, for example for the fullscreen-only gallery on the author's blog pages, which does not use a web component.
+- As a script bundle that declares custom HTML elements (the only way to create galleries, slideshows, thumbnail scrollers and images walls).
+- As the same script bundle whose global object exposes `createFullscreenOnlyGallery`. This is still in use for the fullscreen-only gallery on the author's blog pages, which operates on regular page images without a web component.
 
 ### 1.2 Quality Goals
 
@@ -70,7 +70,7 @@ These goals are detailed as Q-1 to Q-4 in [section 10](#10-quality-requirements)
 | Targets modern evergreen browsers only                      | Legacy browsers are explicitly out of scope. The code relies on resize observation, pointer events and custom elements.                                                                           |
 | No UI framework dependency                                  | The library renders plain DOM and works on any page. The only runtime dependencies are two of the author's packages (the lazy loader and the DOM tools) and a third-party average-color package.  |
 | TypeScript in strict mode                                   | The compiler is configured with strict checks, no unused locals or parameters, and an ES6 language target.                                                                                        |
-| Distributed as one self-hosted artefact                     | The script bundle includes the web components and exposes the factory functions. It is attached to a GitHub Release, downloaded by the site owner and hosted on the site (see [ADR-12](#adr-12)). |
+| Distributed as one self-hosted artefact                     | The script bundle includes the web components and exposes the fullscreen-only function. It is attached to a GitHub Release, downloaded by the site owner and hosted on the site (see [ADR-12](#adr-12)). |
 | Build output is generated locally                           | `task deploy:build` type-checks the source and creates the script bundle; generated folders are git-ignored and not versioned. See [TD-1](#td-1).                                                 |
 | Own packages are installed from GitHub                      | The lazy loader and the DOM tools are resolved from the author's GitHub repositories, not from the npm registry.                                                                                  |
 | Images are plain `<img>` elements supplied by the host page | The gallery takes over images that are already in the page markup and reads source, title and description from their attributes. Nothing is fetched at runtime besides the images themselves.     |
@@ -187,7 +187,7 @@ graph LR
 | Goal (see [section 1](#12-quality-goals)) | Strategy                                                                                                                                                                                              | Where it shows                                                                                                        |
 | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | Performance (Q-1)                         | Images are fetched only when they are close to being viewed. The page keeps its images as ordinary `<img>` elements. There is no framework and there are no network calls besides image loading.      | Index-window lazy loading for slideshow, gallery and thumbnails. Scroll-based lazy loading for the images wall (4.2). |
-| Ease of use (Q-2)                         | Two entry paths over the same core. Custom HTML elements configure everything through attributes. Factory functions cover pages that use the script directly. Defaults are provided for all options.  | Web-component bundle and factory functions (4.3).                                                                     |
+| Ease of use (Q-2)                         | One entry point over the same core. Custom HTML elements configure everything through attributes. The fullscreen-only function covers regular page images. Defaults are provided for all options.  | Script bundle and fullscreen-only function (4.3).                                                                     |
 | Maintainability and extensibility (Q-3)   | A layered structure: factories validate input, builders assemble, components do one job each, and interfaces separate consumers from implementations. Scale modes are interchangeable stage variants. | Building Block View ([section 5](#5-building-block-view)).                                                            |
 | Browser compatibility (Q-4)               | Only standard web platform features are used, with no polyfills and no legacy support.                                                                                                                | [Section 2](#2-architecture-constraints).                                                                             |
 
@@ -205,8 +205,8 @@ All three depend on the host page marking images as deferred (see [section 3](#3
 
 ### 4.3 Entry Paths and Composition
 
-- **Declarative entry:** a script bundle registers custom elements. Each element reads its attributes, derives selectors for its child images and delegates to the matching factory.
-- **Imperative entry:** factory functions take CSS selectors and a config object, validate both, and delegate to a builder. Factories exist for slideshow, thumbnail scroller, gallery, fullscreen-only gallery and images wall.
+- **Declarative composition:** custom elements read their attributes, derive selectors for their child images and delegate to the matching factory. Galleries, slideshows, thumbnail scrollers and images walls are created only through this path.
+- **Imperative exception:** `createFullscreenOnlyGallery` takes a CSS selector and a slideshow config, validates both, and delegates to the gallery builder. It serves regular page images that have no dedicated web component.
 - **Composition by builders:** the gallery builder starts from a slideshow and adds optional features (previous/next buttons, fullscreen, thumbnails, descriptions, buy action). The same builder serves the fullscreen-only gallery, which clones the page's images into a hidden container and shows it only when fullscreen is active.
 - **Images stay in the page's DOM:** components wrap and style the host page's `<img>` elements instead of re-creating them. Title, description and print metadata are read from the element's attributes (see [ADR-1](#adr-1) and [ADR-8](#adr-8)).
 
@@ -219,7 +219,7 @@ All three depend on the host page marking images as deferred (see [section 3](#3
 
 ### 4.5 Build and Distribution
 
-- **One source tree, one distributed artefact:** the script bundle registers the web components and exposes the factory functions on a global object.
+- **One source tree, one distributed artefact:** the script bundle registers the web components and exposes `createFullscreenOnlyGallery` plus its scale-mode type on a global object.
 - **Type checking without shipping declarations:** `tsc --noEmit` checks the source; declarations are not generated or distributed.
 - **Dev Container and browser tests:** development runs in a Dev Container. `task test:all` builds the bundle first, then runs the tests in headless Chrome against it.
 - **Console output removed at build:** `console` calls are stripped from the script bundle (see [section 8](#86-logging)).
@@ -296,7 +296,7 @@ graph TD
 | Building block       | Responsibility                                                                                                                                                                                                                                            |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Web Components entry | Script bundle entry. Registers the custom elements, maps attributes to factory calls, publishes created galleries on a page-global list, relays the buy event, and fades the gallery in once it is ready.                                                 |
-| Module entry         | Source entry that exports the factory functions, the components and the scale-mode and position types. The script bundle re-exports it, so factories are also available on its global.                                                                    |
+| Single entry point   | Registers the web components and exports only `createFullscreenOnlyGallery`, `EImageScaleMode` and `SlideshowConfig`; the script bundle exposes the function and enum on its global.        |
 | Factories            | One function per use case (slideshow, thumbnail scroller, gallery, fullscreen-only gallery, images wall). Each validates its parameters and configuration, resolves the selectors in the page and delegates to a builder. They throw if nothing is found. |
 | Builders             | Assemble components into a working result. Each builder creates the image wrappers, lazy loader and viewer, wires them together (callbacks, keyboard, swipe, hover) and builds the container object.                                                      |
 | Containers           | Plain result objects (slideshow, gallery) that give the host page access to the image viewer, loader, thumbnails and fullscreen.                                                                                                                          |
@@ -523,7 +523,7 @@ The host page includes the script bundle with a script tag, and the gallery mark
 
 - Every factory validates its parameters at the boundary and throws an error with a descriptive message for invalid input. Typical cases are non-string selectors, invalid callback parameters, wrong option types or ranges, an invalid color format, and selectors that match no images. Images-wall factory calls validate both the container and image selector plus their numeric options.
 - Configuration is a plain object of optional fields. Defaults are defined with the configuration type in one place and applied where a value is consumed.
-- The web-component entry parses numeric attributes explicitly and rejects values that are not finite numbers with a component-specific error. Boolean flag attributes are detected with `hasAttribute`. Attributes that are absent become `undefined`, so the configuration defaults apply.
+- The single entry point parses component attributes explicitly and rejects numeric values that are not finite numbers with a component-specific error. Boolean flag attributes are detected with `hasAttribute`. Attributes that are absent become `undefined`, so the configuration defaults apply.
 - There is no recovery from invalid configuration. The error surfaces in the browser console and the gallery does not start.
 
 ### 8.2 Host Page Contract
@@ -616,11 +616,11 @@ Each decision states its context and consequences. Where the author gave the rat
 
 #### ADR-4
 
-**Two entry points from one source tree.** The web-component entry produces the script bundle for pages and re-exports the module entry's factory functions and components on its global.
+**One entry point with a narrow public API.** The entry registers all element-based galleries and exposes only the fullscreen-only factory and its supported types on the bundle's global.
 
-- **Context:** Web components are now the usual way to embed galleries. The module entry (and its factories, available on the script bundle's global) remains in use, for example for the fullscreen-only gallery on the author's blog pages, which does not use a web component.
-- **Consequences:** Two entry files must be kept in sync, and their relationship is not obvious. The web-component entry re-exports the module entry.
-- **Status:** Accepted. Under review: the author wants to look at cleaning up the entry points (see [TD-2](#td-2)).
+- **Context:** Web components are the intended way to embed element-based galleries. The fullscreen-only gallery needs to select regular page images and therefore remains a function.
+- **Consequences:** There is no duplicated creation API. Adding a new element-based gallery must not expand the global API; only a use case that cannot be expressed as a web component justifies a function.
+- **Status:** Accepted. Implemented by consolidating the historical entry files; TD-2 is resolved.
 
 #### ADR-5
 
@@ -728,7 +728,7 @@ The items are numbered in the order they were found, which is not a priority ord
 
 #### TD-2
 
-**Two source entry points with unclear roles.** The web-component entry re-exports the module entry, so the script bundle exposes the factories. The author uses both entry paths: the fullscreen-only gallery on blog pages through the script's global, and web components elsewhere. The entry files still need cleaning up, even though the ES module build has been dropped. See [ADR-4](#adr-4).
+**Resolved:** A single entry file now exposes only `createFullscreenOnlyGallery`, `EImageScaleMode` and `SlideshowConfig`, keeps all element-based factories internal, registers the custom elements and exposes only the fullscreen-only function and the scale-mode type on the global. See [ADR-4](#adr-4).
 
 #### TD-3
 
@@ -760,7 +760,7 @@ The items are numbered in the order they were found, which is not a priority ord
 
 #### TD-11
 
-**Historical: the module entry did not include the global stylesheet.** This no longer affects a distributed artefact because the ES module build was dropped. The module source entry remains part of the codebase and still needs cleanup with TD-2.
+**Historical: a former module entry did not include the global stylesheet.** This no longer affects a distributed artefact because the historical entry files were consolidated into one script-bundle entry.
 
 > ⚠️ TODO: verify whether this is intended.
 
