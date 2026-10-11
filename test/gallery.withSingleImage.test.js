@@ -22,8 +22,8 @@ const gallerySetupCode = `
 const containerWidthPx = 600;
 const containerHeightPx = 500;
 const testTile = 'Test Title';
-const imageWidth = 1200;
-const imageHeight = 600;
+const imageWidth = 1280;
+const imageHeight = 853;
 
 // helpers
 
