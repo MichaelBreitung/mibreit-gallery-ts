@@ -5,6 +5,8 @@ import { getElement, getElements } from 'mibreit-dom-tools';
 
 import ImagesWall from '../components/ImagesWall';
 import { ImagesWallBuilder } from '../builders';
+import { checkImagesWallConfig } from '../types';
+import { assertCallback, assertSelectorPair } from './validation';
 
 export default function (
   containerSelector: string,
@@ -13,23 +15,29 @@ export default function (
   imageClickedCallback?: (index: number) => void,
   scrollLoaderDelay?: number
 ): ImagesWall {
-  if (typeof containerSelector !== 'string') {
-    throw new Error('createImagesWall - first parameter must be containerSelector string');
+  const [validatedContainerSelector, validatedImagesSelector] = assertSelectorPair(
+    [containerSelector, imagesSelector],
+    'createImagesWall',
+    ['first parameter containerSelector', 'second parameter imagesSelector']
+  );
+  checkImagesWallConfig({ columns, scrollLoaderDelay });
+  if (imageClickedCallback) {
+    assertCallback(imageClickedCallback, 'createImagesWall', 'fourth parameter imageClickedCallback');
   }
 
-  const container = getElement(containerSelector);
+  const container = getElement(validatedContainerSelector);
 
   if (!container) {
     throw new Error('createImagesWall - container not found');
   }
 
-  const images = getElements(imagesSelector);
+  const images = getElements(validatedImagesSelector);
 
   if (!images || images.length === 0) {
     throw new Error('createImagesWall - no images found inside the container');
   }
 
-  const builder = new ImagesWallBuilder(container, images, columns ?? 3);
+  const builder = new ImagesWallBuilder(container, images, columns);
   if (imageClickedCallback) {
     builder.addImageClickedCallback(imageClickedCallback);
   }

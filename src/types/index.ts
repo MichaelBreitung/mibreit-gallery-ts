@@ -15,6 +15,39 @@ export enum EImageScaleMode {
   EXPAND,
 }
 
+export const SLIDESHOW_DEFAULTS = {
+  interval: 5000,
+  loaderWindowLeft: 0,
+  loaderWindowRight: 1,
+} as const;
+
+export const THUMB_SCROLLER_DEFAULTS = {
+  numberOfVisibleThumbs: 7,
+  initialIndex: 0,
+} as const;
+
+export const IMAGES_WALL_DEFAULTS = {
+  columns: 3,
+  scrollLoaderDelay: 300,
+} as const;
+
+export function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+export function parseNumericAttribute(value: string | null, name: string, componentName: string) {
+  if (value === null) {
+    return undefined;
+  }
+
+  const parsedValue = Number(value);
+  if (!isFiniteNumber(parsedValue)) {
+    throw new Error(`${componentName} - invalid ${name} attribute: "${value}" is not a number`);
+  }
+
+  return parsedValue;
+}
+
 export type ThumbScrollerConfig = {
   numberOfVisibleThumbs?: number;
   initialIndex?: number;
@@ -23,14 +56,11 @@ export type ThumbScrollerConfig = {
 export function checkThumbScrollerConfig(config: ThumbScrollerConfig) {
   if (
     typeof config.numberOfVisibleThumbs !== 'undefined' &&
-    (typeof config.numberOfVisibleThumbs !== 'number' || config.numberOfVisibleThumbs < 1)
+    (!isFiniteNumber(config.numberOfVisibleThumbs) || config.numberOfVisibleThumbs < 1)
   ) {
     throw new Error('checkThumbScrollerConfig - numberOfVisibleThumbs is invalid number');
   }
-  if (
-    typeof config.initialIndex !== 'undefined' &&
-    (typeof config.initialIndex !== 'number' || config.initialIndex < 0)
-  ) {
+  if (typeof config.initialIndex !== 'undefined' && (!isFiniteNumber(config.initialIndex) || config.initialIndex < 0)) {
     throw new Error('checkThumbScrollerConfig - config initialIndex should be of type number');
   }
 }
@@ -50,7 +80,7 @@ export function checkSlideshowConfig(config: SlideshowConfig) {
   ) {
     throw new Error('checkSlideshowConfig - config scaleMode should be of type EImageScaleMode (number 0 - 3)');
   }
-  if (typeof config.interval !== 'undefined' && (typeof config.interval !== 'number' || config.interval < 1000)) {
+  if (typeof config.interval !== 'undefined' && (!isFiniteNumber(config.interval) || config.interval < 1000)) {
     throw new Error('checkSlideshowConfig - config interval should be of type number and larger than 1000');
   }
   if (typeof config.zoom !== 'undefined' && typeof config.zoom !== 'boolean') {
@@ -58,13 +88,13 @@ export function checkSlideshowConfig(config: SlideshowConfig) {
   }
   if (
     typeof config.loaderWindowRight !== 'undefined' &&
-    (typeof config.loaderWindowRight !== 'number' || config.loaderWindowRight < 0)
+    (!isFiniteNumber(config.loaderWindowRight) || config.loaderWindowRight < 0)
   ) {
     throw new Error('checkSlideshowConfig - config loaderWindowRight should be of type number');
   }
   if (
     typeof config.loaderWindowLeft !== 'undefined' &&
-    (typeof config.loaderWindowLeft !== 'number' || config.loaderWindowLeft < 0)
+    (!isFiniteNumber(config.loaderWindowLeft) || config.loaderWindowLeft < 0)
   ) {
     throw new Error('checkSlideshowConfig - config loaderWindowLeft should be of type number');
   }
@@ -90,9 +120,29 @@ export function checkGalleryConfig(config: GalleryConfig) {
   }
   if (
     typeof config.initialImageNr !== 'undefined' &&
-    (typeof config.initialImageNr !== 'number' || config.initialImageNr < 0)
+    (!isFiniteNumber(config.initialImageNr) || config.initialImageNr < 0)
   ) {
     throw new Error('checkGalleryConfig - invalid initialImageNr');
+  }
+}
+
+export type ImagesWallConfig = {
+  columns?: number;
+  scrollLoaderDelay?: number;
+};
+
+export function checkImagesWallConfig(config: ImagesWallConfig) {
+  if (
+    typeof config.columns !== 'undefined' &&
+    (!isFiniteNumber(config.columns) || config.columns < 1 || !Number.isInteger(config.columns))
+  ) {
+    throw new Error('checkImagesWallConfig - columns should be an integer of at least 1');
+  }
+  if (
+    typeof config.scrollLoaderDelay !== 'undefined' &&
+    (!isFiniteNumber(config.scrollLoaderDelay) || config.scrollLoaderDelay < 0)
+  ) {
+    throw new Error('checkImagesWallConfig - scrollLoaderDelay should be a number of at least 0');
   }
 }
 
@@ -101,9 +151,8 @@ export type FullscreenConfig = {
   useAverageBackgroundColor?: boolean;
 };
 
-const colorCheckerRegex = new RegExp('^#([A-Fa-f0-9]{8})$');
-
 export function checkFullscreenConfig(config: FullscreenConfig) {
+  const colorCheckerRegex = new RegExp('^#([A-Fa-f0-9]{8})$');
   if (typeof config.backgroundColor !== 'undefined' && typeof config.backgroundColor !== 'string') {
     throw new Error('checkFullscreenConfig - invalid backgroundColor');
   }

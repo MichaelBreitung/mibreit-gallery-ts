@@ -12,6 +12,7 @@ import IGallery from '../interfaces/IGallery';
 
 // Types
 import { checkGalleryConfig, GalleryConfig } from '../types';
+import { assertCallback, assertSelectorPair } from './validation';
 
 export default function (
   containerSelector: string,
@@ -19,17 +20,19 @@ export default function (
   config?: GalleryConfig,
   buyImageCb: ((idx: number) => void) | null = null
 ): IGallery {
-  if (typeof containerSelector !== 'string') {
-    throw new Error('createGallery - first parameter must be containerSelector string');
-  }
-  if (typeof imageSelector !== 'string') {
-    throw new Error('createGallery - second parameter must be imageSelector string');
-  }
+  const [validatedContainerSelector, validatedImageSelector] = assertSelectorPair(
+    [containerSelector, imageSelector],
+    'createGallery',
+    ['first parameter containerSelector', 'second parameter imageSelector']
+  );
   if (config) {
     checkGalleryConfig(config);
   }
+  if (buyImageCb) {
+    assertCallback(buyImageCb, 'createGallery', 'fourth parameter buyImageCb');
+  }
 
-  const elements = getElements(imageSelector);
+  const elements = getElements(validatedImageSelector);
   const container = getElement(containerSelector);
   if (container && elements.length > 0) {
     const builder = GalleryBuilder.fromContainerAndImages(container, elements, config)
@@ -47,7 +50,7 @@ export default function (
         }
       }
     }
-    const descriptionElements = getElements(`${containerSelector} figcaption`);
+    const descriptionElements = getElements(`${validatedContainerSelector} figcaption`);
     if (descriptionElements.length) {
       builder.addDescriptions(descriptionElements);
     }

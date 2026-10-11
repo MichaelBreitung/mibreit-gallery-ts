@@ -9,14 +9,13 @@ import { SlideshowBuilder } from '../builders';
 
 // Types
 import { checkSlideshowConfig, SlideshowConfig } from '../types';
+import { assertSelector } from './validation';
 
 // Interfaces
 import ISlideshow from '../interfaces/ISlideshow';
 
 export default function (imageSelector: string, config?: SlideshowConfig): ISlideshow {
-  if (typeof imageSelector !== 'string') {
-    throw new Error('createSlideshow - first parameter must be imageSelector string');
-  }
+  assertSelector(imageSelector, 'createSlideshow', 'first parameter imageSelector');
   const elements = getElements(imageSelector);
   if (elements?.length > 0) {
     if (config) {

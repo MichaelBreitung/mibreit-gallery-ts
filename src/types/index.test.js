@@ -1,7 +1,35 @@
 import { describe, expect, it } from 'vitest';
-import { checkThumbScrollerConfig, checkSlideshowConfig, checkGalleryConfig, checkFullscreenConfig } from './index';
+import {
+  IMAGES_WALL_DEFAULTS,
+  SLIDESHOW_DEFAULTS,
+  THUMB_SCROLLER_DEFAULTS,
+  checkImagesWallConfig,
+  checkThumbScrollerConfig,
+  checkSlideshowConfig,
+  checkGalleryConfig,
+  checkFullscreenConfig,
+  parseNumericAttribute,
+} from './index';
 
 describe('Config Test Test Suite', () => {
+  it('exports configuration defaults in one place', () => {
+    expect(SLIDESHOW_DEFAULTS).toEqual({ interval: 5000, loaderWindowLeft: 0, loaderWindowRight: 1 });
+    expect(THUMB_SCROLLER_DEFAULTS).toEqual({ numberOfVisibleThumbs: 7, initialIndex: 0 });
+    expect(IMAGES_WALL_DEFAULTS).toEqual({ columns: 3, scrollLoaderDelay: 300 });
+  });
+
+  it('parseNumericAttribute rejects non-numeric and non-finite attribute values', () => {
+    expect(parseNumericAttribute('5', 'columns', 'mbg-imageswall')).toBe(5);
+    expect(parseNumericAttribute(null, 'columns', 'mbg-imageswall')).toBeUndefined();
+
+    expect(() => parseNumericAttribute('invalid', 'columns', 'mbg-imageswall')).toThrowError(
+      'mbg-imageswall - invalid columns attribute: "invalid" is not a number'
+    );
+    expect(() => parseNumericAttribute('Infinity', 'columns', 'mbg-imageswall')).toThrowError(
+      'mbg-imageswall - invalid columns attribute: "Infinity" is not a number'
+    );
+  });
+
   it('checkThumbScrollerConfig fails for invalid numberOfVisibleThumbs input', async () => {
     expect(() => checkThumbScrollerConfig({ numberOfVisibleThumbs: '10' })).toThrowError();
   });
@@ -47,6 +75,11 @@ describe('Config Test Test Suite', () => {
 
   it('checkSlideshowConfig succeeds for valid interval', async () => {
     expect(() => checkSlideshowConfig({ interval: 1000 })).not.toThrowError();
+  });
+
+  it('checkSlideshowConfig fails for non-finite interval', () => {
+    expect(() => checkSlideshowConfig({ interval: Number.NaN })).toThrowError();
+    expect(() => checkSlideshowConfig({ interval: Number.POSITIVE_INFINITY })).toThrowError();
   });
 
   it('checkSlideshowConfig fails for invalid zoom', async () => {
@@ -119,5 +152,23 @@ describe('Config Test Test Suite', () => {
     expect(() =>
       checkFullscreenConfig({ backgroundColor: '#fffff0ff', useAverageBackgroundColor: true })
     ).not.toThrowError();
+  });
+
+  it('checkImagesWallConfig rejects invalid columns and scrollLoaderDelay', () => {
+    expect(() => checkImagesWallConfig({ columns: 0 })).toThrowError(
+      'checkImagesWallConfig - columns should be an integer of at least 1'
+    );
+    expect(() => checkImagesWallConfig({ columns: 1.5 })).toThrowError(
+      'checkImagesWallConfig - columns should be an integer of at least 1'
+    );
+    expect(() => checkImagesWallConfig({ columns: Number.NaN })).toThrowError(
+      'checkImagesWallConfig - columns should be an integer of at least 1'
+    );
+    expect(() => checkImagesWallConfig({ scrollLoaderDelay: -1 })).toThrowError(
+      'checkImagesWallConfig - scrollLoaderDelay should be a number of at least 0'
+    );
+    expect(() => checkImagesWallConfig({ scrollLoaderDelay: Number.NaN })).toThrowError(
+      'checkImagesWallConfig - scrollLoaderDelay should be a number of at least 0'
+    );
   });
 });
