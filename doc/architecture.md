@@ -65,16 +65,16 @@ These goals are detailed as Q-1 to Q-4 in [section 10](#10-quality-requirements)
 
 ### 2.1 Technical Constraints
 
-| Constraint                                                                | Background                                                                                                                                                                                       |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Targets modern evergreen browsers only                                    | Legacy browsers are explicitly out of scope. The code relies on resize observation, pointer events and custom elements.                                                                          |
-| No UI framework dependency                                                | The library renders plain DOM and works on any page. The only runtime dependencies are two of the author's packages (the lazy loader and the DOM tools) and a third-party average-color package. |
-| TypeScript in strict mode                                                 | The compiler is configured with strict checks, no unused locals or parameters, and an ES6 language target.                                                                                       |
-| Distributed as one self-hosted artefact                                   | The script bundle includes the web components and exposes the factory functions. It is attached to a GitHub Release, downloaded by the site owner and hosted on the site (see [ADR-12](#adr-12)). |
-| Build output is generated locally                                         | `npm run build` type-checks the source and creates the script bundle; generated folders are git-ignored and not versioned. See [TD-1](#td-1).                                                     |
-| Own packages are installed from GitHub                                    | The lazy loader and the DOM tools are resolved from the author's GitHub repositories, not from the npm registry.                                                                                 |
-| Images are plain `<img>` elements supplied by the host page               | The gallery takes over images that are already in the page markup and reads source, title and description from their attributes. Nothing is fetched at runtime besides the images themselves.    |
-| Gallery UI is a DOM overlay                                               | Fullscreen is implemented as an in-page overlay, not through the browser's Fullscreen API.                                                                                                       |
+| Constraint                                                  | Background                                                                                                                                                                                        |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Targets modern evergreen browsers only                      | Legacy browsers are explicitly out of scope. The code relies on resize observation, pointer events and custom elements.                                                                           |
+| No UI framework dependency                                  | The library renders plain DOM and works on any page. The only runtime dependencies are two of the author's packages (the lazy loader and the DOM tools) and a third-party average-color package.  |
+| TypeScript in strict mode                                   | The compiler is configured with strict checks, no unused locals or parameters, and an ES6 language target.                                                                                        |
+| Distributed as one self-hosted artefact                     | The script bundle includes the web components and exposes the factory functions. It is attached to a GitHub Release, downloaded by the site owner and hosted on the site (see [ADR-12](#adr-12)). |
+| Build output is generated locally                           | `task deploy:build` type-checks the source and creates the script bundle; generated folders are git-ignored and not versioned. See [TD-1](#td-1).                                                 |
+| Own packages are installed from GitHub                      | The lazy loader and the DOM tools are resolved from the author's GitHub repositories, not from the npm registry.                                                                                  |
+| Images are plain `<img>` elements supplied by the host page | The gallery takes over images that are already in the page markup and reads source, title and description from their attributes. Nothing is fetched at runtime besides the images themselves.     |
+| Gallery UI is a DOM overlay                                 | Fullscreen is implemented as an in-page overlay, not through the browser's Fullscreen API.                                                                                                        |
 
 ### 2.2 Organizational Constraints
 
@@ -129,7 +129,7 @@ graph LR
 | Host web page       | Supplies the images, titles (`title` or `data-title`), descriptions (`alt` and optional captions) and optional print metadata (`data-*` attributes). Each image that should be lazy loaded must carry the lazy-loading marker, either the class `mbll__marker` or a `data-src` attribute. Without either, the browser loads the image normally and the gallery cannot defer it. The host page also provides layout and style overrides. |
 | Website visitor     | Navigates with mouse, touch (swipe), pointer and keyboard, and opens fullscreen.                                                                                                                                                                                                                                                                                                                                                        |
 | Image hosting       | Plain HTTP image files that the browser fetches. The library only controls when the fetch starts.                                                                                                                                                                                                                                                                                                                                       |
-| Library consumers   | Site owners who download the script bundle from a GitHub Release and host it with their page.                                                                                                                                                                                                                                                                                                                                          |
+| Library consumers   | Site owners who download the script bundle from a GitHub Release and host it with their page.                                                                                                                                                                                                                                                                                                                                           |
 
 ### 3.2 Technical Context
 
@@ -164,7 +164,7 @@ graph LR
 | Interface                                                          | Direction | Description                                                                                                                                                                                                                                                                                   |
 | ------------------------------------------------------------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Custom elements (gallery, slideshow, thumbscroller, imageswall)    | in        | Declarative entry point, configured by attributes. Child helper elements mark the images, thumbnails and title.                                                                                                                                                                               |
-| Factory functions                                                  | in        | Imperative entry point. Takes CSS selectors and a config object and is available through the global object of the script bundle.                                                                                                                                                               |
+| Factory functions                                                  | in        | Imperative entry point. Takes CSS selectors and a config object and is available through the global object of the script bundle.                                                                                                                                                              |
 | Lazy-loading marker (`mbll__marker` class or `data-src` attribute) | in        | Opt-in signal on each image element. It tells the lazy loader to hold the image back until the gallery requests it. The class is defined by `mibreit-lazy-loader`, not by this library. Demo pages also hide the marker class with CSS so that images that are not yet loaded stay invisible. |
 | `buy-clicked` DOM event                                            | out       | Dispatched by the images wall element (when the `addBuyButton` attribute is set) with the image index.                                                                                                                                                                                        |
 | Global list of gallery objects                                     | out       | The script bundle exposes created gallery objects on the page's global scope for host scripts.                                                                                                                                                                                                |
@@ -221,9 +221,9 @@ All three depend on the host page marking images as deferred (see [section 3](#3
 
 - **One source tree, one distributed artefact:** the script bundle registers the web components and exposes the factory functions on a global object.
 - **Type checking without shipping declarations:** `tsc --noEmit` checks the source; declarations are not generated or distributed.
-- **Dev Container and browser tests:** development runs in a Dev Container. `npm test` builds the bundle first, then runs the tests in headless Chrome against it.
+- **Dev Container and browser tests:** development runs in a Dev Container. `task test:all` builds the bundle first, then runs the tests in headless Chrome against it.
 - **Console output removed at build:** `console` calls are stripped from the script bundle (see [section 8](#86-logging)).
-- **Release asset, not committed output:** `scripts/release-iife.sh` builds the bundle and uploads it to a GitHub Release; generated output is git-ignored (see [ADR-12](#adr-12)).
+- **Release asset, not committed output:** `task deploy:release` builds the bundle and uploads it to a GitHub Release; generated output is git-ignored (see [ADR-12](#adr-12)).
 
 ```mermaid
 %%{init: {'theme': 'neutral', 'themeVariables': {'primaryColor': '#e3f2fd', 'lineColor': '#aa9d9d'}}}%%
@@ -296,7 +296,7 @@ graph TD
 | Building block       | Responsibility                                                                                                                                                                                                                                            |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Web Components entry | Script bundle entry. Registers the custom elements, maps attributes to factory calls, publishes created galleries on a page-global list, relays the buy event, and fades the gallery in once it is ready.                                                 |
-| Module entry         | Source entry that exports the factory functions, the components and the scale-mode and position types. The script bundle re-exports it, so factories are also available on its global.                                                                  |
+| Module entry         | Source entry that exports the factory functions, the components and the scale-mode and position types. The script bundle re-exports it, so factories are also available on its global.                                                                    |
 | Factories            | One function per use case (slideshow, thumbnail scroller, gallery, fullscreen-only gallery, images wall). Each validates its parameters and configuration, resolves the selectors in the page and delegates to a builder. They throw if nothing is found. |
 | Builders             | Assemble components into a working result. Each builder creates the image wrappers, lazy loader and viewer, wires them together (callbacks, keyboard, swipe, hover) and builds the container object.                                                      |
 | Containers           | Plain result objects (slideshow, gallery) that give the host page access to the image viewer, loader, thumbnails and fullscreen.                                                                                                                          |
@@ -485,16 +485,16 @@ graph LR
 | Vite dev server | Serves the demo pages from the source tree for manual testing. It bundles the TypeScript sources, SVG icons and CSS Modules on the fly.                                            |
 | Browser tests   | Puppeteer (puppeteer-core, using the system Chrome) starts headless Chrome, loads test pages, injects the built script bundle and checks the result. The tests need a prior build. |
 | Git repository  | Holds the sources and hosts GitHub Releases that carry the script bundle.                                                                                                          |
-| Host website    | Any site that downloads a released script bundle and serves it itself.                                                                                                            |
+| Host website    | Any site that downloads a released script bundle and serves it itself.                                                                                                             |
 
 ### 7.2 Build Pipeline
 
-A single `npm run build` runs two steps in sequence:
+A single `task deploy:build` runs two steps in sequence:
 
-| Step                       | Result                                                                                            |
-| -------------------------- | ------------------------------------------------------------------------------------------------- |
-| Type check (`tsc --noEmit`) | Checks the TypeScript source without emitting declarations.                                        |
-| Script build (Vite/Rollup) | Creates one minified script file (`lib-iife`) with the web components. Its global is `mibreitGalleryTs`. |
+| Step                        | Result                                                                                                   |
+| --------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Type check (`tsc --noEmit`) | Checks the TypeScript source without emitting declarations.                                              |
+| Script build (Vite/Rollup)  | Creates one minified script file (`lib-iife`) with the web components. Its global is `mibreitGalleryTs`. |
 
 Common build properties:
 
@@ -505,13 +505,13 @@ Common build properties:
 
 ### 7.3 Artefacts
 
-| Artefact   | Content                                                                                        | Consumed by                                                            |
-| ---------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `lib-iife` | Minified script bundle that includes the web components and exposes the factories on a global. | GitHub Releases, web pages (script tag), browser tests, and the demo.  |
+| Artefact   | Content                                                                                        | Consumed by                                                           |
+| ---------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `lib-iife` | Minified script bundle that includes the web components and exposes the factories on a global. | GitHub Releases, web pages (script tag), browser tests, and the demo. |
 
 ### 7.4 Delivery to a Website
 
-After a release is created and tagged on GitHub, `scripts/release-iife.sh` builds the bundle and uploads it as a release asset. The script requires the GitHub CLI and an authenticated `gh` account.
+After a release is created and tagged on GitHub, `task deploy:release` builds the bundle and uploads it as a release asset. The task requires the GitHub CLI and an authenticated `gh` account.
 
 Site owners download the release asset, host it with their website and update their hosted copy for a new release. Loading the script from a CDN or another external host is not supported or recommended.
 
@@ -683,7 +683,7 @@ Each decision states its context and consequences. Where the author gave the rat
 **The script bundle is the only distributed artefact, delivered as a GitHub Release asset. The ES module build is dropped.** Build output is not committed. Users download the bundle and host it themselves.
 
 - **Context:** The author has no npm account and does not want to publish to a registry. The author's own sites use the script bundle. Self-hosting needs no third-party request at page load and gives the visitor's browser no external script to trust, so loading from a CDN or another external host is neither supported nor recommended. Nobody consumes the ES module today (see [ADR-5](#adr-5)).
-- **Consequences:** Only one build output remains. It is produced on demand, and `scripts/release-iife.sh` uploads it to a GitHub Release. Developers who want the module for a bundler are not served for now, and consumers must update the hosted file themselves to get a new version. The type declarations are no longer shipped, but the type check stays part of the build.
+- **Consequences:** Only one build output remains. It is produced on demand, and `task deploy:release` uploads it to a GitHub Release. Developers who want the module for a bundler are not served for now, and consumers must update the hosted file themselves to get a new version. The type declarations are no longer shipped, but the type check stays part of the build.
 - **Status:** Accepted and implemented (ticket `release-iife-via-github`).
 
 **Options for later.** None of these is decided. They are recorded so they need not be researched again.
@@ -724,7 +724,7 @@ The items are numbered in the order they were found, which is not a priority ord
 
 #### TD-1
 
-**Resolved:** Build output is no longer committed. TD-1 was the 119 tracked generated files, including copied dependency output. [ADR-12](#adr-12) dropped the ES module build, added the script bundle as a GitHub Release asset and made `npm test` build the bundle first. See also [ADR-5](#adr-5).
+**Resolved:** Build output is no longer committed. TD-1 was the 119 tracked generated files, including copied dependency output. [ADR-12](#adr-12) dropped the ES module build, added the script bundle as a GitHub Release asset and made `task test:all` build the bundle first. See also [ADR-5](#adr-5).
 
 #### TD-2
 

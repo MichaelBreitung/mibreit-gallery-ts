@@ -44,8 +44,8 @@ so swapping the backend means changing the line above — no skill is touched.
 
 ## Commands
 
-| Command         | Purpose                                                                           | Notes                                                               |
-| --------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `npm run dev`   | Vite dev server for the demo pages                                                | Long-running; do not run unattended                                 |
-| `npm test`      | `npm run build && vitest run` (puppeteer browser tests in `test/`)                | Needs Chrome/Chromium for puppeteer                                 |
-| `npm run build` | `tsc --noEmit && vite build`                                                       | Overwrites `lib-iife/`; no lint script exists                       |
+| Command             | Purpose                                                              | Notes                                         |
+| ------------------- | -------------------------------------------------------------------- | --------------------------------------------- |
+| `task dev`          | Vite dev server for the demo pages                                   | Long-running; do not run unattended           |
+| `task test:all`     | Builds the bundle and runs Vitest/Puppeteer browser tests in `test/` | Needs Chrome/Chromium for puppeteer           |
+| `task deploy:build` | `tsc --noEmit && vite build`                                         | Overwrites `lib-iife/`; no lint script exists |

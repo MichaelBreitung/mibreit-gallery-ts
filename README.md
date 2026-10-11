@@ -251,25 +251,31 @@ Helpful video tutorials:
 1. Clone or download the repository.
 2. Open the project folder in VS Code.
 3. Press `Ctrl+Shift+P` and run "Dev Containers: Rebuild and Reopen in Container".
-4. Inside the Dev Container run `npm i`.
+4. Inside the Dev Container run `task init:dev`.
+
+`init:dev` installs the dependencies and creates an optional `.env` file with `OPENROUTER_BASE_URL` and `OPENROUTER_API_KEY`, using the matching environment variables if they are set. Docker Compose reads `.env` when the Dev Container is created or rebuilt, so creating or changing `.env` inside an existing container requires reopening the container before that file affects the container's environment.
 
 ### Commands
 
-| Command         | Purpose                                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------------- |
-| `npm run dev`   | Starts the Vite development server (port 5173) with an index of demo pages for manual testing. |
-| `npm run build` | Type-checks the source and builds the minified script bundle.                                  |
-| `npm test`      | Builds the bundle and runs the tests.                                                          |
+| Command               | Purpose                                                                                        |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
+| `task init:dev`       | Installs npm packages and creates the optional `.env` file with the OpenRouter                 |
+| `task dev`            | Starts the Vite development server (port 5173) with an index of demo pages for manual testing. |
+| `task clean`          | Removes the generated script bundle.                                                           |
+| `task test:all`       | Builds the bundle and runs the tests.                                                          |
+| `task deploy:build`   | Type-checks the source and builds the minified script bundle.                                  |
+| `task deploy:release` | Builds the bundle and uploads it to an existing GitHub Release (`RELEASE_TAG=<tag>`).          |
+| `task deploy:upload`  | Uploads an existing bundle to an existing GitHub Release (`RELEASE_TAG=<tag>`).                |
 
 ### Releasing the script bundle
 
 Create the release and tag on GitHub first, then upload the bundle:
 
 ```sh
-./scripts/release-iife.sh <release-tag>
+task deploy:release RELEASE_TAG=<release-tag>
 ```
 
-The script requires the [GitHub CLI](https://cli.github.com/) and an authenticated `gh` account. It runs the build and uploads `lib-iife/mibreitGalleryTs.min.js` to the specified release.
+The task requires the [GitHub CLI](https://cli.github.com/) and an authenticated `gh` account. It runs the build and uploads `lib-iife/mibreitGalleryTs.min.js` to the specified release.
 
 With the development server running, press `r` + `Enter` in its console to restart it and reload the page. Automatic reloading only works if your host system is Linux. On Windows, file changes are not propagated to the Dev Container and Vite does not detect them.
 

@@ -19,13 +19,13 @@ Build output is committed to the repository (TD-1, ADR-5). This was meant to all
 
 ## Acceptance criteria
 
-- [ ] The ES module build and the declaration output are no longer produced. The type check is still part of the build.
-- [ ] The generated folders are not tracked and are git-ignored. The stray bundled lazy loader in the repository root is removed.
-- [ ] A clean checkout can run the build and the tests successfully, with the tests building the bundle first.
-- [ ] The demo that uses the built bundle works after a local build.
-- [ ] The manual release process (build, then upload the script bundle to a GitHub Release) is documented.
-- [ ] The README tells users to download the bundle from a release and host it themselves, and states that loading from a CDN or other external host is not supported or recommended. It no longer mentions the ES module or installing as a dependency.
-- [ ] The architecture documentation and the commands in the project instructions match the new state. TD-1 is marked resolved, and ADR-5 and ADR-12 statuses are updated.
+- [x] The ES module build and the declaration output are no longer produced. The type check is still part of the build.
+- [x] The generated folders are not tracked and are git-ignored. The stray bundled lazy loader in the repository root is removed.
+- [x] A clean checkout can run the build and the tests successfully, with the tests building the bundle first.
+- [x] The demo that uses the built bundle works after a local build.
+- [x] The manual release process (build, then upload the script bundle to a GitHub Release) is documented.
+- [x] The README tells users to download the bundle from a release and host it themselves, and states that loading from a CDN or other external host is not supported or recommended. It no longer mentions the ES module or installing as a dependency.
+- [x] The architecture documentation and the commands in the project instructions match the new state. TD-1 is marked resolved, and ADR-5 and ADR-12 statuses are updated.
 
 ## Notes
 

@@ -1,0 +1,28 @@
+version: '3'
+
+vars:
+  IIFE_LIBRARY_PATH:
+    ref: joinPath .ROOT_DIR "lib-iife/mibreitGalleryTs.min.js"
+
+tasks:
+  release:
+    desc: 'Build and upload the iife library to an existing GitHub Release'
+    requires:
+      vars: [RELEASE_TAG]
+    cmds:
+      - task: build
+      - task: upload
+        vars: { RELEASE_TAG: '{{.RELEASE_TAG}}' }
+
+  build:
+    desc: 'Build the iife library'
+    cmd: npm run build
+
+  upload:
+    desc: 'Upload the iife library to an existing GitHub Release'
+    requires:
+      vars: [RELEASE_TAG]
+    cmd: gh release upload {{shellQuote .RELEASE_TAG}} {{shellQuote .IIFE_LIBRARY_PATH}}
+    preconditions:
+      - sh: test -d {{shellQuote (joinPath .ROOT_DIR "lib-iife")}}
+        msg: 'Build output not found: lib-iife. Run "task build" first.'

@@ -1,0 +1,23 @@
+version: '3'
+
+vars:
+  ENV_FILE:
+    ref: joinPath .ROOT_DIR ".env"
+
+tasks:
+  dev:
+    desc: Initialize the development environment
+    cmds:
+      - npm install
+      - task: envfile
+
+  envfile:
+    desc: Create an env file with OPENROUTER_BASE_URL and OPENROUTER_API_KEY variables (optional, empty if not provided)
+    cmds:
+      - >-
+        printf 'OPENROUTER_BASE_URL=%s\nOPENROUTER_API_KEY=%s\n'
+        {{.OPENROUTER_BASE_URL | default "" | shellQuote}} {{.OPENROUTER_API_KEY | default "" | shellQuote}}
+        > {{shellQuote .ENV_FILE}}
+    status:
+      - test -f {{shellQuote .ENV_FILE}}
+    silent: true
