@@ -234,6 +234,10 @@ For the full design, decisions, quality goals and known technical debt, see the 
 
 ## Development
 
+### Demo and Test Images
+
+The demo and test pages use images from `demo/images`. They are copyright © Michael Breitung Photography; see [`demo/images/COPYRIGHT.md`](demo/images/COPYRIGHT.md). They may not be used without permission and are for demonstration and testing only.
+
 ### Technology
 
 TypeScript (strict mode), [Vite](https://vite.dev) for the development server and Rollup (through Vite) for the builds, Vitest and Puppeteer for tests.
