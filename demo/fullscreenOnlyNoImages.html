@@ -31,7 +31,7 @@
     </div>
   </body>
   <script type="module">
-    import { createGallery, EImageScaleMode } from '/src/index.ts';
+    import { EImageScaleMode, createFullscreenOnlyGallery } from '/src/index.ts';
     try {
       const gallery = createFullscreenOnlyGallery('#container > img', { scaleMode: EImageScaleMode.FIT_ASPECT });
     } catch (e) {

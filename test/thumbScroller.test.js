@@ -15,6 +15,18 @@ const expectedNumberOfThumbs = 7;
 let browser;
 let page;
 
+async function setupThumbScroller(numberOfVisibleThumbs) {
+  await page.evaluate((numberOfVisibleThumbs) => {
+    document.getElementById('thumbScroller').setAttribute('numberOfVisibleThumbs', String(numberOfVisibleThumbs));
+  }, numberOfVisibleThumbs);
+
+  await page.evaluate((code) => {
+    const script = document.createElement('script');
+    script.textContent = code;
+    document.head.appendChild(script);
+  }, iifeGalleryScript);
+}
+
 beforeAll(async () => {
   console.log('thumbscroller beforeAll');
   browser = await puppeteer.launch({ channel: 'chrome', headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
@@ -23,14 +35,6 @@ beforeAll(async () => {
 beforeEach(async () => {
   page = await browser.newPage();
   await page.setContent(thumbScrollerPageMarkup);
-
-  await page.evaluate((code) => {
-    const script = document.createElement('script');
-    script.textContent = code;
-    document.head.appendChild(script);
-  }, iifeGalleryScript);
-
-  await page.waitForNetworkIdle();
 });
 
 afterEach(async () => {
@@ -45,19 +49,15 @@ afterAll(async () => {
 
 describe('ThumbScroller with 7 Images Test Suite', () => {
   it('ThumbContainer display set to block', async () => {
-    await page.evaluate(() => {
-      mibreitGalleryTs.createThumbsScroller('#thumbContainer', '#thumbContainer > img', { numberOfVisibleThumbs: 6 });
-    });
+    await setupThumbScroller(6);
 
-    const thumbContainer = await page.$('#thumbContainer');
+    const thumbContainer = await page.$('mbg-thumbs');
     const display = await page.evaluate((el) => getComputedStyle(el).display, thumbContainer);
     expect(display).toBe('flex');
   });
 
   it('ThumbScroller Buttons set up correctly if number visible thumbs smaller number thumbs', async () => {
-    await page.evaluate(() => {
-      mibreitGalleryTs.createThumbsScroller('#thumbContainer', '#thumbContainer > img', { numberOfVisibleThumbs: 6 });
-    });
+    await setupThumbScroller(6);
 
     const previousButton = await page.$('.mbg__thumbs_scroller__previous_btn');
     const nextButton = await page.$('.mbg__thumbs_scroller__next_btn');
@@ -67,9 +67,7 @@ describe('ThumbScroller with 7 Images Test Suite', () => {
   });
 
   it('ThumbScroller Buttons omitted if number visible thumbs equals number thumbs', async () => {
-    await page.evaluate(() => {
-      mibreitGalleryTs.createThumbsScroller('#thumbContainer', '#thumbContainer > img', { numberOfVisibleThumbs: 7 });
-    });
+    await setupThumbScroller(7);
 
     const previousButton = await page.$('.mbg__thumbs_scroller__previous_btn');
     const nextButton = await page.$('.mbg__thumbs_scroller__next_btn');
@@ -79,9 +77,7 @@ describe('ThumbScroller with 7 Images Test Suite', () => {
   });
 
   it('ThumbStages are set up and resized correctly', async () => {
-    await page.evaluate(() => {
-      mibreitGalleryTs.createThumbsScroller('#thumbContainer', '#thumbContainer > img', { numberOfVisibleThumbs: 6 });
-    });
+    await setupThumbScroller(6);
 
     const thumbsViewer = await page.$('.mbg__thumbs_viewer');
     const container = await page.$('#container');
@@ -147,9 +143,7 @@ describe('ThumbScroller with 7 Images Test Suite', () => {
       newContainerWidth
     );
 
-    await page.evaluate(() => {
-      mibreitGalleryTs.createThumbsScroller('#thumbContainer', '#thumbContainer > img', { numberOfVisibleThumbs: 7 });
-    });
+    await setupThumbScroller(7);
 
     const thumbsViewer = await page.$('.mbg__thumbs_viewer');
     const thumbStages = await page.$$('.mbg__img_stage');

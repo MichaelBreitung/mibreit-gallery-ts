@@ -21,7 +21,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       preserveEntrySignatures: true,
-      input: 'src/index.wc.ts',
+      input: 'src/index.ts',
       output: {
         dir: 'lib-iife',
         format: 'iife',

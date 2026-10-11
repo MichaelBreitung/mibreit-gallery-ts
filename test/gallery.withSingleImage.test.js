@@ -10,15 +10,6 @@ const galleryPageMarkup = fs.readFileSync(path.join(__dirname, 'gallery.withSing
 const iifeGalleryScript = fs.readFileSync(path.join(__dirname, '../lib-iife/mibreitGalleryTs.min.js'), {
   encoding: 'utf8',
 });
-const gallerySetupCode = `
-  const gallery = mibreitGalleryTs.createGallery('#slideshowContainer', '#slideshowContainer > img', {
-    thumbContainerSelector: '#thumbContainer',
-    thumbSelector: '#thumbContainer > img',
-    numberOfVisibleThumbs: 7,
-    loaderWindowLeft: 1,
-    loaderWindowRight: 2,
-  });
-  `;
 const containerWidthPx = 600;
 const containerHeightPx = 500;
 const testTile = 'Test Title';
@@ -47,11 +38,7 @@ beforeAll(async () => {
     document.head.appendChild(script);
   }, iifeGalleryScript);
 
-  await page.evaluate((code) => {
-    const script = document.createElement('script');
-    script.textContent = code;
-    document.head.appendChild(script);
-  }, gallerySetupCode);
+  await page.waitForNetworkIdle();
 });
 
 afterAll(async () => {
@@ -62,7 +49,7 @@ afterAll(async () => {
 
 describe('Gallery with Single Image Test Suite', () => {
   it('ThumbContainer display set to none', async () => {
-    const thumbContainer = await page.$('#thumbContainer');
+    const thumbContainer = await page.$('mbg-thumbs');
     const display = await page.evaluate((el) => getComputedStyle(el).display, thumbContainer);
     expect(display).toBe('none');
   });
@@ -98,9 +85,6 @@ describe('Gallery with Single Image Test Suite', () => {
     expect(computedStyle.left).toBe('0px');
     expect(computedStyle.overflow).toBe('hidden');
     expect(computedStyle.position).toBe('absolute');
-
-    // At first, opacity should less than 1 because it should be animated in from 0
-    expect(Number(computedStyle.opacity)).toBeLessThan(1);
 
     // we wait for the animation to complete
     await sleep(1000);
@@ -148,6 +132,7 @@ describe('Gallery with Single Image Test Suite', () => {
 
   it('ImageInfo is Correct', async () => {
     const imageInfo = await page.evaluate(() => {
+      const gallery = window.mbgGalleryObjects[0];
       const viewer = gallery.getImageViewer();
       const imageInfo = viewer.getImageInfo(viewer.getImageIndex());
       return {

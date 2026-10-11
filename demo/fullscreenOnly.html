@@ -92,7 +92,7 @@
     </div>
   </body>
   <script type="module">
-    import { createGallery, EImageScaleMode, createFullscreenOnlyGallery } from '/src/index.ts';
+    import { EImageScaleMode, createFullscreenOnlyGallery } from '/src/index.ts';
     var imageSelector = '#container > img';
     const gallery = createFullscreenOnlyGallery(imageSelector, { scaleMode: EImageScaleMode.FIT_ASPECT });
     var images = document.querySelectorAll(imageSelector);

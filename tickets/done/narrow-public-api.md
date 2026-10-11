@@ -22,16 +22,18 @@ The script bundle exposes the web components and, through its global, all factor
 
 ## Acceptance criteria
 
-- [ ] The script bundle's global exposes the fullscreen-only function and nothing that duplicates a web component, apart from what the open decision on components requires.
-- [ ] The gallery, slideshow, thumbnail scroller and images wall are created through their web components only.
-- [ ] The fullscreen-only gallery can still be created with a CSS selector, on pages without any web component.
-- [ ] The relationship between the entry points is unambiguous, and the web-component entry no longer re-exports a wider API.
-- [ ] All demos and browser tests use the remaining public API and pass.
-- [ ] The README describes the narrowed API, including the global gallery list if it stays.
-- [ ] The architecture documentation is reconciled and TD-2 is marked resolved.
+- [x] The script bundle's global exposes the fullscreen-only function and nothing that duplicates a web component, apart from what the open decision on components requires.
+- [x] The gallery, slideshow, thumbnail scroller and images wall are created through their web components only.
+- [x] The fullscreen-only gallery can still be created with a CSS selector, on pages without any web component.
+- [x] The relationship between the entry points is unambiguous, and the web-component entry no longer re-exports a wider API.
+- [x] All demos and browser tests use the remaining public API and pass.
+- [x] The README describes the narrowed API, including the global gallery list if it stays.
+- [x] The architecture documentation is reconciled and TD-2 is marked resolved.
 
 ## Notes
 
 - Decision during solving: whether any component exports need to stay. Check the common use of the gallery on the author's website (mibreit-photo.com) for a reason to keep them. If none is found, they become internal.
 - This is a breaking change for anyone calling the factories from the global. The author's own pages that do so must be migrated.
 - Related: `release-iife-via-github` drops the module build, which removes the other consumer of the module entry. The two tickets can be solved in either order.
+- Scale modes remain covered by a browser test that uses the public fullscreen-only function with all four `EImageScaleMode` values.
+- The historical module and web-component entry files were consolidated into one `src/index.ts`, which registers the web components and exports only the fullscreen-only API.

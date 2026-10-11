@@ -14,13 +14,13 @@ It was built for the photography website of [Michael Breitung Photography](https
 - **Fullscreen background** that can adapt to the average color of the current image.
 - **Lazy loading** so that only images close to being viewed are requested.
 
-Slideshow, thumbnail scroller, gallery and images wall are available as HTML elements (web components). All building blocks are also available as JavaScript functions.
+Slideshow, thumbnail scroller, gallery and images wall are used through HTML elements (web components). The fullscreen-only gallery, which works on regular page images without a dedicated element, is created with one JavaScript function.
 
 ## Using the Gallery on a Website
 
 ### 1. Include the script
 
-Add the minified script bundle `mibreitGalleryTs.min.js` to your page. It registers the HTML elements and also exposes the factory functions on the global `mibreitGalleryTs`.
+Add the minified script bundle `mibreitGalleryTs.min.js` to your page. It registers the HTML elements and exposes the fullscreen-only gallery function on the global `mibreitGalleryTs`.
 
 ```html
 <script src="/scripts/mibreitGalleryTs.min.js"></script>
@@ -147,46 +147,31 @@ document.querySelector('mbg-imageswall').addEventListener('buy-clicked', (event)
 });
 ```
 
-### Using the JavaScript functions
+### Using the fullscreen-only gallery function
 
-If you prefer code over markup, or want a fullscreen-only gallery, use the factory functions. They take CSS selectors for your images and are available on the global `mibreitGalleryTs`. Invalid parameters or selectors that match no images throw an error with a descriptive message.
+Use `createFullscreenOnlyGallery` when your page already contains regular images and you want clicks on them to open a fullscreen slideshow. It takes a CSS selector and is available on the global `mibreitGalleryTs`. Invalid parameters or selectors that match no images throw an error with a descriptive message.
 
 ```js
-const gallery = mibreitGalleryTs.createGallery('#container', '#container > img', {
-  thumbContainerSelector: '#thumbContainer',
-  thumbSelector: '#thumbContainer > img',
-  numberOfVisibleThumbs: 7,
-  loaderWindowLeft: 1,
-  loaderWindowRight: 5,
+const gallery = mibreitGalleryTs.createFullscreenOnlyGallery('#container > img', {
+  scaleMode: mibreitGalleryTs.EImageScaleMode.FIT_ASPECT,
 });
 ```
 
-| Function                                                                                                   | Creates                                                         |
-| ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `createSlideshow(imageSelector, config?)`                                                                  | A slideshow for a set of images                                 |
-| `createThumbsScroller(containerSelector, thumbSelector, config?, thumbClickedCallback?)`                   | A thumbnail scroller                                            |
-| `createGallery(containerSelector, imageSelector, config?, buyImageCallback?)`                              | A gallery with optional thumbnails, fullscreen and descriptions |
-| `createFullscreenOnlyGallery(imageSelector, config, showDescriptions?, buyImageCallback?)`                 | Makes the page's images open in a fullscreen slideshow on click |
-| `createImagesWall(containerSelector, imagesSelector, columns?, imageClickedCallback?, scrollLoaderDelay?)` | An images wall                                                  |
+| Function                                                                                       | Creates                                                         |
+| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `createFullscreenOnlyGallery(imageSelector, config, showDescriptions?, buyImageCallback?)`     | Makes the page's images open in a fullscreen slideshow on click |
 
-Configuration options:
+Fullscreen-only configuration options:
 
-| Option                   | Applies to                  | Description                                                                               | Default |
-| ------------------------ | --------------------------- | ----------------------------------------------------------------------------------------- | ------- |
-| `scaleMode`              | Slideshow, gallery          | How images fit their container: `EImageScaleMode.NONE`, `FIT_ASPECT`, `STRETCH`, `EXPAND` |         |
-| `interval`               | Slideshow, gallery          | Automatic advance in milliseconds (minimum 1000)                                          | off     |
-| `zoom`                   | Slideshow, gallery          | Activates the zoom effect                                                                 | `false` |
-| `loaderWindowLeft`       | Slideshow, gallery          | Number of images to lazy load before the current one                                      | 0       |
-| `loaderWindowRight`      | Slideshow, gallery          | Number of images to lazy load after the current one                                       | 1       |
-| `numberOfVisibleThumbs`  | Thumbnail scroller, gallery | Number of visible thumbnails                                                              | 7       |
-| `initialIndex`           | Thumbnail scroller          | Index of the first visible thumbnail                                                      | 0       |
-| `thumbContainerSelector` | Gallery                     | CSS selector for the thumbnail container                                                  |         |
-| `thumbSelector`          | Gallery                     | CSS selector for the thumbnails                                                           |         |
-| `initialImageNr`         | Gallery                     | Index of the image shown first                                                            | 0       |
-| `columns`                | Images wall                 | Number of columns (minimum 1)                                                             | 3       |
-| `scrollLoaderDelay`      | Images wall                 | Delay in milliseconds before an image that scrolled into view is loaded (minimum 0)       | 300     |
+| Option               | Description                                                                                                              | Default |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------- |
+| `scaleMode`          | How fullscreen images fit their container: `EImageScaleMode.NONE`, `FIT_ASPECT`, `STRETCH`, `EXPAND`                     |         |
+| `interval`           | Automatic advance in milliseconds (minimum 1000)                                                                         | off     |
+| `zoom`               | Activates the zoom effect                                                                                                | `false` |
+| `loaderWindowLeft`   | Number of images to lazy load before the current one                                                                     | 0       |
+| `loaderWindowRight`  | Number of images to lazy load after the current one                                                                      | 1       |
 
-The returned gallery object gives access to the image viewer (navigation, current index, image-changed callbacks), the thumbnails and the fullscreen, for use in your own scripts. Galleries created from web components are also collected in the global list `window.mbgGalleryObjects`.
+The returned gallery object gives access to the image viewer (navigation, current index, image-changed callbacks) and the fullscreen, for use in your own scripts. Galleries created from web components are also collected in the global list `window.mbgGalleryObjects`.
 
 ### Navigation and Fullscreen
 
