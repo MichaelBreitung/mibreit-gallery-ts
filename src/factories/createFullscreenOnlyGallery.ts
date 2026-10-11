@@ -12,6 +12,7 @@ import IGallery from '../interfaces/IGallery';
 
 // Types
 import { SlideshowConfig, checkSlideshowConfig } from '../types';
+import { assertCallback, assertSelector } from './validation';
 
 export default function (
   imageSelector: string,
@@ -19,12 +20,17 @@ export default function (
   showDescriptions: boolean = false,
   buyImageCb: ((idx: number) => void) | null = null
 ): IGallery {
-  if (typeof imageSelector !== 'string') {
-    throw new Error('createFullscreenOnlyGallery - first parameter must be imageSelector string');
-  }
+  const validatedImageSelector = assertSelector(
+    imageSelector,
+    'createFullscreenOnlyGallery',
+    'first parameter imageSelector'
+  );
   checkSlideshowConfig(config);
+  if (buyImageCb) {
+    assertCallback(buyImageCb, 'createFullscreenOnlyGallery', 'fourth parameter buyImageCb');
+  }
 
-  const elements = getElements(imageSelector);
+  const elements = getElements(validatedImageSelector);
   if (elements?.length > 0) {
     const builder = GalleryContainerBuilder.fromImages(elements, config)
       .addPreviousNextButtons()

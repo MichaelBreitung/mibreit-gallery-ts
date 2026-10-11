@@ -521,9 +521,9 @@ The host page includes the script bundle with a script tag, and the gallery mark
 
 ### 8.1 Configuration and Input Validation
 
-- Every factory validates its parameters at the boundary and throws an error with a descriptive message for invalid input. Typical cases are non-string selectors, wrong option types or ranges, an invalid color format, and selectors that match no images.
-- Configuration is a plain object of optional fields. Defaults are applied where a value is consumed. They come from named constants, for example the lazy-loading window and the number of visible thumbnails.
-- The web-component entry converts attributes to numbers or booleans and passes them to the same factories. Attributes that are absent become `undefined`, so the factory defaults apply.
+- Every factory validates its parameters at the boundary and throws an error with a descriptive message for invalid input. Typical cases are non-string selectors, invalid callback parameters, wrong option types or ranges, an invalid color format, and selectors that match no images. Images-wall factory calls validate both the container and image selector plus their numeric options.
+- Configuration is a plain object of optional fields. Defaults are defined with the configuration type in one place and applied where a value is consumed.
+- The web-component entry parses numeric attributes explicitly and rejects values that are not finite numbers with a component-specific error. Boolean flag attributes are detected with `hasAttribute`. Attributes that are absent become `undefined`, so the configuration defaults apply.
 - There is no recovery from invalid configuration. The error surfaces in the browser console and the gallery does not start.
 
 ### 8.2 Host Page Contract

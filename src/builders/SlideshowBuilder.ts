@@ -19,7 +19,7 @@ import { EImageScaleMode, SlideshowConfig } from '../types';
 import { Image } from '../components';
 
 // constants
-import { PRELOADER_LEFT_SIZE, PRELOADER_RIGHT_SIZE } from '../constants';
+import { SLIDESHOW_DEFAULTS } from '../types';
 
 export default class SlideshowBuilder {
   private _imageViewer: IImageViewer;
@@ -52,8 +52,8 @@ export default class SlideshowBuilder {
 
   private _createLoader(
     images: Array<Image>,
-    loaderWindowLeft: number = PRELOADER_LEFT_SIZE,
-    loaderWindowRight: number = PRELOADER_RIGHT_SIZE
+    loaderWindowLeft: number = SLIDESHOW_DEFAULTS.loaderWindowLeft,
+    loaderWindowRight: number = SLIDESHOW_DEFAULTS.loaderWindowRight
   ): ILazyLoader {
     const lazyLoader = new LazyLoader(images, loaderWindowLeft, loaderWindowRight);
 

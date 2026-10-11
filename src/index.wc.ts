@@ -14,7 +14,7 @@ import {
   createImagesWall,
   createFullscreenOnlyGallery,
 } from './factories';
-import { EImageScaleMode } from './types';
+import { EImageScaleMode, parseNumericAttribute } from './types';
 import IGallery from './interfaces/IGallery';
 
 export * from './index';
@@ -44,11 +44,11 @@ class MibreitGalleryElement extends HTMLElement {
   connectedCallback() {
     const customClass = `mbg__custom-gallery-${MibreitGalleryElement.classCounter++}`;
     this.classList.add(customClass);
-    const numberOfVisibleThumbs = this.getAttribute('numberOfVisibleThumbs');
-    const loaderWindowLeft = this.getAttribute('loaderWindowLeft');
-    const loaderWindowRight = this.getAttribute('loaderWindowRight');
-    const initialImageNr = this.getAttribute('initialImageNr');
-    const interval = this.getAttribute('interval');
+    const numberOfVisibleThumbs = parseNumericAttribute(this.getAttribute('numberOfVisibleThumbs'), 'numberOfVisibleThumbs', 'mbg-gallery');
+    const loaderWindowLeft = parseNumericAttribute(this.getAttribute('loaderWindowLeft'), 'loaderWindowLeft', 'mbg-gallery');
+    const loaderWindowRight = parseNumericAttribute(this.getAttribute('loaderWindowRight'), 'loaderWindowRight', 'mbg-gallery');
+    const initialImageNr = parseNumericAttribute(this.getAttribute('initialImageNr'), 'initialImageNr', 'mbg-gallery');
+    const interval = parseNumericAttribute(this.getAttribute('interval'), 'interval', 'mbg-gallery');
     const zoom = this.hasAttribute('zoom');
     const containerSelector = `.${customClass} mbg-images`;
     const thumbContainerSelector = `.${customClass} mbg-thumbs`;
@@ -86,9 +86,9 @@ class MibreitSlideshowElement extends HTMLElement {
   connectedCallback() {
     const customClass = `mbg__custom-slideshow-${MibreitSlideshowElement.classCounter++}`;
     this.classList.add(customClass);
-    const loaderWindowLeft = this.getAttribute('loaderWindowLeft');
-    const loaderWindowRight = this.getAttribute('loaderWindowRight');
-    const interval = this.getAttribute('interval');
+    const loaderWindowLeft = parseNumericAttribute(this.getAttribute('loaderWindowLeft'), 'loaderWindowLeft', 'mbg-slideshow');
+    const loaderWindowRight = parseNumericAttribute(this.getAttribute('loaderWindowRight'), 'loaderWindowRight', 'mbg-slideshow');
+    const interval = parseNumericAttribute(this.getAttribute('interval'), 'interval', 'mbg-slideshow');
     const zoom = this.hasAttribute('zoom');
     const expand = this.hasAttribute('expand');
     const containerSelector = `.${customClass} mbg-images`;
@@ -96,7 +96,7 @@ class MibreitSlideshowElement extends HTMLElement {
       scaleMode: expand ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
       loaderWindowLeft: loaderWindowLeft ? +loaderWindowLeft : undefined,
       loaderWindowRight: loaderWindowRight ? +loaderWindowRight : undefined,
-      interval: interval ? +interval : 4000,
+      interval,
       zoom: zoom ? true : undefined,
     });
     showDiv(containerSelector);
@@ -108,8 +108,8 @@ class MibreitThumbScrollerElement extends HTMLElement {
   connectedCallback() {
     const customClass = `mbg__custom-thumbscroller-${MibreitThumbScrollerElement.classCounter++}`;
     this.classList.add(customClass);
-    const numberOfVisibleThumbs = this.getAttribute('numberOfVisibleThumbs');
-    const initialIndex = this.getAttribute('initialIndex');
+    const numberOfVisibleThumbs = parseNumericAttribute(this.getAttribute('numberOfVisibleThumbs'), 'numberOfVisibleThumbs', 'mbg-thumbscroller');
+    const initialIndex = parseNumericAttribute(this.getAttribute('initialIndex'), 'initialIndex', 'mbg-thumbscroller');
     const containerSelector = `.${customClass} mbg-thumbs`;
     createThumbsScroller(containerSelector, `${containerSelector} img`, {
       numberOfVisibleThumbs: numberOfVisibleThumbs ? +numberOfVisibleThumbs : undefined,
@@ -126,9 +126,9 @@ class MibreitImagesWallElement extends HTMLElement {
   connectedCallback() {
     const customClass = `mbg__custom-imageswall-${MibreitImagesWallElement.classCounter++}`;
     this.classList.add(customClass);
-    const columns = this.getAttribute('columns');
+    const columns = parseNumericAttribute(this.getAttribute('columns'), 'columns', 'mbg-imageswall');
     const containerSelector = `.${customClass} mbg-images`;
-    const scrollLoaderDelay = this.getAttribute('scrollLoaderDelay');
+    const scrollLoaderDelay = parseNumericAttribute(this.getAttribute('scrollLoaderDelay'), 'scrollLoaderDelay', 'mbg-imageswall');
 
     const addBuyButton = this.hasAttribute('addBuyButton');
     let onBuyClicked = null;

@@ -6,14 +6,13 @@ import { ELazyMode, createLazyLoaderFromElements } from 'mibreit-lazy-loader';
 
 import ImagesWall from '../components/ImagesWall';
 import Image from '../components/Image';
+import { IMAGES_WALL_DEFAULTS } from '../types';
 
 import styles from './ImagesWallBuilder.module.css';
 
-const DEFAULT_SCROLL_LOADER_DELAY = 300;
-
 export default class ImagesWallBuilder {
   private _containerElement: HTMLElement;
-  private _scrollLoaderDelay: number = DEFAULT_SCROLL_LOADER_DELAY;
+  private _scrollLoaderDelay: number = IMAGES_WALL_DEFAULTS.scrollLoaderDelay;
   private _images: Array<Image>;
   private _imagesWall: ImagesWall;
 
@@ -22,7 +21,7 @@ export default class ImagesWallBuilder {
     addCssClass(this._containerElement, styles.images_wall__parent);
 
     this._images = this._createImagesArray(imageElements);
-    this._imagesWall = new ImagesWall(this._images, columns);
+    this._imagesWall = new ImagesWall(this._images, columns ?? IMAGES_WALL_DEFAULTS.columns);
   }
 
   public addImageClickedCallback(cb: (index: number) => void): ImagesWallBuilder {
