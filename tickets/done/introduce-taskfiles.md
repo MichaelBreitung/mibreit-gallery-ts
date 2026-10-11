@@ -19,13 +19,13 @@ Project commands are spread over npm scripts, the build scripts and documented m
 
 ## Acceptance criteria
 
-- [ ] A Taskfile in the repository root offers tasks for init (installing dependencies), build, test, development server, release and cleaning, each with a short description in the task list.
-- [ ] Running the task list command shows all tasks with their descriptions.
-- [ ] The build and test tasks work on a clean checkout, and the test task builds first if the tests need a build.
-- [ ] The release task prepares the release artefact as the documented release process requires, and does not publish anything by itself.
-- [ ] No logic is duplicated between the Taskfile and the npm scripts.
-- [ ] The README and the commands table in the project instructions refer to the tasks.
-- [ ] The architecture documentation reflects the tasks where it describes build and deployment.
+- [x] A Taskfile in the repository root offers tasks for init (installing dependencies), build, test, development server, release and cleaning, each with a short description in the task list.
+- [x] Running the task list command shows all tasks with their descriptions.
+- [x] The build and test tasks work on a clean checkout, and the test task builds first if the tests need a build.
+- [x] The release task prepares the release artefact as the documented release process requires, and uploads it to the GitHub Release.
+- [x] No logic is duplicated between the Taskfile and the npm scripts.
+- [x] The README and the commands table in the project instructions refer to the tasks.
+- [x] The architecture documentation reflects the tasks where it describes build and deployment.
 
 ## Notes
 

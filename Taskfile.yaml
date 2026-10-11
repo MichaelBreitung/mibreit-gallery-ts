@@ -1,0 +1,15 @@
+version: '3'
+
+includes:
+  init: ./taskfiles/Init.Taskfile.yaml
+  deploy: ./taskfiles/Deploy.Taskfile.yaml
+  test: ./taskfiles/Test.Taskfile.yaml
+
+tasks:
+  dev:
+    desc: Start the Vite development server for the demo pages
+    cmd: npm run dev
+
+  clean:
+    desc: Remove the generated iife library
+    cmd: rm -rf lib-iife
