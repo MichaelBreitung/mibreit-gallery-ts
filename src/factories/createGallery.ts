@@ -34,7 +34,7 @@ export default function (
   }
 
   const elements = getElements(validatedImageSelector);
-  const container = getElement(containerSelector);
+  const container = getElement(validatedContainerSelector);
   if (container && elements.length > 0) {
     const builder = GalleryBuilder.fromContainerAndImages(container, elements, config)
       .addPreviousNextButtons()
