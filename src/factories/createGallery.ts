@@ -12,7 +12,7 @@ import IGallery from '../interfaces/IGallery';
 
 // Types
 import { checkGalleryConfig, GalleryConfig } from '../types';
-import { assertCallback, assertSelectorPair } from './validation';
+import { assertCallback, assertSelector } from './validation';
 
 export default function (
   containerSelector: string,
@@ -20,11 +20,12 @@ export default function (
   config?: GalleryConfig,
   buyImageCb: ((idx: number) => void) | null = null
 ): IGallery {
-  const [validatedContainerSelector, validatedImageSelector] = assertSelectorPair(
-    [containerSelector, imageSelector],
+  const validatedContainerSelector = assertSelector(
+    containerSelector,
     'createGallery',
-    ['first parameter containerSelector', 'second parameter imageSelector']
+    'first parameter containerSelector'
   );
+  const validatedImageSelector = assertSelector(imageSelector, 'createGallery', 'second parameter imageSelector');
   if (config) {
     checkGalleryConfig(config);
   }

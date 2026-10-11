@@ -10,7 +10,7 @@ import { ThumbsScrollerBuilder } from '../builders';
 // Types
 import { ThumbScrollerConfig, checkThumbScrollerConfig } from '../types';
 import IThumbsViewer from '../interfaces/IThumbsViewer';
-import { assertCallback, assertSelectorPair } from './validation';
+import { assertCallback, assertSelector } from './validation';
 
 export default function (
   containerSelector: string,
@@ -18,10 +18,15 @@ export default function (
   config?: ThumbScrollerConfig,
   thumbClickedCallback?: (index: number) => void
 ): IThumbsViewer {
-  const [validatedContainerSelector, validatedThumbSelector] = assertSelectorPair(
-    [containerSelector, thumbSelector],
+  const validatedContainerSelector = assertSelector(
+    containerSelector,
     'createThumbsScroller',
-    ['first parameter containerSelector', 'second parameter thumbSelector']
+    'first parameter containerSelector'
+  );
+  const validatedThumbSelector = assertSelector(
+    thumbSelector,
+    'createThumbsScroller',
+    'second parameter thumbSelector'
   );
   if (config) {
     checkThumbScrollerConfig(config);

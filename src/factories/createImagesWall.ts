@@ -6,7 +6,7 @@ import { getElement, getElements } from 'mibreit-dom-tools';
 import ImagesWall from '../components/ImagesWall';
 import { ImagesWallBuilder } from '../builders';
 import { checkImagesWallConfig } from '../types';
-import { assertCallback, assertSelectorPair } from './validation';
+import { assertCallback, assertSelector } from './validation';
 
 export default function (
   containerSelector: string,
@@ -15,10 +15,15 @@ export default function (
   imageClickedCallback?: (index: number) => void,
   scrollLoaderDelay?: number
 ): ImagesWall {
-  const [validatedContainerSelector, validatedImagesSelector] = assertSelectorPair(
-    [containerSelector, imagesSelector],
+  const validatedContainerSelector = assertSelector(
+    containerSelector,
     'createImagesWall',
-    ['first parameter containerSelector', 'second parameter imagesSelector']
+    'first parameter containerSelector'
+  );
+  const validatedImagesSelector = assertSelector(
+    imagesSelector,
+    'createImagesWall',
+    'second parameter imagesSelector'
   );
   checkImagesWallConfig({ columns, scrollLoaderDelay });
   if (imageClickedCallback) {
