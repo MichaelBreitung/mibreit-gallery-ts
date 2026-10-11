@@ -18,11 +18,11 @@ Input handling differs between the web components and the factories they call. T
 
 ## Acceptance criteria
 
-- [ ] An attribute with a non-numeric value where a number is expected produces a descriptive error and does not reach the library as an invalid number.
-- [ ] All factory parameters, including the images wall's image selector and its numeric options, are checked, with descriptive errors.
-- [ ] Each default is defined in one place, and the web components do not repeat library defaults.
-- [ ] The documented defaults match the actual ones.
-- [ ] Existing browser and unit tests pass, and invalid input cases are covered where a test setup exists.
+- [x] An attribute with a non-numeric value where a number is expected produces a descriptive error and does not reach the library as an invalid number.
+- [x] All factory parameters, including the images wall's image selector and its numeric options, are checked, with descriptive errors.
+- [x] Each default is defined in one place, and the web components do not repeat library defaults.
+- [x] The documented defaults match the actual ones.
+- [x] Existing browser and unit tests pass, and invalid input cases are covered where a test setup exists.
 
 ## Notes
 
