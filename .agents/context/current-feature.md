@@ -12,11 +12,11 @@ Reject malformed numeric attributes and factory inputs early, and centralize con
 
 ## Build Plan
 
-- [ ] Define shared factory/config validation helpers and centralize the images-wall defaults in configuration types/checks.
-- [ ] Validate all factory selectors, callbacks, and numeric options; validate web-component numeric attributes and remove the component-side slideshow interval default.
-- [ ] Cover `NaN`, non-numeric attributes, invalid selector types, missing selectors, and images-wall defaults/checks in unit tests.
-- [ ] Update README and architecture documentation, including the slideshow default decision.
-- [ ] Run the existing test suite and reconcile the ticket/workflow state.
+- [x] Define shared factory/config validation helpers and centralize the images-wall defaults in configuration types/checks.
+- [x] Validate all factory selectors, callbacks, and numeric options; validate web-component numeric attributes and remove the component-side slideshow interval default.
+- [x] Cover `NaN`, non-numeric attributes, invalid selector types, missing selectors, and images-wall defaults/checks in unit tests.
+- [x] Update README and architecture documentation, including the slideshow default decision.
+- [x] Run the existing test suite and reconcile the ticket/workflow state.
 
 ## Open Questions
 

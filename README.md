@@ -107,7 +107,7 @@ Thumbnails are optional. Without them, or with a single thumbnail, the thumbnail
 </mbg-slideshow>
 ```
 
-Supports `loaderWindowLeft`, `loaderWindowRight`, `interval` (default 4000), `zoom`, and the flag `expand`, which makes images cover their container instead of fitting into it.
+Supports `loaderWindowLeft`, `loaderWindowRight`, `interval` (default 5000), `zoom`, and the flag `expand`, which makes images cover their container instead of fitting into it.
 
 #### Thumbnail scroller
 
@@ -183,6 +183,8 @@ Configuration options:
 | `thumbContainerSelector` | Gallery                     | CSS selector for the thumbnail container                                                  |         |
 | `thumbSelector`          | Gallery                     | CSS selector for the thumbnails                                                           |         |
 | `initialImageNr`         | Gallery                     | Index of the image shown first                                                            | 0       |
+| `columns`                | Images wall                 | Number of columns (minimum 1)                                                             | 3       |
+| `scrollLoaderDelay`      | Images wall                 | Delay in milliseconds before an image that scrolled into view is loaded (minimum 0)       | 300     |
 
 The returned gallery object gives access to the image viewer (navigation, current index, image-changed callbacks), the thumbnails and the fullscreen, for use in your own scripts. Galleries created from web components are also collected in the global list `window.mbgGalleryObjects`.
 
