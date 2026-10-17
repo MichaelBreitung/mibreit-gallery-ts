@@ -263,6 +263,7 @@ export default class GalleryContainerBuilder {
 
   private _setupSwipeHandler(imageViewer: IImageViewer) {
     addCssStyle(this._slideshowContainerElement, 'touch-action', 'pinch-zoom pan-y');
+    addCssStyle(this._slideshowContainerElement, 'position', 'relative');
 
     new SwipeHander(this._slideshowContainerElement, (direction: ESwipeDirection, position: TPosition) => {
       if (direction === ESwipeDirection.LEFT) {

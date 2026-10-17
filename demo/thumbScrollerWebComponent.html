@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta name="copyright" content="Michael Breitung" />
@@ -8,9 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       .content {
-        width: 60rem;
+        box-sizing: border-box;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
+      }
+
+      @media (min-width: 768px) {
+        .content {
+          max-width: 60rem;
+        }
       }
       mbg-thumbs {
         opacity: 0;
@@ -26,52 +33,45 @@
       <mbg-thumbscroller numberOfVisibleThumbs="5">
         <mbg-thumbs>
           <img
-          loading="lazy"
-          class="mbll__marker"
-          src="/demo/images/Detroit.jpg"
-          alt="Detroit"
-          width="815"
-          height="1280"
+            loading="lazy"
+            class="mbll__marker"
+            src="/demo/images/Detroit.jpg"
+            alt="Detroit"
+            width="815"
+            height="1280"
           />
           <img
-          loading="lazy"
-          class="mbll__marker"
-          src="/demo/images/Essaouira-Surf.jpg"
-          alt="Essaouira Surf"
-          width="1280"
-          height="853"
+            loading="lazy"
+            class="mbll__marker"
+            src="/demo/images/Essaouira-Surf.jpg"
+            alt="Essaouira Surf"
+            width="1280"
+            height="853"
           />
           <img
-          loading="lazy"
-          class="mbll__marker"
-          src="/demo/images/Fishermans-Bastion.jpg"
-          alt="Fisherman's Bastion"
-          width="1280"
-          height="853"
+            loading="lazy"
+            class="mbll__marker"
+            src="/demo/images/Fishermans-Bastion.jpg"
+            alt="Fisherman's Bastion"
+            width="1280"
+            height="853"
+          />
+          <img loading="lazy" class="mbll__marker" src="/demo/images/Salt.jpg" alt="Salt" width="1280" height="853" />
+          <img
+            loading="lazy"
+            class="mbll__marker"
+            src="/demo/images/Stubai-Mountains.jpg"
+            alt="Stubai Mountains"
+            width="1280"
+            height="853"
           />
           <img
-          loading="lazy"
-          class="mbll__marker"
-          src="/demo/images/Salt.jpg"
-          alt="Salt"
-          width="1280"
-          height="853"
-          />
-          <img
-          loading="lazy"
-          class="mbll__marker"
-          src="/demo/images/Stubai-Mountains.jpg"
-          alt="Stubai Mountains"
-          width="1280"
-          height="853"
-          />
-          <img
-          loading="lazy"
-          class="mbll__marker"
-          src="/demo/images/bloody-causeway.jpg"
-          alt="Bloody Causeway"
-          width="853"
-          height="1280"
+            loading="lazy"
+            class="mbll__marker"
+            src="/demo/images/bloody-causeway.jpg"
+            alt="Bloody Causeway"
+            width="853"
+            height="1280"
           />
         </mbg-thumbs>
       </mbg-thumbscroller>
