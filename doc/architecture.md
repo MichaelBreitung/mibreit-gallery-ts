@@ -223,7 +223,7 @@ All three depend on the host page marking images as deferred (see [section 3](#3
 - **Type checking without shipping declarations:** `tsc --noEmit` checks the source; declarations are not generated or distributed.
 - **Dev Container and browser tests:** development runs in a Dev Container. `task test:all` builds the bundle first, then runs the tests in headless Chrome against it.
 - **Console output removed at build:** `console` calls are stripped from the script bundle (see [section 8](#86-logging)).
-- **Release asset, not committed output:** `task deploy:release` builds the bundle and uploads it to a GitHub Release; generated output is git-ignored (see [ADR-12](#adr-12)).
+- **Release asset, not committed output:** `task deploy:release` builds the bundle, updates the package version and creates a GitHub Release with the bundle as its asset; generated output is git-ignored (see [ADR-12](#adr-12)).
 
 ```mermaid
 %%{init: {'theme': 'neutral', 'themeVariables': {'primaryColor': '#e3f2fd', 'lineColor': '#aa9d9d'}}}%%
@@ -511,7 +511,7 @@ Common build properties:
 
 ### 7.4 Delivery to a Website
 
-After a release is created and tagged on GitHub, `task deploy:release` builds the bundle and uploads it as a release asset. The task requires the GitHub CLI and an authenticated `gh` account.
+`task deploy:release VERSION=x.y.z` validates the semantic version format, checks that the version is higher than the latest release, updates `package.json`, builds the bundle and creates the `x.y.z` GitHub Release with the bundle as its asset. The task requires the GitHub CLI and an authenticated `gh` account.
 
 Site owners download the release asset, host it with their website and update their hosted copy for a new release. Loading the script from a CDN or another external host is not supported or recommended.
 
@@ -683,7 +683,7 @@ Each decision states its context and consequences. Where the author gave the rat
 **The script bundle is the only distributed artefact, delivered as a GitHub Release asset. The ES module build is dropped.** Build output is not committed. Users download the bundle and host it themselves.
 
 - **Context:** The author has no npm account and does not want to publish to a registry. The author's own sites use the script bundle. Self-hosting needs no third-party request at page load and gives the visitor's browser no external script to trust, so loading from a CDN or another external host is neither supported nor recommended. Nobody consumes the ES module today (see [ADR-5](#adr-5)).
-- **Consequences:** Only one build output remains. It is produced on demand, and `task deploy:release` uploads it to a GitHub Release. Developers who want the module for a bundler are not served for now, and consumers must update the hosted file themselves to get a new version. The type declarations are no longer shipped, but the type check stays part of the build.
+- **Consequences:** Only one build output remains. It is produced on demand, and `task deploy:release` updates the package version and creates a GitHub Release with the bundle as its asset. Developers who want the module for a bundler are not served for now, and consumers must update the hosted file themselves to get a new version. The type declarations are no longer shipped, but the type check stays part of the build.
 - **Status:** Accepted and implemented (ticket `release-iife-via-github`).
 
 **Options for later.** None of these is decided. They are recorded so they need not be researched again.

@@ -1,6 +1,7 @@
 version: '3'
 
 includes:
+  common: ./taskfiles/Common.Taskfile.yaml
   init: ./taskfiles/Init.Taskfile.yaml
   deploy: ./taskfiles/Deploy.Taskfile.yaml
   test: ./taskfiles/Test.Taskfile.yaml
