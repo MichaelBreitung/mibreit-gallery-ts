@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta name="copyright" content="Michael Breitung" />
@@ -9,10 +9,17 @@
     <style>
       #container {
         position: relative;
-        width: 960px;
+        box-sizing: border-box;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
         overflow: hidden;
+      }
+
+      @media (min-width: 768px) {
+        #container {
+          max-width: 960px;
+        }
       }
     </style>
   </head>

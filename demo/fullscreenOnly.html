@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta name="copyright" content="Michael Breitung" />
@@ -9,7 +9,8 @@
     <style>
       #container {
         position: relative;
-        max-width: 960px;
+        box-sizing: border-box;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
         overflow: hidden;
@@ -21,6 +22,12 @@
       .mbll__marker {
         display: none;
       }
+
+      @media (min-width: 768px) {
+        #container {
+          max-width: 960px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -31,37 +38,24 @@
         Proident duis irure ex elit veniam cillum. Deserunt eiusmod minim dolore qui cupidatat consequat commodo
         consequat veniam aliqua.
       </p>
-      <img
-      loading="lazy"
-      src="/demo/images/Detroit.jpg"
-      data-title="Detroit"
-      alt="Detroit"
-      width="815"
-      height="1280"
-      />
+      <img loading="lazy" src="/demo/images/Detroit.jpg" data-title="Detroit" alt="Detroit" width="815" height="1280" />
       <p>
         Quis officia dolor pariatur commodo duis laboris esse magna do. Excepteur incididunt cillum eiusmod mollit eu
         voluptate veniam magna incididunt veniam commodo ad. Non deserunt laboris fugiat id. Sunt velit ad est ad. Culpa
         fugiat fugiat officia ipsum dolore officia. Ipsum cupidatat voluptate occaecat reprehenderit deserunt qui
         deserunt. Ad mollit eu culpa ipsum ad esse non esse voluptate magna do ex quis.
       </p>
-      <img
-      loading="lazy"
-      src="/demo/images/Essaouira-Surf.jpg"
-      alt="Essaouira Surf"
-      width="1280"
-      height="853"
-      />
+      <img loading="lazy" src="/demo/images/Essaouira-Surf.jpg" alt="Essaouira Surf" width="1280" height="853" />
       <p>
         In enim fugiat ut anim pariatur velit ut in mollit eiusmod. In consectetur cupidatat in nisi deserunt voluptate
         sint ut. Veniam aliquip non duis in amet quis incididunt veniam incididunt.
       </p>
       <img
-      loading="lazy"
-      src="/demo/images/Fishermans-Bastion.jpg"
-      alt="Fisherman's Bastion"
-      width="1280"
-      height="853"
+        loading="lazy"
+        src="/demo/images/Fishermans-Bastion.jpg"
+        alt="Fisherman's Bastion"
+        width="1280"
+        height="853"
       />
       <p>
         Quis nisi ad reprehenderit cupidatat. Ad eiusmod cupidatat labore et sunt ex. Do nostrud proident ea minim
@@ -69,26 +63,13 @@
         qui laboris aliquip. Fugiat id deserunt ipsum culpa. Deserunt tempor irure eiusmod est ad sunt Lorem in
         pariatur. Magna adipisicing excepteur irure excepteur culpa.
       </p>
-      <img
-      loading="lazy"
-      src="/demo/images/Salt.jpg"
-      title="Salt"
-      alt="Salt"
-      width="1280"
-      height="853"
-      />
+      <img loading="lazy" src="/demo/images/Salt.jpg" title="Salt" alt="Salt" width="1280" height="853" />
       <p>
         Est magna consectetur aliquip deserunt sint pariatur duis culpa quis. Deserunt eu nisi sint occaecat. Veniam
         sint excepteur in occaecat consectetur cillum id ullamco labore exercitation. Elit veniam aute elit ad culpa. Ad
         adipisicing exercitation exercitation nisi sint nisi sunt anim sunt.
       </p>
-      <img
-      loading="lazy"
-      src="/demo/images/Stubai-Mountains.jpg"
-      alt="Stubai Mountains"
-      width="1280"
-      height="853"
-      />
+      <img loading="lazy" src="/demo/images/Stubai-Mountains.jpg" alt="Stubai Mountains" width="1280" height="853" />
     </div>
   </body>
   <script type="module">
