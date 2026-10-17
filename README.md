@@ -255,18 +255,20 @@ Helpful video tutorials:
 | `task clean`          | Removes the generated script bundle.                                                           |
 | `task test:all`       | Builds the bundle and runs the tests.                                                          |
 | `task deploy:build`   | Type-checks the source and builds the minified script bundle.                                  |
-| `task deploy:release` | Builds the bundle and uploads it to an existing GitHub Release (`RELEASE_TAG=<tag>`).          |
-| `task deploy:upload`  | Uploads an existing bundle to an existing GitHub Release (`RELEASE_TAG=<tag>`).                |
+| `task deploy:update-version` | Updates the package version (`VERSION=x.y.z`).                                          |
+| `task deploy:create`  | Creates a GitHub Release and Git tag (`VERSION=x.y.z`).                                        |
+| `task deploy:release` | Builds the bundle, updates the package version and creates a GitHub Release (`VERSION=x.y.z`). |
+| `task deploy:upload`  | Uploads an existing bundle to an existing GitHub Release (`VERSION=x.y.z`).                    |
 
 ### Releasing the script bundle
 
-Create the release and tag on GitHub first, then upload the bundle:
+Create the release, tag and bundle in one step:
 
 ```sh
-task deploy:release RELEASE_TAG=<release-tag>
+task deploy:release VERSION=<version>
 ```
 
-The task requires the [GitHub CLI](https://cli.github.com/) and an authenticated `gh` account. It runs the build and uploads `lib-iife/mibreitGalleryTs.min.js` to the specified release.
+The version must use the `x.y.z` format and is written to `package.json`. The Git tag and GitHub Release use the same version as their name. The task requires the [GitHub CLI](https://cli.github.com/) and an authenticated `gh` account. It creates the release with generated notes and uploads `lib-iife/mibreitGalleryTs.min.js` to it.
 
 With the development server running, press `r` + `Enter` in its console to restart it and reload the page. Automatic reloading only works if your host system is Linux. On Windows, file changes are not propagated to the Dev Container and Vite does not detect them.
 

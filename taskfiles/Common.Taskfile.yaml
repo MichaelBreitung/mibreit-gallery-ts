@@ -1,0 +1,22 @@
+version: '3'
+
+tasks:
+  check-version-format:
+    desc: Check that VERSION uses the x.y.z format
+    requires:
+      vars: [VERSION]
+    cmd: |
+      if ! printf '%s' {{shellQuote .VERSION}} | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+        echo 'VERSION must use the x.y.z format' >&2
+        exit 1
+      fi
+
+  get-latest-version:
+    desc: Print the latest release version from Git tags
+    cmd: |
+      LATEST_TAG="$(git tag --list '*[0-9].[0-9].[0-9]' --sort=-v:refname | head -n 1)"
+      if test -z "$LATEST_TAG"; then
+        echo 'No Git release tag found' >&2
+        exit 1
+      fi
+      printf '%s\n' "$LATEST_TAG"

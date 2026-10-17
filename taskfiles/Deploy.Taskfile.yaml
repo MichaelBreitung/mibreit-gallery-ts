@@ -6,23 +6,54 @@ vars:
 
 tasks:
   release:
-    desc: 'Build and upload the iife library to an existing GitHub Release'
+    desc: 'Build, create and upload the iife library as a GitHub Release'
     requires:
-      vars: [RELEASE_TAG]
+      vars: [VERSION]
     cmds:
       - task: build
+      - task: update-version
+        vars: { VERSION: '{{.VERSION}}' }
+      - task: create
+        vars: { VERSION: '{{.VERSION}}' }
       - task: upload
-        vars: { RELEASE_TAG: '{{.RELEASE_TAG}}' }
+        vars: { VERSION: '{{.VERSION}}' }
 
   build:
     desc: 'Build the iife library'
     cmd: npm run build
 
+  update-version:
+    desc: 'Update the package version'
+    requires:
+      vars: [VERSION]
+    vars:
+      RELEASE_TAG: '{{.VERSION}}'
+    cmds:
+      - task: :common:check-version-format
+        vars: { VERSION: '{{.VERSION}}' }
+      - cmd: npm pkg set version={{shellQuote .VERSION}}
+
+  create:
+    desc: 'Create a GitHub Release'
+    requires:
+      vars: [VERSION]
+    vars:
+      RELEASE_TAG: '{{.VERSION}}'
+    cmds:
+      - task: :common:check-version-format
+        vars: { VERSION: '{{.VERSION}}' }
+      - cmd: gh release create {{shellQuote .RELEASE_TAG}} --title {{shellQuote .RELEASE_TAG}} --generate-notes
+
   upload:
     desc: 'Upload the iife library to an existing GitHub Release'
     requires:
-      vars: [RELEASE_TAG]
-    cmd: gh release upload {{shellQuote .RELEASE_TAG}} {{shellQuote .IIFE_LIBRARY_PATH}}
+      vars: [VERSION]
+    vars:
+      RELEASE_TAG: '{{.VERSION}}'
+    cmds:
+      - task: :common:check-version-format
+        vars: { VERSION: '{{.VERSION}}' }
+      - cmd: gh release upload {{shellQuote .RELEASE_TAG}} {{shellQuote .IIFE_LIBRARY_PATH}}
     preconditions:
       - sh: test -d {{shellQuote (joinPath .ROOT_DIR "lib-iife")}}
         msg: 'Build output not found: lib-iife. Run "task build" first.'
