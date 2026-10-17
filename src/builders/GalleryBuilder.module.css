@@ -1,43 +1,24 @@
 .gallery__fullscreen_btn {
-  position: absolute;
-  z-index: 2;
   right: 0rem;
   top: 0rem;
 }
 
 .gallery__shop_btn {
-  position: absolute;
-  z-index: 2;
   left: 0rem;
   top: 0rem;
 }
 
 .gallery__info_btn {
-  position: absolute;
-  z-index: 2;
   right: 0rem;
   bottom: 0rem;
 }
 
 .gallery__previous_btn {
-  position: absolute;
-  z-index: 2;
   left: 0rem;
   top: 50%;
 }
 
 .gallery__next_btn {
-  position: absolute;
-  z-index: 2;
   top: 50%;
   right: 0rem;
-}
-
-.gallery__next_btn > svg {
-  margin-top: -1.5rem;
-}
-
-.gallery__previous_btn > svg {
-  transform: scaleX(-1);
-  margin-top: -1.5rem;
 }

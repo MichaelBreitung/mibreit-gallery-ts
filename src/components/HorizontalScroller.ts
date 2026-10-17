@@ -5,6 +5,7 @@
 
 import { addCssClass, addCssStyle, createElement, wrapElements } from 'mibreit-dom-tools';
 import styles from './HorizontalScroller.module.css';
+import commonStyles from '../common.module.css';
 
 export default class HorizontalScroller {
   private _scroller: HTMLElement;
@@ -27,6 +28,7 @@ export default class HorizontalScroller {
   private _createScroller(elements: Array<Node>): HTMLElement {
     const scroller = createElement('div');
     addCssClass(scroller, styles.hscroller);
+    addCssClass(scroller, commonStyles.flex_row);
     wrapElements(elements, scroller);
 
     return scroller;

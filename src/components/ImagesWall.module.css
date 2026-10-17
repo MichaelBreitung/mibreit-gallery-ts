@@ -22,7 +22,6 @@
   margin: 0;
   object-fit: contain;
   opacity: 0;
-  transition: opacity 0.5s, transform 0.5s;
 }
 
 .img_col img:hover {

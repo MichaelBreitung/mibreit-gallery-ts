@@ -20,6 +20,7 @@ import closeImage from '../images/close.svg';
 
 // styles
 import styles from './ImageDescription.module.css';
+import commonStyles from '../common.module.css';
 
 export default class ImageDescription implements IImageDescription {
   private _changedCallbacks: Array<(active: boolean) => void> = [];
@@ -44,6 +45,7 @@ export default class ImageDescription implements IImageDescription {
       appendChildElement(this._descriptionTextHandle, this._descriptionHandle);
     }
     addCssClass(this._descriptionHandle, styles.img_description);
+    addCssClass(this._descriptionHandle, commonStyles.background_transition);
     const closeButton = this._createCloseButton(this._descriptionHandle);
     this._setupCloseButtonHandler(closeButton);
   }
