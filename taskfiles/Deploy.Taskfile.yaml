@@ -10,6 +10,8 @@ tasks:
     requires:
       vars: [VERSION]
     cmds:
+      - task: :common:check-version-higher
+        vars: { VERSION: '{{.VERSION}}' }
       - task: build
       - task: update-version
         vars: { VERSION: '{{.VERSION}}' }
@@ -40,7 +42,7 @@ tasks:
     vars:
       RELEASE_TAG: '{{.VERSION}}'
     cmds:
-      - task: :common:check-version-format
+      - task: :common:check-version-higher
         vars: { VERSION: '{{.VERSION}}' }
       - cmd: gh release create {{shellQuote .RELEASE_TAG}} --title {{shellQuote .RELEASE_TAG}} --generate-notes
 

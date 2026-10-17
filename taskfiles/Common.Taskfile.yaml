@@ -20,3 +20,18 @@ tasks:
         exit 1
       fi
       printf '%s\n' "$LATEST_TAG"
+
+  check-version-higher:
+    desc: Check that VERSION is higher than the latest release version
+    requires:
+      vars: [VERSION]
+    cmds:
+      - task: check-version-format
+        vars: { VERSION: '{{.VERSION}}' }
+      - cmd: |
+          LATEST_TAG="$(git tag --list '*[0-9].[0-9].[0-9]' --sort=-v:refname | head -n 1)"
+          HIGHEST_VERSION="$(printf '%s\n' {{shellQuote .VERSION}} "$LATEST_TAG" | sort -V | tail -n 1)"
+          if test {{shellQuote .VERSION}} = "$LATEST_TAG" || test "$HIGHEST_VERSION" = "$LATEST_TAG"; then
+            echo 'VERSION must be higher than the latest release version' >&2
+            exit 1
+          fi

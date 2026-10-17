@@ -268,7 +268,7 @@ Create the release, tag and bundle in one step:
 task deploy:release VERSION=<version>
 ```
 
-The version must use the `x.y.z` format and is written to `package.json`. The Git tag and GitHub Release use the same version as their name. The task requires the [GitHub CLI](https://cli.github.com/) and an authenticated `gh` account. It creates the release with generated notes and uploads `lib-iife/mibreitGalleryTs.min.js` to it.
+The version must use the `x.y.z` format, be higher than the latest release and is written to `package.json`. The Git tag and GitHub Release use the same version as their name. The task requires the [GitHub CLI](https://cli.github.com/) and an authenticated `gh` account. It creates the release with generated notes and uploads `lib-iife/mibreitGalleryTs.min.js` to it.
 
 With the development server running, press `r` + `Enter` in its console to restart it and reload the page. Automatic reloading only works if your host system is Linux. On Windows, file changes are not propagated to the Dev Container and Vite does not detect them.
 

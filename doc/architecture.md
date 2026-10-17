@@ -511,7 +511,7 @@ Common build properties:
 
 ### 7.4 Delivery to a Website
 
-`task deploy:release VERSION=x.y.z` validates the semantic version format, updates `package.json`, builds the bundle and creates the `x.y.z` GitHub Release with the bundle as its asset. The task requires the GitHub CLI and an authenticated `gh` account.
+`task deploy:release VERSION=x.y.z` validates the semantic version format, checks that the version is higher than the latest release, updates `package.json`, builds the bundle and creates the `x.y.z` GitHub Release with the bundle as its asset. The task requires the GitHub CLI and an authenticated `gh` account.
 
 Site owners download the release asset, host it with their website and update their hosted copy for a new release. Loading the script from a CDN or another external host is not supported or recommended.
 
