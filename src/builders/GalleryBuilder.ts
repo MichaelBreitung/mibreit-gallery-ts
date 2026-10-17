@@ -48,7 +48,7 @@ import shopSvg from '../images/shop.svg';
 
 // styles
 import styles from './GalleryBuilder.module.css';
-import animationStyles from '../common.module.css';
+import commonStyles from '../common.module.css';
 
 export default class GalleryContainerBuilder {
   private _slideshowContainerElement: HTMLElement;
@@ -201,8 +201,8 @@ export default class GalleryContainerBuilder {
     const shopButton = createElement('div');
     setInnerHtml(shopButton, shopSvg);
     addCssClass(shopButton, styles.gallery__shop_btn);
-    addCssClass(shopButton, animationStyles.common_button);
-    addCssClass(shopButton, animationStyles.fade);
+    addCssClass(shopButton, commonStyles.common_button);
+    addCssClass(shopButton, commonStyles.fade);
     appendChildElement(shopButton, this._slideshowContainerElement);
     return shopButton;
   }
@@ -248,15 +248,15 @@ export default class GalleryContainerBuilder {
     const previousButton = createElement('div');
     setInnerHtml(previousButton, nextImageSvg);
     addCssClass(previousButton, styles.gallery__previous_btn);
-    addCssClass(previousButton, animationStyles.common_button);
-    addCssClass(previousButton, animationStyles.icon_mirrored);
-    addCssClass(previousButton, animationStyles.fade);
+    addCssClass(previousButton, commonStyles.common_button);
+    addCssClass(previousButton, commonStyles.icon_mirrored);
+    addCssClass(previousButton, commonStyles.fade);
     prependChildElement(previousButton, this._slideshowContainerElement);
     const nextButton = createElement('div');
     setInnerHtml(nextButton, nextImageSvg);
     addCssClass(nextButton, styles.gallery__next_btn);
-    addCssClass(nextButton, animationStyles.common_button);
-    addCssClass(nextButton, animationStyles.fade);
+    addCssClass(nextButton, commonStyles.common_button);
+    addCssClass(nextButton, commonStyles.fade);
     appendChildElement(nextButton, this._slideshowContainerElement);
     return { previousButton, nextButton };
   }
@@ -334,8 +334,8 @@ export default class GalleryContainerBuilder {
     const fullscreenButton = createElement('div');
     setInnerHtml(fullscreenButton, fullscreenSvg);
     addCssClass(fullscreenButton, styles.gallery__fullscreen_btn);
-    addCssClass(fullscreenButton, animationStyles.common_button);
-    addCssClass(fullscreenButton, animationStyles.fade);
+    addCssClass(fullscreenButton, commonStyles.common_button);
+    addCssClass(fullscreenButton, commonStyles.fade);
     appendChildElement(fullscreenButton, this._slideshowContainerElement);
     return fullscreenButton;
   }
@@ -369,8 +369,8 @@ export default class GalleryContainerBuilder {
     const infoButton = createElement('div');
     setInnerHtml(infoButton, infoSvg);
     addCssClass(infoButton, styles.gallery__info_btn);
-    addCssClass(infoButton, animationStyles.common_button);
-    addCssClass(infoButton, animationStyles.fade);
+    addCssClass(infoButton, commonStyles.common_button);
+    addCssClass(infoButton, commonStyles.fade);
     appendChildElement(infoButton, this._slideshowContainerElement);
     return infoButton;
   }

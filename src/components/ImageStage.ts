@@ -15,7 +15,7 @@ import {
 } from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import styles from './ImageStage.module.css';
-import animationStyles from '../common.module.css';
+import commonStyles from '../common.module.css';
 import { ESwipeDirection } from './SwipeHandler';
 import { sleepTillNextRenderFinished } from '../tools/AsyncSleep';
 
@@ -59,10 +59,10 @@ export default abstract class ImageStage implements IImageStage {
     }, ANIMATIONS_RESET_TIMEOUT);
     await sleepTillNextRenderFinished();
     if (swipeDirection == ESwipeDirection.RIGHT) {
-      addCssClass(this._imageStage, animationStyles.transition);
+      addCssClass(this._imageStage, commonStyles.transition);
       addCssStyle(this._imageStage, 'left', '-100%');
     } else if (swipeDirection == ESwipeDirection.LEFT) {
-      addCssClass(this._imageStage, animationStyles.transition);
+      addCssClass(this._imageStage, commonStyles.transition);
       addCssStyle(this._imageStage, 'left', '100%');
     }
     removeCssStyle(this._imageStage, 'opacity');
@@ -77,19 +77,19 @@ export default abstract class ImageStage implements IImageStage {
 
     await sleepTillNextRenderFinished();
     if (swipeDirection === ESwipeDirection.RIGHT) {
-      removeCssClass(this._imageStage, animationStyles.transition);
+      removeCssClass(this._imageStage, commonStyles.transition);
       addCssStyle(this._imageStage, 'left', '100%');
       await sleepTillNextRenderFinished();
-      addCssClass(this._imageStage, animationStyles.transition);
+      addCssClass(this._imageStage, commonStyles.transition);
       removeCssStyle(this._imageStage, 'left');
     } else if (swipeDirection === ESwipeDirection.LEFT) {
-      removeCssClass(this._imageStage, animationStyles.transition);
+      removeCssClass(this._imageStage, commonStyles.transition);
       addCssStyle(this._imageStage, 'left', '-100%');
       await sleepTillNextRenderFinished();
-      addCssClass(this._imageStage, animationStyles.transition);
+      addCssClass(this._imageStage, commonStyles.transition);
       removeCssStyle(this._imageStage, 'left');
     } else {
-      removeCssClass(this._imageStage, animationStyles.transition);
+      removeCssClass(this._imageStage, commonStyles.transition);
       removeCssStyle(this._imageStage, 'left');
     }
     addCssStyle(this._imageStage, 'opacity', '1');
@@ -100,7 +100,7 @@ export default abstract class ImageStage implements IImageStage {
   private _createStage(): HTMLElement {
     const wrapper = createElement('div');
     addCssClass(wrapper, styles.img_stage);
-    addCssClass(wrapper, animationStyles.fade);
+    addCssClass(wrapper, commonStyles.fade);
     wrapElements([this._imageHandle], wrapper);
     return wrapper;
   }

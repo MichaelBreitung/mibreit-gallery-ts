@@ -24,7 +24,7 @@ import { ThumbScrollerConfig } from '../types';
 
 // Styles
 import styles from './ThumbsScrollerBuilder.module.css';
-import animationStyles from '../common.module.css';
+import commonStyles from '../common.module.css';
 
 // SVGs
 import nextThumbs from '../images/nextThumbs.svg';
@@ -50,7 +50,7 @@ export default class ThumbsScrollerBuilder {
   ) {
     this._thumbContainerElement = thumbContainerElement;
     addCssClass(this._thumbContainerElement, styles.thumbs_scroller__parent);
-    addCssClass(this._thumbContainerElement, animationStyles.flex_row);
+    addCssClass(this._thumbContainerElement, commonStyles.flex_row);
     this._numberOfVisibleThumbs = config?.numberOfVisibleThumbs
       ? config.numberOfVisibleThumbs
       : NUMBER_OF_VISIBLE_THUMBS;
@@ -133,7 +133,7 @@ export default class ThumbsScrollerBuilder {
     const previousButton = createElement('div');
     setInnerHtml(previousButton, nextThumbs);
     addCssClass(previousButton, styles.thumbs_scroller__previous_btn);
-    addCssClass(previousButton, animationStyles.icon_mirrored);
+    addCssClass(previousButton, commonStyles.icon_mirrored);
     prependChildElement(previousButton, this._thumbContainerElement);
 
     const nextButton = createElement('div');

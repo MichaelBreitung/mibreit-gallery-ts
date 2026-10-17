@@ -6,13 +6,13 @@
 import { addClickEventListener, addCssClass } from 'mibreit-dom-tools';
 import ImageStageExpand from './ImageStageExpand';
 import styles from './ThumbStage.module.css';
-import animationStyles from '../common.module.css';
+import commonStyles from '../common.module.css';
 
 export default class ThumbStage extends ImageStageExpand {
   constructor(imageHandle: HTMLElement, imageWidth: number, imageHeight: number) {
     super(imageHandle, imageWidth, imageHeight);
     addCssClass(this._imageStage, styles.thumb_stage);
-    addCssClass(this._imageStage, animationStyles.image_transition);
+    addCssClass(this._imageStage, commonStyles.image_transition);
   }
 
   addStageClickedCallback(callback: () => void): void {
