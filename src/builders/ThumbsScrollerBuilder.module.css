@@ -3,13 +3,3 @@
   margin-right: 0.5rem;
   margin-left: 0.5rem;
 }
-
-.thumbs_scroller__previous_btn > svg {
-  transform: scaleX(-1);
-}
-
-.thumbs_scroller__parent {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}

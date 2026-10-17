@@ -15,7 +15,7 @@ import {
 } from 'mibreit-dom-tools';
 import IImageStage from '../interfaces/IImageStage';
 import styles from './ImageStage.module.css';
-import animationStyles from '../tools/animations.module.css';
+import animationStyles from '../common.module.css';
 import { ESwipeDirection } from './SwipeHandler';
 import { sleepTillNextRenderFinished } from '../tools/AsyncSleep';
 

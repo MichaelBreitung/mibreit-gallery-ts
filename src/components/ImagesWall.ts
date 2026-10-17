@@ -5,6 +5,7 @@
 
 import { addCssClass, createElement } from 'mibreit-dom-tools';
 import styles from './ImagesWall.module.css';
+import animationStyles from '../common.module.css';
 import Image from './Image';
 
 export default class ImagesWall {
@@ -41,6 +42,7 @@ export default class ImagesWall {
       this._updateColumnHeight(targetIndex, image.getHeight());
 
       const node = image.getHtmlElement();
+      addCssClass(node, animationStyles.image_transition);
       targetCol.appendChild(node as Node);
 
       image.addWasLoadedCallback(() => {

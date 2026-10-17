@@ -19,6 +19,7 @@ import IFullscreen from '../interfaces/IFullscreen';
 
 // Styles
 import styles from './Fullscreen.module.css';
+import animationStyles from '../common.module.css';
 
 // SVGs
 import fullscreenClose from '../images/close.svg';
@@ -83,6 +84,7 @@ export default class Fullscreen implements IFullscreen {
   private _createFullscreenContainer(): HTMLElement {
     const fullScreenContainer = createElement('div');
     addCssClass(fullScreenContainer, styles.fullscreen);
+    addCssClass(fullScreenContainer, animationStyles.background_transition);
     return fullScreenContainer;
   }
 

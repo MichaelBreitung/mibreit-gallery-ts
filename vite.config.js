@@ -19,6 +19,7 @@ export default defineConfig({
     },
   },
   build: {
+    cssTarget: 'es2020',
     rollupOptions: {
       preserveEntrySignatures: true,
       input: 'src/index.ts',

@@ -12,44 +12,11 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 
 .img_stage__zoom {
-  -webkit-animation: zoomAnimation 10s linear;
-  -moz-animation: zoomAnimation 10s linear;
-  -o-animation: zoomAnimation 10s linear;
   animation: zoomAnimation 10s linear;
-}
-
-@-webkit-keyframes zoomAnimation {
-  0% {
-    -webkit-transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    -webkit-transform: translate(-50%, -50%) scale(1.25);
-  }
-}
-
-@-moz-keyframes zoomAnimation {
-  0% {
-    -moz-transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    -moz-transform: translate(-50%, -50%) scale(1.25);
-  }
-}
-
-@-o-keyframes zoomAnimation {
-  0% {
-    -o-transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    -o-transform: translate(-50%, -50%) scale(1.25);
-  }
 }
 
 @keyframes zoomAnimation {

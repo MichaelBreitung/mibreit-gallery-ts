@@ -500,6 +500,7 @@ Common build properties:
 
 - SVG icons are inlined as strings through a small custom Vite plugin, so dev and build behave the same.
 - CSS Modules are generated with the fixed `mbg__` prefix and no hash.
+- CSS is built for the same evergreen-browser baseline as the script, so modern CSS is not lowered for unsupported legacy browsers; Vite reports the raw and gzipped bundle size on every production build.
 - `console` calls in the gallery sources and in the lazy loader package are stripped from the script build.
 - There is no linting step and no CI workflow in the repository (see [TD-13](#td-13)).
 
@@ -545,6 +546,7 @@ The library also disables the context menu and dragging on gallery images.
 
 - **CSS Modules with a fixed prefix:** class names use the prefix `mbg__` without a hash, so host pages can override them (see [ADR-3](#adr-3)).
 - **Global stylesheet for the web components:** the script bundle includes a stylesheet that defines the layout of the custom elements, default colors and icon styling. The module source entry does not import it (see [TD-11](#td-11)).
+- **Shared animation and layout rules:** repeated button positioning, flex-row layout, mirrored-icon, image and background transitions live in a shared CSS Module; component modules contain only component-specific declarations.
 - **Colors through CSS variables:** `--background-color` and `--foreground-color` are defined on the document root. Defaults are dark. With the average-color option, the library overwrites them at each image change. Icons use the foreground color.
 - **Icons as inlined SVG:** icons are bundled as strings and inserted into the DOM, so they can be colored by CSS.
 - **Fade-in against unstyled flashes:** gallery and thumbnail containers start fully transparent and are faded in by the web component once the gallery is built. This avoids a flash of unstyled content and makes sure images fade in properly (see [ADR-11](#adr-11)). Buttons and overlays use a shared fade transition.
@@ -740,7 +742,7 @@ The items are numbered in the order they were found, which is not a priority ord
 
 #### TD-6
 
-**Unused code.** Several constants are not referenced anywhere (the data-src and src attribute names, the stage CSS class, the slideshow interval, the resize debounce timer), and the debounce helper is not used either.
+**Resolved:** The unused data-src, src, stage-class, slideshow-interval and resize-debounce constants were removed, along with the unused debounce helper.
 
 #### TD-7
 
