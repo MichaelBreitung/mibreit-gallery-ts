@@ -16,7 +16,8 @@
   background-color: var(--background-color);
 }
 
-.fullscreen > div > .img_stage {
+.fullscreen mbg-images,
+.fullscreen .img_stage {
   overflow: visible;
 }
 
@@ -26,7 +27,7 @@
   }
 }
 
-.fullscreen > div > .img_stage img {
+.fullscreen .img_stage img {
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5);
 }
 
