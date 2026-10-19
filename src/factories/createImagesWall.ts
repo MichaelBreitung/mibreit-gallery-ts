@@ -5,27 +5,24 @@ import { getElement, getElements } from 'mibreit-dom-tools';
 
 import ImagesWall from '../components/ImagesWall';
 import { ImagesWallBuilder } from '../builders';
-import { checkImagesWallConfig } from '../types';
+import { checkImagesWallConfig, ImagesWallConfig } from '../types';
 import { assertCallback, assertSelector } from './validation';
 
 export default function (
   containerSelector: string,
   imagesSelector: string,
-  columns?: number,
-  imageClickedCallback?: (index: number) => void,
-  scrollLoaderDelay?: number
+  config?: ImagesWallConfig,
+  imageClickedCallback?: (index: number) => void
 ): ImagesWall {
   const validatedContainerSelector = assertSelector(
     containerSelector,
     'createImagesWall',
     'first parameter containerSelector'
   );
-  const validatedImagesSelector = assertSelector(
-    imagesSelector,
-    'createImagesWall',
-    'second parameter imagesSelector'
-  );
-  checkImagesWallConfig({ columns, scrollLoaderDelay });
+  const validatedImagesSelector = assertSelector(imagesSelector, 'createImagesWall', 'second parameter imagesSelector');
+  if (config) {
+    checkImagesWallConfig(config);
+  }
   if (imageClickedCallback) {
     assertCallback(imageClickedCallback, 'createImagesWall', 'fourth parameter imageClickedCallback');
   }
@@ -42,12 +39,9 @@ export default function (
     throw new Error('createImagesWall - no images found inside the container');
   }
 
-  const builder = new ImagesWallBuilder(container, images, columns);
+  const builder = new ImagesWallBuilder(container, images, config);
   if (imageClickedCallback) {
     builder.addImageClickedCallback(imageClickedCallback);
-  }
-  if (scrollLoaderDelay) {
-    builder.setScrollLoaderDelay(scrollLoaderDelay);
   }
   const wall = builder.build();
 

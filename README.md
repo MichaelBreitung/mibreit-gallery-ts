@@ -50,7 +50,7 @@ The gallery works on the `<img>` elements in your page. It reads their data from
 | `title` / `data-title`              | Image title (shown by the optional `mbg-title` element)                              |
 | `alt`                               | Image description, if there are no `<figcaption>` elements                           |
 | `<figcaption>`                      | Image description, if every image has one                                            |
-| `width`, `height`                   | Natural image size. Images are never shown larger than this                          |
+| `width`, `height`                   | Natural image size. Images are not upscaled unless enabled via `allowUpscale`        |
 | `data-print-size`, `data-print-url` | Marks an image as available for purchase (enables the buy button of the images wall) |
 
 All elements use the `mbg-` prefix. Options are set as attributes and are all optional.
@@ -93,6 +93,7 @@ mbg-thumbs {
 | `initialImageNr`        | Index of the image shown first (starting at 0)   | 0       |
 | `interval`              | Automatic advance in milliseconds (minimum 1000) | off     |
 | `zoom`                  | Flag attribute. Activates the zoom effect        | off     |
+| `allowUpscale`          | Flag attribute. Allows images to grow beyond their declared size | off     |
 
 Thumbnails are optional. Without them, or with a single thumbnail, the thumbnail area is hidden.
 
@@ -107,7 +108,7 @@ Thumbnails are optional. Without them, or with a single thumbnail, the thumbnail
 </mbg-slideshow>
 ```
 
-Supports `loaderWindowLeft`, `loaderWindowRight`, `interval` (default 5000), `zoom`, and the flag `expand`, which makes images cover their container instead of fitting into it.
+Supports `loaderWindowLeft`, `loaderWindowRight`, `interval` (default 5000), `zoom`, `allowUpscale`, and the flag `expand`, which makes images cover their container instead of fitting into it.
 
 #### Thumbnail scroller
 
@@ -120,7 +121,7 @@ Supports `loaderWindowLeft`, `loaderWindowRight`, `interval` (default 5000), `zo
 </mbg-thumbscroller>
 ```
 
-Supports `numberOfVisibleThumbs` (default 7) and `initialIndex` (default 0).
+Supports `numberOfVisibleThumbs` (default 7), `initialIndex` (default 0), and the flag `allowUpscale`.
 
 #### Images wall
 
@@ -138,6 +139,7 @@ Supports `numberOfVisibleThumbs` (default 7) and `initialIndex` (default 0).
 | `columns`           | Number of columns                                                               | 3       |
 | `scrollLoaderDelay` | Delay in milliseconds before an image that scrolled into view is loaded         | 300     |
 | `addBuyButton`      | Flag attribute. Shows a buy button in fullscreen for images with print metadata | off     |
+| `allowUpscale`      | Flag attribute. Allows images to grow beyond their declared size                | off     |
 
 With `addBuyButton`, the element dispatches a `buy-clicked` event whose `detail.idx` is the index of the image:
 
@@ -168,6 +170,7 @@ Fullscreen-only configuration options:
 | `scaleMode`          | How fullscreen images fit their container: `EImageScaleMode.NONE`, `FIT_ASPECT`, `STRETCH`, `EXPAND`                     |         |
 | `interval`           | Automatic advance in milliseconds (minimum 1000)                                                                         | off     |
 | `zoom`               | Activates the zoom effect                                                                                                | `false` |
+| `allowUpscale`       | Allows images to grow beyond their declared size                                                                          | `false` |
 | `loaderWindowLeft`   | Number of images to lazy load before the current one                                                                     | 0       |
 | `loaderWindowRight`  | Number of images to lazy load after the current one                                                                      | 1       |
 

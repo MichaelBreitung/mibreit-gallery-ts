@@ -72,6 +72,7 @@ class MibreitGalleryElement extends HTMLElement {
     const initialImageNr = getNumericAttribute(this, 'initialImageNr', 'mbg-gallery');
     const interval = getNumericAttribute(this, 'interval', 'mbg-gallery');
     const zoom = hasFlagAttribute(this, 'zoom');
+    const allowUpscale = hasFlagAttribute(this, 'allowUpscale');
     this.gallery = createGallery(containerSelector, `${containerSelector} img`, {
       scaleMode: EImageScaleMode.FIT_ASPECT,
       thumbContainerSelector,
@@ -82,6 +83,7 @@ class MibreitGalleryElement extends HTMLElement {
       initialImageNr,
       interval,
       zoom: zoom ? true : undefined,
+      allowUpscale: allowUpscale ? true : undefined,
     });
 
     window.mbgGalleryObjects.push(this.gallery);
@@ -109,6 +111,7 @@ class MibreitSlideshowElement extends HTMLElement {
     const loaderWindowRight = getNumericAttribute(this, 'loaderWindowRight', 'mbg-slideshow');
     const interval = getNumericAttribute(this, 'interval', 'mbg-slideshow');
     const zoom = hasFlagAttribute(this, 'zoom');
+    const allowUpscale = hasFlagAttribute(this, 'allowUpscale');
     const expand = hasFlagAttribute(this, 'expand');
     createSlideshow(`${containerSelector} img`, {
       scaleMode: expand ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
@@ -116,6 +119,7 @@ class MibreitSlideshowElement extends HTMLElement {
       loaderWindowRight,
       interval,
       zoom: zoom ? true : undefined,
+      allowUpscale: allowUpscale ? true : undefined,
     });
     showDiv(containerSelector);
   }
@@ -127,9 +131,11 @@ class MibreitThumbScrollerElement extends HTMLElement {
     const containerSelector = getSelector(customClass, 'mbg-thumbs');
     const numberOfVisibleThumbs = getNumericAttribute(this, 'numberOfVisibleThumbs', 'mbg-thumbscroller');
     const initialIndex = getNumericAttribute(this, 'initialIndex', 'mbg-thumbscroller');
+    const allowUpscale = hasFlagAttribute(this, 'allowUpscale');
     createThumbsScroller(containerSelector, `${containerSelector} img`, {
       numberOfVisibleThumbs,
       initialIndex,
+      allowUpscale: allowUpscale ? true : undefined,
     });
     showDiv(containerSelector);
   }
@@ -143,6 +149,7 @@ class MibreitImagesWallElement extends HTMLElement {
     const containerSelector = getSelector(customClass, 'mbg-images');
     const columns = getNumericAttribute(this, 'columns', 'mbg-imageswall');
     const scrollLoaderDelay = getNumericAttribute(this, 'scrollLoaderDelay', 'mbg-imageswall');
+    const allowUpscale = hasFlagAttribute(this, 'allowUpscale');
 
     const addBuyButton = hasFlagAttribute(this, 'addBuyButton');
     let onBuyClicked = null;
@@ -162,9 +169,8 @@ class MibreitImagesWallElement extends HTMLElement {
     createImagesWall(
       containerSelector,
       `${containerSelector} img`,
-      columns,
-      undefined,
-      scrollLoaderDelay
+      { columns, scrollLoaderDelay, allowUpscale },
+      undefined
     );
     showDiv(containerSelector);
   }

@@ -57,7 +57,7 @@ export default class ThumbsScrollerBuilder {
 
     this._initialIndex = config?.initialIndex;
 
-    const thumbs = this._createThumbsArray(thumbElements);
+    const thumbs = this._createThumbsArray(thumbElements, config?.allowUpscale);
 
     this._numberOfThumbs = thumbs.length;
     this._createThumbStages(thumbs, thumbClickedCallback);
@@ -91,10 +91,10 @@ export default class ThumbsScrollerBuilder {
     return this._thumbsViewer;
   }
 
-  private _createThumbsArray(thumbElements: NodeListOf<HTMLElement>): Array<Image> {
+  private _createThumbsArray(thumbElements: NodeListOf<HTMLElement>, allowUpscale: boolean = false): Array<Image> {
     const thumbs: Array<Image> = new Array();
     for (let i = 0; i < thumbElements.length; i++) {
-      const image: Image = new Image(thumbElements[i]!);
+      const image: Image = new Image(thumbElements[i]!, allowUpscale);
       thumbs.push(image);
     }
     return thumbs;

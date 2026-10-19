@@ -21,15 +21,9 @@ export default class ImageStageFitAspect extends ImageStage {
     let newWidth: string = 'auto';
     let newHeight: string = 'auto';
     if (stageWidth / stageHeight > aspect) {
-      // fit based on height
-      if (stageHeight <= this._imageHeight) {
-        newHeight = `100%`;
-      }
+      newHeight = `100%`;
     } else {
-      // fit based on width
-      if (stageWidth <= this._imageWidth) {
-        newWidth = `100%`;
-      }
+      newWidth = `100%`;
     }
     addCssStyle(this._imageHandle, 'width', newWidth);
     addCssStyle(this._imageHandle, 'height', newHeight);
