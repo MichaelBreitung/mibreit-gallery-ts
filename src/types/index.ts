@@ -51,6 +51,7 @@ export function parseNumericAttribute(value: string | null, name: string, compon
 export type ThumbScrollerConfig = {
   numberOfVisibleThumbs?: number;
   initialIndex?: number;
+  allowUpscale?: boolean;
 };
 
 export function checkThumbScrollerConfig(config: ThumbScrollerConfig) {
@@ -69,6 +70,7 @@ export type SlideshowConfig = {
   scaleMode?: EImageScaleMode;
   interval?: number;
   zoom?: boolean;
+  allowUpscale?: boolean;
   loaderWindowLeft?: number;
   loaderWindowRight?: number;
 };
@@ -85,6 +87,9 @@ export function checkSlideshowConfig(config: SlideshowConfig) {
   }
   if (typeof config.zoom !== 'undefined' && typeof config.zoom !== 'boolean') {
     throw new Error('checkSlideshowConfig - config zoom should be of type boolean');
+  }
+  if (typeof config.allowUpscale !== 'undefined' && typeof config.allowUpscale !== 'boolean') {
+    throw new Error('checkSlideshowConfig - config allowUpscale should be of type boolean');
   }
   if (
     typeof config.loaderWindowRight !== 'undefined' &&
@@ -129,6 +134,7 @@ export function checkGalleryConfig(config: GalleryConfig) {
 export type ImagesWallConfig = {
   columns?: number;
   scrollLoaderDelay?: number;
+  allowUpscale?: boolean;
 };
 
 export function checkImagesWallConfig(config: ImagesWallConfig) {
@@ -143,6 +149,9 @@ export function checkImagesWallConfig(config: ImagesWallConfig) {
     (!isFiniteNumber(config.scrollLoaderDelay) || config.scrollLoaderDelay < 0)
   ) {
     throw new Error('checkImagesWallConfig - scrollLoaderDelay should be a number of at least 0');
+  }
+  if (typeof config.allowUpscale !== 'undefined' && typeof config.allowUpscale !== 'boolean') {
+    throw new Error('checkImagesWallConfig - allowUpscale should be of type boolean');
   }
 }
 

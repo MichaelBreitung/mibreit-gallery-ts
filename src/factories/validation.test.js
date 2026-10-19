@@ -15,10 +15,10 @@ describe('Factory Input Validation Test Suite', () => {
   });
 
   it('rejects invalid images-wall numeric options before selecting images', () => {
-    expect(() => createImagesWall('.container', 'img', 0)).toThrowError(
+    expect(() => createImagesWall('.container', 'img', { columns: 0 })).toThrowError(
       'checkImagesWallConfig - columns should be an integer of at least 1'
     );
-    expect(() => createImagesWall('.container', 'img', 3, undefined, -1)).toThrowError(
+    expect(() => createImagesWall('.container', 'img', { scrollLoaderDelay: -1 })).toThrowError(
       'checkImagesWallConfig - scrollLoaderDelay should be a number of at least 0'
     );
   });

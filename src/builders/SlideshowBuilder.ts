@@ -26,7 +26,7 @@ export default class SlideshowBuilder {
   private _lazyLoader: ILazyLoader;
 
   constructor(imageElements: NodeListOf<HTMLElement>, config?: SlideshowConfig) {
-    const images = this._createImagesArray(imageElements);
+    const images = this._createImagesArray(imageElements, config?.allowUpscale);
     this._lazyLoader = this._createLoader(images, config?.loaderWindowLeft, config?.loaderWindowRight);
     this._imageViewer = this._createImageViewer(images, config?.scaleMode, config?.zoom);
 
@@ -41,10 +41,10 @@ export default class SlideshowBuilder {
     return new Slideshow(this._imageViewer, this._lazyLoader);
   }
 
-  private _createImagesArray(imagesSelector: NodeListOf<HTMLElement>): Array<Image> {
+  private _createImagesArray(imagesSelector: NodeListOf<HTMLElement>, allowUpscale: boolean = false): Array<Image> {
     const images: Array<Image> = new Array();
     for (let i = 0; i < imagesSelector.length; i++) {
-      const image = new Image(imagesSelector[i]!);
+      const image = new Image(imagesSelector[i]!, allowUpscale);
       images.push(image);
     }
     return images;

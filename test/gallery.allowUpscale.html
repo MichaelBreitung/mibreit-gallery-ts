@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        margin: 0;
+      }
+      #container {
+        position: relative;
+        width: 1920px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      mbg-gallery {
+        display: block;
+      }
+      mbg-images {
+        height: 1080px;
+      }
+      .mbll__marker {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <mbg-gallery allowUpscale>
+        <mbg-images>
+          <img
+            alt="Essaouira Surf"
+            loading="lazy"
+            class="mbll__marker"
+            src="/demo/images/Essaouira-Surf.jpg"
+            width="1280"
+            height="853"
+          />
+        </mbg-images>
+      </mbg-gallery>
+    </div>
+  </body>
+</html>

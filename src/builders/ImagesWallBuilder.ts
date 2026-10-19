@@ -6,7 +6,7 @@ import { ELazyMode, createLazyLoaderFromElements } from 'mibreit-lazy-loader';
 
 import ImagesWall from '../components/ImagesWall';
 import Image from '../components/Image';
-import { IMAGES_WALL_DEFAULTS } from '../types';
+import { IMAGES_WALL_DEFAULTS, ImagesWallConfig } from '../types';
 
 import styles from './ImagesWallBuilder.module.css';
 
@@ -16,21 +16,16 @@ export default class ImagesWallBuilder {
   private _images: Array<Image>;
   private _imagesWall: ImagesWall;
 
-  constructor(containerElement: HTMLElement, imageElements: NodeListOf<HTMLElement>, columns?: number) {
+  constructor(containerElement: HTMLElement, imageElements: NodeListOf<HTMLElement>, config?: ImagesWallConfig) {
     this._containerElement = containerElement;
     addCssClass(this._containerElement, styles.images_wall__parent);
-
-    this._images = this._createImagesArray(imageElements);
-    this._imagesWall = new ImagesWall(this._images, columns ?? IMAGES_WALL_DEFAULTS.columns);
+    this._scrollLoaderDelay = config?.scrollLoaderDelay ?? IMAGES_WALL_DEFAULTS.scrollLoaderDelay;
+    this._images = this._createImagesArray(imageElements, config?.allowUpscale);
+    this._imagesWall = new ImagesWall(this._images, config?.columns ?? IMAGES_WALL_DEFAULTS.columns);
   }
 
   public addImageClickedCallback(cb: (index: number) => void): ImagesWallBuilder {
     this._addImageClickCallbacks(cb);
-    return this;
-  }
-
-  public setScrollLoaderDelay(delay: number): ImagesWallBuilder {
-    this._scrollLoaderDelay = delay;
     return this;
   }
 
@@ -46,10 +41,10 @@ export default class ImagesWallBuilder {
     return this._imagesWall;
   }
 
-  private _createImagesArray(imageElements: NodeListOf<HTMLElement>): Array<Image> {
+  private _createImagesArray(imageElements: NodeListOf<HTMLElement>, allowUpscale: boolean = false): Array<Image> {
     const images: Array<Image> = new Array();
     for (let i = 0; i < imageElements.length; i++) {
-      const image: Image = new Image(imageElements[i]!);
+      const image: Image = new Image(imageElements[i]!, allowUpscale);
       images.push(image);
     }
     return images;

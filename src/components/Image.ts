@@ -17,12 +17,14 @@ export default class Image extends Element implements IImageInfo {
   private _description: string = '';
   private _metadata: { [key: string]: string } | null = null;
 
-  constructor(imageHandle: HTMLElement) {
+  constructor(imageHandle: HTMLElement, allowUpscale: boolean = false) {
     super(imageHandle);
     this._prepareMetadata(imageHandle);
     this._prepareTitle(imageHandle);
     this._prepareDescription(imageHandle);
-    this._limitMaxSizeTo(imageHandle, this.getWidth(), this.getHeight());
+    if (!allowUpscale) {
+      this._limitMaxSizeTo(imageHandle, this.getWidth(), this.getHeight());
+    }
     disableContextMenu(imageHandle);
     disableDragging(imageHandle);
   }
