@@ -16,10 +16,7 @@
   background-color: var(--background-color);
 }
 
-.fullscreen mbg-images {
-  overflow: visible;
-}
-
+.fullscreen mbg-images,
 .fullscreen .img_stage {
   overflow: visible;
 }
