@@ -205,7 +205,7 @@ All three depend on the host page marking images as deferred (see [section 3](#3
 
 ### 4.3 Entry Paths and Composition
 
-- **Declarative composition:** custom elements read their attributes, derive selectors for their child images and delegate to the matching factory. Galleries, slideshows, thumbnail scrollers and images walls are created only through this path.
+- **Declarative composition:** custom elements read their attributes (including gallery scale mode and slideshow/gallery initial image number), derive selectors for their child images and delegate to the matching factory. Galleries, slideshows, thumbnail scrollers and images walls are created only through this path.
 - **Imperative exception:** `createFullscreenOnlyGallery` takes a CSS selector and a slideshow config, validates both, and delegates to the gallery builder. It serves regular page images that have no dedicated web component.
 - **Composition by builders:** the gallery builder starts from a slideshow and adds optional features (previous/next buttons, fullscreen, thumbnails, descriptions, buy action). The same builder serves the fullscreen-only gallery, which clones the page's images into a hidden container and shows it only when fullscreen is active.
 - **Images stay in the page's DOM:** components wrap and style the host page's `<img>` elements instead of re-creating them. Title, description and print metadata are read from the element's attributes (see [ADR-1](#adr-1) and [ADR-8](#adr-8)).
@@ -295,7 +295,7 @@ graph TD
 
 | Building block       | Responsibility                                                                                                                                                                                                                                            |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Web Components entry | Script bundle entry. Registers the custom elements, maps attributes to factory calls, publishes created galleries on a page-global list, relays the buy event, and fades the gallery in once it is ready.                                                 |
+| Web Components entry | Script bundle entry. Registers the custom elements, maps attributes to factory calls, publishes connected galleries on a page-global list, disconnects them when removed, relays the buy event, and fades the gallery in once it is ready.                                                 |
 | Single entry point   | Registers the web components and exports only `createFullscreenOnlyGallery`, `EImageScaleMode` and `SlideshowConfig`; the script bundle exposes the function and enum on its global.        |
 | Factories            | One function per use case (slideshow, thumbnail scroller, gallery, fullscreen-only gallery, images wall). Each validates its parameters and configuration, resolves the selectors in the page and delegates to a builder. They throw if nothing is found. |
 | Builders             | Assemble components into a working result. Each builder creates the image wrappers, lazy loader and viewer, wires them together (callbacks, keyboard, swipe, hover) and builds the container object.                                                      |
@@ -369,7 +369,7 @@ sequenceDiagram
     Bld-->>Fac: gallery
     Fac->>LL: show initial image (starts loading window)
     Fac-->>El: gallery
-    El->>Page: register gallery in global list, show title
+    El->>Page: register gallery in global list, show its title
     El->>Page: fade in images and thumbnails
 ```
 
@@ -381,7 +381,7 @@ Steps and rules:
 4. Thumbnails are only created if the page provides more than one thumbnail. Otherwise the thumbnail container is hidden.
 5. Descriptions are created from the page's figure captions if there are any.
 6. The initial image (default: the first one) is shown, which starts loading around it.
-7. If a title element exists on the page, it shows the current image's title and follows changes.
+7. If a title element exists inside the gallery element, it shows the current image's title and follows changes.
 8. Gallery and thumbnails stay invisible until the element makes them visible with a fade-in (see [ADR-11](#adr-11)).
 
 ### 6.2 Changing the Image
@@ -418,6 +418,12 @@ Rules:
 - Keyboard handlers are registered on the whole document, not on a single gallery (see [TD-9](#td-9)).
 - When the optional interval is set, a timer advances to the next image continuously. It does not stop on user interaction (see [TD-10](#td-10)).
 
+### 6.4 Web Component Removal
+
+When a gallery or images-wall web component is removed, its entry is removed from the page-global gallery list. If it is in fullscreen, the fullscreen gallery is restored to its original position before removal. Slideshow, thumbnail-scroller and images-wall elements release the component-owned result reference. Re-adding an element creates a new gallery and publishes it again.
+
+The release described here is component-level. Document-level keyboard listeners, automatic advance timers and component-internal listeners and observers are covered by [TD-10](#td-10).
+
 ### 6.3 Fullscreen
 
 1. Activation moves the gallery container into an overlay appended to the page body and leaves a placeholder at the original position.
@@ -425,7 +431,7 @@ Rules:
 3. Deactivation puts the container back at the placeholder and removes the overlay.
 4. Change listeners are notified of both transitions. Fullscreen-only galleries use this to show or hide their (otherwise hidden) container.
 
-### 6.4 Images Wall with Fullscreen Viewing
+### 6.5 Images Wall with Fullscreen Viewing
 
 The images wall is an alternative to the thumbnails viewer.
 
@@ -555,6 +561,7 @@ The library also disables the context menu and dragging on gallery images.
 ### 8.4 Callbacks and Events
 
 - **Listener lists:** components that change state (image viewer, fullscreen, thumbnails viewer, image description) keep a list of change callbacks. Registering the same callback twice has no effect.
+- **Title association:** title elements belong to the gallery element that contains them. Removing a gallery element releases the reference held by the web component.
 - **No event bus:** builders wire components together by registering callbacks. For example, an image change moves the thumbnails, the average color and the shop button.
 - **Page-level events:** the only DOM event the library dispatches is the buy event, from the images wall element.
 - **Input handling:** pointer events (not mouse or touch events) drive swipe, tap and button handling. Button handlers stop event propagation, so a click on a button does not also count as a swipe or tap on the gallery.
@@ -758,7 +765,7 @@ The items are numbered in the order they were found, which is not a priority ord
 
 #### TD-10
 
-**No lifecycle management.** The automatic advance timer never stops, not on user interaction and not when the gallery is out of view. None of the document-level listeners and resize observers are ever removed. There is no teardown, which matters for single-page applications and for pages that remove galleries.
+**Internal lifecycle cleanup is incomplete.** The automatic advance timer never stops, not on user interaction and not when the gallery is out of view. Document-level keyboard listeners, component-internal callbacks and resize observers are not removed. Web components release their own gallery references and remove disconnected galleries from the global list, but internal disposal remains incomplete for single-page applications and temporary element removal.
 
 #### TD-11
 

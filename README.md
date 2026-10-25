@@ -90,6 +90,7 @@ mbg-thumbs {
 | `numberOfVisibleThumbs` | Number of thumbnails visible at once             | 7       |
 | `loaderWindowLeft`      | Number of images to load before the current one  | 0       |
 | `loaderWindowRight`     | Number of images to load after the current one   | 1       |
+| `scaleMode`             | One of `NONE`, `FIT_ASPECT`, `STRETCH`, or `EXPAND` | `FIT_ASPECT` |
 | `initialImageNr`        | Index of the image shown first (starting at 0)   | 0       |
 | `interval`              | Automatic advance in milliseconds (minimum 1000) | off     |
 | `zoom`                  | Flag attribute. Activates the zoom effect        | off     |
@@ -108,7 +109,9 @@ Thumbnails are optional. Without them, or with a single thumbnail, the thumbnail
 </mbg-slideshow>
 ```
 
-Supports `loaderWindowLeft`, `loaderWindowRight`, `interval` (default 5000), `zoom`, `allowUpscale`, and the flag `expand`, which makes images cover their container instead of fitting into it.
+Supports `loaderWindowLeft`, `loaderWindowRight`, `initialImageNr`, `interval` (default 5000), `zoom`, `allowUpscale`, and the flag `expand`, which makes images cover their container instead of fitting into it.
+
+Place `<mbg-title></mbg-title>` inside the gallery that it belongs to. With several galleries on a page, each title element shows and follows the current title of its own gallery. The global `window.mbgGalleryObjects` list contains only galleries whose web components are still connected.
 
 #### Thumbnail scroller
 

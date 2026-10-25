@@ -16,6 +16,10 @@ import {
 } from './factories';
 import { EImageScaleMode, parseNumericAttribute } from './types';
 import IGallery from './interfaces/IGallery';
+import ISlideshow from './interfaces/ISlideshow';
+import IThumbsViewer from './interfaces/IThumbsViewer';
+import { Gallery } from './containers';
+import ImagesWall from './components/ImagesWall';
 
 export { createFullscreenOnlyGallery, EImageScaleMode };
 export type { SlideshowConfig } from './types';
@@ -52,11 +56,34 @@ function hasFlagAttribute(element: HTMLElement, attributeName: string): boolean 
   return element.hasAttribute(attributeName);
 }
 
+function getScaleModeAttribute(element: HTMLElement): EImageScaleMode {
+  const value = element.getAttribute('scaleMode');
+  if (value === null) {
+    return EImageScaleMode.FIT_ASPECT;
+  }
+  const scaleMode = EImageScaleMode[value as keyof typeof EImageScaleMode];
+  if (typeof scaleMode !== 'string') {
+    throw new Error(`mbg-gallery - invalid scaleMode attribute: "${value}" is not a valid scale mode`);
+  }
+  return scaleMode;
+}
+
 function showDiv(divSelector: string) {
   const div = getElement(divSelector);
   if (div) {
     addCssClass(div, commonStyles.fade);
     addCssStyle(div, 'opacity', '1');
+  }
+}
+
+function releaseGallery(gallery: IGallery) {
+  const fullscreen = (gallery as Gallery).getFullscreen();
+  if (fullscreen?.isActive()) {
+    fullscreen.deActivate();
+  }
+  const index = window.mbgGalleryObjects.indexOf(gallery);
+  if (index !== -1) {
+    window.mbgGalleryObjects.splice(index, 1);
   }
 }
 class MibreitGalleryElement extends HTMLElement {
@@ -71,10 +98,11 @@ class MibreitGalleryElement extends HTMLElement {
     const loaderWindowRight = getNumericAttribute(this, 'loaderWindowRight', 'mbg-gallery');
     const initialImageNr = getNumericAttribute(this, 'initialImageNr', 'mbg-gallery');
     const interval = getNumericAttribute(this, 'interval', 'mbg-gallery');
+    const scaleMode = getScaleModeAttribute(this);
     const zoom = hasFlagAttribute(this, 'zoom');
     const allowUpscale = hasFlagAttribute(this, 'allowUpscale');
     this.gallery = createGallery(containerSelector, `${containerSelector} img`, {
-      scaleMode: EImageScaleMode.FIT_ASPECT,
+      scaleMode,
       thumbContainerSelector,
       thumbSelector: `${thumbContainerSelector} img`,
       numberOfVisibleThumbs,
@@ -88,7 +116,7 @@ class MibreitGalleryElement extends HTMLElement {
 
     window.mbgGalleryObjects.push(this.gallery);
 
-    const titleElement = document.querySelector('mbg-title');
+    const titleElement = this.querySelector('mbg-title');
     if (titleElement) {
       const imageInfo = this.gallery.getImageViewer().getImageInfo(this.gallery.getImageViewer().getImageIndex());
       if (imageInfo) {
@@ -101,19 +129,29 @@ class MibreitGalleryElement extends HTMLElement {
     showDiv(containerSelector);
     showDiv(thumbContainerSelector);
   }
+
+  disconnectedCallback() {
+    if (this.gallery) {
+      releaseGallery(this.gallery);
+      this.gallery = null;
+    }
+  }
 }
 
 class MibreitSlideshowElement extends HTMLElement {
+  public slideshow: ISlideshow | null = null;
+
   connectedCallback() {
     const customClass = addCustomClass(this, 'slideshow');
     const containerSelector = getSelector(customClass, 'mbg-images');
     const loaderWindowLeft = getNumericAttribute(this, 'loaderWindowLeft', 'mbg-slideshow');
     const loaderWindowRight = getNumericAttribute(this, 'loaderWindowRight', 'mbg-slideshow');
     const interval = getNumericAttribute(this, 'interval', 'mbg-slideshow');
+    const initialImageNr = getNumericAttribute(this, 'initialImageNr', 'mbg-slideshow');
     const zoom = hasFlagAttribute(this, 'zoom');
     const allowUpscale = hasFlagAttribute(this, 'allowUpscale');
     const expand = hasFlagAttribute(this, 'expand');
-    createSlideshow(`${containerSelector} img`, {
+    this.slideshow = createSlideshow(`${containerSelector} img`, {
       scaleMode: expand ? EImageScaleMode.EXPAND : EImageScaleMode.FIT_ASPECT,
       loaderWindowLeft,
       loaderWindowRight,
@@ -121,28 +159,44 @@ class MibreitSlideshowElement extends HTMLElement {
       zoom: zoom ? true : undefined,
       allowUpscale: allowUpscale ? true : undefined,
     });
+    if (initialImageNr !== undefined) {
+      this.slideshow.getImageViewer().showImage(initialImageNr);
+    }
     showDiv(containerSelector);
+  }
+
+  disconnectedCallback() {
+    if (this.slideshow) {
+      this.slideshow = null;
+    }
   }
 }
 
 class MibreitThumbScrollerElement extends HTMLElement {
+  public thumbsViewer: IThumbsViewer | null = null;
+
   connectedCallback() {
     const customClass = addCustomClass(this, 'thumbscroller');
     const containerSelector = getSelector(customClass, 'mbg-thumbs');
     const numberOfVisibleThumbs = getNumericAttribute(this, 'numberOfVisibleThumbs', 'mbg-thumbscroller');
     const initialIndex = getNumericAttribute(this, 'initialIndex', 'mbg-thumbscroller');
     const allowUpscale = hasFlagAttribute(this, 'allowUpscale');
-    createThumbsScroller(containerSelector, `${containerSelector} img`, {
+    this.thumbsViewer = createThumbsScroller(containerSelector, `${containerSelector} img`, {
       numberOfVisibleThumbs,
       initialIndex,
       allowUpscale: allowUpscale ? true : undefined,
     });
     showDiv(containerSelector);
   }
+
+  disconnectedCallback() {
+    this.thumbsViewer = null;
+  }
 }
 
 class MibreitImagesWallElement extends HTMLElement {
   public gallery: IGallery | null = null;
+  public imagesWall: ImagesWall | null = null;
 
   connectedCallback() {
     const customClass = addCustomClass(this, 'imageswall');
@@ -166,13 +220,21 @@ class MibreitImagesWallElement extends HTMLElement {
     }
 
     this.gallery = createFullscreenOnlyGallery(`${containerSelector} img`, {}, true, onBuyClicked);
-    createImagesWall(
+    this.imagesWall = createImagesWall(
       containerSelector,
       `${containerSelector} img`,
       { columns, scrollLoaderDelay, allowUpscale },
       undefined
     );
     showDiv(containerSelector);
+  }
+
+  disconnectedCallback() {
+    if (this.gallery) {
+      releaseGallery(this.gallery);
+      this.gallery = null;
+    }
+    this.imagesWall = null;
   }
 }
 
