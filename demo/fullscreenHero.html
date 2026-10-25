@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="copyright" content="Michael Breitung" />
+    <meta name="author" content="Michael Breitung" />
+    <title>Fullscreen Hero Slideshow Demo</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --content-width: 42rem;
+        --text-color: #1f2933;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --text-color: #f3f6f8;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        color: var(--text-color);
+        background-color: #0b0f13;
+      }
+
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        height: 100svh;
+        overflow: hidden;
+      }
+
+      mbg-slideshow,
+      mbg-images {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .hero-content {
+        position: absolute;
+        inset: auto 0 0;
+        padding: 3rem 1.5rem;
+        color: #fff;
+        text-align: center;
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+      }
+
+      .hero-content h1 {
+        margin: 0;
+        font-size: clamp(2.25rem, 7vw, 4.5rem);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .content {
+        max-width: var(--content-width);
+        padding: 4rem 1.5rem;
+        margin: 0 auto;
+        line-height: 1.7;
+      }
+
+      .content h2 {
+        margin-top: 3rem;
+      }
+
+      .mbll__marker {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero" aria-label="Hero image slideshow">
+        <mbg-slideshow expand allowUpscale interval="5000" zoom loaderWindowLeft="1" loaderWindowRight="2">
+          <mbg-images>
+            <img
+              class="mbll__marker"
+              loading="lazy"
+              src="/demo/images/Detroit.jpg"
+              title="Detroit"
+              alt="Detroit"
+              width="815"
+              height="1280"
+            />
+            <img
+              class="mbll__marker"
+              loading="lazy"
+              src="/demo/images/Essaouira-Surf.jpg"
+              title="Essaouira Surf"
+              alt="Essaouira Surf"
+              width="1280"
+              height="853"
+            />
+            <img
+              class="mbll__marker"
+              loading="lazy"
+              src="/demo/images/Fishermans-Bastion.jpg"
+              title="Fisherman's Bastion"
+              alt="Fisherman's Bastion"
+              width="1280"
+              height="853"
+            />
+            <img
+              class="mbll__marker"
+              loading="lazy"
+              src="/demo/images/Salt.jpg"
+              title="Salt"
+              alt="Salt"
+              width="1280"
+              height="853"
+            />
+            <img
+              class="mbll__marker"
+              loading="lazy"
+              src="/demo/images/Stubai-Mountains.jpg"
+              title="Stubai Mountains"
+              alt="Stubai Mountains"
+              width="1280"
+              height="853"
+            />
+            <img
+              class="mbll__marker"
+              loading="lazy"
+              src="/demo/images/bloody-causeway.jpg"
+              title="Bloody Causeway"
+              alt="Bloody Causeway"
+              width="853"
+              height="1280"
+            />
+          </mbg-images>
+        </mbg-slideshow>
+        <div class="hero-content">
+          <h1>Fullscreen hero</h1>
+        </div>
+      </section>
+
+      <article class="content">
+        <h2>A gallery that covers the viewport</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula magna et malesuada semper. Sed
+          ultrices ipsum vitae massa vestibulum, quis congue justo sollicitudin. Etiam eleifend purus vitae quam
+          scelerisque, ac finibus nulla aliquam.
+        </p>
+        <p>
+          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer euismod
+          eros at eros malesuada, at vestibulum sapien varius. Curabitur feugiat velit quis mauris posuere, in
+          fermentum nibh dapibus. Nunc pharetra arcu sed nisi gravida sollicitudin.
+        </p>
+        <h2>Preserving aspect ratios while upscaling</h2>
+        <p>
+          Aliquam erat volutpat. Suspendisse potenti. Proin quis sapien sed sapien vestibulum consequat vitae ac
+          quam. Praesent eget diam at nisi consequat lacinia. Fusce tincidunt ligula a neque commodo, vitae
+          ullamcorper lectus dictum.
+        </p>
+        <p>
+          Donec faucibus metus vitae felis hendrerit, sit amet tincidunt magna convallis. Quisque tempor lorem
+          vitae eros feugiat, nec consectetur velit molestie. Morbi vitae justo in ipsum scelerisque cursus vitae
+          at lorem.
+        </p>
+      </article>
+    </main>
+    <script type="module" src="/src/index.ts"></script>
+  </body>
+</html>
