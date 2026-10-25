@@ -15,6 +15,17 @@ tasks:
       - task: build
       - task: update-version
         vars: { VERSION: '{{.VERSION}}' }
+      # Because create will create a tag and attach to master, we must first create a release branch,
+      # push the package.json, inform the user to create a PR and merge it, then run the craete and upload tasks.
+      - cmd: git checkout -b release/{{shellQuote .VERSION}}
+      - cmd: git add package.json
+      - cmd: git commit -m "Release {{shellQuote .VERSION}}"
+      - cmd: git push origin HEAD
+      - cmd: echo "In Github, create a pull request for the release branch and merge it into master."
+      # Pause the task execution to allow the user to create a PR and merge it before proceeding with the upload.
+      - cmd: read -p "Press Enter to continue after merging the pull request..."
+      - cmd: git checkout master
+      - cmd: git pull origin master
       - task: create
         vars: { VERSION: '{{.VERSION}}' }
       - task: upload
