@@ -85,16 +85,16 @@ mbg-thumbs {
 </mbg-gallery>
 ```
 
-| Attribute               | Description                                      | Default |
-| ----------------------- | ------------------------------------------------ | ------- |
-| `numberOfVisibleThumbs` | Number of thumbnails visible at once             | 7       |
-| `loaderWindowLeft`      | Number of images to load before the current one  | 0       |
-| `loaderWindowRight`     | Number of images to load after the current one   | 1       |
-| `scaleMode`             | One of `NONE`, `FIT_ASPECT`, `STRETCH`, or `EXPAND` | `FIT_ASPECT` |
-| `initialImageNr`        | Index of the image shown first (starting at 0)   | 0       |
-| `interval`              | Automatic advance in milliseconds (minimum 1000) | off     |
-| `zoom`                  | Flag attribute. Activates the zoom effect        | off     |
-| `allowUpscale`          | Flag attribute. Allows images to grow beyond their declared size | off     |
+| Attribute               | Description                                                      | Default      |
+| ----------------------- | ---------------------------------------------------------------- | ------------ |
+| `numberOfVisibleThumbs` | Number of thumbnails visible at once                             | 7            |
+| `loaderWindowLeft`      | Number of images to load before the current one                  | 0            |
+| `loaderWindowRight`     | Number of images to load after the current one                   | 1            |
+| `scaleMode`             | One of `NONE`, `FIT_ASPECT`, `STRETCH`, or `EXPAND`              | `FIT_ASPECT` |
+| `initialImageNr`        | Index of the image shown first (starting at 0)                   | 0            |
+| `interval`              | Automatic advance in milliseconds (minimum 1000)                 | off          |
+| `zoom`                  | Flag attribute. Activates the zoom effect                        | off          |
+| `allowUpscale`          | Flag attribute. Allows images to grow beyond their declared size | off          |
 
 Thumbnails are optional. Without them, or with a single thumbnail, the thumbnail area is hidden.
 
@@ -162,20 +162,20 @@ const gallery = mibreitGalleryTs.createFullscreenOnlyGallery('#container > img',
 });
 ```
 
-| Function                                                                                       | Creates                                                         |
-| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `createFullscreenOnlyGallery(imageSelector, config, showDescriptions?, buyImageCallback?)`     | Makes the page's images open in a fullscreen slideshow on click |
+| Function                                                                                   | Creates                                                         |
+| ------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| `createFullscreenOnlyGallery(imageSelector, config, showDescriptions?, buyImageCallback?)` | Makes the page's images open in a fullscreen slideshow on click |
 
 Fullscreen-only configuration options:
 
-| Option               | Description                                                                                                              | Default |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------- |
-| `scaleMode`          | How fullscreen images fit their container: `EImageScaleMode.NONE`, `FIT_ASPECT`, `STRETCH`, `EXPAND`                     |         |
-| `interval`           | Automatic advance in milliseconds (minimum 1000)                                                                         | off     |
-| `zoom`               | Activates the zoom effect                                                                                                | `false` |
-| `allowUpscale`       | Allows images to grow beyond their declared size                                                                          | `false` |
-| `loaderWindowLeft`   | Number of images to lazy load before the current one                                                                     | 0       |
-| `loaderWindowRight`  | Number of images to lazy load after the current one                                                                      | 1       |
+| Option              | Description                                                                                          | Default |
+| ------------------- | ---------------------------------------------------------------------------------------------------- | ------- |
+| `scaleMode`         | How fullscreen images fit their container: `EImageScaleMode.NONE`, `FIT_ASPECT`, `STRETCH`, `EXPAND` |         |
+| `interval`          | Automatic advance in milliseconds (minimum 1000)                                                     | off     |
+| `zoom`              | Activates the zoom effect                                                                            | `false` |
+| `allowUpscale`      | Allows images to grow beyond their declared size                                                     | `false` |
+| `loaderWindowLeft`  | Number of images to lazy load before the current one                                                 | 0       |
+| `loaderWindowRight` | Number of images to lazy load after the current one                                                  | 1       |
 
 The returned gallery object gives access to the image viewer (navigation, current index, image-changed callbacks) and the fullscreen, for use in your own scripts. Galleries created from web components are also collected in the global list `window.mbgGalleryObjects`.
 
@@ -229,6 +229,8 @@ For the full design, decisions, quality goals and known technical debt, see the 
 
 The demo and test pages use images from `demo/images`. They are copyright © Michael Breitung Photography; see [`demo/images/COPYRIGHT.md`](demo/images/COPYRIGHT.md). They may not be used without permission and are for demonstration and testing only.
 
+Run `task dev` to access various demo pages in your browser. They cover every use case: gallery (with and without thumbnails), slideshow, thumbnail scroller, fullscreen-only gallery, images wall and scale modes. Most of them exist in a variant that uses the HTML elements and one that uses the JavaScript functions.
+
 ### Technology
 
 TypeScript (strict mode), [Vite](https://vite.dev) for the development server and Rollup (through Vite) for the builds, Vitest and Puppeteer for tests.
@@ -254,17 +256,17 @@ Helpful video tutorials:
 
 ### Commands
 
-| Command               | Purpose                                                                                        |
-| --------------------- | ---------------------------------------------------------------------------------------------- |
-| `task init:dev`       | Installs npm packages and creates the optional `.env` file with the OpenRouter                 |
-| `task dev`            | Starts the Vite development server (port 5173) with an index of demo pages for manual testing. |
-| `task clean`          | Removes the generated script bundle.                                                           |
-| `task test:all`       | Builds the bundle and runs the tests.                                                          |
-| `task deploy:build`   | Type-checks the source and builds the minified script bundle.                                  |
-| `task deploy:update-version` | Updates the package version (`VERSION=x.y.z`).                                          |
-| `task deploy:create`  | Creates a GitHub Release and Git tag (`VERSION=x.y.z`).                                        |
-| `task deploy:release` | Builds the bundle, updates the package version and creates a GitHub Release (`VERSION=x.y.z`). |
-| `task deploy:upload`  | Uploads an existing bundle to an existing GitHub Release (`VERSION=x.y.z`).                    |
+| Command                      | Purpose                                                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------------------------- |
+| `task init:dev`              | Installs npm packages and creates the optional `.env` file with the OpenRouter                 |
+| `task dev`                   | Starts the Vite development server (port 5173) with an index of demo pages for manual testing. |
+| `task clean`                 | Removes the generated script bundle.                                                           |
+| `task test:all`              | Builds the bundle and runs the tests.                                                          |
+| `task deploy:build`          | Type-checks the source and builds the minified script bundle.                                  |
+| `task deploy:update-version` | Updates the package version (`VERSION=x.y.z`).                                                 |
+| `task deploy:create`         | Creates a GitHub Release and Git tag (`VERSION=x.y.z`).                                        |
+| `task deploy:release`        | Builds the bundle, updates the package version and creates a GitHub Release (`VERSION=x.y.z`). |
+| `task deploy:upload`         | Uploads an existing bundle to an existing GitHub Release (`VERSION=x.y.z`).                    |
 
 ### Releasing the script bundle
 
