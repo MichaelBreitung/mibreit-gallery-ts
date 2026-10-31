@@ -43,6 +43,7 @@ import { FullscreenConfig, SlideshowConfig, ThumbScrollerConfig, TPosition } fro
 // images
 import nextImageSvg from '../images/nextImage.svg';
 import fullscreenSvg from '../images/fullscreen.svg';
+import fullscreenClose from '../images/close.svg';
 import infoSvg from '../images/info.svg';
 import shopSvg from '../images/shop.svg';
 
@@ -112,10 +113,11 @@ export default class GalleryContainerBuilder {
     }
 
     const fullscreenButton = this._createFullscreenButton();
-    this._setupHoverEvents([fullscreenButton]);
+    const fullscreenCloseButton = this._createFullscreenCloseButton();
+    this._setupHoverEvents([fullscreenButton, fullscreenCloseButton]);
     this._setupFullscreenKeyEvents(this._fullscreen);
-    this._setupFullscreenClickEvent(this._fullscreen, fullscreenButton);
-    this._setupFullscreenChangedHandler(this._fullscreen, fullscreenButton);
+    this._setupFullscreenClickEvent(this._fullscreen, fullscreenButton, fullscreenCloseButton);
+    this._setupFullscreenChangedHandler(this._fullscreen, fullscreenButton, fullscreenCloseButton);
 
     if (this._fullScreenOnly) {
       this._fullscreen.addChangedCallback((active: boolean) => {
@@ -341,7 +343,22 @@ export default class GalleryContainerBuilder {
     return fullscreenButton;
   }
 
-  private _setupFullscreenClickEvent(fullScreen: IFullscreen, fullscreenButton: HTMLElement) {
+  private _createFullscreenCloseButton(): HTMLElement {
+    const fullScreenCloseButton = createElement('div');
+    setInnerHtml(fullScreenCloseButton, fullscreenClose);
+    addCssStyle(fullScreenCloseButton, 'display', 'none');
+    addCssClass(fullScreenCloseButton, styles.gallery__fullscreen__exit_btn);
+    addCssClass(fullScreenCloseButton, commonStyles.common_button);
+    addCssClass(fullScreenCloseButton, commonStyles.fade);
+    appendChildElement(fullScreenCloseButton, this._slideshowContainerElement);
+    return fullScreenCloseButton;
+  }
+
+  private _setupFullscreenClickEvent(
+    fullScreen: IFullscreen,
+    fullscreenButton: HTMLElement,
+    fullscreenCloseButton: HTMLElement
+  ) {
     // we handle it with pointerdown and up, so properly stop propagation and avoid swipres on the
     // underlying element
     addEventListener(fullscreenButton, 'pointerdown', (event: PointerEvent) => {
@@ -352,16 +369,35 @@ export default class GalleryContainerBuilder {
       if (!fullScreen.isActive()) {
         fullScreen.activate();
         addCssStyle(fullscreenButton, 'display', 'none');
+        addCssStyle(fullscreenCloseButton, 'display', 'block');
+      }
+    });
+
+    addEventListener(fullscreenCloseButton, 'pointerdown', (event: PointerEvent) => {
+      event.stopPropagation();
+    });
+    addEventListener(fullscreenCloseButton, 'pointerup', (event: PointerEvent) => {
+      event.stopPropagation();
+      if (fullScreen.isActive()) {
+        fullScreen.deActivate();
+        removeCssStyle(fullscreenButton, 'display');
+        removeCssStyle(fullscreenCloseButton, 'display');
       }
     });
   }
 
-  private _setupFullscreenChangedHandler(fullScreen: IFullscreen, fullscreenButtonElement: HTMLElement) {
+  private _setupFullscreenChangedHandler(
+    fullScreen: IFullscreen,
+    fullscreenButtonElement: HTMLElement,
+    fullscreenCloseButton: HTMLElement
+  ) {
     fullScreen.addChangedCallback((active: boolean) => {
       if (active) {
         addCssStyle(fullscreenButtonElement, 'display', 'none');
+        addCssStyle(fullscreenCloseButton, 'display', 'block');
       } else {
         removeCssStyle(fullscreenButtonElement, 'display');
+        removeCssStyle(fullscreenCloseButton, 'display');
       }
     });
   }

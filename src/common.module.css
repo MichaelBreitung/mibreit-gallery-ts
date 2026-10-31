@@ -7,11 +7,6 @@
 .common_button {
   position: absolute;
   z-index: 2;
-  padding: 2rem;
-  margin: -2rem;
-}
-.common_button > svg {
-  margin-top: -1.5rem;
 }
 .icon_mirrored > svg {
   transform: scaleX(-1);
@@ -22,7 +17,9 @@
   align-items: center;
 }
 .image_transition {
-  transition: opacity 0.5s, transform 0.5s;
+  transition:
+    opacity 0.5s,
+    transform 0.5s;
 }
 .background_transition {
   transition: background-color 750ms ease-in-out;
