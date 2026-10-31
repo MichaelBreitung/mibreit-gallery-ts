@@ -4,7 +4,6 @@
  */
 
 import {
-  addClickEventListener,
   addCssClass,
   addCssStyle,
   appendChildElement,
@@ -13,7 +12,6 @@ import {
   prependBeforeChild,
   removeCssStyle,
   removeElement,
-  setInnerHtml,
 } from 'mibreit-dom-tools';
 import IFullscreen from '../interfaces/IFullscreen';
 
@@ -21,22 +19,18 @@ import IFullscreen from '../interfaces/IFullscreen';
 import styles from './Fullscreen.module.css';
 import commonStyles from '../common.module.css';
 
-// SVGs
-import fullscreenClose from '../images/close.svg';
-
 export default class Fullscreen implements IFullscreen {
   private _changedCallbacks: Array<(active: boolean) => void> = [];
   private _active: boolean;
   private _slideshowContainerElement: HTMLElement;
   private _fullScreenContainerElement: HTMLElement;
   private _slideshowContainerPlaceholderElement: HTMLElement;
-  private _closeButtonElement: HTMLElement;
 
   constructor(slideshowContainer: HTMLElement) {
     this._active = false;
     this._slideshowContainerElement = slideshowContainer;
     this._fullScreenContainerElement = this._createFullscreenContainer();
-    this._closeButtonElement = this._createFullscreenCloseButton(this._fullScreenContainerElement);
+
     this._slideshowContainerPlaceholderElement = this._createSlideshowContainerPlaceholder();
   }
 
@@ -44,7 +38,6 @@ export default class Fullscreen implements IFullscreen {
     if (!this._active) {
       this._moveGalleryToFullscreen();
       this._addFullscreen();
-      this._setupCloseButtonHandler();
       this._active = true;
       this._changedCallbacks.forEach((callback) => {
         callback(true);
@@ -88,14 +81,6 @@ export default class Fullscreen implements IFullscreen {
     return fullScreenContainer;
   }
 
-  private _createFullscreenCloseButton(fullScreenContainer: HTMLElement): HTMLElement {
-    const fullScreenCloseButton = createElement('div');
-    setInnerHtml(fullScreenCloseButton, fullscreenClose);
-    addCssClass(fullScreenCloseButton, styles.fullscreen__exit_btn);
-    appendChildElement(fullScreenCloseButton, fullScreenContainer);
-    return fullScreenCloseButton;
-  }
-
   private _createSlideshowContainerPlaceholder(): HTMLElement {
     const slideshowContainerPlaceholder = createElement('div');
     return slideshowContainerPlaceholder;
@@ -125,14 +110,5 @@ export default class Fullscreen implements IFullscreen {
     removeElement(this._slideshowContainerPlaceholderElement);
     removeCssStyle(this._slideshowContainerElement, 'width');
     removeCssStyle(this._slideshowContainerElement, 'flex-grow');
-  }
-
-  private _setupCloseButtonHandler() {
-    addClickEventListener(this._closeButtonElement, (event: MouseEvent | undefined) => {
-      event?.stopPropagation();
-      if (this._active) {
-        this.deActivate();
-      }
-    });
   }
 }

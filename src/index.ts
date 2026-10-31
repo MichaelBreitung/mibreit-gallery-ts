@@ -61,10 +61,10 @@ function getScaleModeAttribute(element: HTMLElement): EImageScaleMode {
   if (value === null) {
     return EImageScaleMode.FIT_ASPECT;
   }
-  const scaleMode = EImageScaleMode[value as keyof typeof EImageScaleMode];
-  if (typeof scaleMode !== 'string') {
+  if (typeof value !== 'string') {
     throw new Error(`mbg-gallery - invalid scaleMode attribute: "${value}" is not a valid scale mode`);
   }
+  const scaleMode = EImageScaleMode[value as keyof typeof EImageScaleMode];
   return scaleMode;
 }
 

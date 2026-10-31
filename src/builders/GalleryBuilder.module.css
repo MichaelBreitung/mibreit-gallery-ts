@@ -3,6 +3,12 @@
   top: 0rem;
 }
 
+.gallery__fullscreen__exit_btn {
+  right: 0rem;
+  top: 0rem;
+  display: none;
+}
+
 .gallery__shop_btn {
   left: 0rem;
   top: 0rem;
