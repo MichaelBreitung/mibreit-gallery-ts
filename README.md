@@ -51,7 +51,7 @@ The gallery works on the `<img>` elements in your page. It reads their data from
 | `alt`                               | Image description, if there are no `<figcaption>` elements                           |
 | `<figcaption>`                      | Image description, if every image has one                                            |
 | `width`, `height`                   | Natural image size. Images are not upscaled unless enabled via `allowUpscale`        |
-| `data-print-size`, `data-print-url` | Marks an image as available for purchase (enables the buy button of the images wall) |
+| `data-print-size`, `data-print-url` | Marks an image as available for purchase (enables the buy button of gallery and wall) |
 
 All elements use the `mbg-` prefix. Options are set as attributes and are all optional.
 
@@ -95,8 +95,11 @@ mbg-thumbs {
 | `interval`              | Automatic advance in milliseconds (minimum 1000)                 | off          |
 | `zoom`                  | Flag attribute. Activates the zoom effect                        | off          |
 | `allowUpscale`          | Flag attribute. Allows images to grow beyond their declared size | off          |
+| `addBuyButton`          | Flag attribute. Adds a buy button for images with print metadata | off          |
 
 Thumbnails are optional. Without them, or with a single thumbnail, the thumbnail area is hidden.
+
+With `addBuyButton`, the element dispatches a `buy-clicked` event whose `detail.idx` is the index of the image, as described for the images wall below.
 
 #### Slideshow
 

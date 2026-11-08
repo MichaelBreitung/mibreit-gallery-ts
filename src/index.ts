@@ -101,18 +101,37 @@ class MibreitGalleryElement extends HTMLElement {
     const scaleMode = getScaleModeAttribute(this);
     const zoom = hasFlagAttribute(this, 'zoom');
     const allowUpscale = hasFlagAttribute(this, 'allowUpscale');
-    this.gallery = createGallery(containerSelector, `${containerSelector} img`, {
-      scaleMode,
-      thumbContainerSelector,
-      thumbSelector: `${thumbContainerSelector} img`,
-      numberOfVisibleThumbs,
-      loaderWindowLeft,
-      loaderWindowRight,
-      initialImageNr,
-      interval,
-      zoom: zoom ? true : undefined,
-      allowUpscale: allowUpscale ? true : undefined,
-    });
+    const addBuyButton = hasFlagAttribute(this, 'addBuyButton');
+    let onBuyClicked = null;
+    if (addBuyButton) {
+      onBuyClicked = (idx: number) => {
+        this.dispatchEvent(
+          new CustomEvent('buy-clicked', {
+            detail: { idx },
+            bubbles: true,
+            composed: true,
+          })
+        );
+      };
+    }
+
+    this.gallery = createGallery(
+      containerSelector,
+      `${containerSelector} img`,
+      {
+        scaleMode,
+        thumbContainerSelector,
+        thumbSelector: `${thumbContainerSelector} img`,
+        numberOfVisibleThumbs,
+        loaderWindowLeft,
+        loaderWindowRight,
+        initialImageNr,
+        interval,
+        zoom: zoom ? true : undefined,
+        allowUpscale: allowUpscale ? true : undefined,
+      },
+      onBuyClicked
+    );
 
     window.mbgGalleryObjects.push(this.gallery);
 
