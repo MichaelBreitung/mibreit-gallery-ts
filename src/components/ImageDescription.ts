@@ -87,10 +87,7 @@ export default class ImageDescription implements IImageDescription {
   }
 
   private _setupCloseButtonHandler(closeButton: HTMLElement) {
-    addEventListener(closeButton, 'pointerdown', (event: PointerEvent) => {
-      event.stopPropagation();
-    });
-    addEventListener(closeButton, 'pointerup', (event: PointerEvent) => {
+    addEventListener(closeButton, 'click', (event: Event) => {
       event.stopPropagation();
       this.hide();
     });

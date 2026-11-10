@@ -237,10 +237,7 @@ export default class GalleryContainerBuilder {
   }
 
   private _setupShopButtonClickEvent(shopButton: HTMLElement, clickCallback: () => void) {
-    addEventListener(shopButton, 'pointerdown', (event: PointerEvent) => {
-      event.stopPropagation();
-    });
-    addEventListener(shopButton, 'pointerup', (event: PointerEvent) => {
+    addEventListener(shopButton, 'click', (event: Event) => {
       event.stopPropagation();
       clickCallback();
     });
@@ -359,12 +356,7 @@ export default class GalleryContainerBuilder {
     fullscreenButton: HTMLElement,
     fullscreenCloseButton: HTMLElement
   ) {
-    // we handle it with pointerdown and up, so properly stop propagation and avoid swipres on the
-    // underlying element
-    addEventListener(fullscreenButton, 'pointerdown', (event: PointerEvent) => {
-      event.stopPropagation();
-    });
-    addEventListener(fullscreenButton, 'pointerup', (event: PointerEvent) => {
+    addEventListener(fullscreenButton, 'click', (event: Event) => {
       event.stopPropagation();
       if (!fullScreen.isActive()) {
         fullScreen.activate();
@@ -373,10 +365,7 @@ export default class GalleryContainerBuilder {
       }
     });
 
-    addEventListener(fullscreenCloseButton, 'pointerdown', (event: PointerEvent) => {
-      event.stopPropagation();
-    });
-    addEventListener(fullscreenCloseButton, 'pointerup', (event: PointerEvent) => {
+    addEventListener(fullscreenCloseButton, 'click', (event: Event) => {
       event.stopPropagation();
       if (fullScreen.isActive()) {
         fullScreen.deActivate();
@@ -443,10 +432,7 @@ export default class GalleryContainerBuilder {
       }
     };
 
-    addEventListener(infoButton, 'pointerdown', (event: PointerEvent) => {
-      event.stopPropagation();
-    });
-    addEventListener(infoButton, 'pointerup', (event: PointerEvent) => {
+    addEventListener(infoButton, 'click', (event: Event) => {
       event.stopPropagation();
       showImageDescription(this._slideshow.getImageViewer().getImageIndex());
     });

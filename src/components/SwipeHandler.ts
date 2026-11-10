@@ -19,29 +19,52 @@ export default class SwipeHander {
   private _callback: (direction: ESwipeDirection, position: TPosition) => void;
   private _touchStartTime: number | null = null;
   private _touchStartPosition: TPosition | null = null;
+  private _suppressNextClick = false;
 
   constructor(target: HTMLElement, callback: (direction: ESwipeDirection, position: TPosition) => void) {
     this._callback = callback;
     addEventListener(target, 'pointerdown', this._touchStart);
     addEventListener(target, 'pointerup', this._touchEnd);
+    // capture phase: swallow the click that follows a swipe before any child handles it
+    target.addEventListener('click', this._suppressClickAfterSwipe, true);
+    // bubble phase: clicks handled (and stopped) by child elements never arrive here
+    addEventListener(target, 'click', this._click);
   }
 
   private _touchStart = (event: PointerEvent) => {
-    console.log('SwipeHander#touchStart');
+    this._suppressNextClick = false;
     this._touchStartTime = Date.now();
     this._touchStartPosition = this._getTouchPosition(event);
   };
 
   private _touchEnd = (event: PointerEvent) => {
-    console.log('SwipeHander#touchEnd');
-    if (this._touchStartTime && this._touchStartPosition && Date.now() - this._touchStartTime < MAXTIME) {
+    if (this._touchStartTime && this._touchStartPosition) {
       const touchEndPosition = this._getTouchPosition(event);
       const direction = this._detectDirection(this._touchStartPosition, touchEndPosition);
-      console.log('SwipeHander#touchEnd - direction: ', direction);
-      this._callback(direction, touchEndPosition);
+      const isQuick = Date.now() - this._touchStartTime < MAXTIME;
+      if (direction !== ESwipeDirection.NONE) {
+        this._suppressNextClick = true;
+        if (isQuick) {
+          this._callback(direction, touchEndPosition);
+        }
+      } else if (!isQuick) {
+        this._suppressNextClick = true;
+      }
     }
     this._touchStartPosition = null;
     this._touchStartTime = null;
+  };
+
+  private _suppressClickAfterSwipe = (event: MouseEvent) => {
+    if (this._suppressNextClick) {
+      this._suppressNextClick = false;
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  };
+
+  private _click = (event: MouseEvent) => {
+    this._callback(ESwipeDirection.NONE, { x: event.pageX, y: event.pageY });
   };
 
   private _getTouchPosition(event: PointerEvent): TPosition {
