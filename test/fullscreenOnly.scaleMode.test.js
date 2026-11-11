@@ -13,7 +13,11 @@ let browser;
 let page;
 
 beforeAll(async () => {
-  browser = await puppeteer.launch({ channel: 'chrome', headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  browser = await puppeteer.launch({
+    channel: 'chrome',
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 720 });
   await page.setContent(pageMarkup);
@@ -52,7 +56,8 @@ async function getImageStyle(alt) {
       image.getAttribute('alt').includes(alt)
     );
     const style = getComputedStyle(image);
-    return { width: style.width, height: style.height };
+    const stageStyle = getComputedStyle(image.parentElement);
+    return { width: style.width, height: style.height, stageOverflow: stageStyle.overflow };
   }, alt);
 }
 
@@ -66,6 +71,7 @@ describe('Fullscreen Only Gallery Scale Mode Test Suite', () => {
     const style = await getImageStyle('Detroit');
     expect(style.width).toBe('815px');
     expect(style.height).toBe('1280px');
+    expect(style.stageOverflow).toBe('hidden');
   });
 
   it('FIT_ASPECT fits the image by height', async () => {
@@ -84,5 +90,6 @@ describe('Fullscreen Only Gallery Scale Mode Test Suite', () => {
     const style = await getImageStyle('Salt');
     expect(style.width).toBe('auto');
     expect(style.height).toBe('100%');
+    expect(style.stageOverflow).toBe('hidden');
   });
 });

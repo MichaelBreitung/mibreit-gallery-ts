@@ -9,7 +9,6 @@ mbg-images,
 mbg-thumbs,
 mbg-title {
   position: relative;
-  overflow: hidden;
   display: block;
 }
 mbg-gallery svg,
@@ -20,6 +19,11 @@ mbg-gallery svg,
   width: 2rem;
   height: 2rem;
   padding: 0.5rem;
+}
+mbg-gallery .mbg__img_stage img {
+  box-shadow:
+    rgba(0, 0, 0, 0.15) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 .mbg__fullscreen .mbg__gallery__info_btn {
   right: 0rem;
@@ -38,7 +42,7 @@ mbg-thumbs {
 }
 mbg-thumbs {
   min-height: 6rem;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 mbg-title {
   padding: 0rem;
