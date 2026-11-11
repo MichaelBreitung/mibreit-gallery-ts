@@ -20,7 +20,11 @@ let browser;
 let page;
 
 beforeAll(async () => {
-  browser = await puppeteer.launch({ channel: 'chrome', headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  browser = await puppeteer.launch({
+    channel: 'chrome',
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   page = await browser.newPage();
   await page.setContent(galleryPageMarkup);
 
@@ -70,7 +74,7 @@ describe('Web Component Gallery Test Suite', () => {
       expect(computedStyle.height).toBe(`${slideshowHeightPx}px`);
       expect(computedStyle.top).toBe('0px');
       expect(computedStyle.left).toBe('0px');
-      expect(computedStyle.overflow).toBe('hidden');
+      expect(computedStyle.overflow).toBe('visible');
       expect(computedStyle.position).toBe('absolute');
 
       // At first, opacity should less than 1 because it should be animated in from 0

@@ -28,5 +28,6 @@ export default class ImageStageExpand extends ImageStage {
     }
     addCssStyle(this._imageHandle, 'width', newWidth);
     addCssStyle(this._imageHandle, 'height', newHeight);
+    addCssStyle(this._imageStage, 'overflow', 'hidden');
   }
 }

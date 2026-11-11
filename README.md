@@ -44,13 +44,13 @@ The marker class is also useful to keep not-yet-loaded images from showing up as
 
 The gallery works on the `<img>` elements in your page. It reads their data from the element attributes:
 
-| Attribute                           | Used for                                                                             |
-| ----------------------------------- | ------------------------------------------------------------------------------------ |
-| `src` / `data-src`                  | Image location                                                                       |
-| `title` / `data-title`              | Image title (shown by the optional `mbg-title` element)                              |
-| `alt`                               | Image description, if there are no `<figcaption>` elements                           |
-| `<figcaption>`                      | Image description, if every image has one                                            |
-| `width`, `height`                   | Natural image size. Images are not upscaled unless enabled via `allowUpscale`        |
+| Attribute                           | Used for                                                                              |
+| ----------------------------------- | ------------------------------------------------------------------------------------- |
+| `src` / `data-src`                  | Image location                                                                        |
+| `title` / `data-title`              | Image title (shown by the optional `mbg-title` element)                               |
+| `alt`                               | Image description, if there are no `<figcaption>` elements                            |
+| `<figcaption>`                      | Image description, if every image has one                                             |
+| `width`, `height`                   | Natural image size. Images are not upscaled unless enabled via `allowUpscale`         |
 | `data-print-size`, `data-print-url` | Marks an image as available for purchase (enables the buy button of gallery and wall) |
 
 All elements use the `mbg-` prefix. Options are set as attributes and are all optional.
@@ -193,6 +193,7 @@ The returned gallery object gives access to the image viewer (navigation, curren
 - All CSS classes of the gallery start with `mbg__` and are not hashed, so you can override them in your own CSS.
 - Colors are controlled by the CSS variables `--background-color` and `--foreground-color` on the document root. With average-color fullscreen backgrounds, the gallery updates them on every image change.
 - Gallery and thumbnail containers start transparent and are faded in once the gallery is ready. If the script is blocked or fails, the images stay invisible.
+- The gallery elements (`mbg-gallery`, `mbg-slideshow`, ...) do not set `overflow: hidden`, so you can use effects like box shadows on them. If you need clipping, for example for the slideshow zoom effect, put the element in a container with `overflow: hidden` or style the element itself, e.g. `mbg-slideshow { overflow: hidden; }`.
 
 ### Updating the script
 

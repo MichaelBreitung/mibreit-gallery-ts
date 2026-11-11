@@ -28,7 +28,11 @@ let browser;
 let page;
 
 beforeAll(async () => {
-  browser = await puppeteer.launch({ channel: 'chrome', headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  browser = await puppeteer.launch({
+    channel: 'chrome',
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   page = await browser.newPage();
   await page.setContent(galleryPageMarkup);
 
@@ -83,7 +87,7 @@ describe('Gallery with Single Image Test Suite', () => {
     expect(computedStyle.height).toBe(`${containerHeightPx}px`);
     expect(computedStyle.top).toBe('0px');
     expect(computedStyle.left).toBe('0px');
-    expect(computedStyle.overflow).toBe('hidden');
+    expect(computedStyle.overflow).toBe('visible');
     expect(computedStyle.position).toBe('absolute');
 
     // we wait for the animation to complete
