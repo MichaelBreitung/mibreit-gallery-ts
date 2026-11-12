@@ -1,6 +1,6 @@
 :root {
-  --background-color: rgb(25, 25, 25);
-  --foreground-color: rgb(225, 225, 225);
+  --mbg-background-color: rgb(25, 25, 25);
+  --mbg-foreground-color: rgb(225, 225, 225);
 }
 mbg-gallery,
 mbg-slideshow,
@@ -15,15 +15,10 @@ mbg-gallery svg,
 .mbg__fullscreen svg {
   opacity: 0.6;
   transition: fill 0.5s ease;
-  fill: var(--foreground-color);
+  fill: var(--mbg-foreground-color);
   width: 2rem;
   height: 2rem;
   padding: 0.5rem;
-}
-mbg-gallery .mbg__img_stage img {
-  box-shadow:
-    rgba(0, 0, 0, 0.15) 0px 10px 15px -3px,
-    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 .mbg__fullscreen .mbg__gallery__info_btn {
   right: 0rem;

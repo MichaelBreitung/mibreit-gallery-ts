@@ -12,17 +12,11 @@
 }
 
 .fullscreen.average_background {
-  background-color: var(--background-color);
+  background-color: var(--mbg-background-color);
 }
 
 @media (min-width: 768px) {
   .fullscreen {
     padding: 1rem;
   }
-}
-
-.fullscreen .img_stage img {
-  box-shadow:
-    rgba(0, 0, 0, 0.15) 0px 10px 15px -3px,
-    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }

@@ -8,8 +8,8 @@ export const IMAGE_DESCRIPTION_ATTRIBUTE = 'alt';
 export const IMAGE_DATA_TITLE_ATTRIBUTE = 'data-title';
 
 // Css variables
-export const BACKGROUND_COLOR_VARIABLE = '--background-color';
-export const FOREGROUND_COLOR_VARIABLE = '--foreground-color';
+export const BACKGROUND_COLOR_VARIABLE = '--mbg-background-color';
+export const FOREGROUND_COLOR_VARIABLE = '--mbg-foreground-color';
 
 // Gallery Configuration
 export const PRELOADER_RIGHT_SIZE = 1;
