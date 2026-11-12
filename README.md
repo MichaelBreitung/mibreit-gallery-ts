@@ -191,8 +191,9 @@ The returned gallery object gives access to the image viewer (navigation, curren
 ### Styling
 
 - All CSS classes of the gallery start with `mbg__` and are not hashed, so you can override them in your own CSS.
-- Colors are controlled by the CSS variables `--background-color` and `--foreground-color` on the document root. With average-color fullscreen backgrounds, the gallery updates them on every image change.
+- Colors are controlled by the CSS variables `--mbg-background-color` and `--mbg-foreground-color` on the document root. With average-color fullscreen backgrounds, the gallery updates them on every image change.
 - Gallery and thumbnail containers start transparent and are faded in once the gallery is ready. If the script is blocked or fails, the images stay invisible.
+- Images get a subtle box shadow from the class `mbg__box_shadow`. Depending on the scale mode, the class is set on the image (`FIT_ASPECT`) or on the image stage (`STRETCH`, `EXPAND`), so the shadow always follows the visible edge. `NONE` adds no shadow. To change or remove it, override `.mbg__box_shadow` in your CSS.
 - The gallery elements (`mbg-gallery`, `mbg-slideshow`, ...) do not set `overflow: hidden`, so you can use effects like box shadows on them. If you need clipping, for example for the slideshow zoom effect, put the element in a container with `overflow: hidden` or style the element itself, e.g. `mbg-slideshow { overflow: hidden; }`.
 
 ### Updating the script

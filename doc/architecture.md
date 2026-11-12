@@ -213,6 +213,7 @@ All three depend on the host page marking images as deferred (see [section 3](#3
 ### 4.4 Rendering and Layout
 
 - **Stages scale and center images:** each image sits on an image stage that handles scaling and centering. Four scale modes (none, fit aspect, stretch, expand) are interchangeable stage variants. Images are not upscaled by default; a global `allowUpscale` setting permits the selected scale mode to enlarge them. A resize observer keeps stages in sync with their container.
+- **Box shadow follows the visible image edge:** the shadow is applied by the image stage through the shared `mbg__box_shadow` class, not by a global selector. Where the image does not fill the stage (fit aspect), the image gets the shadow. Where the image fills or overflows the stage (stretch, expand), the stage gets the shadow, because the stage is the visible edge there (and in expand mode its `overflow: hidden` would clip a shadow on the image). The none scale mode applies no shadow. This keeps the look consistent across scale modes and in fullscreen.
 - **CSS-driven presentation:** styles ship as CSS Modules with a fixed `mbg__` prefix and no hash. The host page can override them (see [ADR-3](#adr-3)).
 - **Fullscreen as overlay:** the fullscreen view moves the gallery into an overlay in the page. A placeholder keeps the original position, so the page layout does not change.
 - **Adaptive color:** optionally, the average color of the current image controls the fullscreen background and foreground color.
@@ -552,8 +553,8 @@ The library also disables the context menu and dragging on gallery images.
 
 - **CSS Modules with a fixed prefix:** class names use the prefix `mbg__` without a hash, so host pages can override them (see [ADR-3](#adr-3)).
 - **Global stylesheet for the web components:** the script bundle includes a stylesheet that defines the layout of the custom elements, default colors and icon styling. The module source entry does not import it (see [TD-11](#td-11)).
-- **Shared animation and layout rules:** repeated button positioning, flex-row layout, mirrored-icon, image and background transitions live in a shared CSS Module; component modules contain only component-specific declarations.
-- **Colors through CSS variables:** `--background-color` and `--foreground-color` are defined on the document root. Defaults are dark. With the average-color option, the library overwrites them at each image change. Icons use the foreground color.
+- **Shared animation and layout rules:** repeated button positioning, flex-row layout, mirrored-icon, image and background transitions and the box shadow live in a shared CSS Module; component modules contain only component-specific declarations.
+- **Colors through CSS variables:** `--mbg-background-color` and `--mbg-foreground-color` are defined on the document root. Defaults are dark. With the average-color option, the library overwrites them at each image change. Icons use the foreground color.
 - **Icons as inlined SVG:** icons are bundled as strings and inserted into the DOM, so they can be colored by CSS.
 - **Fade-in against unstyled flashes:** gallery and thumbnail containers start fully transparent and are faded in by the web component once the gallery is built. This avoids a flash of unstyled content and makes sure images fade in properly (see [ADR-11](#adr-11)). Buttons and overlays use a shared fade transition.
 - **Hover-dependent controls:** buttons are faded in while the pointer is over the gallery and faded out otherwise.

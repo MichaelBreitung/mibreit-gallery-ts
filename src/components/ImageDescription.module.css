@@ -1,7 +1,7 @@
 .img_description {
   position: absolute;
   z-index: 1;
-  color: var(--foreground-color);
+  color: var(--mbg-foreground-color);
   min-height: 3rem;
   left: 0;
   bottom: 0;
@@ -19,7 +19,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-color: var(--background-color);
+  background-color: var(--mbg-background-color);
   opacity: 0.5;
   z-index: -1;
 }

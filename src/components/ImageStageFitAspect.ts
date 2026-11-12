@@ -3,8 +3,10 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { addCssStyle } from 'mibreit-dom-tools';
+import { addCssStyle, addCssClass } from 'mibreit-dom-tools';
 import ImageStage from './ImageStage';
+
+import commonStyles from '../common.module.css';
 
 export default class ImageStageFitAspect extends ImageStage {
   private _imageWidth: number;
@@ -27,5 +29,6 @@ export default class ImageStageFitAspect extends ImageStage {
     }
     addCssStyle(this._imageHandle, 'width', newWidth);
     addCssStyle(this._imageHandle, 'height', newHeight);
+    addCssClass(this._imageHandle, commonStyles.box_shadow);
   }
 }
