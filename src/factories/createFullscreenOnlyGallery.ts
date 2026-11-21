@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { getElements } from 'mibreit-dom-tools';
+import { getElements } from '../tools/DomWrappers';
 
 import GalleryContainerBuilder from '../builders/GalleryBuilder';
 

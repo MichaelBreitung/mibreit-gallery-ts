@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { disableContextMenu, disableDragging, overwriteCssStyles } from 'mibreit-dom-tools';
+import { disableContextMenu, disableDragging, overwriteCssStyles } from '../tools/DomWrappers';
 import { Element } from 'mibreit-lazy-loader';
 
 // interfaces

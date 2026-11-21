@@ -1,7 +1,7 @@
 /**
  * Factory for creating an ImagesWall inside a given container
  */
-import { getElement, getElements } from 'mibreit-dom-tools';
+import { getElement, getElements } from '../tools/DomWrappers';
 
 import ImagesWall from '../components/ImagesWall';
 import { ImagesWallBuilder } from '../builders';

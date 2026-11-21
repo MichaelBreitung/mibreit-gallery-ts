@@ -1,7 +1,7 @@
 /**
  * Builder for ImagesWall component
  */
-import { addClickEventListener, addCssClass } from 'mibreit-dom-tools';
+import { addClickEventListener, addCssClass } from '../tools/DomWrappers';
 import { ELazyMode, createLazyLoaderFromElements } from 'mibreit-lazy-loader';
 
 import ImagesWall from '../components/ImagesWall';

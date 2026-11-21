@@ -18,7 +18,7 @@ import {
   removeCssStyle,
   getElement,
   cloneElement,
-} from 'mibreit-dom-tools';
+} from '../tools/DomWrappers';
 
 import SlideshowBuilder from './SlideshowBuilder';
 import ThumbScrollerBuilder from './ThumbsScrollerBuilder';

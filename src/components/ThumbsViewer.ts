@@ -11,7 +11,7 @@ import {
   getElementDimension,
   getRootFontSize,
   wrapElements,
-} from 'mibreit-dom-tools';
+} from '../tools/DomWrappers';
 
 import HorizontalScroller from './HorizontalScroller';
 

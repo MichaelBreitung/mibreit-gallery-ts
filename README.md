@@ -224,7 +224,7 @@ Key design choices:
 - **No shadow DOM.** Your page's CSS applies directly to the gallery.
 - **Fullscreen is an in-page overlay**, not the browser's Fullscreen API.
 
-Lazy loading and DOM handling come from two companion packages by the same author, [mibreit-lazy-loader](https://github.com/MichaelBreitung/mibreit-lazy-loader) and [mibreit-dom-tools](https://github.com/MichaelBreitung/mibreit-dom-tools). The average color is computed with [fast-average-color](https://github.com/fast-average-color/fast-average-color).
+Lazy loading comes from the companion package [mibreit-lazy-loader](https://github.com/MichaelBreitung/mibreit-lazy-loader) by the same author. The average color is computed with [fast-average-color](https://github.com/fast-average-color/fast-average-color).
 
 For the full design, decisions, quality goals and known technical debt, see the [architecture documentation](doc/architecture.md).
 

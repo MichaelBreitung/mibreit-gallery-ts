@@ -5,7 +5,7 @@
 
 import './index.css';
 
-import { addCssClass, addCssStyle, getElement } from 'mibreit-dom-tools';
+import { addCssClass, addCssStyle, getElement } from './tools/DomWrappers';
 
 import {
   createGallery,

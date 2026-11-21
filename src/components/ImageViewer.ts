@@ -2,7 +2,7 @@
  * @author Michael Breitung
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
-import { addCssClass, removeCssClass } from 'mibreit-dom-tools';
+import { addCssClass, removeCssClass } from '../tools/DomWrappers';
 import { ILazyLoader } from 'mibreit-lazy-loader';
 
 import Image from './Image';
