@@ -1,3 +1,12 @@
+@keyframes img-wall-loaded {
+  from {
+    transform: scale(1.15);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
 .img_wall {
   width: 100%;
 
@@ -14,6 +23,20 @@
   gap: 1rem;
 }
 
+.img_wrapper {
+  overflow: hidden;
+  opacity: 0.5;
+  transform: translateY(0.75rem);
+}
+
+.img_wrapper.img_loaded {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 0.5s ease,
+    opacity 0.5s ease;
+}
+
 .img_col img {
   cursor: pointer;
   display: block;
@@ -24,8 +47,7 @@
   opacity: 0;
 }
 
-.img_col img,
-.img_col :global(.mibreit_lazyLoader_surrogate) {
+.img_col .img_wrapper {
   box-shadow:
     rgba(0, 0, 0, 0.15) 0px 10px 15px -3px,
     rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
@@ -35,6 +57,7 @@
   transform: scale(1.025);
 }
 
-.img_loaded {
+.img_col img.img_loaded {
   opacity: 1 !important;
+  animation: img-wall-loaded 1.4s ease var(--reveal-delay, 0s) backwards;
 }

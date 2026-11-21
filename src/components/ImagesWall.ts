@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { addCssClass, createElement } from '../tools/DomWrappers';
+import { addCssClass, createElement, wrapElements } from '../tools/DomWrappers';
 import styles from './ImagesWall.module.css';
 import commonStyles from '../common.module.css';
 import Image from './Image';
@@ -41,11 +41,15 @@ export default class ImagesWall {
 
       this._updateColumnHeight(targetIndex, image.getHeight());
 
+      const imageWrapper = createElement('div');
+      addCssClass(imageWrapper, styles.img_wrapper);
+      wrapElements([image.getHtmlElement()], imageWrapper);
       const node = image.getHtmlElement();
       addCssClass(node, commonStyles.image_transition);
-      targetCol.appendChild(node as Node);
+      targetCol.appendChild(imageWrapper);
 
       image.addWasLoadedCallback(() => {
+        addCssClass(imageWrapper, styles.img_loaded);
         this._waitForDecoded(node as HTMLImageElement);
       });
 
