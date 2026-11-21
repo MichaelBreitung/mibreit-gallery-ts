@@ -12,7 +12,7 @@ import {
   prependBeforeChild,
   removeCssStyle,
   removeElement,
-} from 'mibreit-dom-tools';
+} from '../tools/DomWrappers';
 import IFullscreen from '../interfaces/IFullscreen';
 
 // Styles

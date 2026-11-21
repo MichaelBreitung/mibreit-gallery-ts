@@ -68,11 +68,11 @@ These goals are detailed as Q-1 to Q-4 in [section 10](#10-quality-requirements)
 | Constraint                                                  | Background                                                                                                                                                                                               |
 | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Targets modern evergreen browsers only                      | Legacy browsers are explicitly out of scope. The code relies on resize observation, pointer events and custom elements.                                                                                  |
-| No UI framework dependency                                  | The library renders plain DOM and works on any page. The only runtime dependencies are two of the author's packages (the lazy loader and the DOM tools) and a third-party average-color package.         |
+| No UI framework dependency                                  | The library renders plain DOM and works on any page. The only runtime dependencies are the author's lazy loader package and a third-party average-color package.                                         |
 | TypeScript in strict mode                                   | The compiler is configured with strict checks, no unused locals or parameters, and an ES6 language target.                                                                                               |
 | Distributed as one self-hosted artefact                     | The script bundle includes the web components and exposes the fullscreen-only function. It is attached to a GitHub Release, downloaded by the site owner and hosted on the site (see [ADR-12](#adr-12)). |
 | Build output is generated locally                           | `task deploy:build` type-checks the source and creates the script bundle; generated folders are git-ignored and not versioned. See [TD-1](#td-1).                                                        |
-| Own packages are installed from GitHub                      | The lazy loader and the DOM tools are resolved from the author's GitHub repositories, not from the npm registry.                                                                                         |
+| Own package is installed from GitHub                        | The lazy loader is resolved from the author's GitHub repository, not from the npm registry.                                                                                                              |
 | Images are plain `<img>` elements supplied by the host page | The gallery takes over images that are already in the page markup and reads source, title and description from their attributes. Nothing is fetched at runtime besides the images themselves.            |
 | Gallery UI is a DOM overlay                                 | Fullscreen is implemented as an in-page overlay, not through the browser's Fullscreen API.                                                                                                               |
 
@@ -139,14 +139,12 @@ graph LR
     page["Host page DOM"]
     gallery["Mibreit Gallery"]
     lazy["mibreit-lazy-loader"]
-    dom["mibreit-dom-tools"]
     avg["fast-average-color"]
     browser["Browser APIs"]
 
     page -->|"custom elements / selectors"| gallery
     gallery -->|"events, global gallery list"| page
     gallery --> lazy
-    gallery --> dom
     gallery --> avg
     gallery --> browser
 
@@ -155,7 +153,7 @@ graph LR
     classDef support  fill:#f5f5f5,stroke:#616161,color:#212121
 
     class gallery core
-    class lazy,dom,avg service
+    class lazy,avg service
     class page,browser support
 ```
 
@@ -176,7 +174,6 @@ graph LR
 | Partner               | Used for                                                                                                                         |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `mibreit-lazy-loader` | Index-based lazy loading around the current image for galleries and slideshows. Scroll-window-based loading for the images wall. |
-| `mibreit-dom-tools`   | Abstraction of DOM creation, styling and event registration.                                                                     |
 | `fast-average-color`  | Computes the average color of the current image for the fullscreen background.                                                   |
 | Browser APIs          | DOM, custom elements, resize observation, pointer and keyboard events, CSS animations and transforms.                            |
 
@@ -265,7 +262,6 @@ graph TD
     cmp["Components"]
     typ["Types and interfaces"]
     ll["mibreit-lazy-loader"]
-    dt["mibreit-dom-tools"]
     fa["fast-average-color"]
 
     host --> wc
@@ -279,8 +275,6 @@ graph TD
     cmp --> typ
     bld --> ll
     cmp --> ll
-    cmp --> dt
-    bld --> dt
     cmp --> fa
 
     classDef core     fill:#e3f2fd,stroke:#1565c0,stroke-width:1px,color:#0d47a1
@@ -291,7 +285,7 @@ graph TD
     class host consumer
     class wc,esm,fac,bld,con,cmp core
     class typ support
-    class ll,dt,fa service
+    class ll,fa service
 ```
 
 | Building block       | Responsibility                                                                                                                                                                                                                                            |
@@ -303,7 +297,7 @@ graph TD
 | Containers           | Plain result objects (slideshow, gallery) that give the host page access to the image viewer, loader, thumbnails and fullscreen.                                                                                                                          |
 | Components           | The single-purpose UI parts (see 5.2).                                                                                                                                                                                                                    |
 | Types and interfaces | The configuration types with their validation functions, the scale-mode and position types, and the interfaces that components and containers implement.                                                                                                  |
-| Tools                | Small helpers for timing and animation.                                                                                                                                                                                                                   |
+| Tools                | Small helpers for timing and animation, and thin wrappers around the browser's DOM API (`DomWrappers`).                                                                                                                                                   |
 | Static assets        | Icons and CSS Modules bundled with the library.                                                                                                                                                                                                           |
 
 ### 5.2 Level 2: Components
@@ -643,11 +637,11 @@ Each decision states its context and consequences. Where the author gave the rat
 
 #### ADR-6
 
-**Lazy loader and DOM tools are separate packages.** Both are the author's own packages, installed from GitHub.
+**The lazy loader is a separate package; the DOM tools package is replaced by local wrappers.** The lazy loader is the author's own package, installed from GitHub. DOM access goes through thin wrappers in the gallery's own tools folder.
 
-- **Context:** The packages were developed separately from the gallery. The DOM tools were meant as an abstraction layer to adapt easily to changes in the DOM environment.
-- **Consequences:** The gallery depends on two GitHub-hosted packages whose versions are not pinned to a release. The lazy loader's types are part of the gallery's public interfaces. The author questions whether the DOM tools are still worth their overhead, now that such abstractions are cheap to generate.
-- **Status:** Accepted. Under review for the DOM tools (see [TD-3](#td-3) and [TD-4](#td-4)).
+- **Context:** The packages were developed separately from the gallery. The DOM tools were meant as an abstraction layer to adapt easily to changes in the DOM environment. Such abstractions are now cheap to generate, and the browser APIs the gallery needs are stable, so the external package was dropped. Calling the browser API directly at every call site was tried and made the minified bundle larger, because property and method names such as `classList.add` cannot be shortened by the minifier, while a wrapper function and its call sites can.
+- **Consequences:** The gallery depends on one GitHub-hosted package whose version is not pinned to a release. The lazy loader's types are part of the gallery's public interfaces. Components and builders call the wrapper functions in `DomWrappers`, which delegate to the browser API. The updated lazy loader no longer depends on the DOM tools either, so the package is gone from the installed tree and the script bundle.
+- **Status:** Accepted. The DOM tools were removed from the gallery (see [TD-3](#td-3)); the unpinned lazy loader is open (see [TD-4](#td-4)).
 
 #### ADR-7
 
@@ -699,9 +693,9 @@ Each decision states its context and consequences. Where the author gave the rat
 
 **Options for later.** None of these is decided. They are recorded so they need not be researched again.
 
-- **Release tarball:** attach the packed package (the output of `npm pack`) to the GitHub Release. Consumers install it with `npm install` and the tarball's URL, which npm supports for any http(s) tarball. It needs no registry account and contains prebuilt files, so consumers need no build step. Consumers would still resolve the two GitHub-hosted dependencies (see [ADR-6](#adr-6)). It would require the ES module build and type declarations to come back. > ⚠️ TODO: verify. Installing from a GitHub release asset URL (which redirects) has not been tried here.
+- **Release tarball:** attach the packed package (the output of `npm pack`) to the GitHub Release. Consumers install it with `npm install` and the tarball's URL, which npm supports for any http(s) tarball. It needs no registry account and contains prebuilt files, so consumers need no build step. Consumers would still resolve the GitHub-hosted dependency (see [ADR-6](#adr-6)). It would require the ES module build and type declarations to come back. > ⚠️ TODO: verify. Installing from a GitHub release asset URL (which redirects) has not been tried here.
 - **Install from Git with a `prepare` script:** consumers install straight from the repository and the package builds on their machine. It needs no release asset, but every install runs a full build and needs the development dependencies. It also requires the ES module build to return.
-- **Publish to the npm registry:** the usual route for module consumers. It needs an account and the companion packages published or bundled (see [TD-4](#td-4)), and the dependencies would have to be declared properly instead of installed from GitHub.
+- **Publish to the npm registry:** the usual route for module consumers. It needs an account and the companion package published or bundled (see [TD-4](#td-4)), and the dependencies would have to be declared properly instead of installed from GitHub.
 - **Rejected:** GitHub's package registry (installing requires authentication, even for public packages), and serving the script from a CDN or the release URL directly (conflicts with the self-hosting decision).
 
 ## 10. Quality Requirements
@@ -743,11 +737,11 @@ The items are numbered in the order they were found, which is not a priority ord
 
 #### TD-3
 
-**The DOM tools package may no longer be worth its overhead.** It was introduced as an abstraction layer to adapt to DOM changes. The author considers that such abstractions are now cheap to generate. Removing it would also remove one external dependency from the bundle. See [ADR-6](#adr-6).
+**Resolved:** The gallery no longer uses the DOM tools package. Its functions were replicated as thin wrappers in the tools folder (`DomWrappers`) and all call sites use them, which keeps the minified bundle smaller than direct browser calls. The package is no longer a dependency of the gallery or of the lazy loader. See [ADR-6](#adr-6).
 
 #### TD-4
 
-**Own dependencies are installed from GitHub without a pinned version.** The manifest references both packages by repository only, so installs depend on their default branch. The lazy loader's types are also part of the gallery's public interfaces. See [ADR-6](#adr-6).
+**Own dependency is installed from GitHub without a pinned version.** The manifest references the lazy loader by repository only, so installs depend on its default branch. The lazy loader's types are also part of the gallery's public interfaces. See [ADR-6](#adr-6).
 
 #### TD-6
 

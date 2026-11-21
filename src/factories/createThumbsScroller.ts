@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { getElement, getElements } from 'mibreit-dom-tools';
+import { getElement, getElements } from '../tools/DomWrappers';
 
 import { ThumbsScrollerBuilder } from '../builders';
 

@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { addEventListener } from 'mibreit-dom-tools';
+import { addEventListener } from '../tools/DomWrappers';
 import { TPosition } from '../types';
 
 const TRESHHOLD = 50;

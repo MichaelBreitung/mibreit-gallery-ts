@@ -12,7 +12,7 @@ import {
   removeCssClass,
   removeCssStyle,
   wrapElements,
-} from 'mibreit-dom-tools';
+} from '../tools/DomWrappers';
 import IImageStage from '../interfaces/IImageStage';
 import styles from './ImageStage.module.css';
 import commonStyles from '../common.module.css';

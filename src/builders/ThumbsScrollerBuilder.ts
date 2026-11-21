@@ -11,7 +11,7 @@ import {
   createElement,
   prependChildElement,
   setInnerHtml,
-} from 'mibreit-dom-tools';
+} from '../tools/DomWrappers';
 
 import { Image, ThumbsViewer, ThumbStage, SwipeHandler, ESwipeDirection } from '../components';
 import { TPosition } from '../types';

@@ -3,7 +3,7 @@
  * @copyright Michael Breitung Photography (www.mibreit-photo.com)
  */
 
-import { addCssClass, addCssStyle, createElement, wrapElements } from 'mibreit-dom-tools';
+import { addCssClass, addCssStyle, createElement, wrapElements } from '../tools/DomWrappers';
 import styles from './HorizontalScroller.module.css';
 import commonStyles from '../common.module.css';
 

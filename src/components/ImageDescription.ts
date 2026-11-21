@@ -10,7 +10,7 @@ import {
   removeCssClass,
   setInnerHtml,
   addEventListener,
-} from 'mibreit-dom-tools';
+} from '../tools/DomWrappers';
 
 // interfaces
 import IImageDescription from '../interfaces/IImageDescription';
