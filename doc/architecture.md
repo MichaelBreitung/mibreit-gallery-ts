@@ -165,6 +165,7 @@ graph LR
 | Factory functions                                                  | in        | Imperative entry point. Takes CSS selectors and a config object and is available through the global object of the script bundle.                                                                                                                                                              |
 | Lazy-loading marker (`mbll__marker` class or `data-src` attribute) | in        | Opt-in signal on each image element. It tells the lazy loader to hold the image back until the gallery requests it. The class is defined by `mibreit-lazy-loader`, not by this library. Demo pages also hide the marker class with CSS so that images that are not yet loaded stay invisible. |
 | `buy-clicked` DOM event                                            | out       | Dispatched by the gallery and images wall elements (when the `addBuyButton` attribute is set) with the image index.                                                                                                                                                                           |
+| Images wall object (`imagesWall` property of the element)          | in        | Lets host scripts change the number of columns at runtime with `updateNrColumns`, for example from a resize observer. Calls are debounced (see [ADR-13](#adr-13)).                                                                                                                            |
 | Global list of gallery objects                                     | out       | The script bundle exposes created gallery objects on the page's global scope for host scripts.                                                                                                                                                                                                |
 | CSS custom properties on the document root                         | out       | The fullscreen view publishes the current image's average background and foreground colors. The host page can use them.                                                                                                                                                                       |
 | CSS class names                                                    | in/out    | The gallery sets and uses class names with the `mbg__` prefix. The host page can override them.                                                                                                                                                                                               |
@@ -211,6 +212,7 @@ All three depend on the host page marking images as deferred (see [section 3](#3
 
 - **Stages scale and center images:** each image sits on an image stage that handles scaling and centering. Four scale modes (none, fit aspect, stretch, expand) are interchangeable stage variants. Images are not upscaled by default; a global `allowUpscale` setting permits the selected scale mode to enlarge them. A resize observer keeps stages in sync with their container.
 - **Box shadow follows the visible image edge:** the shadow is applied by the image stage through the shared `mbg__box_shadow` class, not by a global selector. Where the image does not fill the stage (fit aspect), the image gets the shadow. Where the image fills or overflows the stage (stretch, expand), the stage gets the shadow, because the stage is the visible edge there (and in expand mode its `overflow: hidden` would clip a shadow on the image). The none scale mode applies no shadow. This keeps the look consistent across scale modes and in fullscreen.
+- **Wall columns can change at runtime:** the images wall keeps one wrapper per image and only re-distributes these wrappers into a new set of columns. Loaded images are not requested again, placeholders of images that are not yet loaded stay in place, and images that were already revealed do not replay their reveal animation (see [ADR-13](#adr-13)).
 - **CSS-driven presentation:** styles ship as CSS Modules with a fixed `mbg__` prefix and no hash. The host page can override them (see [ADR-3](#adr-3)).
 - **Fullscreen as overlay:** the fullscreen view moves the gallery into an overlay in the page. A placeholder keeps the original position, so the page layout does not change.
 - **Adaptive color:** optionally, the average color of the current image controls the fullscreen background and foreground color.
@@ -314,7 +316,7 @@ graph TD
 | Fullscreen                         | Moves the gallery into an in-page overlay, leaves a placeholder, provides a close button, and notifies listeners. Supports a fixed or average-color background.                                                                                                                                                            |
 | Average color                      | Computes the average color of an image and publishes it as background and foreground CSS variables on the document root.                                                                                                                                                                                                   |
 | Image description                  | Overlay that shows an image's description with a close control.                                                                                                                                                                                                                                                            |
-| Images wall                        | Arranges images in columns, placing each into the currently shortest column, and waits for decoding before display.                                                                                                                                                                                                        |
+| Images wall                        | Wraps each image once and arranges the wrappers in columns, placing each into the currently shortest column (by the image's aspect ratio). Re-distributes the same wrappers when the number of columns changes, debouncing rapid requests, and waits for decoding before display.                                          |
 
 ### 5.3 Level 2: Builders
 
@@ -323,7 +325,7 @@ graph TD
 | Slideshow builder          | Creates the images, the index-based lazy loader and the image viewer. Optionally starts an automatic advance timer and applies the zoom option.                                                                                                                          |
 | Thumbnail scroller builder | Creates thumbnail stages, a lazy loader sized to the visible thumbnails, the thumbnail viewer, optional previous/next buttons, and swipe scrolling.                                                                                                                      |
 | Gallery builder            | Starts from a slideshow and adds the optional features: previous/next buttons, fullscreen, thumbnails, descriptions, buy action, keyboard and swipe navigation. Has a second start mode that clones page images into a hidden container for the fullscreen-only gallery. |
-| Images wall builder        | Creates the wall and attaches the scroll-based lazy loader, an optional click callback and a configurable scroll delay.                                                                                                                                                  |
+| Images wall builder        | Creates the wall and attaches the scroll-based lazy loader, an optional click callback, a configurable scroll delay and a configurable delay for debouncing column changes.                                                                                              |
 
 ### 5.4 Public Contracts
 
@@ -413,18 +415,18 @@ Rules:
 - Keyboard handlers are registered on the whole document, not on a single gallery (see [TD-9](#td-9)).
 - When the optional interval is set, a timer advances to the next image continuously. It does not stop on user interaction (see [TD-10](#td-10)).
 
-### 6.4 Web Component Removal
-
-When a gallery or images-wall web component is removed, its entry is removed from the page-global gallery list. If it is in fullscreen, the fullscreen gallery is restored to its original position before removal. Slideshow, thumbnail-scroller and images-wall elements release the component-owned result reference. Re-adding an element creates a new gallery and publishes it again.
-
-The release described here is component-level. Document-level keyboard listeners, automatic advance timers and component-internal listeners and observers are covered by [TD-10](#td-10).
-
 ### 6.3 Fullscreen
 
 1. Activation moves the gallery container into an overlay appended to the page body and leaves a placeholder at the original position.
 2. The overlay uses either a fixed background color or the average color of the current image, which is recalculated on each image change.
 3. Deactivation puts the container back at the placeholder and removes the overlay.
 4. Change listeners are notified of both transitions. Fullscreen-only galleries use this to show or hide their (otherwise hidden) container.
+
+### 6.4 Web Component Removal
+
+When a gallery or images-wall web component is removed, its entry is removed from the page-global gallery list. If it is in fullscreen, the fullscreen gallery is restored to its original position before removal. Slideshow, thumbnail-scroller and images-wall elements release the component-owned result reference. Re-adding an element creates a new gallery and publishes it again.
+
+The release described here is component-level. Document-level keyboard listeners, automatic advance timers and component-internal listeners and observers are covered by [TD-10](#td-10).
 
 ### 6.5 Images Wall with Fullscreen Viewing
 
@@ -434,8 +436,9 @@ The images wall is an alternative to the thumbnails viewer.
 2. It then builds the wall. The original images are distributed into columns, always into the currently shortest column, and loaded by scroll position.
 3. When a visitor clicks an image, the gallery shows the matching image and activates fullscreen.
 4. If the buy option is set and the current image has print metadata, a shop button appears. It dispatches the buy event with the image index.
+5. When a host script requests a different number of columns, the wall validates the value immediately and throws for anything that is not an integer of at least 1. It then waits for the configured delay (default 500 ms, 0 applies the change at once). Each new request restarts the wait, so only the last value is applied. If that value equals the current number of columns, nothing happens. Otherwise the existing wrappers are moved into new columns, balanced again from an empty state, inside the same wall element.
 
-### 6.5 Resizing
+### 6.6 Resizing
 
 - Each image stage observes its container's size and recalculates its image size on change, and after its image has loaded.
 - The thumbnails viewer observes its wrapper, recomputes the thumbnail size from the wrapper width and the number of visible thumbnails, and re-centers.
@@ -671,7 +674,7 @@ Each decision states its context and consequences. Where the author gave the rat
 
 **Web components without shadow DOM.** The custom elements render into the page's regular DOM and select their children with CSS selectors.
 
-- **Context:** > It follows from [ADR-3](#adr-3) (styles are overridable from the page) and [ADR-1](#adr-1) (the page's own markup is used). We don't want an isolated shadow DOM and use the Web Components only to simplify the markup and the gallery's start-up.
+- **Context:** It follows from [ADR-3](#adr-3) (styles are overridable from the page) and [ADR-1](#adr-1) (the page's own markup is used). We don't want an isolated shadow DOM and use the Web Components only to simplify the markup and the gallery's start-up.
 - **Consequences:** Host styles apply directly. Elements can be found by page scripts. Styles of the page can also clash with the gallery's styles.
 - **Status:** Accepted.
 
@@ -693,10 +696,18 @@ Each decision states its context and consequences. Where the author gave the rat
 
 **Options for later.** None of these is decided. They are recorded so they need not be researched again.
 
-- **Release tarball:** attach the packed package (the output of `npm pack`) to the GitHub Release. Consumers install it with `npm install` and the tarball's URL, which npm supports for any http(s) tarball. It needs no registry account and contains prebuilt files, so consumers need no build step. Consumers would still resolve the GitHub-hosted dependency (see [ADR-6](#adr-6)). It would require the ES module build and type declarations to come back. > ⚠️ TODO: verify. Installing from a GitHub release asset URL (which redirects) has not been tried here.
+- **Release tarball:** attach the packed package (the output of `npm pack`) to the GitHub Release. Consumers install it with `npm install` and the tarball's URL, which npm supports for any http(s) tarball. It needs no registry account and contains prebuilt files, so consumers need no build step. Consumers would still resolve the GitHub-hosted dependency (see [ADR-6](#adr-6)). It would require the ES module build and type declarations to come back. ⚠️ TODO: verify. Installing from a GitHub release asset URL (which redirects) has not been tried here.
 - **Install from Git with a `prepare` script:** consumers install straight from the repository and the package builds on their machine. It needs no release asset, but every install runs a full build and needs the development dependencies. It also requires the ES module build to return.
 - **Publish to the npm registry:** the usual route for module consumers. It needs an account and the companion package published or bundled (see [TD-4](#td-4)), and the dependencies would have to be declared properly instead of installed from GitHub.
 - **Rejected:** GitHub's package registry (installing requires authentication, even for public packages), and serving the script from a CDN or the release URL directly (conflicts with the self-hosting decision).
+
+#### ADR-13
+
+**The images wall changes its columns by re-distributing its existing wrappers, and debounces the requests itself.** The wall creates one wrapper per image once. A change of the column count moves these wrappers into new columns inside the same wall element. Requests are debounced with a small timer owned by the wall.
+
+- **Context:** Host pages want to change the column count when their layout changes, for example with a resize observer. Rebuilding the wall from the `<img>` elements would create new image objects that the lazy loader does not know, so images that were not loaded yet would never load and callbacks would be lost. Reloading images that are already loaded would waste bandwidth and flicker. Resize-like triggers also fire many times in a row.
+- **Consequences:** Moving a node does not refetch a loaded image, and the lazy loader's placeholders and callbacks stay attached. Moving restarts the reveal animation, so wrappers of already revealed images are marked to suppress it. Balancing uses each image's aspect ratio, because all columns have the same width, and starts from an empty state on every distribution. The debounce delay is a configuration option with a default of 500 ms, and 0 applies changes at once. It is not an attribute of the web component. The wall does not detect its own size; the host page decides when to ask for a different column count. The scroll position is not preserved across a change. A shared debounce helper was not re-introduced (see [TD-6](#td-6)) because the wall is the only consumer.
+- **Status:** Accepted and implemented (ticket `update-images-wall-columns`).
 
 ## 10. Quality Requirements
 
@@ -775,7 +786,7 @@ The items are numbered in the order they were found, which is not a priority ord
 
 #### TD-13
 
-**Quality assurance is thin.** There is no linting step and no CI workflow. Browser tests run in headless Chrome only and build the bundle automatically. They cover the web-component gallery, a single-image gallery and the thumbnail scroller. Nothing covers the images wall, fullscreen, swipe or other browsers. No quality goal has a measurable target (see [section 10](#10-quality-requirements)).
+**Quality assurance is thin.** There is no linting step and no CI workflow. Browser tests run in headless Chrome only and build the bundle automatically. They cover the web-component gallery, a single-image gallery and the thumbnail scroller. Nothing covers the images wall (including changing its columns at runtime), fullscreen, swipe or other browsers. No quality goal has a measurable target (see [section 10](#10-quality-requirements)).
 
 #### TD-14
 

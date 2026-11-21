@@ -61,3 +61,7 @@
   opacity: 1 !important;
   animation: img-wall-loaded 1.4s ease var(--reveal-delay, 0s) backwards;
 }
+
+.img_wrapper.img_settled img.img_loaded {
+  animation: none;
+}

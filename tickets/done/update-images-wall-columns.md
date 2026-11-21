@@ -19,16 +19,16 @@ The images wall fixes its number of columns at construction time and offers no w
 
 ## Acceptance criteria
 
-- [ ] Changing the column count re-distributes the existing image wrappers into the new columns; no new image objects are created.
-- [ ] Images that are already loaded are not requested again.
-- [ ] Images that are not yet loaded keep their surrogates and still load lazily once they come into view after the change.
-- [ ] Click callbacks and load callbacks registered before the change keep working afterwards.
-- [ ] The wall element stays the same, so the container and anything holding a reference to it are unaffected.
-- [ ] The column balancing starts from a clean state on every update, so the result matches what an initial build with that column count would produce.
-- [ ] Several calls in quick succession result in a single re-layout using only the last requested value; the delay has a sensible default and can be set to zero for immediate application.
-- [ ] A call with the current column count does nothing; a value that is not an integer of at least 1 is rejected consistently with the existing configuration validation.
-- [ ] Already loaded images do not visibly flash or replay their reveal animation when moved between columns.
-- [ ] The behaviour is documented and covered by tests where a test setup exists.
+- [x] Changing the column count re-distributes the existing image wrappers into the new columns; no new image objects are created.
+- [x] Images that are already loaded are not requested again.
+- [x] Images that are not yet loaded keep their surrogates and still load lazily once they come into view after the change.
+- [x] Click callbacks and load callbacks registered before the change keep working afterwards.
+- [x] The wall element stays the same, so the container and anything holding a reference to it are unaffected.
+- [x] The column balancing starts from a clean state on every update, so the result matches what an initial build with that column count would produce.
+- [x] Several calls in quick succession result in a single re-layout using only the last requested value; the delay has a sensible default and can be set to zero for immediate application.
+- [x] A call with the current column count does nothing; a value that is not an integer of at least 1 is rejected consistently with the existing configuration validation.
+- [x] Already loaded images do not visibly flash or replay their reveal animation when moved between columns.
+- [x] The behaviour is documented and covered by tests where a test setup exists.
 
 ## Notes
 

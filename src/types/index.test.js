@@ -15,7 +15,7 @@ describe('Config Test Test Suite', () => {
   it('exports configuration defaults in one place', () => {
     expect(SLIDESHOW_DEFAULTS).toEqual({ interval: 5000, loaderWindowLeft: 0, loaderWindowRight: 1 });
     expect(THUMB_SCROLLER_DEFAULTS).toEqual({ numberOfVisibleThumbs: 7, initialIndex: 0 });
-    expect(IMAGES_WALL_DEFAULTS).toEqual({ columns: 3, scrollLoaderDelay: 300 });
+    expect(IMAGES_WALL_DEFAULTS).toEqual({ columns: 3, scrollLoaderDelay: 300, columnsUpdateDelay: 500 });
   });
 
   it('parseNumericAttribute rejects non-numeric and non-finite attribute values', () => {
@@ -170,5 +170,12 @@ describe('Config Test Test Suite', () => {
     expect(() => checkImagesWallConfig({ scrollLoaderDelay: Number.NaN })).toThrowError(
       'checkImagesWallConfig - scrollLoaderDelay should be a number of at least 0'
     );
+    expect(() => checkImagesWallConfig({ columnsUpdateDelay: -1 })).toThrowError(
+      'checkImagesWallConfig - columnsUpdateDelay should be a number of at least 0'
+    );
+    expect(() => checkImagesWallConfig({ columnsUpdateDelay: Number.NaN })).toThrowError(
+      'checkImagesWallConfig - columnsUpdateDelay should be a number of at least 0'
+    );
+    expect(() => checkImagesWallConfig({ columnsUpdateDelay: 0 })).not.toThrowError();
   });
 });
