@@ -21,7 +21,11 @@ export default class ImagesWallBuilder {
     addCssClass(this._containerElement, styles.images_wall__parent);
     this._scrollLoaderDelay = config?.scrollLoaderDelay ?? IMAGES_WALL_DEFAULTS.scrollLoaderDelay;
     this._images = this._createImagesArray(imageElements, config?.allowUpscale);
-    this._imagesWall = new ImagesWall(this._images, config?.columns ?? IMAGES_WALL_DEFAULTS.columns);
+    this._imagesWall = new ImagesWall(
+      this._images,
+      config?.columns ?? IMAGES_WALL_DEFAULTS.columns,
+      config?.columnsUpdateDelay ?? IMAGES_WALL_DEFAULTS.columnsUpdateDelay
+    );
   }
 
   public addImageClickedCallback(cb: (index: number) => void): ImagesWallBuilder {

@@ -29,6 +29,7 @@ export const THUMB_SCROLLER_DEFAULTS = {
 export const IMAGES_WALL_DEFAULTS = {
   columns: 3,
   scrollLoaderDelay: 300,
+  columnsUpdateDelay: 500,
 } as const;
 
 export function isFiniteNumber(value: unknown): value is number {
@@ -134,6 +135,7 @@ export function checkGalleryConfig(config: GalleryConfig) {
 export type ImagesWallConfig = {
   columns?: number;
   scrollLoaderDelay?: number;
+  columnsUpdateDelay?: number;
   allowUpscale?: boolean;
 };
 
@@ -149,6 +151,12 @@ export function checkImagesWallConfig(config: ImagesWallConfig) {
     (!isFiniteNumber(config.scrollLoaderDelay) || config.scrollLoaderDelay < 0)
   ) {
     throw new Error('checkImagesWallConfig - scrollLoaderDelay should be a number of at least 0');
+  }
+  if (
+    typeof config.columnsUpdateDelay !== 'undefined' &&
+    (!isFiniteNumber(config.columnsUpdateDelay) || config.columnsUpdateDelay < 0)
+  ) {
+    throw new Error('checkImagesWallConfig - columnsUpdateDelay should be a number of at least 0');
   }
   if (typeof config.allowUpscale !== 'undefined' && typeof config.allowUpscale !== 'boolean') {
     throw new Error('checkImagesWallConfig - allowUpscale should be of type boolean');

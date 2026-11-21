@@ -155,6 +155,15 @@ document.querySelector('mbg-imageswall').addEventListener('buy-clicked', (event)
 });
 ```
 
+To change the number of columns after the wall was created, for example when the page width changes, call `updateNrColumns` on the element's `imagesWall` property. Images that are already loaded are not requested again, and images that are not loaded yet keep their placeholders and load as usual. Calls are debounced: only the last value is applied, 500 ms after the last call. A value that is not an integer of at least 1 throws an error. To pick the right number of columns before the wall is built, set the `columns` attribute from a script that runs before the bundle is initialised.
+
+```js
+const wall = document.querySelector('mbg-imageswall');
+new ResizeObserver(([entry]) => {
+  wall.imagesWall.updateNrColumns(entry.contentRect.width < 960 ? 3 : 5);
+}).observe(wall.parentElement);
+```
+
 ### Using the fullscreen-only gallery function
 
 Use `createFullscreenOnlyGallery` when your page already contains regular images and you want clicks on them to open a fullscreen slideshow. It takes a CSS selector and is available on the global `mibreitGalleryTs`. Invalid parameters or selectors that match no images throw an error with a descriptive message.
